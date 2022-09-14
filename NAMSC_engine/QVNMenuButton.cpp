@@ -17,6 +17,9 @@ void QVNMenuButton::paintEvent(QPaintEvent* event) {
 	//QPushButton::paintEvent(event);
 	QPainter painter = QPainter(this);
 	QPainterPath textPath = QPainterPath();
+	painter.setRenderHint(
+		QPainter::Antialiasing
+	);
 
 	QPen pen;
 	QBrush brush = QBrush();
