@@ -14,31 +14,33 @@ QVNMenuButton::~QVNMenuButton()
 
 void QVNMenuButton::paintEvent(QPaintEvent* event) {
 	QRect buttonRect = QRect(0, 0, QPushButton::width(), QPushButton::height());
-	QPushButton::paintEvent(event);
-	QPainter imagePainter = QPainter(this);
-	QPainter textPainter = QPainter(this);
+	//QPushButton::paintEvent(event);
+	QPainter painter = QPainter(this);
 	QPainterPath textPath = QPainterPath();
 
 	QPen pen;
 	QBrush brush = QBrush();
+
+	painter.setBrush(Qt::NoBrush);
+	painter.setPen(Qt::black);
+	painter.drawImage(buttonRect, image);
+	painter.drawRect(0, 0, buttonRect.width()-1, buttonRect.height()-1);
+
 	brush.setColor(Qt::darkRed);
 	brush.setStyle(Qt::SolidPattern);
 	pen.setColor(Qt::black);
 	pen.setWidth(2);
-	textPainter.setPen(pen);
-	textPainter.setBrush(brush);
-	QFont font(QPushButton::font().family(), 72, 50, true);
-	textPainter.setFont(font);
-	QRect textBound = textPainter.fontMetrics().boundingRect(QPushButton::text());
+	painter.setPen(pen);
+	painter.setBrush(brush);
+	QFont font(QPushButton::font().family(), QPushButton::height() * 0.7, 50, true);
+	painter.setFont(font);
+	QRect textBound = painter.fontMetrics().boundingRect(QPushButton::text());
 	textPath.addText(
-		(QPushButton::width()-textBound.width())/2,
-		(QPushButton::height()/+textBound.height())/2,
+		(QPushButton::width() - textBound.width()) / 2,
+		(QPushButton::height() + font.pointSize()) / 2,
 		font,
 		QPushButton::text());
-	textPath.boundingRect();
-	
-	imagePainter.drawImage(buttonRect, image);
-	textPainter.drawPath(textPath);
+	painter.drawPath(textPath);
 }
 
 
