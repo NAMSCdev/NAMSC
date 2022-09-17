@@ -84,7 +84,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -105,10 +105,14 @@
     <QtRcc Include="mainWindow.qrc" />
     <QtUic Include="mainWindow.ui" />
     <QtMoc Include="mainWindow.h" />
+    <ClCompile Include="MainTextBox.cpp" />
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_engine.ico" />
     <ResourceCompile Include="NAMSC_engine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MainTextBox.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
