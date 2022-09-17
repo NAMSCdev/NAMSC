@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QOpenGLWidget>
 #include "ui_mainWindow.h"
+#include "MainTextBox.h"
 
 class mainWindow : public QMainWindow
 {
@@ -12,5 +14,7 @@ public:
     ~mainWindow();
 
 private:
+    MainTextBox* textbox;
+    QGraphicsScene* scene;
     Ui::mainWindowClass ui;
 };
