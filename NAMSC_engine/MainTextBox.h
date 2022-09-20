@@ -26,6 +26,7 @@ public:
 	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
 	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
+	void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
 
 private:
 	enum class BoundingBoxPressedType {
@@ -48,9 +49,9 @@ private:
 	QRectF boundingBox;
 	QString* currentText;
 
-	inline auto   leftCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().x() < sensitivity; };
-	inline auto  rightCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().x() > boundingBox.size().width() - sensitivity; };
-	inline auto  upperCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().y() > boundingBox.size().height() - sensitivity; };
-	inline auto bottomCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().y() < sensitivity; };
+	inline auto   leftCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().x() < sensitivity + boundingBox.x(); };
+	inline auto  rightCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().x() - boundingBox.x() > boundingBox.size().width() - sensitivity; };
+	inline auto bottomCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().y() - boundingBox.y() > boundingBox.size().height() - sensitivity; };
+	inline auto  upperCheck(const QGraphicsSceneMouseEvent* const mouseEvent, const size_t& sensitivity) { return mouseEvent->pos().y() < sensitivity + boundingBox.y(); }
 
 };
