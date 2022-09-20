@@ -5,6 +5,7 @@
 MainTextBox::MainTextBox(QWidget *parent) : QGraphicsItem(), boundingBox(QRectF()) {
 	setParent(parent);
 	setFlag(ItemIsMovable);
+	setAcceptHoverEvents(true);
 	testBrush = QBrush(Qt::blue);
 }
 
@@ -79,32 +80,35 @@ void MainTextBox::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	//else {
 	//	testBrush.setColor(Qt::green);
 	//}
-	this->update();
+	//this->update();
 }
 
 void MainTextBox::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
 	boundingBoxPressedType = BoundingBoxPressedType::None;
+	qDebug() << "Bounding box x: " << boundingBox.x() << " y: " << boundingBox.y() 
+		<< "\tw: " << boundingBox.width() << " h: " << boundingBox.height()
+		<< "\tMouse event: " << mouseEvent->pos().y();
 }
 
 void MainTextBox::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
 	// Not needed??
-	auto movedUpper = upperCheck(mouseEvent, boxBorderResizeSensitivity);
 	auto movedBottom = bottomCheck(mouseEvent, boxBorderResizeSensitivity);
-	auto movedLeft = leftCheck(mouseEvent, boxBorderResizeSensitivity);
-	auto movedRight = rightCheck(mouseEvent, boxBorderResizeSensitivity);
+	auto movedUpper	 =  upperCheck(mouseEvent, boxBorderResizeSensitivity);
+	auto movedRight	 =  rightCheck(mouseEvent, boxBorderResizeSensitivity);
+	auto movedLeft	 =   leftCheck(mouseEvent, boxBorderResizeSensitivity);
 
 	auto buttonPressed = mouseEvent->button();
+	prepareGeometryChange();
 
 	// Resize only the corner/border that is affected in the wanted direction
 	switch (boundingBoxPressedType) {
 	case BoundingBoxPressedType::Inside:
-		this->setPos(mouseEvent->scenePos().x() - mouseEvent->buttonDownScenePos(buttonPressed).x(), mouseEvent->scenePos().y() - mouseEvent->buttonDownScenePos(buttonPressed).y());
-		this->moveBy(mouseEvent->buttonDownScenePos(buttonPressed).x(), mouseEvent->buttonDownScenePos(buttonPressed).y()); //TODO
+		setPos(mouseEvent->scenePos().x() - mouseEvent->lastPos().x(), mouseEvent->scenePos().y() - mouseEvent->lastPos().y());
 		break;
-	case BoundingBoxPressedType::RightBorder:
-		// TODO
+	case BoundingBoxPressedType::RightBorder:		
+		boundingBox.setRight(mouseEvent->lastPos().x());
 		break;
 	case BoundingBoxPressedType::RightUpperCorner:
 		// TODO
@@ -113,7 +117,7 @@ void MainTextBox::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		// TODO
 		break;
 	case BoundingBoxPressedType::LeftBorder:
-		// TODO
+		boundingBox.setLeft(mouseEvent->lastPos().x());
 		break;
 	case BoundingBoxPressedType::LeftUpperCorner:
 		// TODO
@@ -122,16 +126,18 @@ void MainTextBox::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 		// TODO
 		break;
 	case BoundingBoxPressedType::UpperBorder:
-		// TODO
+		boundingBox.setTop(mouseEvent->lastPos().y());
 		break;
 	case BoundingBoxPressedType::BottomBorder:
-		// TODO
+		boundingBox.setBottom(mouseEvent->lastPos().y());
 		break;
 	default:
 		// TODO
 		break;
 	}
 
+	this->update();
+	
 	//if (borderPressed) {
 	//	if (mouseEvent->pos().x() >= boundingBox.width()) {
 	//		setBoundingBoxSize(mouseEvent->pos().x(), boundingBox.height());
@@ -148,4 +154,9 @@ void MainTextBox::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
 	//auto color = mouseEvent->scenePos().x();
 	//testBrush.setColor(QColor(color, mouseEvent->scenePos().y(), color, color));
 	//this->update();
+}
+
+void MainTextBox::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
+{
+	// TODO
 }
