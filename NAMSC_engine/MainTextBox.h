@@ -23,10 +23,10 @@ public:
 
 	void setBoundingBoxSize(qreal x, qreal y);
 
-	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
-	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
-	void hoverMoveEvent(QGraphicsSceneHoverEvent* event);
+	void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+	void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
 
 private:
 	enum class BoundingBoxPressedType {

@@ -7,6 +7,7 @@ MainTextBox::MainTextBox(QWidget *parent) : QGraphicsItem(), boundingBox(QRectF(
 	setFlag(ItemIsMovable);
 	setAcceptHoverEvents(true);
 	testBrush = QBrush(Qt::blue);
+	currentText = new QString("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 }
 
 MainTextBox::~MainTextBox() {
@@ -23,6 +24,7 @@ void MainTextBox::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 {
 	painter->fillRect(boundingBox, testBrush);
 	painter->drawRect(boundingBox);
+	painter->drawText(boundingBox, Qt::TextWordWrap, *currentText);
 }
 
 void MainTextBox::setBoundingBoxSize(qreal x, qreal y)
