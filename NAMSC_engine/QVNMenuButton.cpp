@@ -4,9 +4,12 @@
 #include "qstring.h"
 #include "qevent.h"
 #include "qpainterpath.h"
+#include <QFontDatabase>
 
 QVNMenuButton::QVNMenuButton(QWidget *parent)
 	: QPushButton(parent){
+	fontColor = Qt::black;
+	fontOutlineColor = Qt::white;
 }
 
 QVNMenuButton::~QVNMenuButton()
@@ -14,24 +17,43 @@ QVNMenuButton::~QVNMenuButton()
 
 void QVNMenuButton::paintEvent(QPaintEvent* event) {
 	QRect buttonRect = QRect(0, 0, QPushButton::width(), QPushButton::height());
-	//QPushButton::paintEvent(event);
 	QPainter painter = QPainter(this);
-	QPainterPath textPath = QPainterPath();
 	painter.setRenderHint(
 		QPainter::Antialiasing
 	);
+	drawBody(buttonRect, painter);
+	drawText(painter);
+}
 
+void QVNMenuButton::drawBody(QRect& borders, QPainter& painter) {
+	drawImage(borders, painter);
 	QPen pen;
 	QBrush brush = QBrush();
-
 	painter.setBrush(Qt::NoBrush);
 	painter.setPen(Qt::black);
-	painter.drawImage(buttonRect, image);
-	painter.drawRect(0, 0, buttonRect.width()-1, buttonRect.height()-1);
+	painter.drawRect(0, 0, borders.width() - 1, borders.height() - 1);
+}
 
-	brush.setColor(Qt::darkRed);
+void QVNMenuButton::drawImage(QRect& borders, QPainter& painter) {
+	painter.drawImage(
+		borders,
+		(hover && changeImageOnHover)
+			? getImageOnHover()
+			: getImage()
+	);
+}
+
+void QVNMenuButton::drawText(QPainter& painter) {
+	QPainterPath textPath = QPainterPath();
+	QPen pen;
+	QBrush brush = QBrush();
+	brush.setColor(
+		(hover && changeImageOnHover) 
+			? fontHoverColor
+			: fontColor
+	);
 	brush.setStyle(Qt::SolidPattern);
-	pen.setColor(Qt::black);
+	pen.setColor(fontOutlineColor);
 	pen.setWidth(2);
 	painter.setPen(pen);
 	painter.setBrush(brush);
@@ -46,12 +68,41 @@ void QVNMenuButton::paintEvent(QPaintEvent* event) {
 	painter.drawPath(textPath);
 }
 
-
 void QVNMenuButton::enterEvent(QEnterEvent*) {
-	image.rgbSwap();
+	hover = true;
 }
 void QVNMenuButton::leaveEvent(QEvent*) {
-	image.rgbSwap();
+	hover = false;
 }
 
+void QVNMenuButton::loadImage(QString uri) {
+	image = std::make_shared<QImage>(QImage(uri));
+	if (image.get()->isNull()) throw std::invalid_argument("Missing image " + uri.toStdString());
+};
+
+QImage& QVNMenuButton::getImage()
+{
+	return *image;
+};
+
+void QVNMenuButton::loadImageOnHover(QString uri) {
+	imageOnHover = std::make_shared<QImage>(QImage(uri));
+	if (imageOnHover.get()->isNull()) throw std::invalid_argument("Missing image " + uri.toStdString());
+	changeImageOnHover = true;
+};
+
+QImage& QVNMenuButton::getImageOnHover()
+{
+	return *imageOnHover;
+};
+
+
+void QVNMenuButton::setFontColor(QColor color) {
+	fontColor = color;
+};
+
+void QVNMenuButton::setFontColorOnHover(QColor color) {
+	fontHoverColor = color;
+	changeFontColorOnHover = true;
+};
 
