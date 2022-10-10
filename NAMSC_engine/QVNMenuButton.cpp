@@ -10,6 +10,9 @@ QVNMenuButton::QVNMenuButton(QWidget *parent)
 	: QPushButton(parent){
 	fontColor = Qt::black;
 	fontOutlineColor = Qt::white;
+	QSizePolicy sizePolicy = QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	sizePolicy.setHeightForWidth(true);
+	setSizePolicy(sizePolicy);
 }
 
 QVNMenuButton::~QVNMenuButton()
@@ -29,9 +32,9 @@ void QVNMenuButton::drawBody(QRect& borders, QPainter& painter) {
 	drawImage(borders, painter);
 	QPen pen;
 	QBrush brush = QBrush();
-	painter.setBrush(Qt::NoBrush);
-	painter.setPen(Qt::black);
-	painter.drawRect(0, 0, borders.width() - 1, borders.height() - 1);
+	//painter.setBrush(Qt::NoBrush);
+	//painter.setPen(Qt::black);
+	//painter.drawRect(0, 0, borders.width() - 1, borders.height() - 1);
 }
 
 void QVNMenuButton::drawImage(QRect& borders, QPainter& painter) {
@@ -48,7 +51,7 @@ void QVNMenuButton::drawText(QPainter& painter) {
 	QPen pen;
 	QBrush brush = QBrush();
 	brush.setColor(
-		(hover && changeImageOnHover) 
+		(hover && changeFontColorOnHover)
 			? fontHoverColor
 			: fontColor
 	);
