@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QOpenGLWidget>
 #include "ui_mainWindow.h"
-#include "MainTextBox.h"
+#include "TextBox.h"
 
 class mainWindow : public QMainWindow
 {
@@ -14,7 +14,7 @@ public:
     ~mainWindow();
 
 private:
-    MainTextBox* textbox;
+    TextBox* textbox2;
     QGraphicsScene* scene;
     Ui::mainWindowClass ui;
 };
