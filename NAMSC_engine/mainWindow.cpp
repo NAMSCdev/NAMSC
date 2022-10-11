@@ -9,9 +9,9 @@ mainWindow::mainWindow(QWidget *parent)
     ui.graphicsView->setViewport(new QOpenGLWidget);
     ui.graphicsView->setScene(scene);
 
-    textbox = new MainTextBox(this);
-    textbox->setBoundingBoxSize(500, 200);
-    scene->addItem(textbox);
+    scene->setSceneRect(this->rect());
+    textbox2 = new TextBox(this);
+    scene->addItem(textbox2);
 }
 
 mainWindow::~mainWindow()
