@@ -206,9 +206,6 @@
     <ClInclude Include="src\Story\Data\Text\Translation.h">
       <Filter>Header Files\Story\Data\Text</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Text\Voice.h">
-      <Filter>Header Files\Story\Data\Text</Filter>
-    </ClInclude>
     <ClInclude Include="src\Story\Data\Stat\Stat.h">
       <Filter>Header Files\Story\Data\Stat</Filter>
     </ClInclude>

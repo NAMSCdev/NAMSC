@@ -12,7 +12,7 @@ class Translation
 	friend QDataStream& operator<<(QDataStream&, const Translation&);
 public:
 	Translation() = default;
-	Translation(QVector<QPair<const QString, const QString>> &&translations/*, const QVector<unsigned int>>	&&wordDurations*/) :
+	Translation(const QMap<QString, TextAsset>&& translations/*, const QVector<unsigned int>>	&&wordDurations*/) :
 		translations(move(translations))/*, wordDurations(move(wordDurations))*/ {}
 
 	///Return text in the language that is set in StorySettings

@@ -9,9 +9,9 @@ class AnimatorMove final : public AnimatorSceneryObject<AnimNodeDouble2D>
 public:
 	AnimatorMove() = default;
 	AnimatorMove(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(animAssetName, bLoop, move(sceneryObjectName))
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().;
+		animAsset = AssetManager::getInstance().findAnimAssetMove(animAssetName);
 	}
 	AnimatorMove(const AnimatorMove&) = default;
 	AnimatorMove& operator=(const AnimatorMove&) = default;
@@ -36,9 +36,9 @@ class AnimatorScale	final : public AnimatorSceneryObject<AnimNodeDouble2D>
 public:
 	AnimatorScale() = default;
 	AnimatorScale(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(animAssetName, bLoop, move(sceneryObjectName))
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().;
+		animAsset = AssetManager::getInstance().findAnimAssetScale(animAssetName);
 	}
 	AnimatorScale(const AnimatorScale&) = default;
 	AnimatorScale& operator=(const AnimatorScale&) = default;
@@ -63,9 +63,9 @@ class AnimatorRotate final : public AnimatorSceneryObject<AnimNodeDouble1D>
 public:
 	AnimatorRotate() = default;
 	AnimatorRotate(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(animAssetName, bLoop, move(sceneryObjectName))
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().;
+		animAsset = AssetManager::getInstance().findAnimAssetRotate(animAssetName);
 	}
 	AnimatorRotate(const AnimatorRotate&) = default;
 	AnimatorRotate& operator=(const AnimatorRotate&) = default;
@@ -89,7 +89,7 @@ public:
 	AnimatorColor(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
 		AnimatorSceneryObject<AnimNodeDouble4D>(animAssetName, bLoop, move(sceneryObjectName)) 
 	{
-		animAsset = AssetManager::getInstance().;
+		animAsset = AssetManager::getInstance().findAnimAssetColor(animAssetName);
 	}
 	AnimatorColor(const AnimatorColor&) = default;
 	AnimatorColor& operator=(const AnimatorColor&) = default;

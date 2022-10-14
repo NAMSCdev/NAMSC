@@ -73,8 +73,8 @@ class AnimatorSceneryObject : public Animator<AnimNode>
 public:
 	AnimatorSceneryObject() = default;
 	AnimatorSceneryObject(QString &&animAssetName, bool bLoop, QString &&sceneryObjectName);
-	AnimatorSceneryObject(const AnimatorSceneryObject& asset) = default;
-	AnimatorSceneryObject& operator=(const AnimatorSceneryObject& asset) = default;
+	AnimatorSceneryObject(const AnimatorSceneryObject &asset) = default;
+	AnimatorSceneryObject& operator=(const AnimatorSceneryObject &asset) = default;
 
 	///Affects the SceneryObject
 	virtual void update() = 0;

@@ -11,8 +11,8 @@ class Action : public QObject
 	///Good Friends who Visit us (Actions) often :>
 	friend class ActionVisitorChangeID;
 	///Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Action&);
-	friend QDataStream& operator<<(QDataStream&, const Action&);
+	friend QDataStream& operator>>(QDataStream &dataStream, Action &t);
+	friend QDataStream& operator<<(QDataStream &dataStream, const Action &t);
 	///Other friends
 	friend bool operator==(const Action &lhs, const QString &rhs);
 public:
@@ -37,7 +37,7 @@ public:
 	///Execution of an Action
 	virtual void run()											{ ensureAssetsAreLoaded(); }
 
-	///Some actions are designed to update things and should be called frequently until the end of the Event
+	///Some Actions are designed to update things and should be called frequently until the end of the Event
 	virtual void update()										{}
 
 	///Accept ActionVisitor, which will be run repending on the object's class

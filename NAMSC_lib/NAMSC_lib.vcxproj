@@ -116,6 +116,7 @@
     <ClInclude Include="src\Story\Action\Visual\ActionSceneryObjectChange.h" />
     <ClInclude Include="src\Story\Action\Visual\ActionSetBackground.h" />
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionCharLive2DAnim.h" />
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnim.h" />
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h" />
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectHide.h" />
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectShow.h" />
@@ -169,7 +170,6 @@
     <ClInclude Include="src\Story\RenPyTranslator.h" />
     <ClInclude Include="src\Story\Data\Text\Sentence.h" />
     <ClInclude Include="src\Story\Data\Text\Translation.h" />
-    <ClInclude Include="src\Story\Data\Text\Voice.h" />
     <ClInclude Include="src\Story\Data\Visual\Animation\Animator.h" />
     <ClInclude Include="src\Story\Data\Visual\Animation\AnimNode.h" />
     <ClInclude Include="src\Story\Data\Visual\MainMenuTheme.h" />
