@@ -1,81 +1,77 @@
-#pragma once
-#include <QMessageBox>
-#include <QString>
-#include <QFile>
+﻿#pragma once
+#include "Global.h"
 
-//TODO: consider replacing std::strings with QT ones
-//TODO: check QT Exception system 
-//TODO: consider defining logfile
+#define LOG_FILENAME "log.txt"
+#define DATE_FORMAT Qt::ISODate
 
-struct Exception
+extern QFile logFile;
+
+//Logs information in a `logFile`
+inline void info();
+
+///Allows better Exception messaging and logging for debugging and User Warnings
+struct Exception : QException
 {
-	Exception(std::string &&msg, std::string &&function, std::string &&file, unsigned &&line) noexcept
-		: msg(move(msg)), file(move(file)), function(move(function)), line(move(line)) {}
+	Exception(const QString &&msg, const char type[], const char function[], const char file[], int line) noexcept
+		: msg(move(msg)), file(move(file)), type(move(type)), function(move(function)), line(line) {}
 
-	virtual void handle() noexcept
-	{
-		time_t curtime;
-		time(&curtime);
-		char *date = new char[256];
-		ctime_s(date, 256, &curtime);
-		std::string sDate = date;
-		delete[] date;
-		size_t lastpos = sDate.rfind(' ');
-		size_t firstpos = sDate.rfind(' ', lastpos-1);
-		sDate = sDate.substr(firstpos+1, lastpos - firstpos-1);
-		details = '[' + sDate + "] [" + file.substr(file.rfind('\\') + 1) + "::" + function + '(' + std::to_string(line) + ")] ";
-		//TODO: define logfile
-		//logfile << details;
-	}
+	virtual ~Exception() = 0;
+
+	virtual void handle() noexcept;
 protected:
-	std::string details;
-	const std::string msg;
+	//Contains 
+	QString details;
+	const QString msg;
+	const QString type;
 private:
-	const std::string function, file;
-	const unsigned line;
+	const QString function, file;
+	const int line;
 };
 
+#define warn(msg) throw Warn(msg, __func__, __FILE__, __LINE__)
+
+//Warning that does not
 struct Warn final : Exception
 {
-	Warn(std::string &&msg, std::string &&function, std::string &&file, unsigned &&line) noexcept
-		: Exception(move(msg), move(function), move(file), move(line)) {}
-	void handle() noexcept
+	Warn(const QString &&msg, const char function[], const char file[], int line) noexcept
+		: Exception(move(msg), "WARNING", function, file, line) {}
+	void handle() noexcept override
 	{
 		handle(false);
 	}
 	void handle(bool bDisplay) noexcept
 	{
 		Exception::handle();
-		//logfile << "[WARN] " << msg << std::endl;
-		details += msg;
-		if (bDisplay) QMessageBox(QMessageBox::Icon::Information, "Warning", details.c_str());
+		if (bDisplay) QMessageBox(QMessageBox::Icon::Information, "Warning", details).exec();
 	}
 };
 
-struct Err final : Exception, std::runtime_error
-{
-	Err(std::string &&msg, std::string &&function, std::string &&file, unsigned &&line) noexcept
-		: runtime_error("Parsing Error!"), Exception(move(msg), move(function), move(file), move(line)) {}
+#define error(msg) throw Error(msg, __func__, __FILE__, __LINE__)
 
-	void handle() noexcept
+//Error that causes some sort of rollback
+struct Error final : Exception, std::runtime_error
+{
+	Error(const QString &&msg, const char function[], const char file[], int line) noexcept
+		: runtime_error("Error!"), Exception(move(msg), "ERROR", move(function), move(file), line) {}
+
+	void handle() noexcept override
 	{
 		Exception::handle();
-		//logfile << "[ERROR] " << msg;
-		details += msg;
-		QMessageBox(QMessageBox::Icon::Critical, "Error", details.c_str());
+		QMessageBox(QMessageBox::Icon::Critical, "Error", details).exec();
 	}
 };
 
-struct CriticalErr final : Exception, std::runtime_error
-{
-	CriticalErr(std::string &&msg, std::string &&function, std::string &&file, unsigned &&line)
-		: runtime_error("Critical Error!"), Exception(move(msg), move(function), move(file), move(line)) {}
+#define criticalError(msg) throw CriticalError(msg, __func__, __FILE__, __LINE__)
 
-	void handle() noexcept
+//If a Critical Error is thrown the application must be terminated
+struct CriticalError final : Exception, std::runtime_error
+{
+	CriticalError(const QString &&msg, const char function[], const char file[], int line)
+		: runtime_error("Critical Error!"), Exception(move(msg), "CRITICAL ERROR", function, file, line) {}
+
+	void handle() noexcept override
 	{
 		Exception::handle();
-		//logfile << "[!CRITICAL_ERROR!] " << msg;
-		details += msg;
-		QMessageBox(QMessageBox::Icon::Critical, "Critical Error", details.c_str());
+		QMessageBox(QMessageBox::Icon::Critical, "Critical Error", details).exec();
 	}
 };

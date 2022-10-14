@@ -4,46 +4,51 @@
 #include "Story/Data/Asset/Type/FontAsset.h"
 #include "Story/Data/Asset/AssetManager.h"
 
-//This hasn't been thought through yet. It is very WIP
-//todo: comment this
+///This hasn't been thought through yet. It is very WIP
+///todo: comment this
 class SceneryObject
 {
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, SceneryObject &t);
-	friend QIODevice &operator<<(QIODevice &device, const SceneryObject &t);
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, SceneryObject&);
+	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
 public:
 	SceneryObject() = default;
-	//TODO: add a special constructor, once fields are set in stone
-	//SceneryObject(
-	virtual ~SceneryObject();
+	SceneryObject() = default;
+	///TODO: add a special constructor, once fields are set in stone
+	///SceneryObject(
+	virtual ~SceneryObject() = default;
+
+	///Animation values
+	///Image's position in the Scenery
+	///@todo [optional] allow for setting position in Z-dimension and do proper maths about it
+	double pos[2/*3*/] = { 0.0, 0.0/*, 0.0*/ };
+	///Image's scale
+	double scale[2] = { 1.0, 1.0 };
+	///Image's rotation
+	double rotation = 0.0;
+	///Color multiplicatives for image
+	double color[4] = { 1.0, 1.0, 1.0, 1.0 };
 
 protected:
-	//TODO: copy comment from other label
-	QString			label;
+	///TODO: copy comment from other label
+	QString		label;
 
-	//TODO: create this class and it will store ImageAssets with custom names for image filtering (useful in Editor)
-	std::vector<SceneryObjectPart> parts;
+	///Name to the Image that will be rendered
+	QString		imageAssetName;
+	//Image that will be rendered
+	ImageAsset	*imageAsset;
+	///[optional] create this class and it will store ImageAssets with custom names for image filtering (useful in Editor)
+	//QVector<SceneryObjectPart> parts;
 
-	//[optional] TODO: filters and effects. Different classes?
-	
-	//TODO: is this the good format? Check QT docs
-	//TODO: Should these apply per part only, or global one too?
-	double scale[3];
-	double pos[3];
-	double color[4];
-
-	//TODO: serialization
+	///TODO: serialization
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar)
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream)
 	{
-		QDataStream dataStream(&ar);
-		dataStream;
+		dataStream >> label >> imageAssetName;
 	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const
 	{
-		QDataStream dataStream(&ar);
-		dataStream;
 	}
 };

@@ -8,45 +8,44 @@
 
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
 
-//This hasn't been thought through yet. It is very WIP
-//TODO: comment this
-class Character : public SceneryObject
+///This hasn't been thought through yet. It is very WIP
+///TODO: comment this
+class Character final : public SceneryObject
 {
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, Character &t);
-	friend QIODevice &operator<<(QIODevice &device, const Character &t);
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, Character&);
+	friend QDataStream& operator<<(QDataStream&, const Character&);
 public:
 	Character() = default;
-	Character(QString &&defaultVoiceName, QString idleLive2DAnimURI = "") : 
-		defaultVoiceName(move(defaultVoiceName)), idleLive2DAnimURI(idleLive2DAnimURI) {};
-	//TODO: comment this
-	void			playLive2DAnim	(QString Live2DAnimURI);
+	Character(QString &&defaultVoiceName, QString idleLive2DAnimName = "") : 
+		defaultVoiceName(move(defaultVoiceName)), idleLive2DAnimName(idleLive2DAnimName) {};
+	///TODO: comment this
+	void			playLive2DAnim(QString Live2DAnimName);
 	
-public:
-	//TODO: comment this
+private:
+	///TODO: comment this
 	QString			defaultVoiceName;
 	Voice			*defaultVoice;
 
-	//TODO: comment this
-	//[optional]
-	QString			idleLive2DAnimURI;
+	///TODO: comment this
+	///[optional]
+	QString			idleLive2DAnimName;
 	Live2DAnimAsset *idleLive2DAnim;
-	QString			currentLive2DAnimURI;
+	QString			currentLive2DAnimName;
 	Live2DAnimAsset *currentLive2DAnim;
 
-	//TODO: serialization
+	///TODO: serialization
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar)
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream)
 	{
-		SceneryObject::serializableLoad(ar);
-		QDataStream dataStream(&ar);
+		SceneryObject::serializableLoad(dataStream);
 		dataStream;
 	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const
 	{
-		SceneryObject::serializableSave(ar);
-		QDataStream dataStream(&ar);
+		SceneryObject::serializableSave(dataStream);
+
 	}
 };

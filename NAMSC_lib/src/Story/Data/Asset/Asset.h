@@ -3,58 +3,62 @@
 
 class Asset
 {
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, Asset &t);
-	friend QIODevice &operator<<(QIODevice &device, const Asset &t);
-	//Other friends
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, Asset&);
+	friend QDataStream& operator<<(QDataStream&, const Asset&);
+	///Other friends
 	friend bool operator==(const Asset &lhs, const QString &rhs);
 public:
 	Asset() = default;
-	Asset(QString &&URI, QString &&location, unsigned pos) : 
-		URI(move(URI)), location(move(location)), pos(pos) {}
+	Asset(QString&& name, bool bExternal = false, QString &&location = "", unsigned pos = 0) :
+		name(move(name)), location(move(location)), bExternal(bExternal), pos(pos) {}
+	Asset(const Asset& asset)				{ *this = asset; }
+	Asset& operator=(const Asset& asset)	
+	{
+		name = asset.name; location = asset.location; bExternal = asset.bExternal; pos = asset.pos;
+		return *this;
+	}
+	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
+	virtual		 ~Asset()	= 0;
 
-	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
-	virtual ~Asset() = 0;
+	///Tries to load an Assent
+	///Throws a noncritical Exception on failure
+	virtual void load()		= 0;
 
-	//Tries to load an Assent
-	//Throws a noncritical Exception on failure
-	virtual bool			load	()				= 0;
+	///Release resources allocated for this asset
+	virtual void unload()	= 0;
 
-	//Release resources allocated for this asset
-	virtual void			unload	()				= 0;
-
-	//Returns whether the asset is currently loaded
-	virtual bool			isLoaded()				= 0;
+	///Returns whether the asset is currently loaded
+	virtual bool isLoaded() const = 0;
 
 protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	virtual SerializationID	getType	() const		= 0;
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	virtual SerializationID	getType() const	= 0;
 
-	//Identificator for the Asset
-	QString					URI;
+	///Identificator for the Asset
+	QString	name;
 
-	//Location of the resource
-	QString					location;
+	///Location of the resource
+	QString	location;
 
-	//If many Assets share the same binary file, we need to remember positions of every Asset
-	unsigned				pos						= 0;
+	///Whether the location is relevant and the Asset should be loaded from external file
+	///@todo implement this
+	bool	bExternal = false;
+
+	///If many Assets share the same binary file, we need to remember positions of every Asset
+	///@todo implement this
+	unsigned pos		= 0;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar)
-	{
-		QDataStream dataStream(&ar);
-		dataStream >> URI >> location >> pos;
-	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const
-	{
-		QDataStream dataStream(&ar);
-		dataStream << getType() << URI << location << pos;
-	}
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream);
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const;
 };
+
+Asset::~Asset()	= default;
 
 bool operator==(const Asset &lhs, const QString &rhs)
 {
-	return !lhs.URI.compare(rhs);
+	return lhs.name == rhs;
 }

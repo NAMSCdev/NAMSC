@@ -45,15 +45,6 @@
     <Filter Include="Header Files\Story\Action\Visual\Optional\Filter\Type">
       <UniqueIdentifier>{2e5513aa-a968-4689-a37b-649e5e843b75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Story\Action\Visual\Scenery">
-      <UniqueIdentifier>{e5bda919-3ecf-4b6d-b74b-6219f832d256}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Story\Action\Visual\Scenery\Animation">
-      <UniqueIdentifier>{8eae4b89-2f82-445a-8b5e-34e201472088}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Story\Action\Visual\Scenery\Animation\Optional">
-      <UniqueIdentifier>{6f358edc-eb0d-4524-bef5-4efaa8f56917}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Story\Optional">
       <UniqueIdentifier>{fa9664c0-5f71-45cb-9676-6881be4f6e9f}</UniqueIdentifier>
     </Filter>
@@ -68,9 +59,6 @@
     </Filter>
     <Filter Include="Header Files\Story\Data\Visual\Animation">
       <UniqueIdentifier>{2c065f27-f045-416b-a0d3-fcc8138b925b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Story\Data\Visual\Animation\Optional">
-      <UniqueIdentifier>{fd0905f1-8633-48fc-8ff3-a82863c69f5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Story\Data\Visual\Scenery">
       <UniqueIdentifier>{98612309-1dbf-42f9-b238-9742aa78ef07}</UniqueIdentifier>
@@ -105,17 +93,35 @@
     <Filter Include="Header Files\Story\Data\Save">
       <UniqueIdentifier>{b989ef28-2f90-4522-a678-8a5967f03c3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Story\Action\Sound">
-      <UniqueIdentifier>{0078a5f0-7852-4ed5-9978-fb3ce84182ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Story\Action\Visitor">
-      <UniqueIdentifier>{3d81f2cc-f40c-4d44-abed-3dd59d55ec1b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Story\Data\Asset\Type">
       <UniqueIdentifier>{18415931-debd-44da-9a65-06e9ef6a6e33}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Story\Event\Visitor">
       <UniqueIdentifier>{d860a747-2399-4f09-9f0e-912b03e429a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Story\Action">
+      <UniqueIdentifier>{0f2c439d-84b9-445e-93f6-a8569c9432a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Story\Action\Audio">
+      <UniqueIdentifier>{0078a5f0-7852-4ed5-9978-fb3ce84182ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Story\Data\Asset\Type\Optional">
+      <UniqueIdentifier>{f375aa96-10a3-4054-8bc8-780d69248656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Story\Action\Visual\Animation">
+      <UniqueIdentifier>{a4517f1d-91cf-4c3c-a5a2-23ae6c1da9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Story\Action\Visual\Animation\Optional">
+      <UniqueIdentifier>{62f1befb-4fa2-452c-a2e3-193803d7e49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Story\Serialization">
+      <UniqueIdentifier>{365a4c33-27a5-4365-a5d8-3dd1b1e3ef0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Story\Action\Stat\Visitor">
+      <UniqueIdentifier>{3d81f2cc-f40c-4d44-abed-3dd59d55ec1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Story\Data\Visual">
+      <UniqueIdentifier>{36f259f0-b216-4cd6-a461-f68b00c9141d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,32 +167,14 @@
     <ClInclude Include="src\Story\Action\Visual\Filter\Type\ActionFilterSaturation.h">
       <Filter>Header Files\Story\Action\Visual\Optional\Filter\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Scenery\ActionSceneryChange.h">
-      <Filter>Header Files\Story\Action\Visual\Scenery</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Scenery\ActionSceneryObjectChange.h">
-      <Filter>Header Files\Story\Action\Visual\Scenery</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionSceneryObjectAppearance.h">
-      <Filter>Header Files\Story\Action\Visual\Scenery\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionCharLive2DAnim.h">
-      <Filter>Header Files\Story\Action\Visual\Scenery\Animation\Optional</Filter>
-    </ClInclude>
     <ClInclude Include="src\Story\Action\ActionVisitor.h">
-      <Filter>Header Files\Story\Action</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Action.h">
       <Filter>Header Files\Story\Action</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Action\Stat\ActionStatChange.h">
       <Filter>Header Files\Story\Action\Stat</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Action\Stat\ActionStatVisibility.h">
+    <ClInclude Include="src\Story\Action\Stat\ActionStatShow.h">
       <Filter>Header Files\Story\Action\Stat\Optional</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Scene.h">
-      <Filter>Header Files\Story\Data</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Story.h">
       <Filter>Header Files\Story\Data</Filter>
@@ -199,12 +187,6 @@
     </ClInclude>
     <ClInclude Include="src\Story\Data\Visual\Animation\Animator.h">
       <Filter>Header Files\Story\Data\Visual\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorEffect.h">
-      <Filter>Header Files\Story\Data\Visual\Animation\Optional</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorFilter.h">
-      <Filter>Header Files\Story\Data\Visual\Animation\Optional</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Visual\Scenery\Scenery.h">
       <Filter>Header Files\Story\Data\Visual\Scenery</Filter>
@@ -232,12 +214,6 @@
     </ClInclude>
     <ClInclude Include="src\Story\RenPyTranslator.h">
       <Filter>Header Files\Story\Optional</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Sound\ActionPlaySound.h">
-      <Filter>Header Files\Story\Action\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Sound\ActionChangeMusic.h">
-      <Filter>Header Files\Story\Action\Sound</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Event\Event.h">
       <Filter>Header Files\Story\Event</Filter>
@@ -269,23 +245,11 @@
     <ClInclude Include="src\Story\Event\Type\EventJump.h">
       <Filter>Header Files\Story\Event\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Event\Type\EventRenPyScript.h">
-      <Filter>Header Files\Story\Event\Type\Optional</Filter>
-    </ClInclude>
     <ClInclude Include="src\Story\Action\Visitor\ActionVisitorDecrementID.h">
-      <Filter>Header Files\Story\Action\Visitor</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Asset.h">
-      <Filter>Header Files\Story\Data\Asset</Filter>
+      <Filter>Header Files\Story\Action\Stat\Visitor</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\AssetManager.h">
       <Filter>Header Files\Story\Data\Asset</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\Live2DAnimAsset.h">
-      <Filter>Header Files\Story\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\Live2DCharacterModelAsset.h">
-      <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\Type\MusicAsset.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
@@ -294,12 +258,6 @@
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\Type\ImageAsset.h">
-      <Filter>Header Files\Story\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\SceneryBackgroundImageAsset.h">
-      <Filter>Header Files\Story\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\SceneryObjectPartImageAsset.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\Type\TextAsset.h">
@@ -314,19 +272,117 @@
     <ClInclude Include="src\Story\Data\Asset\Type\AnimAsset.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionSceneryObjectAnim.h">
-      <Filter>Header Files\Story\Action\Visual\Scenery\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorTransform.h">
       <Filter>Header Files\Story\Data\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\StorySettings.h">
       <Filter>Header Files\Story\Data</Filter>
     </ClInclude>
+    <ClInclude Include="src\Story\Data\Visual\Scenery\SceneryObjectPart.h">
+      <Filter>Header Files\Story\Data\Visual\Scenery</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Event\Type\EventRenPyScript.h">
+      <Filter>Header Files\Story\Event\Type\Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Text\Sentence.h">
+      <Filter>Header Files\Story\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Audio\ActionAudio.h">
+      <Filter>Header Files\Story\Action\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Audio\ActionChangeMusic.h">
+      <Filter>Header Files\Story\Action\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Audio\ActionPlaySound.h">
+      <Filter>Header Files\Story\Action\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\ActionsAll.h">
+      <Filter>Header Files\Story\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Type\Live2DAnimAsset.h">
+      <Filter>Header Files\Story\Data\Asset\Type\Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Type\Live2DCharacterModelAsset.h">
+      <Filter>Header Files\Story\Data\Asset\Type\Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Chapter.h">
+      <Filter>Header Files\Story\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Scene.h">
+      <Filter>Header Files\Story\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\ActionSceneryObject.h">
+      <Filter>Header Files\Story\Action\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h">
+      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectHide.h">
+      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectShow.h">
+      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\ActionSceneryObjectChange.h">
+      <Filter>Header Files\Story\Action\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\ActionSetBackground.h">
+      <Filter>Header Files\Story\Action\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Event\EventsAll.h">
+      <Filter>Header Files\Story\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Stat\ActionStat.h">
+      <Filter>Header Files\Story\Action\Stat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Stat\ActionStatHide.h">
+      <Filter>Header Files\Story\Action\Stat\Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionCharLive2DAnim.h">
+      <Filter>Header Files\Story\Action\Visual\Animation\Optional</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Asset.h">
+      <Filter>Header Files\Story\Data\Asset</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="src\Story\Data\Text\Sentence.h">
-      <Filter>Header Files\Story\Data\Text</Filter>
+    <ClCompile Include="src\Story\Data\Text\Text.cpp">
+      <Filter>Source Files\Story\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Action\ActionAudio.cpp">
+      <Filter>Source Files\Story\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Action\ActionStats.cpp">
+      <Filter>Source Files\Story\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Action\ActionVisual.cpp">
+      <Filter>Source Files\Story\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Asset\AssetManager.cpp">
+      <Filter>Source Files\Story\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Source Files\Story</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions.cpp">
+      <Filter>Source Files\Story</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Serialization\ActionSerialization.cpp">
+      <Filter>Source Files\Story\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Serialization\DataSerialization.cpp">
+      <Filter>Source Files\Story\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Serialization\EventSerialization.cpp">
+      <Filter>Source Files\Story\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Visual\Animation\Animation.cpp">
+      <Filter>Source Files\Story\Data\Visual</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\Story\Action\Action.h">
+      <Filter>Header Files\Story\Action</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

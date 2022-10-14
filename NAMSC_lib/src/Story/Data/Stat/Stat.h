@@ -1,64 +1,67 @@
 #pragma once
 #include "Global.h"
-#include <type_traits>
 
-//A variable assigned to the player
-//Does not persist across Saves [TODO: should we make Stats that do?]
+///A variable assigned to the player
+///Does not persist across Saves
+///@todo Make Stats that persist over Saves
 class Stat
 {
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, Stat &t);
-	friend QIODevice &operator<<(QIODevice &device, const Stat &t);
-	//Other friends
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, Stat&);
+	friend QDataStream& operator<<(QDataStream&, const Stat&);
+	friend class StoryState;
+	///Other friends
 	friend bool operator==(const Stat &lhs, const QString &rhs);
 	friend bool operator<(const Stat &lhs,	const Stat &rhs);
 public:
-	enum class SliderStyle
+	///[optional] If there should be displayed some sort of notification once this Stat changes
+	enum class ShowNotification
 	{
-		None,
-		Filled,
-		Shifting,
-		DualColor,
-		DualColorHiddenLabel
+		Default,	///Defaults to the StorySettings's setting
+		Hide,
+		Show
 	};
+
 	Stat() = default;
-	Stat(QString &&name, QString &&displayName, bool bHidden = false, unsigned priority = 0)
-		: name(move(name)), displayName(move(displayName)), bHidden(bHidden), priority(priority)
+	Stat(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification)
+		: name(move(name)), displayName(move(displayName)), bShow(bShow), priority(priority), showNotification(showNotification)
 	{
-		if (displayName.isEmpty())
+		if (this->displayName.isEmpty())
 			this->displayName = this->name;
 	}
+	virtual ~Stat();
 
-	//[optional] Whether this Stat is shown in Stat Screen
-	bool							bHidden;
-
-	//Returns formatted text for display and its DisplaySettings
-	virtual void					display				(QLabel *display)	= 0;
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	virtual SerializationID getType() const	= 0;
 
 protected:	
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	virtual SerializationID			getType				() const			= 0;
+	///Every Stat has two names, [displayName] is for the name shown in a Stat Screen and [name] is the one 
+	QString	 name, displayName;	
 
-	//Every Stat has two names, [displayName] is for the name shown in a Stat Screen and [name] is the one 
-	QString							name, displayName;	
+	///[optional] Whether this Stat is shown in Stat Screen
+	bool	 bShow							= true;
 
-	//Priority is used to order Stats when they are being displayed
-	unsigned						priority								= 0;
+	///[optional] Priority is used to order Stats when they are being displayed
+	unsigned priority						= 0;
+
+	///[optional] If there should be displayed some sort of notification once this Stat changes
+	ShowNotification showNotification		= ShowNotification::Default;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar)
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream)
 	{
-		QDataStream dataStream(&ar);
-		dataStream >> name >> displayName >> bHidden >> priority;
+		dataStream >> name >> displayName >> bShow >> priority >> showNotification;
 	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const
+
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const
 	{
-		QDataStream dataStream(&ar);
-		dataStream << getType() << name << displayName << bHidden << priority;
+		dataStream << getType() << name << displayName << bShow << priority << showNotification;
 	}
 };
+
+Stat::~Stat() = default;
 
 bool operator<(const Stat &lhs, const Stat &rhs)
 {
@@ -67,165 +70,151 @@ bool operator<(const Stat &lhs, const Stat &rhs)
 	return lhs.priority < rhs.priority;
 }
 
-class StringStat final : public Stat
+bool operator==(const Stat &lhs, const QString &rhs)
+{
+	return lhs.name == rhs;
+}
+
+///A Stat with the string value
+class StatString final : public Stat
 {
 public:
-	StringStat() = default;
-	StringStat(QString &&name, QString &&displayName, QString &&value, bool bHidden = false, unsigned priority = 0)
-		: Stat(move(name), move(displayName), bHidden, priority), value(move(value)) {}
+	StatString() = default;
+	StatString(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification, QString &&value, unsigned maxChars)
+		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(move(value)), maxChars(maxChars) {}
 
-	//Every Stat has [value] field, but not all must have [max] and/or [min]
-	//This one does not
-	QString						value;
+	///Every Stat has [value] field, but not all must have [max] and/or [min]
+	///This one does not
+	QString value;
 
-	//Returns formatted text for display and its DisplaySettings
-	void						display			(QLabel* display) override;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::StatString; }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID				getType			() const override			{ return SerializationID::StringStat; }
-
-	//Max characters displayed
+	///Max characters displayed
 	unsigned maxChars = 0;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override
 	{
-		Stat::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> value;
+		Stat::serializableLoad(dataStream);
+
+		dataStream >> value >> maxChars;
 	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override
 	{
-		Stat::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << value;
+		Stat::serializableSave(dataStream);
+
+		dataStream << value << maxChars;
 	}
 };
 
-class BoolStat final : public Stat
+///A Stat with the boolean value
+class StatBool final : public Stat
 {
 public:
-	BoolStat() = default;
-	BoolStat(QString &&name, QString &&displayName, bool value, bool bHidden = false, unsigned priority = 0)
-		: Stat(move(name), move(displayName), bHidden, priority), value(value) {}
+	StatBool() = default;
+	StatBool(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification, bool value)
+		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(value) {}
 
-	//Every Stat has [value] field, but not all must have [max] and/or [min]
-	//This one does not
-	bool						value;
+	///Every Stat has [value] field, but not all must have [max] and/or [min]
+	///This one does not
+	bool value;
 
-	//Returns formatted text for display and its DisplaySettings
-	void						display			(QLabel* display) override;
-
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID				getType			() const override			{ return SerializationID::BoolStat; }
-
-	//TODO: checkbox?
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID getType() const override { return SerializationID::StatBool; }
 	
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override
 	{
-		Stat::serializableLoad(ar);
-		QDataStream dataStream(&ar);
+		Stat::serializableLoad(dataStream);
+
 		dataStream >> value;
 	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override
 	{
-		Stat::serializableSave(ar);
-		QDataStream dataStream(&ar);
+		Stat::serializableSave(dataStream);
+
 		dataStream << value;
 	}
 };
 
-class IntStat final : public Stat
+///A Stat with the integer value
+class StatLongLong final : public Stat
 {
 public:
-	IntStat() = default;
-	IntStat(QString &&name, QString &&displayName, int value, int min, int max, QString &&oppositeStatName = "", bool bHidden = false, unsigned priority = 0)
-		: Stat(move(name), move(displayName), bHidden, priority), oppositeStatName(move(oppositeStatName)), value(value), min(min), max(max) {}
+	StatLongLong() = default;
+	StatLongLong(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification,
+			int value, int min, int max/*, QString &&oppositeStatLabel*/) : 
+		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*,
+		oppositeStatLabel(move(oppositeStatLabel))*/ {}
 
-	//Every Stat has [value] field, but not all must have [max] and/or [min]
-	//This one does
-	int							value, max, min;
+	///Every Stat has [value] field, but not all must have [max] and/or [min]
+	///This one does
+	long long value, min, max;
 
-	//Returns formatted text for display and its DisplaySettings
-	void						display			(QLabel* display) override;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::StatLongLong; }
 
-	//TODO: progression bar setup
-	//void						setProgressBar	(QProgressBar *bar)			{ bar->setValue(static_cast<double>(value-min)/(max-min)); };
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID				getType			() const override			{ return SerializationID::IntStat; }
-
-	//Style of the slider showing Stat's progression
-	SliderStyle					sliderStyle;
-
-	//TODO: interpret opposite Stat
-	QString						oppositeStatName;
-	IntStat*					oppositeStat;
+	//[optional] Label for the opposite Stat, used for a nicer display
+	//QString oppositeStatLabel;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override
 	{
-		Stat::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> value >> min >> max >> oppositeStatName;
+		Stat::serializableLoad(dataStream);
+
+		dataStream >> value >> min >> max/* >> oppositeStatLabel*/;
 	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override
 	{
-		Stat::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << value << min << max << oppositeStatName;
+		Stat::serializableSave(dataStream);
+
+		dataStream << value << min << max/* << oppositeStatLabel*/;
 	}
 };
 
-class DoubleStat final : public Stat
+///A Stat with the floating-point value
+class StatDouble final : public Stat
 {
 public:
-	DoubleStat() = default;
-	DoubleStat(QString &&name, QString &&displayName, double value, double min, double max, QString &&oppositeStatName = "", bool bHidden = false, unsigned priority = 0)
-		: Stat(move(name), move(displayName), bHidden, priority), oppositeStatName(move(oppositeStatName)), value(value), min(min), max(max) {}
+	StatDouble() = default;
+	StatDouble(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification,
+			   double value, double min, double max/*, QString &&oppositeStatLabel*/) : 
+		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*, oppositeStatLabel(move(oppositeStatLabel))*/ {}
 
-	//Every Stat has [value] field, but not all must have [max] and/or [min]
-	//This one does
-	double						value, max, min;
+	///Every Stat has [value] field, but not all must have [max] and/or [min]
+	///This one does
+	double value, min, max;
 
-	//Returns formatted text for display and its DisplaySettings
-	void						display			(QLabel* display) override;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::StatDouble; }
 
-	//TODO: progression bar setup
-	//void						setProgressBar	(QProgressBar *bar)			{ bar->setValue(static_cast<double>(value-min)/(max-min)); };
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID				getType			() const override			{ return SerializationID::DoubleStat; }
-
-	//Style of the slider showing Stat's progression
-	SliderStyle					sliderStyle;
-
-	//TODO: interpret opposite Stat
-	QString						oppositeStatName;
-	IntStat*					oppositeStat;
+	//[optional] Label for the opposite Stat, used for a nicer display
+	//QString oppositeStatLabel;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override
 	{
-		Stat::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> value >> min >> max >> oppositeStatName;
+		Stat::serializableLoad(dataStream);
+
+		dataStream >> value >> min >> max/* >> oppositeStatLabel*/;
 	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override
 	{
-		Stat::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << value << min << max << oppositeStatName;
+		Stat::serializableSave(dataStream);
+
+		dataStream << value << min << max/* << oppositeStatLabel*/;
 	}
 };

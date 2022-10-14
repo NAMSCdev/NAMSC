@@ -2,74 +2,91 @@
 #include "Global.h"
 
 #include "Story/Data/Visual/Animation/AnimNode.h"
+#include "Story/Data/Visual/Scenery/SceneryObject.h"
 
-//Base class for an Animator, which controls the animation output that will be assigned to change something that is being animated
-template<class DataType, unsigned dimension>
+#include "Story/Data/Asset/Type/AnimAsset.h"
+#include "Story/Data/Asset/AssetManager.h"
+
+///Controls an Animation output that will be assigned to change something that is being animated
+template<typename AnimNode>
 class Animator
 {
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream& dataStream, Animator& t);
+	friend QDataStream& operator<<(QDataStream& dataStream, const Animator& t);
 public:
 	Animator() = default;
-	Animator(std::vector<AnimNode<DataType, dimension>> &&nodes) :
-		nodes(move(nodes)) {}
-
-	//Calculates interpolated state in given [time]
-	DataType[dimension] currentAnimState(double time) 
-	{
-		//TODO: Set currentNode and nextNode, check if the animation has ended
-		DataType[dimension] ret			= currentNode->state;
-		double				deltaTime	= time - currentNode->timestamp,
-							duration	= nextHode->timestamp - currentNode->timestamp;
-		switch (nextNode->interpolationMethod)
-		{
-		case AnimInterpolationMethod::Linear:
-		default:
-			for (unsinged i = 0u; i != dimension; ++i)
-			{
-				if (duration == 0.0)
-					ret[i] = nextNode->state[i];
-				else
-					ret[i] += (nextNode->state[i] - ret[i]) * (deltaTime/duration);
-			}
-			break;
-		}
-		return ret;
-	};
-
+	Animator(QString&& animAssetName, bool bLoop) :
+		animAssetName(move(animAssetName)), bLoop(bLoop) {}
+	Animator(const Animator& asset)				= default;
+	Animator& operator=(const Animator& asset)	= default;
+	
 	virtual ~Animator() = 0;
 
+	void start()
+	{
+		ensureAnimIsLoaded();
+		startTime = QTime::currentTime();
+		currentNode = nodes->cbegin();
+		nextNode = currentNode + 1;
+	}
+
+	///Calculates interpolated state in given [time]
+	AnimNode currentAnimState();
+	void ensureAnimIsLoaded() { if (!animAsset.isLoaded()) animAsset.load(); }
+
 protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	virtual SerializationID									getType() const		= 0;
+	///Poits to the AnimNodes of some AnimAsset, that contain sequential changes
+	QVector<AnimNode>	*nodes;
 
-	//TODO: Switch to AnimAsset and create smart loading and unloading instead of raw data inside this class
-	//Holds all the AnimNodes, that contain sequential changes
-	std::vector<AnimNode<DataType, dimension>>				nodes;
+	///Name of the AnimAsset, so it can be loaded (if needed) and played
+	QString				animAssetName;
+	///AnimAsset containing all the AnimNodes
+	AnimAsset<AnimNode>	*animAsset;
 
-	//Nodes containing current state and next state that we interpolate into
-	std::vector<AnimNode<DataType, dimension>>::iterator	currentNode, 
-															nextNode;
-	//TODO: serialize using AnimAsset
+	///Nodes containing current state and next state that we interpolate into
+	QVector<AnimNode>::const_iterator	currentNode, 
+										nextNode;
+
+	///Beginning of the animation, so we can calculate the elapsed time
+	QTime startTime;
+
+	///How fast the animation will be played
+	double speed = 1.0;
+
+	///Whether the animation is looped
+	bool bLoop = false;
+
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar);
-
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const;
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream& dataStream);
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
-//One dimensional Animator, which controls the animation output that will be assigned to change something that is being animated
-template <class DataType>
-using Animator1D = Animator<DataType, 1>;
+template<typename AnimNode>
+Animator<AnimNode>::~Animator() = default;
 
-//Two dimensional Animator, which controls the animation output that will be assigned to change something that is being animated
-template <class DataType>
-using Animator2D = Animator<DataType, 2>;
+template<typename AnimNode>
+class AnimatorSceneryObject : public Animator<AnimNode>
+{
+public:
+	AnimatorSceneryObject() = default;
+	AnimatorSceneryObject(QString &&animAssetName, bool bLoop, QString &&sceneryObjectName);
+	AnimatorSceneryObject(const AnimatorSceneryObject& asset) = default;
+	AnimatorSceneryObject& operator=(const AnimatorSceneryObject& asset) = default;
 
-//Three dimensional Animator, which controls the animation output that will be assigned to change something that is being animated
-template <class DataType>
-using Animator3D = Animator<DataType, 3>;
+	///Affects the SceneryObject
+	virtual void update() = 0;
 
-//Four dimensional Animator, which controls the animation output that will be assigned to change something that is being animated
-template <class DataType>
-using Animator4D = Animator<DataType, 4>;
+protected:
+	///Name to the Scenery Object, so it can be loaded (if needed)
+	QString		  sceneryObjectName;
+	///Scenery Object that will be affected by this Animator
+	SceneryObject *sceneryObject;
 
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream& dataStream) override;
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream& dataStream) const override;
+};

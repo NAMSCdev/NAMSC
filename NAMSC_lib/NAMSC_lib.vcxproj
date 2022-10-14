@@ -14,7 +14,7 @@
     <ProjectGuid>{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.20348.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -101,13 +101,24 @@
   <ItemGroup>
     <ClInclude Include="src\Exceptions.h" />
     <ClInclude Include="src\Global.h" />
-    <ClInclude Include="src\Story\Action\Action.h" />
+    <QtMoc Include="src\Story\Action\Action.h" />
+    <ClInclude Include="src\Story\Action\ActionsAll.h" />
     <ClInclude Include="src\Story\Action\ActionVisitor.h" />
-    <ClInclude Include="src\Story\Action\Sound\ActionChangeMusic.h" />
-    <ClInclude Include="src\Story\Action\Sound\ActionPlaySound.h" />
+    <ClInclude Include="src\Story\Action\Audio\ActionAudio.h" />
+    <ClInclude Include="src\Story\Action\Audio\ActionChangeMusic.h" />
+    <ClInclude Include="src\Story\Action\Audio\ActionPlaySound.h" />
+    <ClInclude Include="src\Story\Action\Stat\ActionStat.h" />
     <ClInclude Include="src\Story\Action\Stat\ActionStatChange.h" />
-    <ClInclude Include="src\Story\Action\Stat\ActionStatVisibility.h" />
+    <ClInclude Include="src\Story\Action\Stat\ActionStatHide.h" />
+    <ClInclude Include="src\Story\Action\Stat\ActionStatShow.h" />
     <ClInclude Include="src\Story\Action\Visitor\ActionVisitorDecrementID.h" />
+    <ClInclude Include="src\Story\Action\Visual\ActionSceneryObject.h" />
+    <ClInclude Include="src\Story\Action\Visual\ActionSceneryObjectChange.h" />
+    <ClInclude Include="src\Story\Action\Visual\ActionSetBackground.h" />
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionCharLive2DAnim.h" />
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h" />
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectHide.h" />
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectShow.h" />
     <ClInclude Include="src\Story\Action\Visual\Effect\ActionEffect.h" />
     <ClInclude Include="src\Story\Action\Visual\Effect\Type\ActionEffectBlur.h" />
     <ClInclude Include="src\Story\Action\Visual\Effect\Type\ActionEffectDistort.h" />
@@ -120,11 +131,6 @@
     <ClInclude Include="src\Story\Action\Visual\Filter\Type\ActionFilterHue.h" />
     <ClInclude Include="src\Story\Action\Visual\Filter\Type\ActionFilterNegative.h" />
     <ClInclude Include="src\Story\Action\Visual\Filter\Type\ActionFilterSaturation.h" />
-    <ClInclude Include="src\Story\Action\Visual\Scenery\ActionSceneryChange.h" />
-    <ClInclude Include="src\Story\Action\Visual\Scenery\ActionSceneryObjectChange.h" />
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionCharLive2DAnim.h" />
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionSceneryObjectAnim.h" />
-    <ClInclude Include="src\Story\Action\Visual\Scenery\Animation\ActionSceneryObjectAppearance.h" />
     <ClInclude Include="src\Story\Data\Asset\Asset.h" />
     <ClInclude Include="src\Story\Data\Asset\AssetManager.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\AnimAsset.h" />
@@ -133,19 +139,19 @@
     <ClInclude Include="src\Story\Data\Asset\Type\Live2DAnimAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\Live2DCharacterModelAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\MusicAsset.h" />
-    <ClInclude Include="src\Story\Data\Asset\Type\SceneryBackgroundImageAsset.h" />
-    <ClInclude Include="src\Story\Data\Asset\Type\SceneryObjectPartImageAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\SoundAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\TextAsset.h" />
+    <ClInclude Include="src\Story\Data\Chapter.h" />
     <ClInclude Include="src\Story\Data\Save\StoryState.h" />
     <ClInclude Include="src\Story\Data\Scene.h" />
     <ClInclude Include="src\Story\Data\Stat\Stat.h" />
-    <ClInclude Include="src\Story\Data\Stat\StatManager.h" />
     <ClInclude Include="src\Story\Data\Story.h" />
     <ClInclude Include="src\Story\Data\StorySettings.h" />
     <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorTransform.h" />
+    <ClInclude Include="src\Story\Data\Visual\Scenery\SceneryObjectPart.h" />
     <ClInclude Include="src\Story\Evaluators.h" />
     <ClInclude Include="src\Story\Event\Event.h" />
+    <ClInclude Include="src\Story\Event\EventsAll.h" />
     <ClInclude Include="src\Story\Event\EventVisitor.h" />
     <ClInclude Include="src\Story\Event\Type\EventChoice.h" />
     <ClInclude Include="src\Story\Event\Type\EventEndIf.h" />
@@ -162,13 +168,24 @@
     <ClInclude Include="src\Story\Data\Text\Translation.h" />
     <ClInclude Include="src\Story\Data\Text\Voice.h" />
     <ClInclude Include="src\Story\Data\Visual\Animation\Animator.h" />
-    <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorEffect.h" />
-    <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorFilter.h" />
     <ClInclude Include="src\Story\Data\Visual\Animation\AnimNode.h" />
     <ClInclude Include="src\Story\Data\Visual\MainMenuTheme.h" />
     <ClInclude Include="src\Story\Data\Visual\Scenery\Character.h" />
     <ClInclude Include="src\Story\Data\Visual\Scenery\Scenery.h" />
     <ClInclude Include="src\Story\Data\Visual\Scenery\SceneryObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="src\Exceptions.cpp" />
+    <ClCompile Include="src\Story\Action\ActionAudio.cpp" />
+    <ClCompile Include="src\Story\Action\ActionStats.cpp" />
+    <ClCompile Include="src\Story\Action\ActionVisual.cpp" />
+    <ClCompile Include="src\Story\Data\Asset\AssetManager.cpp" />
+    <ClCompile Include="src\Story\Data\Serialization\ActionSerialization.cpp" />
+    <ClCompile Include="src\Story\Data\Serialization\DataSerialization.cpp" />
+    <ClCompile Include="src\Story\Data\Serialization\EventSerialization.cpp" />
+    <ClCompile Include="src\Story\Data\Text\Text.cpp" />
+    <ClCompile Include="src\Story\Data\Visual\Animation\Animation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -1,12 +1,10 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <iostream>
 #include <fstream>
-#include <map>
 #include <thread>
+#include <typeinfo>
 
-#include <QtCore/qglobal.h>
 #include <QObject>
 #include <QString>
 #include <QFont>
@@ -16,6 +14,13 @@
 #include <QMediaPlayer>
 #include <QFile>
 #include <QFlags>
+#include <QDate>
+#include <QRawFont>
+#include <QDataStream>
+#include <QException>
+#include <QMessageBox>
+#include <QVector>
+#include <QMap>
 
 #include "Story/Evaluators.h"
 #include "Exceptions.h"
@@ -25,63 +30,94 @@ enum class SerializationID
 {
     ActionChangeMusic               = 0,
     ActionPlaySound                 = 1,
-    ActionStatViibility             = 2,
-    ActionStatChange                = 3,
-    ActionEffectBlur                = 4,
-    ActionEffectDistort             = 5,
-    ActionEffectGlow                = 6,
-    ActionFilterBlur                = 7,
-    ActionFilterBrightness          = 8,
-    ActionFilterDilation            = 9,
-    ActionFilterErosion             = 10,
-    ActionFilterHue                 = 11,
-    ActionFilterNegative            = 12,
-    ActionFilterSaturation          = 13,
-    ActionCharLive2DAnim            = 14,
-    ActionSceneryObjectAnim         = 15,
-    ActionSceneryObjectApperance    = 16,
-    ActionSceneryChange             = 17,
-    ActionSceneryObjectChange       = 18,
-    AnimAsset                       = 19,   //TODO: fix this
-    FontAsset                       = 20,
+    ActionStatHide                  = 2, 
+    ActionStatShow                  = 3, 
+    ActionStatChange                = 4, 
+    ActionEffectBlur                = 5, 
+    ActionEffectDistort             = 6, 
+    ActionEffectGlow                = 7, 
+    ActionFilterBlur                = 8, 
+    ActionFilterBrightness          = 9, 
+    ActionFilterDilation            = 10,
+    ActionFilterErosion             = 11,
+    ActionFilterHue                 = 12,
+    ActionFilterNegative            = 13,
+    ActionFilterSaturation          = 14,
+    ActionCharLive2DAnim            = 15,
+    ActionSceneryObjectAnim         = 16,
+    ActionSceneryObjectHide         = 17,
+    ActionSceneryObjectShow         = 18,
+    ActionSceneryObjectChange       = 19,   
+    ActionSetBackground             = 20,
     Live2DAnimAsset                 = 21,
     Live2DCharacterModelAsset       = 22,
-    MusicAsset                      = 23,
-    SceneryBackgroundImageAsset     = 24,
-    SceneryObjectPartImageAsset     = 25,
-    SoundAsset                      = 26,
-    StorySave                       = 27,
-    TextAsset                       = 28,
-    //TODO: fill this list with the rest of the IDs, once they become certain they are needed and implicit serialization cannot be done
-
+    AnimAsset                       = 23,
+    FontAsset                       = 24,
+    ImageAsset                      = 25,
+    MusicAsset                      = 26,
+    SceneryBackgroundImageAsset     = 27,
+    SceneryObjectPartImageAsset     = 28,
+    SoundAsset                      = 29,
+    TextAsset                       = 30,
+    StatString                      = 31,
+    StatBool                        = 32,
+    StatLongLong                    = 33,
+    StatDouble                      = 34,
+    InsertionSound                  = 35,
+    Sentence                        = 36,
+    Translation                     = 37,
+    Voice                           = 38,
+    AnimatorEffect                  = 39,
+    AnimatorFilter                  = 40,
+    AnimatorTransform               = 41,
+    Character                       = 42,
+    Scenery                         = 43
 };
 
 template <class T>
 using uPtr = std::unique_ptr<T>;
 using std::move;
 
-//Serialization loading
+///Serialization loading
 template<typename T>
-concept SerializableLoad = requires(QIODevice  &device, T const &t)
+concept SerializableLoad = requires(QDataStream &dataStream, T const &t)
 {
-    t.serializableLoad(device);
+    t.serializableLoad(dataStream);
 };
 template<SerializableLoad T>
-QIODevice &operator>>(QIODevice &device, T &t)
+QDataStream &operator>>(QDataStream&, T &t)
 {
-    t.serializableLoad(device);
-    return device;
+    t.serializableLoad(dataStream);
+    return dataStream;
 }
 
-//Serialization saving
+///Serialization saving
 template<typename T>
-concept SerializableSave = requires(QIODevice  &device, T const &t)
+concept SerializableSave = requires(QDataStream &dataStream, T const &t)
 {
-    t.serializableSave(device);
+    t.serializableSave(dataStream);
 };
 template<SerializableSave T>
-QIODevice &operator<<(QIODevice &device, const T &t)
+QDataStream &operator<<(QDataStream &device, const T &t)
 {
-    t.serializableSave(device);
-    return device;
+    t.serializableSave(dataStream);
+    return dataStream;
+}
+
+template<class Type>
+Type* findInArray(const QString &name, QVector<Type> &vector)
+{
+    auto element = std::find(vector.begin(), vector.end(), name);
+    if (element == vector.end())
+        error(QString(typeid(Type).name()) + " with a name \"" + name + "\" could not be found!");
+    return &(*element);
+}
+
+template<class Type>
+Type* findInuPtrArray(const QString &name, QVector<uPtr<Type>> &vector)
+{
+    auto element = std::find(vector.begin(), vector.end(), name);
+    if (element == vector.end())
+        error(QString(typeid(Type).name()) + " with a name \"" + name + "\" could not be found!");
+    return element->get();
 }

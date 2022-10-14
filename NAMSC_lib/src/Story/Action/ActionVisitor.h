@@ -1,16 +1,19 @@
 #pragma once
 #include "Global.h"
 
-//Forward declaration of all Actions for the ActionVisitor
+///Forward declaration of all Actions for the ActionVisitor
 class ActionStatChange;
 class ActionChangeMusic;
 class ActionPlaySound;
-class ActionSceneryChange;
+class ActionSetBackground;
 class ActionSceneryObjectChange;
-class ActionSceneryObjectAppearance;
+class ActionSceneryObjectAnim;
+class ActionSceneryObjectHide;
+class ActionSceneryObjectShow;
 
-//[optional]
-class ActionStatVisibility;
+///[optional]
+class ActionStatHide;
+class ActionStatShow;
 class ActionCharLive2DAnim;
 class ActionEffectBlur;
 class ActionEffectDistort;
@@ -18,42 +21,43 @@ class ActionEffectGlow;
 class ActionFilterBlur;
 class ActionFilterBrightness;
 class ActionFilterDilation;
-class ActionFilterErasion;
+class ActionFilterErosion;
 class ActionFilterHue;
 class ActionFilterNegative;
 class ActionFilterSaturation;
 
-//Base class of a visitor for Events
-//We will not write the abstract class here, like it should be, but default to doing nothing and allow for the overload
+///Base class of a visitor for Events
+///We will not write the abstract class here, like it should be, but default to doing nothing and allow for the overload
 class ActionVisitor
 {
 public:
 	virtual ~ActionVisitor() = 0;
 
-	virtual void	visitActionChangeMusic				(ActionChangeMusic					*action)	{}
-	virtual void	visitActionPlaySound				(ActionPlaySound					*action)	{}
+	virtual void visitActionChangeMusic(ActionChangeMusic *action)					{}
+	virtual void visitActionPlaySound(ActionPlaySound *action)						{}
+				 
+	virtual void visitActionStatChange(ActionStatChange *action)					{}
+				 
+	virtual void visitActionSetBackground(ActionSetBackground *action)				{}
+	virtual void visitActionSceneryObjectChange(ActionSceneryObjectChange *action)	{}
+	virtual void visitActionSceneryObjectAnim(ActionSceneryObjectAnim *action)		{}
+	virtual void visitActionSceneryObjectHide(ActionSceneryObjectHide *action)		{}
+	virtual void visitActionSceneryObjectShow(ActionSceneryObjectShow *action)		{}
 
-	virtual void	visitActionStatChange				(ActionStatChange					*action)	{}
+	///[optional]
+	virtual void visitActionStatHide(ActionStatHide *action)						{}
+	virtual void visitActionStatShow(ActionStatShow *action)						{}
+	virtual void visitActionEffectBlur(ActionEffectBlur *action)					{}
+	virtual void visitActionEffectDistort(ActionEffectDistort *action)				{}
+	virtual void visitActionEffectGlow(ActionEffectGlow *action)					{}
 
-	virtual void	visitActionSceneryChange			(ActionSceneryChange				*action)	{}
-	virtual void	visitActionSceneryObjectChange		(ActionSceneryObjectChange			*action)	{}
-	virtual void	visitActionSceneryObjectAppearance	(ActionSceneryObjectAppearance		*action)	{}
-	virtual void	visitActionSceneryObjectAnim		(ActionSceneryObjectAnim			*action)	{}
+	virtual void visitActionFilterBlur(ActionFilterBlur *action)					{}
+	virtual void visitActionFilterBrightness(ActionFilterBrightness *action)		{}
+	virtual void visitActionFilterDilation(ActionFilterDilation *action)			{}
+	virtual void visitActionFilterErosion(ActionFilterErosion *action)				{}
+	virtual void visitActionFilterHue(ActionFilterHue *action)						{}
+	virtual void visitActionFilterNegative(ActionFilterNegative *action)			{}
+	virtual void visitActionFilterSaturation(ActionFilterSaturation *action)		{}
 
-	//[optional]
-	virtual void	visitActionStatVisibility			(ActionStatVisibility				*action)	{}
-
-	virtual void	visitActionEffectBlur				(ActionEffectBlur					*action)	{}
-	virtual void	visitActionEffectDistort			(ActionEffectDistort				*action)	{}
-	virtual void	visitActionEffectGlow				(ActionEffectGlow					*action)	{}
-
-	virtual void	visitActionFilterBlur				(ActionFilterBlur					*action)	{}
-	virtual void	visitActionFilterBrightness			(ActionFilterBrightness				*action)	{}
-	virtual void	visitActionFilterDilation			(ActionFilterDilation				*action)	{}
-	virtual void	visitActionFilterErosion			(ActionFilterErosion				*action)	{}
-	virtual void	visitActionFilterHue				(ActionFilterHue					*action)	{}
-	virtual void	visitActionFilterNegative			(ActionFilterNegative				*action)	{}
-	virtual void	visitActionFilterSaturation			(ActionFilterSaturation				*action)	{}
-
-	virtual void	visitActionCharLive2DAnim			(ActionCharLive2DAnim				*action)	{}
+	virtual void visitActionCharLive2DAnim(ActionCharLive2DAnim *action)			{}
 };

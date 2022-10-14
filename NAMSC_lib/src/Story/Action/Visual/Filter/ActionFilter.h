@@ -1,43 +1,33 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Action/Action.h"
+#include "Story/Action/Visual/ActionSceneryObject.h"
 
-//Base class for the rest of the ActionFilters
-class ActionFilter : public Action
+///[optional] Base class for the rest of the ActionFilters
+class ActionFilter : public ActionSceneryObject
 {
 public:
 	ActionFilter() = default;
-	ActionFilter(unsigned sceneID, unsigned eventExecutionOrder, int objectID = -1, double intensivness = 100.0, QString &&label = "") :
-		Action(sceneID, eventExecutionOrder, move(label)), intensivness(intensivness), objectID(objectID) {}
-	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an ActionFilter pointer
-	virtual ~ActionFilter()	= 0;
+	ActionFilter(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, double strength) :
+		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), intensivness(intensivness), strength(strength) {}
+	ActionFilter(const ActionFilter& asset)				= default;
+	ActionFilter& operator=(const ActionFilter& asset)	= default;
 
 protected:
-	//If objectID is set to -1, it will affect the viewPort, otherwise some object in the Scenery
-	int				objectID										= -1;
+	//[optional] List of the ids that the filter will be applied on, empty list means all the parts
+	//QVector<unsigned> objectPartsAffected;
 
-	//If objectID is set to -1, it will affect the viewPort, otherwise some object in the Scenery
-	//empty list means all the parts
-	std::vector<unsigned> objectPartsAffected;
+	///Sets the intensivness of the Filter, defined in percentage
+	///Accepted values: 0.0 - 100.0
+	double	intensivness	= 100.0;
 
-	//Sets the intesivity of the filter in percent
-	//Accepted values: 0.0-100.0
-	double			intensivness									= 100.0;
+	///Strength of the Effect, not all Filters use it. 
+	///Intensivness is a multiplier for it
+	double	strength		= 1.0;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar) override
-	{
-		Action::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> objectID >> intensivness;
-	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const override
-	{
-		Action::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << objectID << intensivness;
-	}
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const override;
 };

@@ -3,59 +3,67 @@
 
 #include "Story/Action/ActionVisitor.h"
 
-//Action is an additional work added to an Event
-class Action
+class Event;
+///Action is an additional work added to an Event
+class Action : public QObject
 {
-	//Good Friends who Visit us (Actions) often :>
+	Q_OBJECT
+	///Good Friends who Visit us (Actions) often :>
 	friend class ActionVisitorChangeID;
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, Action &t);
-	friend QIODevice &operator<<(QIODevice &device, const Action &t);
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, Action&);
+	friend QDataStream& operator<<(QDataStream&, const Action&);
+	///Other friends
+	friend bool operator==(const Action &lhs, const QString &rhs);
 public:
 	Action() = default;
-	Action(unsigned sceneID, unsigned eventExecutionOrder, QString &&label = "") :
-		sceneID(sceneID), eventExecutionOrder(eventExecutionOrder), label(move(label)) {}
-	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
+	Action(Event *parent, unsigned actionID, QString &&label) :
+		parent(parent), actionID(actionID), label(move(label))	{ assignLabel(); }
+	Action(const Action& asset)				= default;
+	Action& operator=(const Action& asset)	= default;
+	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Action() = 0;
 
-	//Execution of an Action
-	virtual void					run						()							= 0;
+	///Execution of an Action
+	virtual void run()											{ ensureAssetsAreLoaded(); }
 
-	//Executes the Action, previously esnuring that every Asset is already loaded
-	void							safeRun					()							{ ensureAssetsAreLoaded(); run(); }
+	///Some actions are designed to update things and should be called frequently until the end of the Event
+	virtual void update()										{}
 
-	//Accept ActionVisitor, which will be run repending on the object's class
-	virtual void					accept					(ActionVisitor* visitor)	= 0;
+	///Accept ActionVisitor, which will be run repending on the object's class
+	virtual void accept(ActionVisitor *visitor)	= 0;
 
 protected:
-	//Needed for serialization, to know the class of an object before the loading performed
-	virtual SerializationID			getType					() const					= 0;
+	///Needed for serialization, to know the class of an object before the loading performed
+	virtual SerializationID getType() const		= 0;
 	
-	virtual void					ensureAssetsAreLoaded	()							{}
+	///Assigns an unique `label`, if it was not assigned by the Editor User
+	///@todo implement this
+	void assignLabel();
 
-	//Label for quicker identification in the Editor
-	QString							label;
+	///Ensures that all Assets have their resources loaded
+	virtual void ensureAssetsAreLoaded()						{}
 
-	//Event execution order position with sceneID identifies the Event precisely and all Actions are contained within Events
-	//TODO: since Actions are contained, do we need to store the IDs at all?
-	unsigned						sceneID,
-									eventExecutionOrder;
+	///Event that contains this Action
+	///Needed to access other Actions, so we can assing an unique label in `assignLabel()`
+	Event	 *parent;
 
-	//ID and position of the Action in the action list
-	unsigned						actionID;
+	///Label for quicker identification in the Editor
+	QString  label;
+
+	///ID and position of the Action in the action list
+	unsigned actionID;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar)
-	{
-		QDataStream dataStream(&ar);
-		dataStream >> label >> sceneID >> eventExecutionOrder;
-	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const
-	{
-		QDataStream dataStream(&ar);
-		dataStream << getType() << label << sceneID << eventExecutionOrder;
-	}
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream);
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const;
 };
 
+Action::~Action() = default;
+
+bool operator==(const Action &lhs, const QString &rhs)
+{
+	return lhs.label == rhs;
+}

@@ -1,38 +1,95 @@
 #pragma once
 #include "Global.h"
 
-//How the interpolation in an animation is performed
-enum class AnimInterpolationMethod
+///Base class for an animation node 
+struct AnimNodeBase
 {
-	Linear,
-	Exponential,
-	Hyperbolic
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream& dataStream, AnimNodeBase& t);
+	friend QDataStream& operator<<(QDataStream& dataStream, const AnimNodeBase& t);
+
+	///Time point in milliseconds since the start of an Event, when the animation will achieve its state
+	int timeStamp;
+
+	///How the interpolation in an animation is performed
+	enum class AnimInterpolationMethod
+	{
+		Linear,
+		Exponential,	//[optional]
+		Hyperbolic		//[optional]
+	} interpolationMethod;
+
+protected:
+	//---SERIALIZATION---
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream& dataStream);
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
-//Base class for an animation node 
-template<class DataType, unsigned dimension>
-struct AnimNode
+///Base class for an animation node 
+template<unsigned dimension>
+struct AnimNodeDouble final : public AnimNodeBase
 {
-	//Time point in seconds since the start of an Event, when the animation will achieve its state
-	double		timestamp;
+	///This state will be reached exactly at [timestamp] time point
+	double state[dimension];
 
-	//This state will be reached exactly at [timestamp] time point
-	DataType	state[dimension];
+private:
+	//---SERIALIZATION---
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream& dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream& dataStream) const override;
 };
 
-//An animation node with a one dimensional state
-template <class DataType>
-using Anim1DNode = AnimNode<DataType, 1>;
+///Base class for an animation node 
+template<unsigned dimension>
+class AnimNodeLongLong final : public AnimNodeBase
+{
+	///Time point in milliseconds since the start of an Event, when the animation will achieve its state
+	int timestamp;
 
-//An animation node with a two dimensional state
-template <class DataType>
-using Anim2DNode = AnimNode<DataType, 2>;
+	///This state will be reached exactly at [timestamp] time point
+	long long state[dimension];
 
-//An animation node with a three dimensional state
-template <class DataType>
-using Anim3DNode = AnimNode<DataType, 3>;
+private:
+	//---SERIALIZATION---
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream& dataStream) override
+	{
+		AnimNodeBase::serializableLoad(dataStream);
+		for (unsigned i = 0; i != dimension; ++i)
+			dataStream >> state[dimension];
+	}
+	///Saving an object to a binary file
+	void serializableSave(QDataStream& dataStream) const override
+	{
+		AnimNodeBase::serializableSave(dataStream);
+		for (unsigned i = 0; i != dimension; ++i)
+			dataStream << state[dimension];
+	}
+};
 
-//An animation node with a four dimensional state
-template <class DataType>
-using Anim4DNode = AnimNode<DataType, 4>;
+///An animation node with a one dimensional `double` state
+using AnimNodeDouble1D = AnimNodeDouble<1>;
 
+///An animation node with a two dimensional `double` state
+using AnimNodeDouble2D = AnimNodeDouble<2>;
+
+///An animation node with a three dimensional `double` state
+using AnimNodeDouble3D = AnimNodeDouble<3>;
+
+///An animation node with a four dimensional `double` state
+using AnimNodeDouble4D = AnimNodeDouble<4>;
+
+///An animation node with a one dimensional `double` state
+using AnimNodeLongLong1D = AnimNodeLongLong<1>;
+
+///An animation node with a two dimensional `double` state
+using AnimNodeLongLong2D = AnimNodeLongLong<2>;
+
+///An animation node with a three dimensional `double` state
+using AnimNodeLongLong3D = AnimNodeLongLong<3>;
+
+///An animation node with a four dimensional `double` state
+using AnimNodeLongLong4D = AnimNodeLongLong<4>;

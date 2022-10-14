@@ -1,53 +1,41 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Action/Action.h"
+#include "Story/Action/Stat/ActionStat.h"
 
-#include "Story/Data/Stat/Stat.h"
-#include "Story/Data/Stat/StatManager.h"
-
-//Assigns a new value to a Stat
-class ActionStatChange final : public Action
+///Assigns a new value to a Stat
+class ActionStatChange final : public ActionStat
 {
 public:
 	ActionStatChange() = default;
-	ActionStatChange(unsigned sceneID, unsigned eventExecutionOrder, QString &&statName, QString &&expression, QString &&label = "") :
-		Action(sceneID, eventExecutionOrder, move(label)), statName(move(statName)), expression(move(expression)) {}
+	ActionStatChange(Event *parent, unsigned actionID, QString &&statName, QString &&expression, QString &&label) :
+		ActionStat(parent, actionID, move(statName), move(label)), expression(move(expression)) {}
+	ActionStatChange(const ActionStatChange& asset)				= default;
+	ActionStatChange& operator=(const ActionStatChange& asset)	= default;
 
-	//Executes Action's logic
-	void				run					() override;
+	///Executes Action's logic
+	void run() override;
 
-	//Accepts ActionVisitor
-	void				accept				(ActionVisitor* visitor) override	{ visitor->visitActionStatChange(this); }
+	///Accepts ActionVisitor
+	void accept(ActionVisitor* visitor) override	{ visitor->visitActionStatChange(this); }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID		getType				() const override					{ return SerializationID::ActionStatChange; }
+signals:
+	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	void onRun(Stat	*stat, QString expression);
 
-	//Checks if there are no errors in [statName] or [expression]
-	void				checkForErrors		();
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override		{ return SerializationID::ActionStatChange; }
 
-	//Name of the Stat that has its value changed
-	QString				statName;
-	//TODO: load Stat
-	Stat				*stat;
+	///Checks if there are no errors in [statName] or [expression]
+	void checkForErrors();
 
-	//New value of the Stat is calculated from this expression
-	QString				expression;
+	///New value of the Stat is calculated from this expression
+	QString	expression;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
-	{
-		Action::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> statName >> expression;
-	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
-	{
-		Action::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << statName << expression;
-	}
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override;
 };

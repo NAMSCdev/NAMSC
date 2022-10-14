@@ -3,41 +3,34 @@
 
 #include "Story/Action/Visual/Filter/ActionFilter.h"
 
-//[optional] Creates a Dilation Filter at a SceneryObject or the viewport
+///[optional] Creates a Dilation Filter at a SceneryObject or the viewport
 class ActionFilterDilation final : public ActionFilter
 {
 public:
 	ActionFilterDilation() = default;
-	ActionFilterDilation(unsigned sceneID, unsigned eventExecutionOrder, unsigned pixels = 1, double intensivness = 100.0, 
-		int objectID = -1, QString &&label = "") :
-			ActionFilter(sceneID, eventExecutionOrder, intensivness, objectID, move(label)), pixels(pixels) {}
+	ActionFilterDilation(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
+						 double intensivness, double strength) :
+		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
+	ActionFilterDilation(const ActionFilterDilation& asset)				= default;
+	ActionFilterDilation& operator=(const ActionFilterDilation& asset)	= default;
 	
-	//Executes Action's logic
-	void			run		() override;
+	///Executes Action's logic
+	void run() override;
 
-	//Accepts ActionVisitor
-	void			accept	(ActionVisitor* visitor) override	{ visitor->visitActionFilterDilation(this); }
+	///Accepts ActionVisitor
+	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterDilation(this); }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType	() const override					{ return SerializationID::ActionFilterDilation; }
+signals:
+	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	void onRun(SceneryObject *sceneryObject, QPoint pos, QSize size, double intensivness, unsigned strength);
 
-	//Strength of Dilation
-	unsigned		pixels										= 1;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override		{ return SerializationID::ActionFilterDilation; }
 	
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
-	{
-		ActionFilter::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> pixels;
-	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
-	{
-		ActionFilter::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << pixels;
-	}
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override;
 };

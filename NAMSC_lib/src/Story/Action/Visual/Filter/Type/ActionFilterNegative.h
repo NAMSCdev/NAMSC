@@ -3,38 +3,35 @@
 
 #include "Story/Action/Visual/Filter/ActionFilter.h"
 
-//[optional] Creates a Negation Filter at a SceneryObject or the viewport
-//"Flips" colors
+///[optional] Creates a Negation Filter at a SceneryObject or the viewport
+///"Flips" colors
 class ActionFilterNegative final : public ActionFilter
 {
 public:
 	ActionFilterNegative() = default;
-	ActionFilterNegative(unsigned sceneID, unsigned eventExecutionOrder, double intensivness = 100.0, int objectID = -1, QString &&label = "") :
-			ActionFilter(sceneID, eventExecutionOrder, intensivness, objectID, move(label)) {}
+	ActionFilterNegative(Event *parent, unsigned actionID, double intensivness, 
+						 double strength, QString &&sceneryObjectName, QString &&label) :
+		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
+	ActionFilterNegative(const ActionFilterNegative& asset)				= default;
+	ActionFilterNegative& operator=(const ActionFilterNegative& asset)	= default;
 
-	//Executes Action's logic
-	void			run		() override;
+	///Executes Action's logic
+	void run() override;
 
-	//Accepts ActionVisitor
-	void			accept	(ActionVisitor* visitor) override	{ visitor->visitActionFilterNegative(this); }
+	///Accepts ActionVisitor
+	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterNegative(this); }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType	() const override					{ return SerializationID::ActionFilterNegative; }
+signals:
+	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	void onRun(SceneryObject *sceneryObject, QPoint pos, QSize size, double intensivness, unsigned strength);
+
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override		{ return SerializationID::ActionFilterNegative; }
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
-	{
-		ActionFilter::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream;
-	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
-	{
-		ActionFilter::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream;
-	}
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override;
 };

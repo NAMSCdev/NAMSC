@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+	<ImportGroup Label="PropertySheets">
+		<Import Condition="'$(conan_catch2_props_imported)' != 'True'" Project="conan_catch2.props"/>
+	</ImportGroup>
+</Project>

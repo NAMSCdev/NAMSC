@@ -3,42 +3,38 @@
 
 #include "Story/Action/Visual/Filter/ActionFilter.h"
 
-//[optional] Creates a Hue Filter at a SceneryObject or the viewport
+///[optional] Creates a Hue Filter at a SceneryObject or the viewport
 class ActionFilterHue final : public ActionFilter
 {
 public:
 	ActionFilterHue() = default;
-	ActionFilterHue(unsigned sceneID, unsigned eventExecutionOrder, int hueShift = 0, double intensivness = 100.0, int objectID = -1,
-		QString &&label = "") :
-			ActionFilter(sceneID, eventExecutionOrder, intensivness, objectID, move(label)), hueShift(hueShift) {}
+	ActionFilterHue(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName,
+					double intensivness, double strength, int hueShift) :
+		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength), hueShift(hueShift) {}
+	ActionFilterHue(const ActionFilterHue& asset)				= default;
+	ActionFilterHue& operator=(const ActionFilterHue& asset)	= default;
 
-	//Executes Action's logic
-	void			run		() override;
+	///Executes Action's logic
+	void run() override;
 
-	//Accepts ActionVisitor
-	void			accept	(ActionVisitor* visitor) override	{ visitor->visitActionFilterHue(this); }
+	///Accepts ActionVisitor
+	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterHue(this); }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType	() const override					{ return SerializationID::ActionFilterHue; }
+signals:
+	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	void onRun(SceneryObject *sceneryObject, QPoint pos, QSize size, double intensivness, unsigned strength, int hueShift);
 
-	//Adds Hue to every pixel of the affected object/vieport
-	//Accepted values: -360 - 360
-	int				hueShift									= 0;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override		{ return SerializationID::ActionFilterHue; }
+
+	///Adds Hue to every pixel of the affected object/vieport
+	///Accepted values: -359 - 359
+	int	hueShift = 0;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
-	{
-		ActionFilter::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> hueShift;
-	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
-	{
-		ActionFilter::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << hueShift;
-	}
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override;
 };

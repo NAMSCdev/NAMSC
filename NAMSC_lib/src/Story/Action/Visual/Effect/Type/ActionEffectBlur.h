@@ -3,50 +3,43 @@
 
 #include "Story/Action/Visual/Effect/ActionEffect.h"
 
-//[optional] Creates a Blur Effect at some point in a SceneryObject or the viewport
+///[optional] Creates a Blur Effect at some point in a SceneryObject or the viewport
 class ActionEffectBlur final : public ActionEffect
 {
 public:
-	//Algorithm used for blurring
+	///Algorithm used for blurring
 	enum class BlurType
 	{
 		Gaussian
 	};
 
 	ActionEffectBlur() = default;
-	ActionEffectBlur(unsigned sceneID, unsigned eventExecutionOrder, BlurType blurType = BlurType::Gaussian, 
-		double radius = 1.0, double x = 0.0, double y = 0.0, int objectID = -1, QString &&label = "") :
-			ActionEffect(sceneID, eventExecutionOrder, x, y, objectID, move(label)), blurType(blurType)  {}
+	ActionEffectBlur(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+					 QSize size, unsigned strength, BlurType blurType) :
+		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength), blurType(blurType) {}
+	ActionEffectBlur(const ActionEffectBlur& asset)				= default;
+	ActionEffectBlur& operator=(const ActionEffectBlur& asset)	= default;
 
-	//Executes Action's logic
-	void			run		() override;
+	///Executes Action's logic
+	void run() override;
 
-	//Accepts ActionVisitor
-	void			accept	(ActionVisitor* visitor) override	{ visitor->visitActionEffectBlur(this); }
+	///Accepts ActionVisitor
+	void accept(ActionVisitor* visitor) override	{ visitor->visitActionEffectBlur(this); }
 
-protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType	() const override					{ return SerializationID::ActionEffectBlur; }
+signals:
+	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	void onRun(SceneryObject *sceneryObject, EffectShape effectShape, QPoint pos, QSize size, unsigned strength, BlurType blurType);
 
-	//Algorithm used for blurring
-	BlurType		blurType									= BlurType::Gaussian;
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override		{ return SerializationID::ActionEffectBlur; }
 
-	//Radius of radius based blurs
-	double			radius										= 1.0;
+	///Algorithm used for blurring
+	BlurType blurType = BlurType::Gaussian;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar) override
-	{
-		ActionEffect::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> blurType >> radius;
-	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const override
-	{
-		ActionEffect::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << blurType << radius;
-	}
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const override;
 };

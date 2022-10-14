@@ -103,6 +103,11 @@
     <None Include="NAMSC_engine.ico" />
     <ResourceCompile Include="NAMSC_engine.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NAMSC_lib\NAMSC_lib.vcxproj">
+      <Project>{2b6fc3b0-7489-46b3-b077-b4f88dda2d52}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

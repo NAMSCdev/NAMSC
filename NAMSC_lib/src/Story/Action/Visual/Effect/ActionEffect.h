@@ -1,54 +1,42 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Action/Action.h"
+#include "Story/Action/Visual/ActionSceneryObject.h"
 
-//[optional] Base class for the rest of the ActionEffects
-class ActionEffect : public Action
+///[optional] Base class for the rest of the ActionEffects
+class ActionEffect : public ActionSceneryObject
 {
 public:
+	enum class EffectShape
+	{
+		Ellipse,
+		Rectangle
+	};
+
 	ActionEffect() = default;
-	ActionEffect(unsigned sceneID, unsigned eventExecutionOrder, double x, double y, int objectID = -1, QString &&label = "") :
-		Action(sceneID, eventExecutionOrder, move(label)), pos(x, y), objectID(objectID) {}
-
-	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
-	virtual ~ActionEffect() override = 0;
-
-	//Executes Action's logic
-	void					run() override								= 0;
-
-	//Accepts ActionVisitor
-	void					accept(ActionVisitor* visitor) override		= 0;
+	ActionEffect(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+				 QSize size, unsigned strength) :
+		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), effectShape(effectShape), pos(pos), 
+		size(size), strength(strength) {}
+	ActionEffect(const ActionEffect& asset)				= default;
+	ActionEffect& operator=(const ActionEffect& asset)	= default;
 
 protected:
-	//Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID			getType() const override					= 0;
+	///Determines the shape of the effect: area that will affect an Image
+	EffectShape effectShape;
 
-	//Specifies where the effect is placed in local position (in relation to the object's origin, not the vieport's, unless the affected object is the viewport itself)
-	struct EffectPos
-	{
-		EffectPos(double x, double y) :
-			x(x), y(y) {};
-		double	x = 0,
-				y = 0;
-	}						pos;
+	///Specifies where the effect is placed in local position (in relation to the object's origin, not the vieport's, unless the affected object is the viewport itself)
+	QPoint		pos;
 
-	//If objectID is set to -1, it will affect the viewPort, otherwise some object in the Scenery
-	int						objectID									= -1;
+	///Semi-major and semi-minor axes of an Ellipse or size of a Rectangle
+	QSize		size;	
+
+	///Strength of the Effect
+	double		strength	= 1.0;
 
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	virtual void serializableLoad(QIODevice &ar) override
-	{
-		Action::serializableLoad(ar);
-		QDataStream dataStream(&ar);
-		dataStream >> pos.x >> pos.y >> objectID;
-	}
-	//Saving an object to a binary file
-	virtual void serializableSave(QIODevice &ar) const override
-	{
-		Action::serializableSave(ar);
-		QDataStream dataStream(&ar);
-		dataStream << pos.x << pos.y << objectID;
-	}
+	///Loading an object from a binary file
+	virtual void serializableLoad(QDataStream &dataStream) override;
+	///Saving an object to a binary file
+	virtual void serializableSave(QDataStream &dataStream) const override;
 };

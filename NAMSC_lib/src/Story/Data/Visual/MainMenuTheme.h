@@ -1,26 +1,22 @@
 #pragma once
-#include "Global.h"
 
-//Adjustable look options for Main Menu
+///[optional?] Adjustable look options for Main Menu
 class MainMenuTheme
 {
-	//Friends for serialization
-	friend QIODevice &operator>>(QIODevice &device, MainMenuTheme &t);
-	friend QIODevice &operator<<(QIODevice &device, const MainMenuTheme &t);
+	///Friends for serialization
+	friend QDataStream& operator>>(QDataStream&, MainMenuTheme&);
+	friend QDataStream& operator<<(QDataStream&, const MainMenuTheme&);
 public:
 	MainMenuTheme() = default;
 
 protected:
 	//---SERIALIZATION---
-	//Loading an object from a binary file
-	void serializableLoad(QIODevice &ar)
+	///Loading an object from a binary file
+	void serializableLoad(QDataStream &dataStream)
 	{
-		QDataStream dataStream(&ar);
-		dataStream;
 	}
-	//Saving an object to a binary file
-	void serializableSave(QIODevice &ar) const
+	///Saving an object to a binary file
+	void serializableSave(QDataStream &dataStream) const
 	{
-		QDataStream dataStream(&ar);
 	}
 };
