@@ -38,17 +38,17 @@ private:
 	Translation content;
 	
 	///Name to the Voice (visual formatting and some additionals) that will be used for this text
-	QString		voiceName;
-	Voice		*voice;
+	QString	voiceName;
+	Voice *voice;
 
 	///Characters per second
-	unsigned	cps;
+	unsigned cps;
 	
 	///Whether the user mouseButton or nextButton is needed to end the Sentence
-	bool		bEndWithInput;
+	bool bEndWithInput;
 
 	///If the `bEndWithInput` is set to false, this is the time the Engine will wait before moving to a new Sentence
-	double		waitBeforeContinueTime;
+	double waitBeforeContinueTime;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

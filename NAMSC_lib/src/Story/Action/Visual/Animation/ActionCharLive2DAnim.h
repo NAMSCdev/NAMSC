@@ -18,8 +18,22 @@ public:
 	{	
 		//animAsset = ??
 	}
-	ActionCharLive2DAnim(const ActionCharLive2DAnim& asset)				= default;
-	ActionCharLive2DAnim& operator=(const ActionCharLive2DAnim& asset)	= default;
+	ActionCharLive2DAnim(const ActionCharLive2DAnim& obj) {
+		*this = obj;
+	}
+	ActionCharLive2DAnim& operator=(const ActionCharLive2DAnim& obj) {
+		if (this == &obj) return *this;
+
+		Action::operator=(obj);
+		characterName = obj.characterName;
+		character = obj.character;
+		animAssetName = obj.animAssetName;
+		animAsset = obj.animAsset;
+		bSyncWithSpeech = obj.bSyncWithSpeech;
+		duration = obj.duration;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;

@@ -16,11 +16,21 @@ public:
 	{ 
 		sceneryObject = Story::getInstance().findSceneryObject(this->sceneryObjectName); 
 	}
-	ActionSceneryObject(const ActionSceneryObject& asset)				= default;
-	ActionSceneryObject& operator=(const ActionSceneryObject& asset)	= default;
+	ActionSceneryObject(const ActionSceneryObject& obj) {
+		*this = obj;
+	}
+	ActionSceneryObject& operator=(const ActionSceneryObject& obj) {
+		if (this == &obj) return *this;
+
+		Action::operator=(obj);
+		sceneryObjectName = obj.sceneryObjectName;
+		sceneryObject = obj.sceneryObject;
+
+		return *this;
+	}
 
 	///Ensures Assets are loaded and if not - loads it
-	virtual void ensureAssetsAreLoaded() override			{ sceneryObject->ensureAssetsAreLoaded(); }
+	virtual void ensureAssetsAreLoaded() override { sceneryObject->ensureAssetsAreLoaded(); }
 
 protected:
 	///Name to the Scenery Object, so it can be loaded (if needed)

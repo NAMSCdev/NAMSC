@@ -12,7 +12,7 @@ class Stat
 	friend class StoryState;
 	///Other friends
 	friend bool operator==(const Stat &lhs, const QString &rhs);
-	friend bool operator<(const Stat &lhs,	const Stat &rhs);
+	friend bool operator<(const Stat &lhs, const Stat &rhs);
 public:
 	///[optional] If there should be displayed some sort of notification once this Stat changes
 	enum class ShowNotification
@@ -36,16 +36,16 @@ public:
 
 protected:	
 	///Every Stat has two names, [displayName] is for the name shown in a Stat Screen and [name] is the one 
-	QString	 name, displayName;	
+	QString name, displayName;	
 
 	///[optional] Whether this Stat is shown in Stat Screen
-	bool	 bShow							= true;
+	bool bShow = true;
 
 	///[optional] Priority is used to order Stats when they are being displayed
-	unsigned priority						= 0;
+	unsigned priority = 0;
 
 	///[optional] If there should be displayed some sort of notification once this Stat changes
-	ShowNotification showNotification		= ShowNotification::Default;
+	ShowNotification showNotification = ShowNotification::Default;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

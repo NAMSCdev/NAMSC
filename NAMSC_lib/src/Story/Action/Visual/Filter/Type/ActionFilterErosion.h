@@ -11,14 +11,22 @@ public:
 	ActionFilterErosion(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
 						double intensivness, double strength) :
 		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterErosion(const ActionFilterErosion& asset)				= default;
-	ActionFilterErosion& operator=(const ActionFilterErosion& asset)	= default;
+	ActionFilterErosion(const ActionFilterErosion& obj) {
+		*this = obj;
+	}
+	ActionFilterErosion& operator=(const ActionFilterErosion& obj) {
+		if (this == &obj) return *this;
+
+		ActionFilter::operator=(obj);
+
+		return *this;
+	}
 	
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterErosion(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionFilterErosion(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -26,7 +34,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionFilterErosion; }
+	SerializationID	getType() const override { return SerializationID::ActionFilterErosion; }
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

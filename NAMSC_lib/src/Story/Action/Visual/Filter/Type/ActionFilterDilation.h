@@ -11,8 +11,16 @@ public:
 	ActionFilterDilation(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
 						 double intensivness, double strength) :
 		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterDilation(const ActionFilterDilation& asset)				= default;
-	ActionFilterDilation& operator=(const ActionFilterDilation& asset)	= default;
+	ActionFilterDilation(const ActionFilterDilation& obj) {
+		*this = obj;
+	}
+	ActionFilterDilation& operator=(const ActionFilterDilation& obj) {
+		if (this == &obj) return *this;
+
+		ActionFilter::operator=(obj);
+
+		return *this;
+	}
 	
 	///Executes Action's logic
 	void run() override;

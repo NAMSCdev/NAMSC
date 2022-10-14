@@ -11,8 +11,16 @@ public:
 	ActionSceneryObjectHide(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, AppearEffectType appearEffectType, 
 							double duration, bool bAppear, bool bPerserveAnimation) :
 		ActionSceneryObjectShow(parent, actionID, move(sceneryObjectName), move(label), appearEffectType, duration, bAppear, bPerserveAnimation) {}
-	ActionSceneryObjectHide(const ActionSceneryObjectHide& asset)				= default;
-	ActionSceneryObjectHide& operator=(const ActionSceneryObjectHide& asset)	= default;
+	ActionSceneryObjectHide(const ActionSceneryObjectHide& obj) {
+		*this = obj;
+	}
+	ActionSceneryObjectHide& operator=(const ActionSceneryObjectHide& obj) {
+		if (this == &obj) return *this;
+
+		ActionSceneryObjectShow::operator=(obj);
+		
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
@@ -22,5 +30,5 @@ public:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override	 { return SerializationID::ActionSceneryObjectHide; }
+	SerializationID	getType() const override { return SerializationID::ActionSceneryObjectHide; }
 };

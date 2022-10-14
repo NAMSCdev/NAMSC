@@ -12,14 +12,24 @@ public:
 							double percentBrightness, double intensivness, double strength) :
 		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength), 
 		addedBrightness(addedBrightness), percentBrightness(percentBrightness)  {}
-	ActionFilterBrightness(const ActionFilterBrightness& asset)				= default;
-	ActionFilterBrightness& operator=(const ActionFilterBrightness& asset)	= default;
+	ActionFilterBrightness(const ActionFilterBrightness& obj) {
+		*this = obj;
+	}
+	ActionFilterBrightness& operator=(const ActionFilterBrightness& obj) {
+		if (this == &obj) return *this;
+
+		ActionFilter::operator=(obj);
+		addedBrightness = obj.addedBrightness;
+		percentBrightness = obj.percentBrightness;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterBrightness(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionFilterBrightness(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -27,15 +37,15 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionFilterBrightness; }
+	SerializationID	getType() const override { return SerializationID::ActionFilterBrightness; }
 
 	///Adds Brightness to every pixel of the affected object/vieport
 	///Accepted values: 0.0 - 1.0
-	double	addedBrightness		= 0.0;
+	double	addedBrightness	= 0.0;
 
 	///Modifies percent value of Brightness in every pixel of the affected object/vieport
 	///Accepted values: 0.0 - 100.0
-	double	percentBrightness	= 100.0;
+	double	percentBrightness = 100.0;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

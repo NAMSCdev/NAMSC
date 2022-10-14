@@ -10,9 +10,9 @@ class Asset
 	friend bool operator==(const Asset &lhs, const QString &rhs);
 public:
 	Asset() = default;
-	Asset(QString&& name, bool bExternal = false, QString &&location = "", unsigned pos = 0) :
+	Asset(QString&& name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
 		name(move(name)), location(move(location)), bExternal(bExternal), pos(pos) {}
-	Asset(const Asset& asset)				{ *this = asset; }
+	Asset(const Asset& asset) { *this = asset; }
 	Asset& operator=(const Asset& asset)	
 	{
 		name = asset.name; location = asset.location; bExternal = asset.bExternal; pos = asset.pos;

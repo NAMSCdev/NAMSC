@@ -123,6 +123,9 @@
     <Filter Include="Source Files\Story\Data\Visual">
       <UniqueIdentifier>{36f259f0-b216-4cd6-a461-f68b00c9141d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Story\Data\Audio">
+      <UniqueIdentifier>{73ef85df-b01b-4e5f-861d-65a15492d6ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Global.h">
@@ -343,6 +346,15 @@
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\Asset.h">
       <Filter>Header Files\Story\Data\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Audio\MusicPlaylist.h">
+      <Filter>Header Files\Story\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Audio\Sound.h">
+      <Filter>Header Files\Story\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Asset\Audio\AudioSettings.h">
+      <Filter>Header Files\Story\Data\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

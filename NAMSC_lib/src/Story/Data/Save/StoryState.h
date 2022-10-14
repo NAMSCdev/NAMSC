@@ -43,10 +43,10 @@ public:
              eventID  = 0;
 
     ///Time of the save being made
-    QDate    date;
+    QDate date;
 
     ///A Screenshot of the game just before it was saved
-    QImage   image;
+    QImage image;
 
 private:
     //---SERIALIZATION---

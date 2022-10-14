@@ -10,8 +10,16 @@ public:
 	ActionStatHide() = default;
 	ActionStatHide(Event *parent, unsigned actionID, QString &&statName, QString &&label) :
 		ActionStat(parent, actionID, move(statName), move(label)) {}
-	ActionStatHide(const ActionStatHide& asset)				= default;
-	ActionStatHide& operator=(const ActionStatHide& asset)	= default;
+	ActionStatHide(const ActionStatHide& obj) {
+		*this = obj;
+	}
+	ActionStatHide& operator=(const ActionStatHide& obj) {
+		if (this == &obj) return *this;
+
+		ActionStat::operator=(obj);
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;

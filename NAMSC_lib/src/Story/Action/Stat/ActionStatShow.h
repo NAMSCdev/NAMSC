@@ -10,8 +10,16 @@ public:
 	ActionStatShow() = default;
 	ActionStatShow(Event *parent, unsigned actionID, QString &&statName, QString &&label) :
 		ActionStat(parent, actionID, move(statName), move(label)) {}
-	ActionStatShow(const ActionStatShow& asset)				= default;
-	ActionStatShow& operator=(const ActionStatShow& asset)	= default;
+	ActionStatShow(const ActionStatShow& obj) {
+		*this = obj;
+	}
+	ActionStatShow& operator=(const ActionStatShow& obj) {
+		if (this == &obj) return *this;
+
+		ActionStat::operator=(obj);
+		
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;

@@ -133,6 +133,9 @@
     <ClInclude Include="src\Story\Action\Visual\Filter\Type\ActionFilterSaturation.h" />
     <ClInclude Include="src\Story\Data\Asset\Asset.h" />
     <ClInclude Include="src\Story\Data\Asset\AssetManager.h" />
+    <ClInclude Include="src\Story\Data\Asset\Audio\AudioSettings.h" />
+    <ClInclude Include="src\Story\Data\Asset\Audio\MusicPlaylist.h" />
+    <ClInclude Include="src\Story\Data\Asset\Audio\Sound.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\AnimAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\FontAsset.h" />
     <ClInclude Include="src\Story\Data\Asset\Type\ImageAsset.h" />

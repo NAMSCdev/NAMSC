@@ -11,14 +11,22 @@ public:
 	ActionEffectDistort(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 						QSize size, unsigned strength) :
 		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
-	ActionEffectDistort(const ActionEffectDistort& asset)				= default;
-	ActionEffectDistort& operator=(const ActionEffectDistort& asset)	= default;
+	ActionEffectDistort(const ActionEffectDistort& obj) {
+		*this = obj;
+	}
+	ActionEffectDistort& operator=(const ActionEffectDistort& obj) {
+		if (this == &obj) return *this;
+
+		ActionEffect::operator=(obj);
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionEffectDistort(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionEffectDistort(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -26,7 +34,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionEffectDistort; }
+	SerializationID	getType() const override { return SerializationID::ActionEffectDistort; }
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

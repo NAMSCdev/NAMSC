@@ -11,8 +11,8 @@ class ActionChangeMusic final : public ActionAudio
 {
 public:
 	ActionChangeMusic() = default;
-	ActionChangeMusic(	Event *parent, unsigned actionID, QVector<QString> &&musicAssetsNames, double volume, double stereo,
-						bool bLoop, bool bRandomize, bool bExclusive, QString &&label) :
+	ActionChangeMusic(Event *parent, unsigned actionID, QVector<QString> &&musicAssetsNames, double volume, double stereo,
+					 bool bLoop, bool bRandomize, bool bExclusive, QString &&label) :
 		ActionAudio(parent, actionID, volume, stereo, (bLoop ? -1 : 1), move(label)), musicAssetsNames(move(musicAssetsNames)), 
 		bRandomize(bRandomize), bExclusive(bExclusive)
 	{ 
@@ -23,8 +23,20 @@ public:
 			musicAssets.push_back(asset);
 		}
 	}
-	ActionChangeMusic(const ActionChangeMusic& asset)				= default;
-	ActionChangeMusic& operator=(const ActionChangeMusic& asset)	= default;
+	ActionChangeMusic(const ActionChangeMusic& obj) {
+		*this = obj;
+	}
+	ActionChangeMusic& operator=(const ActionChangeMusic& obj) {
+		if (this == &obj) return *this;
+
+		ActionAudio::operator=(obj);
+		musicAssetsNames = obj.musicAssetsNames;
+		musicAssets = obj.musicAssets;
+		bRandomize = obj.bRandomize;
+		bExclusive = obj.bExclusive;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
@@ -38,7 +50,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override	{ return SerializationID::ActionChangeMusic; }
+	SerializationID	getType() const override { return SerializationID::ActionChangeMusic; }
 
 	///Ensures Assets are loaded and if not - loads them
 	void ensureAssetsAreLoaded() override		
@@ -49,7 +61,7 @@ private:
 	}
 
 	///Names of the MusicAssets, so they can be loaded (if needed) and played
-	QVector<QString>	musicAssetsNames;
+	QVector<QString> musicAssetsNames;
 	///MusicAssets to be played
 	QVector<MusicAsset*>musicAssets;
 

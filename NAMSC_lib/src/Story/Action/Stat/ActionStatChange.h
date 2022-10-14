@@ -10,8 +10,17 @@ public:
 	ActionStatChange() = default;
 	ActionStatChange(Event *parent, unsigned actionID, QString &&statName, QString &&expression, QString &&label) :
 		ActionStat(parent, actionID, move(statName), move(label)), expression(move(expression)) {}
-	ActionStatChange(const ActionStatChange& asset)				= default;
-	ActionStatChange& operator=(const ActionStatChange& asset)	= default;
+	ActionStatChange(const ActionStatChange& obj) {
+		*this = obj;
+	}
+	ActionStatChange& operator=(const ActionStatChange& obj) {
+		if (this == &obj) return *this;
+
+		ActionStat::operator=(obj);
+		expression = obj.expression;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;

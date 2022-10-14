@@ -11,8 +11,16 @@ public:
 	ActionEffectGlow(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 					 QSize size, unsigned strength) :
 		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
-	ActionEffectGlow(const ActionEffectGlow& asset)				= default;
-	ActionEffectGlow& operator=(const ActionEffectGlow& asset)	= default;
+	ActionEffectGlow(const ActionEffectGlow& obj) {
+		*this = obj;
+	}
+	ActionEffectGlow& operator=(const ActionEffectGlow& obj) {
+		if (this == &obj) return *this;
+
+		ActionEffect::operator=(obj);
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
@@ -26,7 +34,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override	 { return SerializationID::ActionEffectGlow; }
+	SerializationID	getType() const override { return SerializationID::ActionEffectGlow; }
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

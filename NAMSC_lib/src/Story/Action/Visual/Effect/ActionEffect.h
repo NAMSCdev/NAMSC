@@ -18,8 +18,20 @@ public:
 				 QSize size, unsigned strength) :
 		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), effectShape(effectShape), pos(pos), 
 		size(size), strength(strength) {}
-	ActionEffect(const ActionEffect& asset)				= default;
-	ActionEffect& operator=(const ActionEffect& asset)	= default;
+	ActionEffect(const ActionEffect& obj) {
+		*this = obj;
+	}
+	ActionEffect& operator=(const ActionEffect& obj) {
+		if (this == &obj) return *this;
+
+		ActionSceneryObject::operator=(obj);
+		effectShape = obj.effectShape;
+		pos = obj.pos;
+		size = obj.size;
+		strength = obj.strength;
+
+		return *this;
+	}
 
 protected:
 	///Determines the shape of the effect: area that will affect an Image

@@ -8,10 +8,19 @@ class TextAsset final : public Asset
 {
 public:
 	TextAsset() = default;
-	TextAsset(QString &&name, QString &&location, unsigned pos = 0) : 
-		Asset(move(name), move(location), pos)	{}
-	TextAsset(const TextAsset& asset)			{ *this = asset; }
-	TextAsset &operator=(const TextAsset &asset){ Asset::operator=(asset); }
+	TextAsset(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
+		Asset(move(name), pos, bExternal, move(location)) { }
+	TextAsset(const TextAsset& obj) { 
+		*this = obj;
+	}
+	TextAsset &operator=(const TextAsset &obj) {
+		if (this == &obj) return *this;
+
+		Asset::operator=(obj);
+		str = nullptr;
+		
+		return *this;
+	}
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
 	void load() override		
@@ -34,15 +43,15 @@ public:
 	}
 
 	///Release resources allocated for this asset
-	void unload() override						{ str.reset(); }
+	void unload() override { str.reset(); }
 
 	///Returns a pointer to the QImage object that this Asset holds
-	QString*		getText()					{ return str.get(); }
+	QString* getText() { return str.get(); }
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override	{ return SerializationID::TextAsset; }
+	SerializationID	getType() const override { return SerializationID::TextAsset; }
 
 	///A smart pointer to the actual data
-	uPtr<QString>	str;
+	uPtr<QString> str;
 };

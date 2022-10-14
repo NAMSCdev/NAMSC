@@ -16,8 +16,18 @@ public:
 	{
 		imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
 	}
-	ActionSceneryObjectChange(const ActionSceneryObjectChange& asset) = default;
-	ActionSceneryObjectChange& operator=(const ActionSceneryObjectChange& asset) = default;
+	ActionSceneryObjectChange(const ActionSceneryObjectChange& obj) {
+		*this = obj;
+	}
+	ActionSceneryObjectChange& operator=(const ActionSceneryObjectChange& obj) {
+		if (this == &obj) return *this;
+
+		ActionSceneryObject::operator=(obj);
+		imageAssetName = obj.imageAssetName;
+		imageAsset = obj.imageAsset;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
@@ -43,7 +53,7 @@ private:
 	//QVector<QPair<unsigned, QString>>	sceneryObjectParts;
 
 	///Name to the ImageAsset that will replace the old Image in the affected SceneryObject
-	QString		imageAssetName;
+	QString imageAssetName;
 	///Image that will replace the old Image in the affected SceneryObject
 	ImageAsset* imageAsset;
 

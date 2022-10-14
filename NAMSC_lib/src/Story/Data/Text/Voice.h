@@ -22,50 +22,66 @@ public:
 
 	Voice() = default;
 	Voice(QString &&fontAssetName, QString &&insertionSoundAssetName, unsigned fontSize, bool bold, bool italic, 
-		  bool underscore, unsigned short color[4], Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None) : 
+		  bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None) : 
 		fontAssetName(move(fontAssetName)), insertionSoundAssetName(move(insertionSoundAssetName)), fontSize(fontSize), bold(bold), italic(italic),
 		underscore(underscore), alignment(alignment), lipSync(lipSync)
 	{
-		this->color[0] = color[0];
-		this->color[1] = color[1];
-		this->color[2] = color[2];
-		this->color[3] = color[3];
+		this->color = color;
 		fontAsset = AssetManager::getInstance().findFontAsset(this->fontAssetName);
 		insertionSoundAsset = AssetManager::getInstance().findSoundAsset(this->insertionSoundAssetName);
 	}
-	Voice(const Voice& asset)						{ *this = asset; }
-	Voice& operator=(const Voice& asset)			= default;
+	Voice(const Voice& obj) {
+		*this = obj;
+	}
+	Voice& operator=(const Voice& obj) {
+		if (this == &obj) return *this;
+
+		fontAssetName = obj.fontAssetName;
+		fontAsset = obj.fontAsset;
+		insertionSoundAssetName = obj.insertionSoundAssetName;
+		insertionSoundAsset = obj.insertionSoundAsset;
+		fontSize = obj.fontSize;
+		bold = obj.bold;
+		italic = obj.italic;
+		underscore = obj.underscore;
+		cpsMultiplier = obj.cpsMultiplier;
+		color = obj.color;
+		alignment = obj.alignment;
+		lipSync = obj.lipSync;
+
+		return *this;
+	}
 
 private:
 	///Name to the Font used to display the text spoken by this Voice
-	QString		fontAssetName;
+	QString	fontAssetName;
 	///Font used to display the text spoken by this Voice
-	FontAsset	*fontAsset;
+	FontAsset *fontAsset;
 
 	///Name to the Font used to display the text spoken by this Voice
-	QString		insertionSoundAssetName;
+	QString	insertionSoundAssetName;
 	///Font used to display the text spoken by this Voice
 	SoundAsset *insertionSoundAsset;
 
 	///Font size used to display the text spoken by this Voice
-	unsigned	fontSize;
+	unsigned fontSize;
 
 	///Wraps rich text with a <b> tag, bolding it
-	bool	 bold			= false;
+	bool bold = false;
 
 	///Wraps rich text with a <i> tag, italizing it
-	bool	italic			= false;	
+	bool italic	= false;	
 
 	///Wraps rich text with a <u> tag, underscoring it
-	bool	underscore		= false;
+	bool underscore	= false;
 
 	///Multiplies cps value and rounds it
 	///Possible values:
 	///0.0-1.0
-	double  cpsMultiplier	= 1.0;
+	double cpsMultiplier = 1.0;
 
 	///Default color in RGBA format used to display the text spoken by this Voice
-	unsigned short color[4]	= { 0, 0, 0, 255 };
+	QColor color = { 0, 0, 0, 255 };
 
 	///[optional]Alignment of the text
 	Qt::AlignmentFlag alignment	= Qt::AlignHCenter;
@@ -75,17 +91,11 @@ private:
 	///- None
 	///- Full
 	///- Static
-	LipSyncType	lipSync	= LipSyncType::Full;
+	LipSyncType lipSync = LipSyncType::Full;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream)
-	{
-		dataStream >> fontAssetName >> fontSize >> bold >> italic >> underscore >> color[0] >> color[1] >> color[2] >> color[3] >> alignment >> lipSync;
-	}
+	void serializableLoad(QDataStream& dataStream);
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const
-	{
-		dataStream << SerializationID::Voice << fontAssetName << fontSize << bold << italic << underscore << color[0] << color[1] << color[2] << color[3] << alignment << lipSync;
-	}
+	void serializableSave(QDataStream& dataStream) const;
 };

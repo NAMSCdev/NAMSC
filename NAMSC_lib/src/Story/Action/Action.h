@@ -19,8 +19,18 @@ public:
 	Action() = default;
 	Action(Event *parent, unsigned actionID, QString &&label) :
 		parent(parent), actionID(actionID), label(move(label))	{ assignLabel(); }
-	Action(const Action& asset)				= default;
-	Action& operator=(const Action& asset)	= default;
+	Action(const Action& obj) {
+		*this = obj;
+	}
+	Action& operator=(const Action& obj) {
+		if (this == &obj) return *this;
+
+		parent = obj.parent;
+		label = obj.label;
+		actionID = obj.actionID;
+
+		return *this;
+	}
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Action() = 0;
 
@@ -46,10 +56,10 @@ protected:
 
 	///Event that contains this Action
 	///Needed to access other Actions, so we can assing an unique label in `assignLabel()`
-	Event	 *parent;
+	Event *parent;
 
 	///Label for quicker identification in the Editor
-	QString  label;
+	QString label;
 
 	///ID and position of the Action in the action list
 	unsigned actionID;

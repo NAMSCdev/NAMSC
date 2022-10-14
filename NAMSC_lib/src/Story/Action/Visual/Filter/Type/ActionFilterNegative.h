@@ -12,14 +12,22 @@ public:
 	ActionFilterNegative(Event *parent, unsigned actionID, double intensivness, 
 						 double strength, QString &&sceneryObjectName, QString &&label) :
 		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterNegative(const ActionFilterNegative& asset)				= default;
-	ActionFilterNegative& operator=(const ActionFilterNegative& asset)	= default;
+	ActionFilterNegative(const ActionFilterNegative& obj) {
+		*this = obj;
+	}
+	ActionFilterNegative& operator=(const ActionFilterNegative& obj) {
+		if (this == &obj) return *this;
+
+		ActionFilter::operator=(obj);
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionFilterNegative(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionFilterNegative(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -27,7 +35,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionFilterNegative; }
+	SerializationID	getType() const override { return SerializationID::ActionFilterNegative; }
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

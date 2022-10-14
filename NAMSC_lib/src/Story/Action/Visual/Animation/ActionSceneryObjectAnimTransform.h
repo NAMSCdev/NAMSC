@@ -1,5 +1,6 @@
 #pragma once
 #include "Global.h"
+#include "Story\Action\Visual\ActionSceneryObject.h"
 
 ///Animates a SceneryObject with an Animator, which changes some properties of the SceneryObject over time
 class ActionSceneryObjectAnim final : public ActionSceneryObject

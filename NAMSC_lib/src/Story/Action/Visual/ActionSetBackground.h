@@ -21,14 +21,24 @@ public:
 						double transitionTime/*, QString &&themeName*/) :
 		Action(parent, actionID, move(label)), backgroundAssetName(move(backgroundAssetName)), transitionType(transitionType),
 		transitionTime(transitionTime)/*, themeName(move(themeName))*/ { backgroundAsset = AssetManager::getInstance().findSceneryBackgroundImageAsset(this->backgroundAssetName); }
-	ActionSetBackground(const ActionSetBackground& asset)				= default;
-	ActionSetBackground& operator=(const ActionSetBackground& asset)	= default;
+	ActionSetBackground(const ActionSetBackground& obj) {
+		*this = obj;
+	}
+	ActionSetBackground& operator=(const ActionSetBackground& obj) {
+		if (this == &obj) return *this;
+
+		Action::operator=(obj);
+		backgroundAssetName = obj.backgroundAssetName;
+		backgroundAsset = obj.backgroundAsset;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override{ visitor->visitActionSetBackground(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionSetBackground(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -36,18 +46,18 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID getType() const override	{ return SerializationID::ActionSetBackground; }
+	SerializationID getType() const override { return SerializationID::ActionSetBackground; }
 
 	///Name to the background Image, so it can be loaded (if needed) and replaced
-	QString						backgroundAssetName;
-	ImageAsset					*backgroundAsset = nullptr;
+	QString	backgroundAssetName;
+	ImageAsset *backgroundAsset = nullptr;
 
 
 	///Blends the scene change with an animation
-	TransitionType	transitionType	= TransitionType::CrossFade;
+	TransitionType transitionType = TransitionType::CrossFade;
 
 	///Time the transtition takes to move from one Image into another in seconds
-	double			transitionTime	= 1.0;
+	double transitionTime = 1.0;
 
 	//[optional]name to the UI theme, so it can be loaded (if needed) and replaced
 	//QString			themeName		= "";

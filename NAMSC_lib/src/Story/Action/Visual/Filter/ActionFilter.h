@@ -10,8 +10,18 @@ public:
 	ActionFilter() = default;
 	ActionFilter(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, double strength) :
 		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), intensivness(intensivness), strength(strength) {}
-	ActionFilter(const ActionFilter& asset)				= default;
-	ActionFilter& operator=(const ActionFilter& asset)	= default;
+	ActionFilter(const ActionFilter& obj) {
+		*this = obj;
+	}
+	ActionFilter& operator=(const ActionFilter& obj) {
+		if (this == &obj) return *this;
+
+		ActionSceneryObject::operator=(obj);
+		intensivness = obj.intensivness;
+		strength = obj.strength;
+
+		return *this;
+	}
 
 protected:
 	//[optional] List of the ids that the filter will be applied on, empty list means all the parts

@@ -17,14 +17,23 @@ public:
 	ActionEffectBlur(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 					 QSize size, unsigned strength, BlurType blurType) :
 		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength), blurType(blurType) {}
-	ActionEffectBlur(const ActionEffectBlur& asset)				= default;
-	ActionEffectBlur& operator=(const ActionEffectBlur& asset)	= default;
+	ActionEffectBlur(const ActionEffectBlur& obj) {
+		*this = obj;
+	}
+	ActionEffectBlur& operator=(const ActionEffectBlur& obj) {
+		if (this == &obj) return *this;
+
+		ActionEffect::operator=(obj);
+		blurType = obj.blurType;
+
+		return *this;
+	}
 
 	///Executes Action's logic
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionEffectBlur(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionEffectBlur(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
@@ -32,7 +41,7 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionEffectBlur; }
+	SerializationID	getType() const override { return SerializationID::ActionEffectBlur; }
 
 	///Algorithm used for blurring
 	BlurType blurType = BlurType::Gaussian;

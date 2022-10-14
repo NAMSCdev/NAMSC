@@ -16,8 +16,18 @@ public:
 	{ 
 		stat = Story::getInstance().getStoryState()->getStat(this->statName); 
 	}
-	ActionStat(const ActionStat& asset)				= default;
-	ActionStat& operator=(const ActionStat& asset)	= default;
+	ActionStat(const ActionStat& obj) {
+		*this = obj;
+	}
+	ActionStat& operator=(const ActionStat& obj) {
+		if (this == &obj) return *this;
+
+		Action::operator=(obj);
+		statName = obj.statName;
+		stat = obj.stat;
+
+		return *this;
+	}
 
 protected:
 	///Name of the Stat that is affected by this Action
