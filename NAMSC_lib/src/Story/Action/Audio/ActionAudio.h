@@ -30,10 +30,10 @@ public:
 	};
 
 	ActionAudio() = default;
-	ActionAudio(Event *parent, unsigned actionID, double volume, double stereo, int timesPlayed, QString &&label) :
-		Action(parent, actionID, move(label)), settings(timesPlayed, stereo, volume) {}
-	ActionAudio(const ActionAudio& ActionAudio)				= default;
-	ActionAudio& operator=(const ActionAudio& ActionAudio)	= default;
+	ActionAudio(Event *parent, unsigned actionID, QString&& label, double volume, double stereo, int timesPlayed) :
+		Action(parent, actionID, move(label)), settings(volume, stereo, timesPlayed) {}
+	ActionAudio(const ActionAudio& actionAudio)				= default;
+	ActionAudio& operator=(const ActionAudio& actionAudio)	= default;
 protected:
 	///Common properties of Actions that manage Audio
 	AudioSettings settings;

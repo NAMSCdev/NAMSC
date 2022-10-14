@@ -3,7 +3,7 @@
 
 #include "Story/Action/Visual/ActionSceneryObject.h"
 
-///Makes an Scene Object appear or dissapear
+///Makes an Scene Object appear
 class ActionSceneryObjectShow : public ActionSceneryObject
 {
 public:

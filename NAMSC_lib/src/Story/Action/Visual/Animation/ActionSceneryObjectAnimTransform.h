@@ -1,36 +1,86 @@
 #pragma once
 #include "Global.h"
 
-///Animates a SceneryObject with an Animator, which changes some properties of the SceneryObject over time
-class ActionSceneryObjectAnim final : public ActionSceneryObject
+#include "Story/Action/Visual/Animation/ActionSceneryObjectAnim.h"
+
+///Animates a SceneryObject with an Animator, which moves a SceneryObject
+class ActionSceneryObjectAnimMove final : public ActionSceneryObjectAnim<AnimNodeDouble2D>
 {
 public:
-	ActionSceneryObjectAnim() = default;
-	ActionSceneryObjectAnim(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
-							QString &&animAssetName, double duration) :
-		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), 
-		animAssetName(move(animAssetName)), duration(duration) {}
-	ActionSceneryObjectAnim(const ActionSceneryObjectAnim& asset)				= default;
-	ActionSceneryObjectAnim& operator=(const ActionSceneryObjectAnim& asset)	= default;
+	ActionSceneryObjectAnimMove() = default;
+	ActionSceneryObjectAnimMove(unsigned actionID, QString&& label, QString&& sceneryObjectName,
+		QString&& animName, double speed, bool bLoop) :
+		ActionSceneryObjectAnim<AnimNodeDouble2D>(parent, actionID, move(label), move(sceneryObjectName),
+		move(animName), speed, bLoop) { animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+	ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove&) = default;
+	ActionSceneryObjectAnimMove& operator=(const ActionSceneryObjectAnimMove&) = default;
 
-	///Executes Action's logic
-	void run() override;
-	
-	///Accepts ActionVisitor
-	void accept(ActionVisitor* visitor) override	{ visitor->visitActionSceneryObjectAnim(this); }
-
-signals:
-	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(SceneryObject *sceneryObject, QString animName, double duration);
+	///Updates Animation
+	void update() override;
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override		{ return SerializationID::ActionSceneryObjectAnim; }
+	SerializationID	getType() const override { return SerializationID::ActionSceneryObjectAnimMove; }
+};
 
-	//---SERIALIZATION---
-	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override;
+///Animates a SceneryObject with an Animator, which moves a SceneryObject
+class ActionSceneryObjectAnimScale final : public ActionSceneryObjectAnim<AnimNodeDouble2D>
+{
+public:
+	ActionSceneryObjectAnimScale() = default;
+	ActionSceneryObjectAnimScale(unsigned actionID, QString&& label, QString&& sceneryObjectName,
+		QString&& animName, double speed, bool bLoop) :
+		ActionSceneryObjectAnim<AnimNodeDouble2D>(parent, actionID, move(label), move(sceneryObjectName),
+			move(animName), speed, bLoop) { animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+	ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale&) = default;
+	ActionSceneryObjectAnimScale& operator=(const ActionSceneryObjectAnimScale&) = default;
 
-	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override;
+	///Updates Animation
+	void update() override;
+
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::ActionSceneryObjectAnimScale; }
+};
+
+
+///Animates a SceneryObject with an Animator, which moves a SceneryObject
+class ActionSceneryObjectAnimRotate final : public ActionSceneryObjectAnim<AnimNodeDouble1D>
+{
+public:
+	ActionSceneryObjectAnimRotate() = default;
+	ActionSceneryObjectAnimRotate(unsigned actionID, QString&& label, QString&& sceneryObjectName,
+		QString&& animName, double speed, bool bLoop) :
+		ActionSceneryObjectAnim<AnimNodeDouble1D>(parent, actionID, move(label), move(sceneryObjectName),
+			move(animName), speed, bLoop) {	animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+	ActionSceneryObjectAnimRotate(const ActionSceneryObjectAnimRotate&) = default;
+	ActionSceneryObjectAnimRotate& operator=(const ActionSceneryObjectAnimRotate&) = default;
+
+	///Updates Animation
+	void update() override;
+
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::ActionSceneryObjectAnimRotate; }
+};
+
+
+///Animates a SceneryObject with an Animator, which changes color of a SceneryObject
+class ActionSceneryObjectAnimColor final : public ActionSceneryObjectAnim<AnimNodeDouble4D>
+{
+public:
+	ActionSceneryObjectAnimColor() = default;
+	ActionSceneryObjectAnimColor(unsigned actionID, QString&& label, QString&& sceneryObjectName,
+		QString&& animName, double speed, bool bLoop) :
+		ActionSceneryObjectAnim<AnimNodeDouble4D>(parent, actionID, move(label), move(sceneryObjectName),
+			move(animName), speed, bLoop) {	animAsset = AssetManager::getInstance().findAnimAssetColor(this->animName); }
+	ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor&) = default;
+	ActionSceneryObjectAnimColor& operator=(const ActionSceneryObjectAnimColor&) = default;
+
+	///Updates Animation
+	void update() override;
+
+private:
+	///Needed for serialization, to know the class of an object about to be serialization loaded
+	SerializationID	getType() const override { return SerializationID::ActionSceneryObjectAnimColor; }
 };

@@ -43,9 +43,6 @@ private:
 	///All the Events to be executed in the Scene
 	QVector<uPtr<Event>>	events;
 
-	///Currently displayed media of the Scene
-	Scenery		scenery;
-
 	//TODO: serialization
 	//---SERIALIZATION---
 	///Loading an object from a binary file

@@ -18,9 +18,9 @@ class Scene
 	friend QDataStream& operator>>(QDataStream&, SceneryObject&);
 	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
 public:
-	Scene(Story *parent) { assignLabel(); };
-	Scene(Story *parent, QString &&label, QVector<uPtr<Event>> &&events, Scenery &&scenery) : 
-		parent(parent), label(move(label)), events(move(events)), scenery(move(scenery)) { if (label.isEmpty()) assignLabel(); };
+	Scene() { };
+	Scene(QString&& label, QVector<uPtr<Event>>&& events, Scenery&& scenery) :
+		label(move(label)), events(move(events)), scenery(move(scenery));
 
 private:
 	///Executes [Events](#Event) that are stored in the [`events` container](#events)
@@ -39,14 +39,6 @@ private:
 	////@param executionOrder ID of an Event is equivalent with its order in execution. The even will be inserted past this `executionOrder`
 	////@todo add Visitors to fix Events and Jumps
 	void insertEvent(unsigned executionOrder, Event &&ev);
-
-	////Assigns an available new label "Scene[number]"
-	////@todo implement
-	void assignLabel();
-
-	////Pointer to the Story it belongs to
-	////Needed to check other Scenes in the Story if they don't have the same label as we want to assign a new Scene
-	Story	*parent	= nullptr;
 
 	////An optional name for a Scene, commonly used by the Editor User to quickly distinguish amongst other Scenes
 	////Automatically asigned upon creation by `assignLabel()`

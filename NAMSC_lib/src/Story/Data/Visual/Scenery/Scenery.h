@@ -8,8 +8,7 @@
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
 #include "Story/Data/Visual/Scenery/Character.h"
 
-///All media contained in a displayable Scene
-///@todo Add special media types e.g. chocie buttons and display text boxes
+///All the media managed by the library contained in a displayable Scene
 class Scenery
 {
 	///Friends for serialization
@@ -17,51 +16,35 @@ class Scenery
 	friend QDataStream& operator<<(QDataStream&, const Scenery&);
 public:
 	Scenery() = default;
-	///TODO: add a special constructor, once fields are set in stone
-	///Scenery(
-	///TODO: think how exactly the QImage will be created and if the interface is sufficient
-	QImage	display();
+	Scenery();
 
-	///TODO: think about helper functions e.g.: shuffle
-	///TODO: more fields needed for the music
-	///TODO: should it be tied with event instead? What should display the text? Scenery or Scene? How do we sync?
-	///TODO: should this return a pointer to MediaPlayer or play one that Asset has?
-	void	playMusic();
+	///Scenery's logic
+	void run();
 
-	void	run() 
-	{ 
-		display(); 
-		playMusic(); 
-	};
+	///Ensures Assets are loaded and if not - loads them
+	void ensureAssetsAreLoaded()
+	{
+	}
 
 private:
-	///TODO: comment this
+	///Names of currently displayed SceneryObjects
 	QVector<QString>		objectNames;
-	///TODO: comment this
+	///List of all the currently displayed SceneryObjects
 	QVector<SceneryObject*>	objects;
 
-	///TODO: comment this
+	///Names of all the currently displayed Characters
 	QVector<QString>		characterNames;
-	///TODO: comment this
+	///List of all the currently displayed Characters
 	QVector<Character*>		characters;
 
-	///TODO: comment this
-	QVector<QString>		musicNameS;
-	///TODO: comment this
+	///Names of the Asset holding the music that will be played
+	QVector<QString>		musicNames;
+	///Music played in current Scenery`
 	QVector<MusicAsset*>	musicPlaylist;
 
-	///TODO: serialization including all the objects
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream)
-	{
-
-		dataStream;
-	}
+	void serializableLoad(QDataStream& dataStream);
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const
-	{
-
-		dataStream;
-	}
+	void serializableSave(QDataStream& dataStream) const;
 };

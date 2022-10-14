@@ -15,7 +15,7 @@ class Event
 	friend QDataStream& operator<<(QDataStream&, const Event&);
 public:
 	Event() = default;
-	Event(unsigned sceneID, unsigned executionOrder, QString &&label = "") :
+	Event(unsigned sceneID, unsigned executionOrder, QString &&label) :
 		sceneID(sceneID), executionOrder(executionOrder), label(move(label)) {}
 	Event(const Event& asset)				= default;
 	///Derived classes will create default assigment operator as well, if it is defined here

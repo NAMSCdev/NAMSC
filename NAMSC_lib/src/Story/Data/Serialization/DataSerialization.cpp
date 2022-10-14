@@ -13,6 +13,10 @@
 
 #include "Story/Data/Story.h"
 
+#include "Story/Data/Visual/Scenery/SceneryObject.h"
+#include "Story/Data/Visual/Scenery/Character.h"
+#include "Story/Data/Visual/Scenery/Scenery.h"
+
 //-----ASSET
 
 void Asset::serializableLoad(QDataStream &dataStream)
@@ -63,13 +67,32 @@ void StoryState::serializableSave(QDataStream &dataStream) const
         dataStream << *(stat.get());
 }
 
-
 //-----TEXT
 //This constructor is a special guest here, because it needs to grab a Voice from Story, which is impossible in header file due to looping
+void Translation::serializableLoad(QDataStream& dataStream)
+{
+    unsigned translationsSize;
+    dataStream >> translationsSize;
+
+    for (unsigned i = 0; i != translationsSize; ++i)
+    {
+        QPair<QString, TextAsset> pair;
+        dataStream >> pair;
+        translations.insert(pair.first, pair.second);
+    }
+}
+
+void Translation::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << SerializationID::Translation << translations.size();
+    for (auto it = translations.constKeyValueBegin(); it != translations.constKeyValueEnd(); ++it)
+        dataStream << *it;
+}
+
 Sentence::Sentence(Translation &&content, QString &&voiceName, unsigned cps, bool bEndWithInput, double waitBeforeContinueTime) : 
     content(move(content)), voiceName(move(voiceName)), cps(cps), bEndWithInput(bEndWithInput), waitBeforeContinueTime(waitBeforeContinueTime)
 {
-    voice = Story::getInstance().findVoice(voiceName);
+    voice = Story::getInstance().findVoice(this->voiceName);
 }
 
 void Sentence::serializableLoad(QDataStream &dataStream)
@@ -83,27 +106,17 @@ void Sentence::serializableSave(QDataStream &dataStream) const
     dataStream << SerializationID::Sentence << content << voiceName << cps << bEndWithInput << waitBeforeContinueTime;
 }
 
-void Translation::serializableLoad(QDataStream &dataStream)
+void Voice::serializableLoad(QDataStream& dataStream)
 {
-    unsigned translationsSize;
-    dataStream >> translationsSize;
-
-    for (unsigned i = 0; i != translationsSize; ++i)
-    {
-        QPair<QString, TextAsset> pair;
-        dataStream >> pair;
-        translations.insert(pair.first, pair.second);
-    }
+    dataStream >> fontAssetName >> fontSize >> bold >> italic >> underscore >> color >> alignment >> lipSync;
 }
 
-void Translation::serializableSave(QDataStream &dataStream) const
+void Voice::serializableSave(QDataStream& dataStream) const
 {
-    dataStream << SerializationID::Translation << translations.size();
-    for (auto it = translations.constKeyValueBegin(); it != translations.constKeyValueEnd(); ++it)
-        dataStream << *it;
+    dataStream << SerializationID::Voice << fontAssetName << fontSize << bold << italic << underscore << color << alignment << lipSync;
 }
 
-///-----ANIM
+//-----ANIM
 void AnimNodeBase::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> timeStamp >> interpolationMethod;
@@ -145,7 +158,6 @@ void AnimNodeLongLong<dimension>::serializableSave(QDataStream& dataStream) cons
     for (unsigned i = 0; i != dimension; ++i)
         dataStream << state[dimension];
 }
-
 
 template<typename AnimNode>
 void Animator<AnimNode>::serializableLoad(QDataStream& dataStream)
@@ -196,4 +208,45 @@ void AnimatorColor::serializableLoad(QDataStream& dataStream)
 {
     AnimatorSceneryObject<AnimNodeDouble4D>::serializableLoad(dataStream);
     animAsset = AssetManager::getInstance().findAnimAssetColor(animAssetName);
+}
+
+//-----VISUAL
+void SceneryObject::serializableLoad(QDataStream& dataStream)
+{
+    dataStream >> pos >> scale >> rotation >> color >> label >> imageAssetName;
+    imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
+}
+
+void SceneryObject::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << pos << scale << rotation << color << label << imageAssetName;
+}
+
+//This constructor is a special guest here, because it needs to grab a Voice from Story, which is impossible in header file due to looping
+Character::Character(QString&& defaultVoiceName) :
+    defaultVoiceName(move(defaultVoiceName))
+{
+    defaultVoice = Story::getInstance().findVoice(this->defaultVoiceName);
+}
+
+void Character::serializableLoad(QDataStream& dataStream)
+{
+    SceneryObject::serializableLoad(dataStream);
+    dataStream >> defaultVoiceName;
+    defaultVoice = Story::getInstance().findVoice(this->defaultVoiceName);
+}
+
+void Character::serializableSave(QDataStream& dataStream) const
+{
+    SceneryObject::serializableSave(dataStream);
+    dataStream << defaultVoiceName;
+}
+
+void Scenery::serializableLoad(QDataStream& dataStream)
+{
+}
+
+void Scenery::serializableSave(QDataStream& dataStream) const
+{
+
 }

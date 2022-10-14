@@ -203,9 +203,6 @@
     <ClInclude Include="src\Story\Data\Text\Translation.h">
       <Filter>Header Files\Story\Data\Text</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Text\Voice.h">
-      <Filter>Header Files\Story\Data\Text</Filter>
-    </ClInclude>
     <ClInclude Include="src\Story\Data\Stat\Stat.h">
       <Filter>Header Files\Story\Data\Stat</Filter>
     </ClInclude>
@@ -343,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="src\Story\Data\Asset\Asset.h">
       <Filter>Header Files\Story\Data\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnim.h">
+      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -56,7 +56,7 @@ public:
 	///Creates new Story State and loads it into the saveslot
 	void newState(unsigned slot)
 	{
-		save.	
+		save.;
 	}
 
 	///Loads player's StoryState from a savefile in given saveslot
@@ -117,17 +117,20 @@ private:
 	inline void	loadStats();
 
 	///Contains all available Voices
-	QVector<Voice>			voices;
+	QVector<Voice> voices;
 
 	///Contains all available sceneryObjects
-	QVector<SceneryObject>	sceneryObjects;
+	QVector<SceneryObject> sceneryObjects;
 
 	///Contains all available Characters
-	QVector<Character>		characters;
+	QVector<Character> characters;
 
 	///Contains all available Chapters, which contain all the Scenes in the Story
-	QVector<Chapter>		chapters;
+	QVector<Chapter> chapters;
 
 	///Current StoryState containing the player's progression
-	StoryState				save;
+	StoryState save;
+
+	///Currently displayed media of the Scene
+	Scenery scenery;
 };

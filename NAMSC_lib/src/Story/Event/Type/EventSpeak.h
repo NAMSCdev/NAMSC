@@ -10,17 +10,18 @@ class EventSpeak final : public EventNarrate
 		EventNarrate(sceneID, executionOrder, text(move(text)), move(voiceName), move(label)), characterLabel(move(characterLabel)), name(move(name)) {}
 
 	///Executes Event's logic
-	void		run		() override;
+	void run() override;
 
 	///Accepts EventVisitor
-	void		accept			(EventVisitor* visitor) override { visitor->visitEventNarrate(this); }
+	void accept(EventVisitor* visitor) override { visitor->visitEventNarrate(this); }
 
 protected:
 	///Needed for serialization, to know the class of an object before the loading performed
-	SerializationID		getType			() const override		{ return SerializationID::EventSpeak; }
+	SerializationID getType() const override	{ return SerializationID::EventSpeak; }
 
 	///Character identification name
 	QString		characterLabel;
+	Character	*character;
 
 	///The speaking Character's displayed name
 	QString		name;

@@ -137,7 +137,6 @@ void ActionSceneryObjectChange::serializableLoad(QDataStream &dataStream)
 	imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
 }
 
-
 void ActionSceneryObjectChange::serializableSave(QDataStream &dataStream) const
 {
 	ActionSceneryObject::serializableSave(dataStream);
@@ -145,17 +144,18 @@ void ActionSceneryObjectChange::serializableSave(QDataStream &dataStream) const
 }
 
 //-----ANIM
-
-void ActionSceneryObjectAnim::serializableLoad(QDataStream &dataStream)
+template<typename AnimNode>
+void ActionSceneryObjectAnim<AnimNode>::serializableLoad(QDataStream &dataStream)
 {
 	ActionSceneryObject::serializableLoad(dataStream);
-	dataStream >> animAssetName >> duration >> animator;
+	dataStream >> animName >> speed >> bLoop;
 }
 
-void ActionSceneryObjectAnim::serializableSave(QDataStream &dataStream) const
+template<typename AnimNode>
+void ActionSceneryObjectAnim<AnimNode>::serializableSave(QDataStream &dataStream) const
 {
 	ActionSceneryObject::serializableSave(dataStream);
-	dataStream << animAssetName << duration << animator;
+	dataStream << animName << speed << bLoop;
 }
 
 void ActionCharLive2DAnim::serializableLoad(QDataStream &dataStream)
@@ -183,7 +183,7 @@ void ActionSceneryObjectShow::serializableSave(QDataStream &dataStream) const
 	dataStream << appearEffectType << duration << bAppear << bPerserveAnimation;
 }
 
-//EFFECT
+//-----EFFECT
 
 void ActionEffect::serializableLoad(QDataStream &dataStream)
 {
@@ -229,7 +229,7 @@ void ActionEffectGlow::serializableSave(QDataStream &dataStream) const
 	ActionEffect::serializableSave(dataStream);
 }
 
-//FILTER
+//-----FILTER
 
 void ActionFilter::serializableLoad(QDataStream &dataStream)
 {
