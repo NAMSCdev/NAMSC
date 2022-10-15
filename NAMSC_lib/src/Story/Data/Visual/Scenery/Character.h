@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Data/Asset/Type/ImageAsset.h"
+#include "Story/Data/Asset/Type/AssetImage.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
@@ -23,9 +23,9 @@ private:
 	Voice		*defaultVoice;
 
 	//QString			idleLive2DAnimName;
-	//Live2DAnimAsset *idleLive2DAnim;
+	//AssetLive2DAnim *idleLive2DAnim;
 	//QString			currentLive2DAnimName;
-	//Live2DAnimAsset *currentLive2DAnim;
+	//AssetLive2DAnim *currentLive2DAnim;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

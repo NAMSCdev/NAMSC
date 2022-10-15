@@ -4,16 +4,15 @@
 #include "Story/Data/Asset/Asset.h"
 
 ///[optional] Allows Live2D Model loading and its memory management
-class Live2DCharacterModelAsset final : public Asset
+class AssetLive2DCharacterModel final : public Asset
 {
 public:
-	Live2DCharacterModelAsset() = default;
-	Live2DCharacterModelAsset(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
+	AssetLive2DCharacterModel() = default;
+	AssetLive2DCharacterModel(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
-	Live2DCharacterModelAsset(const Live2DCharacterModelAsset& obj) {
-		*this = obj;
-	}
-	Live2DCharacterModelAsset& operator=(const Live2DCharacterModelAsset& obj) {
+	AssetLive2DCharacterModel(const AssetLive2DCharacterModel& obj) { *this = obj; }
+	AssetLive2DCharacterModel& operator=(const AssetLive2DCharacterModel& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Asset::operator=(obj);

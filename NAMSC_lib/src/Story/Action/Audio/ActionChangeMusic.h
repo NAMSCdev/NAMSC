@@ -3,7 +3,9 @@
 
 #include "Story/Action/Audio/ActionAudio.h"
 
-#include "Story/Data/Asset/Type/MusicAsset.h"
+#include "Story/Data/Audio/MusicPlaylist.h"
+
+#include "Story/Data/Asset/Type/AssetMusic.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///Changes background Music played along the Scene
@@ -19,21 +21,20 @@ public:
 		for (const QString &name : this->musicAssetsNames) 
 		{
 			//Might throw an exception
-			MusicAsset* asset = AssetManager::getInstance().findMusicAsset(name);
+			AssetMusic* asset = AssetManager::getInstance().findMusicAsset(name);
 			musicAssets.push_back(asset);
 		}
 	}
-	ActionChangeMusic(const ActionChangeMusic& obj) {
-		*this = obj;
-	}
-	ActionChangeMusic& operator=(const ActionChangeMusic& obj) {
+	ActionChangeMusic(const ActionChangeMusic& obj) { *this = obj; }
+	ActionChangeMusic& operator=(const ActionChangeMusic& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionAudio::operator=(obj);
 		musicAssetsNames = obj.musicAssetsNames;
-		musicAssets = obj.musicAssets;
-		bRandomize = obj.bRandomize;
-		bExclusive = obj.bExclusive;
+		musicAssets      = obj.musicAssets;
+		bRandomize       = obj.bRandomize;
+		bExclusive       = obj.bExclusive;
 
 		return *this;
 	}
@@ -46,7 +47,7 @@ public:
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(AudioSettings settings, QVector<MusicAsset*> musicAssets, bool bRandomized, bool bExclusive);
+	void onRun(MusicPlaylist* musicPlaylist);
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
@@ -55,7 +56,7 @@ private:
 	///Ensures Assets are loaded and if not - loads them
 	void ensureAssetsAreLoaded() override		
 	{ 
-		for (MusicAsset *musicAsset : musicAssets) 
+		for (AssetMusic *musicAsset : musicAssets) 
 			if (!musicAsset->isLoaded()) 
 				musicAsset->load();
 	}
@@ -63,7 +64,7 @@ private:
 	///Names of the MusicAssets, so they can be loaded (if needed) and played
 	QVector<QString> musicAssetsNames;
 	///MusicAssets to be played
-	QVector<MusicAsset*>musicAssets;
+	QVector<AssetMusic*>musicAssets;
 
 	///[low optional] Whether to randomize Music order
 	bool bRandomize = false;

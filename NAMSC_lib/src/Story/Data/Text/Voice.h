@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Data/Asset/Type/FontAsset.h"
+#include "Story/Data/Asset/Type/AssetFont.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///Tells how the text should be displayed
@@ -56,12 +56,12 @@ private:
 	///Name to the Font used to display the text spoken by this Voice
 	QString	fontAssetName;
 	///Font used to display the text spoken by this Voice
-	FontAsset *fontAsset;
+	AssetFont *fontAsset;
 
 	///Name to the Font used to display the text spoken by this Voice
 	QString	insertionSoundAssetName;
 	///Font used to display the text spoken by this Voice
-	SoundAsset *insertionSoundAsset;
+	AssetSound *insertionSoundAsset;
 
 	///Font size used to display the text spoken by this Voice
 	unsigned fontSize;

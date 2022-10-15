@@ -19,10 +19,10 @@ public:
 		return *this;
 	}
 
-	///Name of the SoundAsset, so it can be loaded (if needed) and played
+	///Name of the AssetSound, so it can be loaded (if needed) and played
 	QString soundAssetName = "";
 	///SoundsAsset to be played
-	SoundAsset* soundAsset = nullptr;
+	AssetSound* soundAsset = nullptr;
 
 	///Whether the Sound should be cut if user gets to the next Scene's Event before the end of this Sound
 	///@todo implement this

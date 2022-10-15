@@ -2,7 +2,7 @@
 #include "Global.h"
 
 #include "Story/Action/Action.h"
-#include "Story/Data/Asset/Audio/AudioSettings.h"
+#include "Story/Data/Audio/AudioSettings.h"
 
 ///Contains common properties of Actions that manage Audio
 class ActionAudio : public Action
@@ -11,11 +11,9 @@ public:
 	ActionAudio() = default;
 	ActionAudio(Event *parent, unsigned actionID, double volume, double stereo, int timesPlayed, QString &&label) :
 		Action(parent, actionID, move(label)), settings(timesPlayed, stereo, volume) {}
-	
-	ActionAudio(const ActionAudio& obj) {
-		*this = obj;
-	}
-	ActionAudio& operator=(const ActionAudio& obj) {
+	ActionAudio(const ActionAudio& obj) { *this = obj; }
+	ActionAudio& operator=(const ActionAudio& obj)
+	{
 		if (this == &obj) return *this;
 
 		Action::operator=(obj);
@@ -23,6 +21,7 @@ public:
 
 		return *this;
 	}
+
 protected:
 	///Common properties of Actions that manage Audio
 	AudioSettings settings;

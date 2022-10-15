@@ -3,7 +3,9 @@
 
 #include "Story/Action/Audio/ActionAudio.h"
 
-#include "Story/Data/Asset/Type/MusicAsset.h"
+#include "Story/Data/Audio/Sound.h"
+
+#include "Story/Data/Asset/Type/AssetSound.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///Changes background Music played along while the Scene is displayed
@@ -18,15 +20,14 @@ public:
 	{
 		soundAsset = AssetManager::getInstance().findSoundAsset(this->soundAssetName);
 	}
-	ActionPlaySound(const ActionPlaySound& obj) {
-		*this = obj;
-	}
-	ActionPlaySound& operator=(const ActionPlaySound& obj) {
+	ActionPlaySound(const ActionPlaySound& obj) { *this = obj; }
+	ActionPlaySound& operator=(const ActionPlaySound& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionAudio::operator=(obj);
-		soundAssetName = obj.soundAssetName;
-		soundAsset = obj.soundAsset;
+		soundAssetName     = obj.soundAssetName;
+		soundAsset         = obj.soundAsset;
 		bPersistToNewEvent = obj.bPersistToNewEvent;
 		
 		return *this;
@@ -36,11 +37,11 @@ public:
 	void run() override;
 
 	///Accepts ActionVisitor
-	void accept(ActionVisitor *visitor) override { visitor->visitActionPlaySound(this); }
+	void accept(ActionVisitor* visitor) override { visitor->visitActionPlaySound(this); }
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(AudioSettings settings, SoundAsset *soundAsset, bool bPersistToNewEvent);
+	void onRun(Sound* sound);
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
@@ -49,10 +50,10 @@ private:
 	///Ensures Assets are loaded and if not - loads them
 	void ensureAssetsAreLoaded() override { if (!soundAsset->isLoaded()) soundAsset->load(); }
 
-	///Name of the SoundAsset, so it can be loaded (if needed) and played
+	///Name of the AssetSound, so it can be loaded (if needed) and played
 	QString soundAssetName;
 	///SoundsAsset to be played
-	SoundAsset *soundAsset = nullptr;
+	AssetSound *soundAsset = nullptr;
 
 	///Whether the Sound should be cut if user gets to the next Scene's Event before the end of this Sound
 	///@todo implement this

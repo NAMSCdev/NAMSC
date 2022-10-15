@@ -10,10 +10,9 @@ public:
 	ActionStatHide() = default;
 	ActionStatHide(Event *parent, unsigned actionID, QString &&statName, QString &&label) :
 		ActionStat(parent, actionID, move(statName), move(label)) {}
-	ActionStatHide(const ActionStatHide& obj) {
-		*this = obj;
-	}
-	ActionStatHide& operator=(const ActionStatHide& obj) {
+	ActionStatHide(const ActionStatHide& obj) { *this = obj; }
+	ActionStatHide& operator=(const ActionStatHide& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionStat::operator=(obj);

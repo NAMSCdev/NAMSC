@@ -10,10 +10,9 @@ public:
 	ActionStatChange() = default;
 	ActionStatChange(Event *parent, unsigned actionID, QString &&statName, QString &&expression, QString &&label) :
 		ActionStat(parent, actionID, move(statName), move(label)), expression(move(expression)) {}
-	ActionStatChange(const ActionStatChange& obj) {
-		*this = obj;
-	}
-	ActionStatChange& operator=(const ActionStatChange& obj) {
+	ActionStatChange(const ActionStatChange& obj) {	*this = obj; }
+	ActionStatChange& operator=(const ActionStatChange& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionStat::operator=(obj);

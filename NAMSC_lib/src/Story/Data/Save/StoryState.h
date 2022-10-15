@@ -27,8 +27,8 @@ public:
 
     ///Find by `name` a Stat
     ///\param name searched Stat
-    ///\exception CriticalException failure finding the FontAsset
-    ///\return pointer to the found FontAsset
+    ///\exception CriticalException failure finding the AssetFont
+    ///\return pointer to the found AssetFont
     Stat* getStat(const QString &name)
     { 
         return findInuPtrArray<Stat>(name, stats);

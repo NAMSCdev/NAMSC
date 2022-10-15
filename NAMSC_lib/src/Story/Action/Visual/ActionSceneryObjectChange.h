@@ -3,7 +3,7 @@
 
 #include "Story/Action/Visual/ActionSceneryObject.h"
 
-#include "Story/Data/Asset/Type/ImageAsset.h"
+#include "Story/Data/Asset/Type/AssetImage.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///Changes scene basic a SceneryObject or the viewport
@@ -52,10 +52,10 @@ private:
 	//name to the Images that will replace SceneryObjectPart's images identified by IDs
 	//QVector<QPair<unsigned, QString>>	sceneryObjectParts;
 
-	///Name to the ImageAsset that will replace the old Image in the affected SceneryObject
+	///Name to the AssetImage that will replace the old Image in the affected SceneryObject
 	QString imageAssetName;
 	///Image that will replace the old Image in the affected SceneryObject
-	ImageAsset* imageAsset;
+	AssetImage* imageAsset;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file

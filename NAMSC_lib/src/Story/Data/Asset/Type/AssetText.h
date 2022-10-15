@@ -4,16 +4,15 @@
 #include "Story/Data/Asset/Asset.h"
 
 ///Allows Image loading and its memory management
-class TextAsset final : public Asset
+class AssetText final : public Asset
 {
 public:
-	TextAsset() = default;
-	TextAsset(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
+	AssetText() = default;
+	AssetText(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
-	TextAsset(const TextAsset& obj) { 
-		*this = obj;
-	}
-	TextAsset &operator=(const TextAsset &obj) {
+	AssetText(const AssetText& obj) { *this = obj; }
+	AssetText &operator=(const AssetText &obj)
+	{
 		if (this == &obj) return *this;
 
 		Asset::operator=(obj);

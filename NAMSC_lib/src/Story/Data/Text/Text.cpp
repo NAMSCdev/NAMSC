@@ -14,7 +14,7 @@ Sentence::Sentence(Translation &&content, QString &&voiceName, unsigned cps,
 
 const QString Translation::text()
 {
-	TextAsset *text = nullptr;
+	AssetText *text = nullptr;
 	if (translations.find(StorySettings::language) != translations.end())
 		text = &translations[StorySettings::language];
 	if (translations.find(StorySettings::defaultLanguage) != translations.end())

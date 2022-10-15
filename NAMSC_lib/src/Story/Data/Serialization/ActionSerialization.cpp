@@ -38,7 +38,7 @@ void ActionChangeMusic::serializableLoad(QDataStream &dataStream)
 		dataStream >> name;
 		musicAssetsNames.push_back(name);
 
-		MusicAsset *asset = AssetManager::getInstance().findMusicAsset(name);
+		AssetMusic *asset = AssetManager::getInstance().findMusicAsset(name);
 		musicAssets.push_back(asset);
 	}
 	dataStream >> bRandomize >> bExclusive;

@@ -3,30 +3,29 @@
 
 #include "Story/Data/Asset/Asset.h"
 
-///Allows Sound loading and its memory management
-class SoundAsset final : public Asset
+///Allows Music loading and its memory management
+class AssetMusic final : public Asset
 {
 public:
-	SoundAsset() = default;
-	SoundAsset(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
+	AssetMusic() = default;
+	AssetMusic(QString&& name, unsigned pos = 0, bool bExternal = false, QString&& location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
-	SoundAsset(const SoundAsset& obj) { 
-		*this = obj;
-	}
-	SoundAsset& operator=(const SoundAsset& obj) {
+	AssetMusic(const AssetMusic& obj) { *this = obj; }
+	AssetMusic& operator=(const AssetMusic& obj)
+	{
 		if (this == &obj) return *this;
-
+		
 		Asset::operator=(obj);
 		mediaPlayer = nullptr;
 
 		return *this;
 	}
-	///Tries to load an Assent
+	///Tries to load an Asset
 	///Throws a noncritical Exception on failure
-	void load() override				
+	void load() override					
 	{ 
-		mediaPlayer = uPtr<QMediaPlayer>(new QMediaPlayer()); 
-		mediaPlayer->setSource(QUrl::fromLocalFile(location)); 
+		mediaPlayer = uPtr<QMediaPlayer>(new QMediaPlayer());
+		mediaPlayer->setSource(QUrl::fromLocalFile(location));
 	}
 
 	///Release resources allocated for this asset
@@ -36,11 +35,11 @@ public:
 	bool isLoaded() const override { return mediaPlayer.get() != nullptr; }
 
 	///Returns a pointer to a MediaPlayer with music potentially loaded
-	QMediaPlayer* getSoundPlayer() { return mediaPlayer.get(); }
+	QMediaPlayer* getMusicPlayer() { return mediaPlayer.get(); }
 
-protected:
+private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID getType() const override { return SerializationID::SoundAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetMusic; }
 
 	///A smart pointer to the actual data
 	uPtr<QMediaPlayer> mediaPlayer;

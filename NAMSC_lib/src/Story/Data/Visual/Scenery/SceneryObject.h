@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Data/Asset/Type/FontAsset.h"
+#include "Story/Data/Asset/Type/AssetFont.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///A drawable object on Scene
@@ -40,7 +40,7 @@ protected:
 	///Name of the Image that will be rendered
 	QString imageAssetName;
 	//Image that will be rendered
-	ImageAsset	*imageAsset;
+	AssetImage	*imageAsset;
 	///[optional] create this class and it will store ImageAssets with custom names for image filtering (useful in Editor)
 	//QVector<SceneryObjectPart> parts;
 

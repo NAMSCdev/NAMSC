@@ -4,16 +4,15 @@
 #include "Story/Data/Asset/Asset.h"
 
 ///[optional] Allows Live2D Animation loading and its memory management
-class Live2DAnimAsset final : public Asset
+class AssetLive2DAnim final : public Asset
 {
 public:
-	Live2DAnimAsset() = default;
-	Live2DAnimAsset(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
+	AssetLive2DAnim() = default;
+	AssetLive2DAnim(QString &&name, unsigned pos = 0, bool bExternal = false, QString &&location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
-	Live2DAnimAsset(const Live2DAnimAsset& obj) {
-		*this = obj;
-	}
-	Live2DAnimAsset& operator=(const Live2DAnimAsset& obj) {
+	AssetLive2DAnim(const AssetLive2DAnim& obj) { *this = obj; }
+	AssetLive2DAnim& operator=(const AssetLive2DAnim& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Asset::operator=(obj);
@@ -33,5 +32,5 @@ public:
 
 protected:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::Live2DAnimAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetLive2DAnim; }
 };

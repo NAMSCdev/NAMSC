@@ -12,14 +12,14 @@ class Translation
 	friend QDataStream& operator<<(QDataStream&, const Translation&);
 public:
 	Translation() = default;
-	Translation(const QMap<QString, TextAsset>&& translations/*, const QVector<unsigned int>>	&&wordDurations*/) :
+	Translation(const QMap<QString, AssetText>&& translations/*, const QVector<unsigned int>>	&&wordDurations*/) :
 		translations(move(translations))/*, wordDurations(move(wordDurations))*/ {}
 
 	///Return text in the language that is set in StorySettings
 	const QString text(const QString language = StorySettings::getInstance().language);
 
 	///Adds or replaces a translation(pair of const QString and TextAsset) to the `translations` list
-	void addTranslation(const QString &language, const TextAsset &translation) { translations[language] = translation; }
+	void addTranslation(const QString &language, const AssetText &translation) { translations[language] = translation; }
 
 	///Removes translation from `translations` list
 	///@todo cannot remove StorySettings::defaultLanguage
@@ -30,7 +30,7 @@ public:
 
 private:
 	///Store text for different languages
-	QMap<QString, TextAsset> translations;
+	QMap<QString, AssetText> translations;
 
 	//[optional] Store word durations for [Sentence::WordAppearType::WordByWord] appear type for different languages
 	//QMap<const QString, const QVector<unsigned int>>	wordDurations;

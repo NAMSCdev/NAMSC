@@ -2,7 +2,7 @@
 #include "Global.h"
 
 #include "Story/Action/Action.h"
-#include "Story/Data/Asset/Type/Live2DAnimAsset.h"
+#include "Story/Data/Asset/Type/AssetLive2DAnim.h"
 #include "Story/Data/Visual/Scenery/Character.h"
 
 ///[optional] Animates a Character with Live2D
@@ -11,26 +11,25 @@ class ActionCharLive2DAnim final : public Action
 {
 public:
 	ActionCharLive2DAnim() = default;
-	ActionCharLive2DAnim(	Event *parent, unsigned actionID, QString &&label, QString &&characterName, QString &&animAssetName,
-							bool bSyncWithSpeech, int duration) :
+	ActionCharLive2DAnim(Event *parent, unsigned actionID, QString &&label, QString &&characterName, QString &&animAssetName,
+						 bool bSyncWithSpeech, int duration) :
 		Action(parent, actionID, move(label)), characterName(move(characterName)), animAssetName(move(animAssetName)),
 		bSyncWithSpeech(bSyncWithSpeech), duration(duration) 
 	{	
 		//animAsset = ??
 	}
-	ActionCharLive2DAnim(const ActionCharLive2DAnim& obj) {
-		*this = obj;
-	}
-	ActionCharLive2DAnim& operator=(const ActionCharLive2DAnim& obj) {
+	ActionCharLive2DAnim(const ActionCharLive2DAnim& obj) {	*this = obj; }
+	ActionCharLive2DAnim& operator=(const ActionCharLive2DAnim& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Action::operator=(obj);
-		characterName = obj.characterName;
-		character = obj.character;
-		animAssetName = obj.animAssetName;
-		animAsset = obj.animAsset;
+		characterName   = obj.characterName;
+		character       = obj.character;
+		animAssetName   = obj.animAssetName;
+		animAsset       = obj.animAsset;
 		bSyncWithSpeech = obj.bSyncWithSpeech;
-		duration = obj.duration;
+		duration        = obj.duration;
 
 		return *this;
 	}
@@ -43,7 +42,7 @@ public:
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(Character *character, QString animName, Live2DAnimAsset *anim);
+	void onRun(Character *character, bool bSyncWithSpeech, double duration);
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
@@ -60,7 +59,7 @@ private:
 	///Animation to be played
 	QString			animAssetName;
 	///TODO: load asset
-	Live2DAnimAsset	*animAsset;
+	AssetLive2DAnim	*animAsset;
 
 	///Whether animation should be started with the beginning of the speech
 	///If this is set to [true] and [duration] is set to -2, the animation will end with the ending of the Speech

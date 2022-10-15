@@ -76,7 +76,7 @@ void Translation::serializableLoad(QDataStream& dataStream)
 
     for (unsigned i = 0; i != translationsSize; ++i)
     {
-        QPair<QString, TextAsset> pair;
+        QPair<QString, AssetText> pair;
         dataStream >> pair;
         translations.insert(pair.first, pair.second);
     }

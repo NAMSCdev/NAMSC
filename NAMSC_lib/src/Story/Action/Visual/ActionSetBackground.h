@@ -42,7 +42,7 @@ public:
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(ImageAsset *backgroundAsset, TransitionType transitionType, double transitionTime);
+	void onRun(AssetImage *backgroundAsset, TransitionType transitionType, double transitionTime);
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
@@ -50,7 +50,7 @@ private:
 
 	///Name to the background Image, so it can be loaded (if needed) and replaced
 	QString	backgroundAssetName;
-	ImageAsset *backgroundAsset = nullptr;
+	AssetImage *backgroundAsset = nullptr;
 
 
 	///Blends the scene change with an animation

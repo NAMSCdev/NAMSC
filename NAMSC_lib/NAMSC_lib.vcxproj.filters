@@ -251,25 +251,25 @@
     <ClInclude Include="src\Story\Data\Asset\AssetManager.h">
       <Filter>Header Files\Story\Data\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\MusicAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetMusic.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\SoundAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetSound.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\ImageAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetImage.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\TextAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetText.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\FontAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetFont.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Event\Visitor\EventVisitorDecrementID.h">
       <Filter>Header Files\Story\Event\Visitor</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\AnimAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetAnim.h">
       <Filter>Header Files\Story\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Visual\Animation\AnimatorTransform.h">
@@ -299,10 +299,10 @@
     <ClInclude Include="src\Story\Action\ActionsAll.h">
       <Filter>Header Files\Story\Action</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\Live2DAnimAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetLive2DAnim.h">
       <Filter>Header Files\Story\Data\Asset\Type\Optional</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Type\Live2DCharacterModelAsset.h">
+    <ClInclude Include="src\Story\Data\Asset\Type\AssetLive2DCharacterModel.h">
       <Filter>Header Files\Story\Data\Asset\Type\Optional</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Data\Chapter.h">
@@ -315,9 +315,6 @@
       <Filter>Header Files\Story\Action\Visual</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h">
-      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectHide.h">
       <Filter>Header Files\Story\Action\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectShow.h">
@@ -344,14 +341,20 @@
     <ClInclude Include="src\Story\Data\Asset\Asset.h">
       <Filter>Header Files\Story\Data\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Audio\MusicPlaylist.h">
+    <ClInclude Include="src\Story\Data\Audio\Sound.h">
       <Filter>Header Files\Story\Data\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Audio\Sound.h">
+    <ClInclude Include="src\Story\Data\Audio\AudioSettings.h">
       <Filter>Header Files\Story\Data\Audio</Filter>
     </ClInclude>
-    <ClInclude Include="src\Story\Data\Asset\Audio\AudioSettings.h">
+    <ClInclude Include="src\Story\Data\Audio\MusicPlaylist.h">
       <Filter>Header Files\Story\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Data\Text\Voice.h">
+      <Filter>Header Files\Story\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Story\Action\Visual\Animation\ActionSceneryObjectAnim.h">
+      <Filter>Header Files\Story\Action\Visual\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

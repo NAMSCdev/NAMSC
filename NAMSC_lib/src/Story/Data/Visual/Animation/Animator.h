@@ -42,7 +42,7 @@ protected:
 	///Name of the AnimAsset, so it can be loaded (if needed) and played
 	QString				animAssetName;
 	///AnimAsset containing all the AnimNodes
-	AnimAsset<AnimNode>	*animAsset;
+	AssetAnim<AnimNode>	*animAsset;
 
 	///Nodes containing current state and next state that we interpolate into
 	QVector<AnimNode>::const_iterator	currentNode, 

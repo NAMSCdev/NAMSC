@@ -6,16 +6,15 @@
 
 //Allows Animation loading and its memory management
 template<typename AnimNode>
-class AnimAsset : public Asset
+class AssetAnim : public Asset
 {
 public:
-	AnimAsset() = default;
-	AnimAsset(QString name, QString &&location, unsigned pos = 0) :
+	AssetAnim() = default;
+	AssetAnim(QString name, QString &&location, unsigned pos = 0) :
 		Asset(move(name), move(location), pos) {}
-	AnimAsset(const AnimAsset& obj) {
-		*this = obj;
-	}
-	AnimAsset& operator=(const AnimAsset& obj) {
+	AssetAnim(const AssetAnim& obj) { *this = obj; }
+	AssetAnim& operator=(const AssetAnim& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Asset::operator=(obj);

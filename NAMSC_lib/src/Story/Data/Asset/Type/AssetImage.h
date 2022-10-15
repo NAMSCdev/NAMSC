@@ -4,16 +4,15 @@
 #include "Story/Data/Asset/Asset.h"
 
 ///Allows Image loading and its memory management
-class ImageAsset final : public Asset
+class AssetImage final : public Asset
 {
 public:
-	ImageAsset() = default;
-	ImageAsset(QString&& name, unsigned pos = 0, bool bExternal = false, QString&& location = "") :
+	AssetImage() = default;
+	AssetImage(QString&& name, unsigned pos = 0, bool bExternal = false, QString&& location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
-	ImageAsset(const ImageAsset& obj) { 
-		*this = obj;
-	}
-	ImageAsset& operator=(const ImageAsset& obj) {
+	AssetImage(const AssetImage& obj) { *this = obj; }
+	AssetImage& operator=(const AssetImage& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Asset::operator=(obj);
@@ -22,7 +21,7 @@ public:
 		return *this;
 	}
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
-	virtual ~ImageAsset() = 0;
+	virtual ~AssetImage() = 0;
 
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
@@ -39,7 +38,7 @@ public:
 
 protected:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::ImageAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetImage; }
 
 	///A smart pointer to the actual data
 	uPtr<QImage> img;

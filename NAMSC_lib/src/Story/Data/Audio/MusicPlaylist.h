@@ -1,13 +1,18 @@
 #pragma once
 #include "Global.h"
+
+#include "Story/Data/Asset/Type/AssetMusic.h"
 #include "Story/Data/Asset/AssetManager.h"
 
-class MusicPlaylist {
+
+class MusicPlaylist
+{
+public:
 	MusicPlaylist() = default;
-	MusicPlaylist(MusicPlaylist& obj) {
-		*this = obj;
-	}
-	MusicPlaylist& operator=(const MusicPlaylist& obj) {
+	MusicPlaylist() = default;
+	MusicPlaylist(MusicPlaylist& obj) { *this = obj; }
+	MusicPlaylist& operator=(const MusicPlaylist& obj)
+	{
 		if (this == &obj) return *this;
 
 		musicAssetsNames = obj.musicAssetsNames;
@@ -21,7 +26,7 @@ class MusicPlaylist {
 	///Names of the MusicAssets, so they can be loaded (if needed) and played
 	QVector<QString> musicAssetsNames;
 	///MusicAssets to be played
-	QVector<MusicAsset*>musicAssets;
+	QVector<AssetMusic*>musicAssets;
 
 	///[low optional] Whether to randomize Music order
 	bool bRandomize = false;

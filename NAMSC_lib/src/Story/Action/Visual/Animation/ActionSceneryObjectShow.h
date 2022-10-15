@@ -15,21 +15,20 @@ public:
 
 	ActionSceneryObjectShow() = default;
 	ActionSceneryObjectShow(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName,
-							AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation) :
+							AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation, bool bShow) :
 		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), appearEffectType(appearEffectType),
-		duration(duration), bAppear(bAppear), bPerserveAnimation(bPerserveAnimation) {}
-	ActionSceneryObjectShow(const ActionSceneryObjectShow& obj) {
-		*this = obj;
-	}
-	ActionSceneryObjectShow& operator=(const ActionSceneryObjectShow& obj) {
+		duration(duration), bAppear(bAppear), bPerserveAnimation(bPerserveAnimation), bShow(bShow) {}
+	ActionSceneryObjectShow(const ActionSceneryObjectShow& obj) { *this = obj; }
+	ActionSceneryObjectShow& operator=(const ActionSceneryObjectShow& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionSceneryObject::operator=(obj);
-		appearEffectType = obj.appearEffectType;
-		duration = obj.duration;
-		bAppear = obj.bAppear;
+		appearEffectType   = obj.appearEffectType;
+		duration           = obj.duration;
+		bAppear            = obj.bAppear;
 		bPerserveAnimation = obj.bPerserveAnimation;
-
+		bShow              = obj.bShow;
 		return *this;
 	}
 
@@ -60,6 +59,9 @@ protected:
 	///[optional] If it is a Live2D animated, it will keep on playing its animation dNameng the appear animation
 	bool bPerserveAnimation	= false;
 
+	///Whether the SceneryObject will appear or disappear
+	bool bShow = true;
+	
 	//---SERIALIZATION---
 	///Loading an object from a binary file
 	void serializableLoad(QDataStream &dataStream) override;

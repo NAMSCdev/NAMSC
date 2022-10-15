@@ -16,15 +16,14 @@ public:
 	{ 
 		stat = Story::getInstance().getStoryState()->getStat(this->statName); 
 	}
-	ActionStat(const ActionStat& obj) {
-		*this = obj;
-	}
-	ActionStat& operator=(const ActionStat& obj) {
+	ActionStat(const ActionStat& obj) {	*this = obj; }
+	ActionStat& operator=(const ActionStat& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Action::operator=(obj);
 		statName = obj.statName;
-		stat = obj.stat;
+		stat     = obj.stat;
 
 		return *this;
 	}

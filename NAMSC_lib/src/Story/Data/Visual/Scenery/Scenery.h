@@ -1,8 +1,8 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Data/Asset/Type/ImageAsset.h"
-#include "Story/Data/Asset/Type/MusicAsset.h"
+#include "Story/Data/Asset/Type/AssetImage.h"
+#include "Story/Data/Asset/Type/AssetMusic.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
@@ -40,7 +40,7 @@ private:
 	///Names of the Asset holding the music that will be played
 	QVector<QString>		musicNames;
 	///Music played in current Scenery`
-	QVector<MusicAsset*>	musicPlaylist;
+	QVector<AssetMusic*>	musicPlaylist;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
