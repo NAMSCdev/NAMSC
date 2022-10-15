@@ -8,13 +8,12 @@ class ActionFilterErosion final : public ActionFilter
 {
 public:
 	ActionFilterErosion() = default;
-	ActionFilterErosion(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
+	ActionFilterErosion(unsigned actionID, QString &&label, QString &&sceneryObjectName, 
 						double intensivness, double strength) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterErosion(const ActionFilterErosion& obj) {
-		*this = obj;
-	}
-	ActionFilterErosion& operator=(const ActionFilterErosion& obj) {
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
+	ActionFilterErosion(const ActionFilterErosion& obj) { *this = obj; }
+	ActionFilterErosion& operator=(const ActionFilterErosion& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);

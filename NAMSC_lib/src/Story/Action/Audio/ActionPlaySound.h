@@ -13,12 +13,13 @@ class ActionPlaySound final : public ActionAudio
 {
 public:
 	ActionPlaySound() = default;
-	ActionPlaySound(Event *parent, unsigned actionID, double volume, double stereo,
-					int timesPlayed, QString &&label, QString &&soundAssetName, bool bPersistToNewEvent) :
-		ActionAudio(parent, actionID, stereo, volume, timesPlayed, move(label)), 
-		soundAssetName(move(soundAssetName)), bPersistToNewEvent(bPersistToNewEvent) 
+	ActionPlaySound(unsigned actionID, double volume, double stereo,
+					int timesPlayed, QString&& label, QVector<QString>&& soundAssetName, bool bPersistToNewEvent) :
+		ActionAudio(actionID, stereo, volume, timesPlayed, move(label)), 
+		soundAssetNames(move(soundAssetNames)), bPersistToNewEvent(bPersistToNewEvent)
 	{
-		soundAsset = AssetManager::getInstance().findSoundAsset(this->soundAssetName);
+		for (QString &soundAssetName : this->soundAssetNames)
+			this->soundAssets.push_back(AssetManager::getInstance().findAssetSound(soundAssetName));
 	}
 	ActionPlaySound(const ActionPlaySound& obj) { *this = obj; }
 	ActionPlaySound& operator=(const ActionPlaySound& obj) 
@@ -26,8 +27,8 @@ public:
 		if (this == &obj) return *this;
 
 		ActionAudio::operator=(obj);
-		soundAssetName     = obj.soundAssetName;
-		soundAsset         = obj.soundAsset;
+		soundAssetNames    = obj.soundAssetNames;
+		soundAssets        = obj.soundAssets;
 		bPersistToNewEvent = obj.bPersistToNewEvent;
 		
 		return *this;
@@ -45,15 +46,15 @@ signals:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::ActionPlaySound; }
+	SerializationID	getType() const override	{ return SerializationID::ActionPlaySound; }
 
 	///Ensures Assets are loaded and if not - loads them
-	void ensureAssetsAreLoaded() override { if (!soundAsset->isLoaded()) soundAsset->load(); }
+	void ensureAssetsAreLoaded() override		{ for (AssetSound* soundAsset: soundAssets) if (!soundAsset->isLoaded()) soundAsset->load(); }
 
-	///Name of the AssetSound, so it can be loaded (if needed) and played
-	QString soundAssetName;
+	///Names of the AssetSounds, so they can be loaded (if needed) and played
+	QVector<QString> soundAssetNames;
 	///SoundsAsset to be played
-	AssetSound *soundAsset = nullptr;
+	QVector<AssetSound*> soundAssets;
 
 	///Whether the Sound should be cut if user gets to the next Scene's Event before the end of this Sound
 	///@todo implement this

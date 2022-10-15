@@ -44,7 +44,7 @@ private:
 
 ///Base class for an animation node 
 template<unsigned dimension>
-class AnimNodeLongLong final : public AnimNodeBase
+struct AnimNodeLongLong final : public AnimNodeBase
 {
 	///Time point in milliseconds since the start of an Event, when the animation will achieve its state
 	int timestamp;

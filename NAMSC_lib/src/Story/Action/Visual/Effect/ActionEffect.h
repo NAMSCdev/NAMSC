@@ -14,21 +14,20 @@ public:
 	};
 
 	ActionEffect() = default;
-	ActionEffect(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+	ActionEffect(unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 				 QSize size, unsigned strength) :
-		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), effectShape(effectShape), pos(pos), 
+		ActionSceneryObject(actionID, move(label), move(sceneryObjectName)), effectShape(effectShape), pos(pos), 
 		size(size), strength(strength) {}
-	ActionEffect(const ActionEffect& obj) {
-		*this = obj;
-	}
-	ActionEffect& operator=(const ActionEffect& obj) {
+	ActionEffect(const ActionEffect& obj) {	*this = obj; }
+	ActionEffect& operator=(const ActionEffect& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionSceneryObject::operator=(obj);
 		effectShape = obj.effectShape;
-		pos = obj.pos;
-		size = obj.size;
-		strength = obj.strength;
+		pos         = obj.pos;
+		size        = obj.size;
+		strength    = obj.strength;
 
 		return *this;
 	}

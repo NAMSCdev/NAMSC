@@ -18,7 +18,7 @@ public:
 		return instance;
 	};
 
-	Story()							= default;
+	Story() { logFile.open(QIODevice::WriteOnly | QIODevice::Truncate); };
 	Story(Story const&)				= delete;
 	void operator=(Story const&)	= delete;
 

@@ -8,8 +8,8 @@ class ActionStatHide final : public ActionStat
 {
 public:
 	ActionStatHide() = default;
-	ActionStatHide(Event *parent, unsigned actionID, QString &&statName, QString &&label) :
-		ActionStat(parent, actionID, move(statName), move(label)) {}
+	ActionStatHide(unsigned actionID, QString &&statName, QString &&label) :
+		ActionStat(actionID, move(statName), move(label)) {}
 	ActionStatHide(const ActionStatHide& obj) { *this = obj; }
 	ActionStatHide& operator=(const ActionStatHide& obj) 
 	{

@@ -18,6 +18,20 @@ public:
 		Choice()	= default;
 		Choice(Translation &&text, QString &&condition, EventJump &&jump, QString &&label) :
 			text(move(text)), condition(condition), jump(move(jump)), label(move(label)) {}
+		Choice(const Choice& obj) { *this = obj; }
+		Choice& operator=(const Choice& obj)
+		{
+			if (this == &obj) return *this;
+
+			label                = obj.label;
+			text                 = obj.text;
+			condition            = obj.condition;
+			jump                 = obj.jump;
+			label                = obj.label;
+			choiceDisplayOptions = obj.choiceDisplayOptions;
+
+			return *this;
+		}
 		///A label that will be displayed in the Editor (and RenPy if implemented) to help navigation
 		QString		label;
 		///Text that is displayed as a Choice for the player
@@ -34,54 +48,63 @@ public:
 			friend QDataStream& operator<<(QDataStream&, const ChoiceDisplayOptions&);
 
 			ChoiceDisplayOptions() = default;
-			ChoiceDisplayOptions(QFont &&font, unsigned fontSize, bool bHideIfConditionNotMet) : 
-		font(move(font)), fontSize(fontSize), bHideIfConditionNotMet(bHideIfConditionNotMet) {}
+			ChoiceDisplayOptions(QString &&fontName, unsigned fontSize, bool bHideIfConditionNotMet) : 
+				fontName(move(fontName)), fontSize(fontSize), bHideIfConditionNotMet(bHideIfConditionNotMet) {}
+			ChoiceDisplayOptions(const ChoiceDisplayOptions& obj) { *this = obj; }
+			ChoiceDisplayOptions& operator=(const ChoiceDisplayOptions& obj)
+			{
+				if (this == &obj) return *this;
 
-			QFont			font;
-			unsigned		fontSize;
+				fontName               = obj.fontName;
+				font                   = obj.font;
+				fontSize               = obj.fontSize;
+				bHideIfConditionNotMet = obj.bHideIfConditionNotMet;
+
+				return *this;
+			}
+
+			QString fontName;
+			AssetFont *font;
+			unsigned fontSize;
 			///Normally, if the Choice is not available, it will be greyed out, setting this to [true] will make the Choice not appear at all
-			bool			bHideIfConditionNotMet;
+			bool bHideIfConditionNotMet;
         private:
             //---SERIALIZATION---
             /// Loading an object from a binary file
-            void serializableLoad(QDataStream &dataStream) 
-			{
-		dataStream >> font >> fontSize >> bHideIfConditionNotMet;
-            }
+			void serializableLoad(QDataStream& dataStream);
             /// Saving an object to a binary file
-            void serializableSave(QDataStream &dataStream) const 
-			{
-		dataStream << font << fontSize << bHideIfConditionNotMet;
-            }
-        }			choiceDisplayOptions;
+			void serializableSave(QDataStream& dataStream) const;
+        } choiceDisplayOptions;
 
 	private:
 		//---SERIALIZATION---
 		///Loading an object from a binary file
-		void serializableLoad(QDataStream &dataStream)
-		{
-	
-            dataStream >> label >> text >> condition >> jump;
-		}
+		void serializableLoad(QDataStream& dataStream);
 		///Saving an object to a binary file
-		void serializableSave(QDataStream &dataStream) const
-		{
-	
-            dataStream << label << text << condition << jump;
-		}
+		void serializableSave(QDataStream& dataStream) const;
 	};
 
 	EventChoice() = default;
-	EventChoice(unsigned sceneID, unsigned executionOrder, Translation &&text, QVector<Choice> &&choices, QString &&label = "") :
-		Event(sceneID, executionOrder, move(label)), text(move(text)), choices(move(choices)) {}
-	
+	EventChoice(unsigned executionOrder, QString&& label, Translation &&text, QVector<Choice> &&choices) :
+		Event(executionOrder, move(label)), text(move(text)), choices(move(choices)) {}
+	EventChoice(const EventChoice& obj) { *this = obj; }
+	EventChoice& operator=(const EventChoice& obj)
+	{
+		if (this == &obj) return *this;
+
+		Event::operator=(obj);
+		text    = obj.text;
+		choices = obj.choices;
+
+		return *this;
+	}
 	///Executes Event's logic
-	void			run		() override;
+	void run() override;
 
 	///Accepts EventVisitor
-	void			accept	(EventVisitor* visitor) override		{ visitor->visitEventChoice(this); }
+	void accept(EventVisitor* visitor) override		{ visitor->visitEventChoice(this); }
 	 
-protected:
+private:
 	///Needed for serialization, to know the class of an object before the loading performed
 	SerializationID	getType	() const override		{ return SerializationID::EventChoice; }
 
@@ -93,28 +116,7 @@ protected:
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Event::serializableLoad(dataStream);
-
-		dataStream >> text;
-
-		unsigned choicesSize;
-		dataStream >> choicesSize;
-		for (unsigned i = 0u; i != choicesSize; ++i)
-		{
-			Choice choice;
-			dataStream >> choice;
-			choices.push_back(move(choice));
-		}
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Event::serializableSave(dataStream);
-
-		dataStream << text << choices.size();
-		for (const Choice &choice : choices)
-			dataStream << choice;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };

@@ -8,13 +8,12 @@ class ActionFilterDilation final : public ActionFilter
 {
 public:
 	ActionFilterDilation() = default;
-	ActionFilterDilation(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, 
+	ActionFilterDilation(unsigned actionID, QString &&label, QString &&sceneryObjectName, 
 						 double intensivness, double strength) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterDilation(const ActionFilterDilation& obj) {
-		*this = obj;
-	}
-	ActionFilterDilation& operator=(const ActionFilterDilation& obj) {
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
+	ActionFilterDilation(const ActionFilterDilation& obj) { *this = obj; }
+	ActionFilterDilation& operator=(const ActionFilterDilation& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);

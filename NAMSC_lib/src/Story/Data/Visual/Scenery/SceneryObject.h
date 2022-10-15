@@ -15,8 +15,10 @@ public:
 	SceneryObject(QPoint pos, QSize scale, double rotation, QColor color, QString &&label, QString &&imageAssetName) :
 		pos(pos), scale(scale), rotation(rotation), color(color), label(move(label)), imageAssetName(move(imageAssetName))
 	{
-		imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
+		imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
 	}
+
+
 	virtual ~SceneryObject() = default;
 
 	///Animation values
@@ -31,7 +33,7 @@ public:
 	double rotation = 0.0;
 	
 	///Color multiplicatives for image
-	QColor color	= { 1.0, 1.0, 1.0, 1.0 };
+	double color[4] = {1.0, 1.0, 1.0, 1.0};
 
 protected:
 	///Label for quicker identification in the Editor
@@ -41,7 +43,7 @@ protected:
 	QString imageAssetName;
 	//Image that will be rendered
 	AssetImage	*imageAsset;
-	///[optional] create this class and it will store ImageAssets with custom names for image filtering (useful in Editor)
+	///[optional] create this class and it will store AssetImages with custom names for image filtering (useful in Editor)
 	//QVector<SceneryObjectPart> parts;
 
 	//---SERIALIZATION---

@@ -8,8 +8,8 @@ class ActionStatChange final : public ActionStat
 {
 public:
 	ActionStatChange() = default;
-	ActionStatChange(Event *parent, unsigned actionID, QString &&statName, QString &&expression, QString &&label) :
-		ActionStat(parent, actionID, move(statName), move(label)), expression(move(expression)) {}
+	ActionStatChange(unsigned actionID, QString &&statName, QString &&expression, QString &&label) :
+		ActionStat(actionID, move(statName), move(label)), expression(move(expression)) {}
 	ActionStatChange(const ActionStatChange& obj) {	*this = obj; }
 	ActionStatChange& operator=(const ActionStatChange& obj)
 	{

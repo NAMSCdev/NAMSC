@@ -14,9 +14,9 @@ public:
 	};
 
 	ActionSceneryObjectShow() = default;
-	ActionSceneryObjectShow(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName,
+	ActionSceneryObjectShow(unsigned actionID, QString &&label, QString &&sceneryObjectName,
 							AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation, bool bShow) :
-		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), appearEffectType(appearEffectType),
+		ActionSceneryObject(actionID, move(label), move(sceneryObjectName)), appearEffectType(appearEffectType),
 		duration(duration), bAppear(bAppear), bPerserveAnimation(bPerserveAnimation), bShow(bShow) {}
 	ActionSceneryObjectShow(const ActionSceneryObjectShow& obj) { *this = obj; }
 	ActionSceneryObjectShow& operator=(const ActionSceneryObjectShow& obj)

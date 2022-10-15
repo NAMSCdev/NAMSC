@@ -373,12 +373,6 @@
     <ClCompile Include="src\Story\Data\Asset\AssetManager.cpp">
       <Filter>Source Files\Story\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>Source Files\Story</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Exceptions.cpp">
-      <Filter>Source Files\Story</Filter>
-    </ClCompile>
     <ClCompile Include="src\Story\Data\Serialization\ActionSerialization.cpp">
       <Filter>Source Files\Story\Serialization</Filter>
     </ClCompile>
@@ -390,6 +384,15 @@
     </ClCompile>
     <ClCompile Include="src\Story\Data\Visual\Animation\Animation.cpp">
       <Filter>Source Files\Story\Data\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Story\Data\Asset\Asset.cpp">
+      <Filter>Source Files\Story</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

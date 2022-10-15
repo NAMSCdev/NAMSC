@@ -17,19 +17,19 @@ public:
 	};
 
 	ActionSetBackground() = default;
-	ActionSetBackground(Event *parent, unsigned actionID, QString &&label, QString &&backgroundAssetName, TransitionType transitionType, 
+	ActionSetBackground(unsigned actionID, QString &&label, QString &&backgroundAssetName, TransitionType transitionType, 
 						double transitionTime/*, QString &&themeName*/) :
-		Action(parent, actionID, move(label)), backgroundAssetName(move(backgroundAssetName)), transitionType(transitionType),
-		transitionTime(transitionTime)/*, themeName(move(themeName))*/ { backgroundAsset = AssetManager::getInstance().findSceneryBackgroundImageAsset(this->backgroundAssetName); }
-	ActionSetBackground(const ActionSetBackground& obj) {
-		*this = obj;
-	}
-	ActionSetBackground& operator=(const ActionSetBackground& obj) {
+		Action(actionID, move(label)), backgroundAssetName(move(backgroundAssetName)), transitionType(transitionType),
+		transitionTime(transitionTime)/*, themeName(move(themeName))*/ 
+			{ backgroundAsset = AssetManager::getInstance().findSceneryBackgroundAssetImage(this->backgroundAssetName); }
+	ActionSetBackground(const ActionSetBackground& obj) { *this = obj; }
+	ActionSetBackground& operator=(const ActionSetBackground& obj) 
+	{
 		if (this == &obj) return *this;
 
 		Action::operator=(obj);
 		backgroundAssetName = obj.backgroundAssetName;
-		backgroundAsset = obj.backgroundAsset;
+		backgroundAsset     = obj.backgroundAsset;
 
 		return *this;
 	}
@@ -42,7 +42,7 @@ public:
 
 signals:
 	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(AssetImage *backgroundAsset, TransitionType transitionType, double transitionTime);
+	void onRun(QImage *background, TransitionType transitionType, double transitionTime);
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded

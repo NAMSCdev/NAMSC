@@ -49,7 +49,7 @@ public:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::TextAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetText; }
 
 	///A smart pointer to the actual data
 	uPtr<QString> str;

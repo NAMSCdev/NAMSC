@@ -8,13 +8,12 @@ class ActionEffectGlow final : public ActionEffect
 {
 public:
 	ActionEffectGlow() = default;
-	ActionEffectGlow(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+	ActionEffectGlow(unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 					 QSize size, unsigned strength) :
-		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
-	ActionEffectGlow(const ActionEffectGlow& obj) {
-		*this = obj;
-	}
-	ActionEffectGlow& operator=(const ActionEffectGlow& obj) {
+		ActionEffect(actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
+	ActionEffectGlow(const ActionEffectGlow& obj) { *this = obj; }
+	ActionEffectGlow& operator=(const ActionEffectGlow& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionEffect::operator=(obj);

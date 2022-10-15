@@ -11,8 +11,8 @@ class ActionStat : public Action
 {
 public:
 	ActionStat() = default;
-	ActionStat(Event *parent, unsigned actionID, QString &&statName, QString &&label) :
-		Action(parent, actionID, move(label)), statName(move(statName)) 
+	ActionStat(unsigned actionID, QString &&statName, QString &&label) :
+		Action(actionID, move(label)), statName(move(statName)) 
 	{ 
 		stat = Story::getInstance().getStoryState()->getStat(this->statName); 
 	}

@@ -6,7 +6,7 @@
 
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
 
-///Represents a Character in game 
+///Represents a Character in tbe Novel
 class Character final : public SceneryObject
 {
 	///Friends for serialization
@@ -15,6 +15,18 @@ class Character final : public SceneryObject
 public:
 	Character() = default;
 	Character(QString&& defaultVoiceName);
+	Character(const Character& obj) { *this = obj; }
+	Character& operator=(const Character& obj)
+	{
+		if (this == &obj) return *this;
+
+		SceneryObject::operator=(obj);
+		defaultVoiceName = obj.defaultVoiceName;
+		defaultVoice     = obj.defaultVoice;
+
+		return *this;
+	}
+
 
 private:
 	///Name of the default Voice that will be assigned to EventSpeak 

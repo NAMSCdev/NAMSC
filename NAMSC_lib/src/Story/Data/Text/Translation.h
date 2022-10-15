@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 
-#include "Story/Data/Asset/Type/TextAsset.h"
+#include "Story/Data/Asset/Type/AssetText.h"
 
 ///Class representing every Speech that is to be spoken by a Character or Narrator
 ///[optional] It also contains duration of every word if it's to be voiced/slowed down
@@ -14,11 +14,19 @@ public:
 	Translation() = default;
 	Translation(const QMap<QString, AssetText>&& translations/*, const QVector<unsigned int>>	&&wordDurations*/) :
 		translations(move(translations))/*, wordDurations(move(wordDurations))*/ {}
+	Translation(const Translation& obj) { *this = obj; }
+	Translation& operator=(const Translation& obj)
+	{
+		if (this == &obj) return *this;
 
+		translations = obj.translations;
+
+		return *this;
+	}
 	///Return text in the language that is set in StorySettings
 	const QString text(const QString language = StorySettings::getInstance().language);
 
-	///Adds or replaces a translation(pair of const QString and TextAsset) to the `translations` list
+	///Adds or replaces a translation(pair of const QString and AssetText) to the `translations` list
 	void addTranslation(const QString &language, const AssetText &translation) { translations[language] = translation; }
 
 	///Removes translation from `translations` list

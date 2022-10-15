@@ -32,6 +32,20 @@ public:
 
 	Sentence() = default;
 	Sentence(Translation &&content, QString &&voiceName, unsigned cps, bool bEndWithInput, double waitBeforeContinueTime);
+	Sentence(const Sentence& obj) { *this = obj; }
+	Sentence& operator=(const Sentence& obj)
+	{
+		if (this == &obj) return *this;
+
+		content                = obj.content;
+		voiceName              = obj.voiceName;
+		voice                  = obj.voice;
+		cps                    = obj.cps;
+		bEndWithInput          = obj.bEndWithInput;
+		waitBeforeContinueTime = obj.waitBeforeContinueTime;
+		
+		return *this;
+	}
 
 private:
 	///Things to be said, in the chosen language in GlobalSettings

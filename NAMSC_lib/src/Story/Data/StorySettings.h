@@ -54,7 +54,7 @@ public:
         r_800x600
     } resolution = AvailableResolutions::r_800x600;
 
-    ///Changes the default language and forces severy TextAsset to copy the text from previous one, if there is no translation in the new default language
+    ///Changes the default language and forces severy AssetText to copy the text from previous one, if there is no translation in the new default language
     ///@todo iplement this
     void defaultLanguageChange(const QString &newLanguage)
     {

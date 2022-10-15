@@ -8,30 +8,31 @@
 class EventEndIf final : public Event
 {
 public:
-	EventEndIf(unsigned sceneID, unsigned executionOrder, QString &&label = "") :
-		Event(sceneID, executionOrder, move(label)) {}
+	EventEndIf() = default;
+	EventEndIf(unsigned executionOrder, QString&& label) :
+		Event(executionOrder, move(label)) {}
+	EventEndIf(const EventEndIf& obj) { *this = obj; }
+	EventEndIf& operator=(const EventEndIf& obj)
+	{
+		if (this == &obj) return *this;
 
+		Event::operator=(obj);
+
+		return *this;
+	}
 	///Executes Event's logic
-	void		run		() override;
+	void run() override;
 
 	///Accepts EventVisitor
-	void		accept	(EventVisitor* visitor) override			{ visitor->visitEventEndIf(this); }
+	void accept(EventVisitor* visitor) override	{ visitor->visitEventEndIf(this); }
 
-protected:
+private:
 	///Needed for serialization, to know the class of an object before the loading performed
-	SerializationID		getType	() const override			{ return SerializationID::EventEndIf; }
+	SerializationID	getType() const override	{ return SerializationID::EventEndIf; }
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Event::serializableLoad(dataStream);
-
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Event::serializableSave(dataStream);
-
-	}
+	void serializableSave(QDataStream& dataStream) const override;s
 };

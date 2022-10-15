@@ -11,9 +11,9 @@ public:
 	ActionSceneryObjectAnimMove() = default;
 	ActionSceneryObjectAnimMove(unsigned actionID, QString&& label, QString&& sceneryObjectName,
 								QString&& animName, double speed, bool bLoop) :
-		ActionSceneryObjectAnim<AnimNodeDouble2D>(parent, actionID, move(label), move(sceneryObjectName),
+		ActionSceneryObjectAnim<AnimNodeDouble2D>(actionID, move(label), move(sceneryObjectName),
 		move(animName), speed, bLoop)
-			{ animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+			{ animAsset = AssetManager::getInstance().findAssetAnimMove(this->animName); }
 	ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove&) = default;
 	ActionSceneryObjectAnimMove& operator=(const ActionSceneryObjectAnimMove&) = default;
 
@@ -32,9 +32,9 @@ public:
 	ActionSceneryObjectAnimScale() = default;
 	ActionSceneryObjectAnimScale(unsigned actionID, QString&& label, QString&& sceneryObjectName,
 								 QString&& animName, double speed, bool bLoop) :
-		ActionSceneryObjectAnim<AnimNodeDouble2D>(parent, actionID, move(label), move(sceneryObjectName),
+		ActionSceneryObjectAnim<AnimNodeDouble2D>(actionID, move(label), move(sceneryObjectName),
 		move(animName), speed, bLoop) 
-			{ animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+			{ animAsset = AssetManager::getInstance().findAssetAnimMove(this->animName); }
 	ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale&) = default;
 	ActionSceneryObjectAnimScale& operator=(const ActionSceneryObjectAnimScale&) = default;
 
@@ -54,9 +54,9 @@ public:
 	ActionSceneryObjectAnimRotate() = default;
 	ActionSceneryObjectAnimRotate(unsigned actionID, QString&& label, QString&& sceneryObjectName,
 								  QString&& animName, double speed, bool bLoop) :
-		ActionSceneryObjectAnim<AnimNodeDouble1D>(parent, actionID, move(label), move(sceneryObjectName),
+		ActionSceneryObjectAnim<AnimNodeDouble1D>(actionID, move(label), move(sceneryObjectName),
 		move(animName), speed, bLoop)
-			{ animAsset = AssetManager::getInstance().findAnimAssetMove(this->animName); }
+			{ animAsset = AssetManager::getInstance().findAssetAnimMove(this->animName); }
 	ActionSceneryObjectAnimRotate(const ActionSceneryObjectAnimRotate&) = default;
 	ActionSceneryObjectAnimRotate& operator=(const ActionSceneryObjectAnimRotate&) = default;
 
@@ -76,9 +76,9 @@ public:
 	ActionSceneryObjectAnimColor() = default;
 	ActionSceneryObjectAnimColor(unsigned actionID, QString&& label, QString&& sceneryObjectName,
 								 QString&& animName, double speed, bool bLoop) :
-		ActionSceneryObjectAnim<AnimNodeDouble4D>(parent, actionID, move(label), move(sceneryObjectName),
+		ActionSceneryObjectAnim<AnimNodeDouble4D>(actionID, move(label), move(sceneryObjectName),
 		move(animName), speed, bLoop) 
-			{ animAsset = AssetManager::getInstance().findAnimAssetColor(this->animName); }
+			{ animAsset = AssetManager::getInstance().findAssetAnimColor(this->animName); }
 	ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor&) = default;
 	ActionSceneryObjectAnimColor& operator=(const ActionSceneryObjectAnimColor&) = default;
 

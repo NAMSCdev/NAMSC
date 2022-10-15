@@ -4,7 +4,7 @@
 #include "Story/Data/Visual/Animation/AnimNode.h"
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
 
-#include "Story/Data/Asset/Type/AnimAsset.h"
+#include "Story/Data/Asset/Type/AssetAnim.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 ///Controls an Animation output that will be assigned to change something that is being animated
@@ -16,10 +16,24 @@ class Animator
 	friend QDataStream& operator<<(QDataStream& dataStream, const Animator& t);
 public:
 	Animator() = default;
-	Animator(QString&& animAssetName, bool bLoop) :
-		animAssetName(move(animAssetName)), bLoop(bLoop) {}
-	Animator(const Animator& asset)				= default;
-	Animator& operator=(const Animator& asset)	= default;
+	Animator(QString&& animAssetName, double speed, bool bLoop) :
+		animAssetName(move(animAssetName)), speed(speed), bLoop(bLoop) {}
+	Animator(const Animator& obj) { *this = obj; }
+	Animator& operator=(const Animator& obj)
+	{
+		if (this == &obj) return *this;
+
+		nodes         = obj.nodes;
+		animAssetName = obj.animAssetName;
+		animAsset     = obj.animAsset;
+		currentNode   = nodes->cbegin() + (obj.currentNode - obj.nodes->cbegin());
+		nextNode      = currentNode + 1;
+		startTime     = obj.startTime;
+		speed         = obj.speed;
+		bLoop         = obj.bLoop;
+
+		return *this;
+	}
 	
 	virtual ~Animator() = 0;
 
@@ -33,15 +47,15 @@ public:
 
 	///Calculates interpolated state in given [time]
 	AnimNode currentAnimState();
-	void ensureAnimIsLoaded() { if (!animAsset.isLoaded()) animAsset.load(); }
+	void ensureAnimIsLoaded() { if (!animAsset->isLoaded()) animAsset->load(); nodes = animAsset->getAnimNodes(); }
 
 protected:
-	///Poits to the AnimNodes of some AnimAsset, that contain sequential changes
+	///Poits to the AnimNodes of some AssetAnim, that contain sequential changes
 	QVector<AnimNode>	*nodes;
 
-	///Name of the AnimAsset, so it can be loaded (if needed) and played
+	///Name of the AssetAnim, so it can be loaded (if needed) and played
 	QString				animAssetName;
-	///AnimAsset containing all the AnimNodes
+	///AssetAnim containing all the AnimNodes
 	AssetAnim<AnimNode>	*animAsset;
 
 	///Nodes containing current state and next state that we interpolate into
@@ -72,9 +86,18 @@ class AnimatorSceneryObject : public Animator<AnimNode>
 {
 public:
 	AnimatorSceneryObject() = default;
-	AnimatorSceneryObject(QString &&animAssetName, bool bLoop, QString &&sceneryObjectName);
-	AnimatorSceneryObject(const AnimatorSceneryObject &asset) = default;
-	AnimatorSceneryObject& operator=(const AnimatorSceneryObject &asset) = default;
+	AnimatorSceneryObject(QString&& animAssetName, double speed, bool bLoop, QString&& sceneryObjectName);
+	AnimatorSceneryObject(const AnimatorSceneryObject &obj) { *this = obj; }
+	AnimatorSceneryObject& operator=(const AnimatorSceneryObject& obj)
+	{
+		if (this == &obj) return *this;
+
+		Animator<AnimNode>::operator=(obj);
+		sceneryObjectName = obj.sceneryObjectName;
+		sceneryObject     = obj.sceneryObject;
+
+		return *this;
+	}
 
 	///Affects the SceneryObject
 	virtual void update() = 0;

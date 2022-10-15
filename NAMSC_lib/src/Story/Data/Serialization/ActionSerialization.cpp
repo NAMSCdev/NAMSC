@@ -38,7 +38,7 @@ void ActionChangeMusic::serializableLoad(QDataStream &dataStream)
 		dataStream >> name;
 		musicAssetsNames.push_back(name);
 
-		AssetMusic *asset = AssetManager::getInstance().findMusicAsset(name);
+		AssetMusic *asset = AssetManager::getInstance().findAssetMusic(name);
 		musicAssets.push_back(asset);
 	}
 	dataStream >> bRandomize >> bExclusive;
@@ -57,7 +57,7 @@ void ActionPlaySound::serializableLoad(QDataStream &dataStream)
 {
 	Action::serializableLoad(dataStream);
 	dataStream >> soundAssetName >> bPersistToNewEvent;
-	soundAsset = AssetManager::getInstance().findSoundAsset(soundAssetName);
+	soundAsset = AssetManager::getInstance().findAssetSound(soundAssetName);
 }
 
 
@@ -134,7 +134,7 @@ void ActionSceneryObjectChange::serializableLoad(QDataStream &dataStream)
 {
 	ActionSceneryObject::serializableLoad(dataStream);
 	dataStream >> imageAssetName;
-	imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
+	imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
 }
 
 void ActionSceneryObjectChange::serializableSave(QDataStream &dataStream) const

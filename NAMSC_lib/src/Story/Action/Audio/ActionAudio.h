@@ -9,8 +9,8 @@ class ActionAudio : public Action
 {
 public:
 	ActionAudio() = default;
-	ActionAudio(Event *parent, unsigned actionID, double volume, double stereo, int timesPlayed, QString &&label) :
-		Action(parent, actionID, move(label)), settings(timesPlayed, stereo, volume) {}
+	ActionAudio(unsigned actionID, double volume, double stereo, int timesPlayed, QString &&label) :
+		Action(actionID, move(label)), settings(timesPlayed, stereo, volume) {}
 	ActionAudio(const ActionAudio& obj) { *this = obj; }
 	ActionAudio& operator=(const ActionAudio& obj)
 	{

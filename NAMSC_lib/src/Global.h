@@ -52,15 +52,15 @@ enum class SerializationID
     ActionSceneryObjectChange       = 21,   
     ActionSetBackground             = 22,
     AssetLive2DAnim                 = 23,
-    Live2DCharacterModelAsset       = 24,
-    AnimAsset                       = 25,
+    AssetLive2DCharacterModel       = 24,
+    AssetAnim                       = 25,
     AssetFont                       = 26,
     AssetImage                      = 27,
     AssetMusic                      = 28,
-    SceneryBackgroundImageAsset     = 29,
-    SceneryObjectPartImageAsset     = 30,
+    SceneryBackgroundAssetImage     = 29,
+    SceneryObjectPartAssetImage     = 30,
     AssetSound                      = 31,
-    TextAsset                       = 32,
+    AssetText                       = 32,
     StatString                      = 33,
     StatBool                        = 34,
     StatLongLong                    = 35,
@@ -73,7 +73,16 @@ enum class SerializationID
     AnimatorFilter                  = 42,
     AnimatorTransform               = 43,
     Character                       = 44,
-    Scenery                         = 45 
+    Scenery                         = 45,
+    EventRenPyScript                = 46,
+    EventChoice                     = 47,
+    EventEndIf                      = 48,
+    EventIf                         = 49,
+    EventInput                      = 50,
+    EventJump                       = 51,
+    EventNarrate                    = 52,
+    EventSpeak                      = 53,
+    EventWait                       = 54
 };
 
 template <class T>

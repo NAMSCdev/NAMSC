@@ -23,11 +23,24 @@ public:
 	};
 
 	Stat() = default;
-	Stat(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification)
+	Stat(QString&& name, QString&& displayName, bool bShow, unsigned priority, ShowNotification showNotification)
 		: name(move(name)), displayName(move(displayName)), bShow(bShow), priority(priority), showNotification(showNotification)
 	{
 		if (this->displayName.isEmpty())
 			this->displayName = this->name;
+	}
+	Stat(const Stat& obj) { *this = obj; }
+	Stat& operator=(const Stat& obj)
+	{
+		if (this == &obj) return *this;
+
+		name             = obj.name;
+		displayName      = obj.displayName;
+		bShow            = obj.bShow;
+		priority         = obj.priority;
+		showNotification = obj.showNotification;
+
+		return *this;
 	}
 	virtual ~Stat();
 
@@ -49,16 +62,10 @@ protected:
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	virtual void serializableLoad(QDataStream &dataStream)
-	{
-		dataStream >> name >> displayName >> bShow >> priority >> showNotification;
-	}
+	virtual void serializableLoad(QDataStream& dataStream);
 
 	///Saving an object to a binary file
-	virtual void serializableSave(QDataStream &dataStream) const
-	{
-		dataStream << getType() << name << displayName << bShow << priority << showNotification;
-	}
+	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
 Stat::~Stat() = default;
@@ -80,9 +87,19 @@ class StatString final : public Stat
 {
 public:
 	StatString() = default;
-	StatString(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification, QString &&value, unsigned maxChars)
+	StatString(QString&& name, QString&& displayName, bool bShow, unsigned priority, ShowNotification showNotification, QString&& value, unsigned maxChars)
 		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(move(value)), maxChars(maxChars) {}
+	StatString(const StatString& obj) { *this = obj; }
+	StatString& operator=(const StatString& obj)
+	{
+		if (this == &obj) return *this;
 
+		Stat::operator=(obj);
+		value    = obj.value;
+		maxChars = obj.maxChars;
+
+		return *this;
+	}
 	///Every Stat has [value] field, but not all must have [max] and/or [min]
 	///This one does not
 	QString value;
@@ -96,19 +113,9 @@ private:
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Stat::serializableLoad(dataStream);
-
-		dataStream >> value >> maxChars;
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Stat::serializableSave(dataStream);
-
-		dataStream << value << maxChars;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };
 
 ///A Stat with the boolean value
@@ -116,9 +123,18 @@ class StatBool final : public Stat
 {
 public:
 	StatBool() = default;
-	StatBool(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification, bool value)
+	StatBool(QString&& name, QString&& displayName, bool bShow, unsigned priority, ShowNotification showNotification, bool value)
 		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(value) {}
+	StatBool(const StatBool& obj) { *this = obj; }
+	StatBool& operator=(const StatBool& obj)
+	{
+		if (this == &obj) return *this;
 
+		Stat::operator=(obj);
+		value = obj.value;
+
+		return *this;
+	}
 	///Every Stat has [value] field, but not all must have [max] and/or [min]
 	///This one does not
 	bool value;
@@ -129,19 +145,9 @@ private:
 	
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Stat::serializableLoad(dataStream);
-
-		dataStream >> value;
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Stat::serializableSave(dataStream);
-
-		dataStream << value;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };
 
 ///A Stat with the integer value
@@ -149,11 +155,22 @@ class StatLongLong final : public Stat
 {
 public:
 	StatLongLong() = default;
-	StatLongLong(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification,
-			int value, int min, int max/*, QString &&oppositeStatLabel*/) : 
+	StatLongLong(QString&& name, QString&& displayName, bool bShow, unsigned priority, ShowNotification showNotification,
+			int value, int min, int max/*, QString&& oppositeStatLabel*/) : 
 		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*,
 		oppositeStatLabel(move(oppositeStatLabel))*/ {}
+	StatLongLong(const StatLongLong& obj) { *this = obj; }
+	StatLongLong& operator=(const StatLongLong& obj)
+	{
+		if (this == &obj) return *this;
 
+		Stat::operator=(obj);
+		value = obj.value;
+		min   = obj.min;
+		max   = obj.max;
+
+		return *this;
+	}
 	///Every Stat has [value] field, but not all must have [max] and/or [min]
 	///This one does
 	long long value, min, max;
@@ -167,19 +184,9 @@ private:
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Stat::serializableLoad(dataStream);
-
-		dataStream >> value >> min >> max/* >> oppositeStatLabel*/;
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Stat::serializableSave(dataStream);
-
-		dataStream << value << min << max/* << oppositeStatLabel*/;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };
 
 ///A Stat with the floating-point value
@@ -187,10 +194,21 @@ class StatDouble final : public Stat
 {
 public:
 	StatDouble() = default;
-	StatDouble(QString &&name, QString &&displayName, bool bShow, unsigned priority, ShowNotification showNotification,
-			   double value, double min, double max/*, QString &&oppositeStatLabel*/) : 
+	StatDouble(QString&& name, QString&& displayName, bool bShow, unsigned priority, ShowNotification showNotification,
+			   double value, double min, double max/*, QString&& oppositeStatLabel*/) : 
 		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*, oppositeStatLabel(move(oppositeStatLabel))*/ {}
+	StatDouble(const StatDouble& obj) { *this = obj; }
+	StatDouble& operator=(const StatDouble& obj)
+	{
+		if (this == &obj) return *this;
 
+		Stat::operator=(obj);
+		value = obj.value;
+		min   = obj.min;
+		max   = obj.max;
+
+		return *this;
+	}
 	///Every Stat has [value] field, but not all must have [max] and/or [min]
 	///This one does
 	double value, min, max;
@@ -204,17 +222,7 @@ private:
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Stat::serializableLoad(dataStream);
-
-		dataStream >> value >> min >> max/* >> oppositeStatLabel*/;
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Stat::serializableSave(dataStream);
-
-		dataStream << value << min << max/* << oppositeStatLabel*/;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };

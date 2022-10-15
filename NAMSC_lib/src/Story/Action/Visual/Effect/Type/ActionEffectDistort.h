@@ -8,13 +8,12 @@ class ActionEffectDistort final : public ActionEffect
 {
 public:
 	ActionEffectDistort() = default;
-	ActionEffectDistort(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+	ActionEffectDistort(unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 						QSize size, unsigned strength) :
-		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
-	ActionEffectDistort(const ActionEffectDistort& obj) {
-		*this = obj;
-	}
-	ActionEffectDistort& operator=(const ActionEffectDistort& obj) {
+		ActionEffect(actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength) {}
+	ActionEffectDistort(const ActionEffectDistort& obj) { *this = obj; }
+	ActionEffectDistort& operator=(const ActionEffectDistort& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionEffect::operator=(obj);

@@ -10,6 +10,8 @@ class StoryState
     friend QDataStream& operator>>(QDataStream&, StoryState&);
     friend QDataStream& operator<<(QDataStream&, const StoryState&);
 public:
+    StoryState() = default;
+
     void createNew(unsigned slot)
     {
         //todo: read from a file and throw exceptions on fialure

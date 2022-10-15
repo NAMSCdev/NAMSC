@@ -34,8 +34,8 @@ AnimNode Animator<AnimNode>::currentAnimState()
 };
 
 template<typename AnimNode>
-AnimatorSceneryObject<AnimNode>::AnimatorSceneryObject(QString &&animAssetName, bool bLoop, QString &&sceneryObjectName) :
-    Animator<AnimNode>(move(animAssetName), bLoop), sceneryObjectName(move(sceneryObjectName))
+AnimatorSceneryObject<AnimNode>::AnimatorSceneryObject(QString &&animAssetName, double speed, bool bLoop, QString &&sceneryObjectName) :
+    Animator<AnimNode>(move(animAssetName), speed, bLoop), sceneryObjectName(move(sceneryObjectName))
 {
     sceneryObject = Story::getInstance().;
 }

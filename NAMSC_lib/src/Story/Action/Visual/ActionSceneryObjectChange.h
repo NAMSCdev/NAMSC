@@ -12,19 +12,18 @@ class ActionSceneryObjectChange final : public ActionSceneryObject
 public:
 	ActionSceneryObjectChange() = default;
 	ActionSceneryObjectChange(Event* parent, unsigned actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) :
-		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
+		ActionSceneryObject(actionID, move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
 	{
-		imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
+		imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
 	}
-	ActionSceneryObjectChange(const ActionSceneryObjectChange& obj) {
-		*this = obj;
-	}
-	ActionSceneryObjectChange& operator=(const ActionSceneryObjectChange& obj) {
+	ActionSceneryObjectChange(const ActionSceneryObjectChange& obj) { *this = obj; }
+	ActionSceneryObjectChange& operator=(const ActionSceneryObjectChange& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionSceneryObject::operator=(obj);
 		imageAssetName = obj.imageAssetName;
-		imageAsset = obj.imageAsset;
+		imageAsset     = obj.imageAsset;
 
 		return *this;
 	}

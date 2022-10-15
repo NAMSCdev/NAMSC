@@ -14,9 +14,9 @@ public:
 	};
 
 	ActionEffectBlur() = default;
-	ActionEffectBlur(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
+	ActionEffectBlur(unsigned actionID, QString &&label, QString &&sceneryObjectName, EffectShape effectShape, QPoint pos,
 					 QSize size, unsigned strength, BlurType blurType) :
-		ActionEffect(parent, actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength), blurType(blurType) {}
+		ActionEffect(actionID, move(label), move(sceneryObjectName), effectShape, pos, size, strength), blurType(blurType) {}
 	ActionEffectBlur(const ActionEffectBlur& obj) {	*this = obj; }
 	ActionEffectBlur& operator=(const ActionEffectBlur& obj)
 	{

@@ -11,9 +11,9 @@ class ActionCharLive2DAnim final : public Action
 {
 public:
 	ActionCharLive2DAnim() = default;
-	ActionCharLive2DAnim(Event *parent, unsigned actionID, QString &&label, QString &&characterName, QString &&animAssetName,
+	ActionCharLive2DAnim(unsigned actionID, QString &&label, QString &&characterName, QString &&animAssetName,
 						 bool bSyncWithSpeech, int duration) :
-		Action(parent, actionID, move(label)), characterName(move(characterName)), animAssetName(move(animAssetName)),
+		Action(actionID, move(label)), characterName(move(characterName)), animAssetName(move(animAssetName)),
 		bSyncWithSpeech(bSyncWithSpeech), duration(duration) 
 	{	
 		//animAsset = ??

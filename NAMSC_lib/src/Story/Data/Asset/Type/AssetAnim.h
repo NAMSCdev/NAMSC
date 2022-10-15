@@ -35,7 +35,7 @@ public:
 
 private:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::AnimAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetAnim; }
 
 	///A smart pointer to the actual data
 	uPtr<QVector<AnimNode>>	animNodes;

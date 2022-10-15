@@ -13,15 +13,15 @@ class ActionChangeMusic final : public ActionAudio
 {
 public:
 	ActionChangeMusic() = default;
-	ActionChangeMusic(Event *parent, unsigned actionID, QVector<QString> &&musicAssetsNames, double volume, double stereo,
+	ActionChangeMusic(unsigned actionID, QVector<QString> &&musicAssetsNames, double volume, double stereo,
 					 bool bLoop, bool bRandomize, bool bExclusive, QString &&label) :
-		ActionAudio(parent, actionID, volume, stereo, (bLoop ? -1 : 1), move(label)), musicAssetsNames(move(musicAssetsNames)), 
+		ActionAudio(actionID, volume, stereo, (bLoop ? -1 : 1), move(label)), musicAssetsNames(move(musicAssetsNames)), 
 		bRandomize(bRandomize), bExclusive(bExclusive)
 	{ 
 		for (const QString &name : this->musicAssetsNames) 
 		{
 			//Might throw an exception
-			AssetMusic* asset = AssetManager::getInstance().findMusicAsset(name);
+			AssetMusic* asset = AssetManager::getInstance().findAssetMusic(name);
 			musicAssets.push_back(asset);
 		}
 	}
@@ -61,9 +61,9 @@ private:
 				musicAsset->load();
 	}
 
-	///Names of the MusicAssets, so they can be loaded (if needed) and played
+	///Names of the AssetMusics, so they can be loaded (if needed) and played
 	QVector<QString> musicAssetsNames;
-	///MusicAssets to be played
+	///AssetMusics to be played
 	QVector<AssetMusic*>musicAssets;
 
 	///[low optional] Whether to randomize Music order

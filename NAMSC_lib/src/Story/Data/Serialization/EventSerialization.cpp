@@ -1,47 +1,186 @@
 #pragma once
-#include "Story/Data/Visual/MainMenuTheme.h"
+#include "Story/Event/EventsAll.h"
+#include "Story/Data/Story.h"
 
-///Global settings for the Story
-static struct StorySettings
+void Event::serializableLoad(QDataStream& dataStream)
 {
-	StorySettings()		= delete;
 
-	///TODO: Serialize here
-	static void	load();
-	static void	save();
+	dataStream >> label >> executionOrder;
+	unsigned actionsSize;
+	dataStream >> actionsSize;
+	for (unsigned i = 0u; i != actionsSize; ++i)
+	{
+		SerializationID type;
+		dataStream >> type;
 
-	///Whether Stats button is available
-	static bool		bStatsVisible;		/// = true;
+		Action* action;
+		switch (type)
+		{
+		default:
+			dddd;
+			break;
+		}
+		actions.emplace_back(action);
+	}
+}
 
-	///[optional] Whether every Stat change shows some kind of a notification
-	static bool		bStatsNotifications;/// = false;
+void Event::serializableSave(QDataStream& dataStream) const
+{
+	dataStream << getType() << label << executionOrder;
+	for (const uPtr<Action>& action : actions)
+		action->serializableSave(dataStream);
+}
 
-	///Default language that the translations will try to revert to, if the selected one in [language] is not found
-	static QString			language;			/// = "En";
+void EventChoice::Choice::ChoiceDisplayOptions::serializableLoad(QDataStream& dataStream)
+{
+	dataStream >> fontName >> fontSize >> bHideIfConditionNotMet;
+}
+void EventChoice::Choice::ChoiceDisplayOptions::serializableSave(QDataStream& dataStream) const
+{
+	dataStream << fontName << fontSize << bHideIfConditionNotMet;
+}
 
-	///Default language that the translations will try to revert to, if the selected one in [language] is not found
-	static QString			defaultLanguage;	/// = "En";
+void EventChoice::Choice::serializableLoad(QDataStream& dataStream)
+{
 
-	///Last used SaveSlot
-	static unsigned			lastSave;			/// = 0;
+	dataStream >> label >> text >> condition >> jump >> choiceDisplayOptions;
+}
 
-	///Button that can be pressed to navigate to the next Event
-	static Qt::Key			nextButton;			/// = Qt::RightArrow;
-	
-	///Whether *left mouse button* can be used to navigate to the next Event
-	static bool		mouseClick;			/// = true
+void EventChoice::Choice::serializableSave(QDataStream& dataStream) const
+{
 
-	///Version of the Story engine that it was written in (matters when loading a newer/older save)
-	static unsigned			version;
+	dataStream << label << text << condition << jump << choiceDisplayOptions;
+}
 
-	///Menu custom graphics
-	static MainMenuTheme	theme;
+void EventChoice::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
 
-	///All supported ???
-	///@todo decide whether its predefined aspect ratio or resolutions.
-	///@todo fill the enum
-	//enum class AspectRatio
-	//{
-		
-	//};
-};
+	dataStream >> text;
+
+	unsigned choicesSize;
+	dataStream >> choicesSize;
+	for (unsigned i = 0u; i != choicesSize; ++i)
+	{
+		Choice choice;
+		dataStream >> choice;
+		choices.push_back(move(choice));
+	}
+}
+
+void EventChoice::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << text << choices.size();
+	for (const Choice& choice : choices)
+		dataStream << choice;
+}
+
+void EventEndIf::serializableLoad(QDataStream& dataStream) 
+{
+	Event::serializableLoad(dataStream);
+}
+
+void EventEndIf::serializableSave(QDataStream& dataStream) const 
+{
+	Event::serializableSave(dataStream);
+}
+
+void EventIf::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+
+	dataStream >> condition;
+}
+
+void EventIf::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << condition;
+}
+
+void EventInput::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+
+	dataStream >> inputStat >> bDigitsOnly >> min >> max >> minCharacters >> bStatRelated >> logicalExpression >> successJump >> failureJump >> tries;
+}
+
+void EventInput::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << inputStat << bDigitsOnly << min << max << minCharacters << bStatRelated << logicalExpression << successJump << failureJump << tries;
+}
+
+void EventJump::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+
+	dataStream >> jumpSceneId >> jumpExecutionOrder >> condition;
+}
+///Saving an object to a binary file
+void EventJump::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << jumpSceneId << jumpExecutionOrder << condition;
+}
+
+//This constructor is a special guest here, because it needs to grab a Voice from Story, which is impossible in header file due to looping
+EventNarrate::EventNarrate(unsigned executionOrder, QString&& label, QVector<Sentence>&& speech, QString&& voiceName) :
+	Event(executionOrder, move(label)), speech(move(speech)), voiceName(move(voiceName))
+{
+	voice = Story::getInstance().findVoice(this->voiceName);
+}
+
+void EventNarrate::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+
+	dataStream >> speech >> voiceName;
+	voice = Story::getInstance().findVoice(this->voiceName);
+}
+
+void EventNarrate::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << speech << voiceName;
+}
+
+void EventSpeak::serializableLoad(QDataStream& dataStream)
+{
+	EventNarrate::serializableLoad(dataStream);
+
+	dataStream >> characterName >> displayedName;
+}
+
+EventSpeak::EventSpeak(unsigned executionOrder, QString&& label, QVector<Sentence>&& speech, QString&& voice, QString&& characterName, QString&& displayedName) :
+	EventNarrate(executionOrder, move(label), move(speech), move(voiceName)), characterName(move(characterName)), displayedName(move(displayedName)) 
+{
+	character = Story::getInstance().findCharacter(characterName);
+}
+
+void EventSpeak::serializableSave(QDataStream& dataStream) const
+{
+	EventNarrate::serializableSave(dataStream);
+
+	dataStream << characterName << displayedName;
+}
+
+void EventWait::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+
+	dataStream >> waitTime;
+}
+///Saving an object to a binary file
+void EventWait::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+
+	dataStream << waitTime;
+}

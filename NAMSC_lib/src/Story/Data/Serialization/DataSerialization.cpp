@@ -1,35 +1,29 @@
 #pragma once
+#include "Story/Data/Story.h"
 #include "Story/Data/Asset/AssetManager.h"
 
 #include "Story/Data/Save/StoryState.h"
 
-#include "Story/Data/Visual/Animation/AnimNode.h"
-#include "Story/Data/Visual/Animation/Animator.h"
-#include "Story/Data/Visual/Animation/AnimatorTransform.h"
+#include "Story/Data/Audio/AudioSettings.h"
+#include "Story/Data/Audio/Sound.h"
+#include "Story/Data/Audio/MusicPlaylist.h"
 
 #include "Story/Data/Text/Sentence.h"
 #include "Story/Data/Text/Translation.h"
 #include "Story/Data/Text/Voice.h"
 
-#include "Story/Data/Story.h"
+#include "Story/Data/Stat/Stat.h"
+
+#include "Story/Data/Visual/Animation/AnimNode.h"
+#include "Story/Data/Visual/Animation/Animator.h"
+#include "Story/Data/Visual/Animation/AnimatorTransform.h"
 
 #include "Story/Data/Visual/Scenery/SceneryObject.h"
 #include "Story/Data/Visual/Scenery/Character.h"
 #include "Story/Data/Visual/Scenery/Scenery.h"
 
-//-----ASSET
-
-void Asset::serializableLoad(QDataStream &dataStream)
-{
-	dataStream >> name >> location >> pos >> bExternal;
-}
-
-void Asset::serializableSave(QDataStream &dataStream) const
-{
-	dataStream << getType() << name << location << pos << bExternal;
-}
-
 //------SAVE
+
 void StoryState::serializableLoad(QDataStream &dataStream)
 {
     unsigned statsSize = 0;
@@ -116,7 +110,55 @@ void Voice::serializableSave(QDataStream& dataStream) const
     dataStream << SerializationID::Voice << fontAssetName << fontSize << bold << italic << underscore << color << alignment << lipSync;
 }
 
+//-----AUDIO
+
+void AudioSettings::serializableLoad(QDataStream& dataStream)
+{
+    dataStream >> volume >> stereo >> timesPlayed >> delay;
+}
+
+void AudioSettings::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << volume << stereo << timesPlayed << delay;
+}
+
+void Sound::serializableLoad(QDataStream& dataStream)
+{
+    dataStream >> soundAssetName >> bPersistToNewEvent >> settings;
+}
+
+void Sound::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << soundAssetName << bPersistToNewEvent << settings;
+}
+
+void MusicPlaylist::serializableLoad(QDataStream& dataStream)
+{
+    unsigned musicNamesSize;
+    dataStream >> musicNamesSize;
+    for (unsigned i = 0u; i != musicNamesSize; ++i)
+    {
+        QString name;
+		dataStream >> name;
+		musicAssetsNames.push_back(name);
+
+		AssetMusic *asset = AssetManager::getInstance().findAssetMusic(name);
+		musicAssets.push_back(asset);
+	}
+	dataStream >> bRandomize >> bExclusive >> settings;
+}
+
+void MusicPlaylist::serializableSave(QDataStream& dataStream) const
+{
+    unsigned musicNamesSize;
+    dataStream << musicAssetsNames.size();
+    for (const QString& name : musicAssetsNames)
+        dataStream << name;
+    dataStream << bRandomize << bExclusive << settings;
+}
+
 //-----ANIM
+
 void AnimNodeBase::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> timeStamp >> interpolationMethod;
@@ -189,34 +231,102 @@ void AnimatorSceneryObject<AnimNode>::serializableSave(QDataStream& dataStream) 
 void AnimatorMove::serializableLoad(QDataStream& dataStream)
 {
     AnimatorSceneryObject<AnimNodeDouble2D>::serializableLoad(dataStream);
-    animAsset = AssetManager::getInstance().findAnimAssetMove(animAssetName);
+    animAsset = AssetManager::getInstance().findAssetAnimMove(animAssetName);
 }
 
 void AnimatorScale::serializableLoad(QDataStream& dataStream)
 {
     AnimatorSceneryObject<AnimNodeDouble2D>::serializableLoad(dataStream);
-    animAsset = AssetManager::getInstance().findAnimAssetScale(animAssetName);
+    animAsset = AssetManager::getInstance().findAssetAnimScale(animAssetName);
 }
 
 void AnimatorRotate::serializableLoad(QDataStream& dataStream)
 {
     AnimatorSceneryObject<AnimNodeDouble1D>::serializableLoad(dataStream);
-    animAsset = AssetManager::getInstance().findAnimAssetRotate(animAssetName);
+    animAsset = AssetManager::getInstance().findAssetAnimRotate(animAssetName);
 }
 
 void AnimatorColor::serializableLoad(QDataStream& dataStream)
 {
     AnimatorSceneryObject<AnimNodeDouble4D>::serializableLoad(dataStream);
-    animAsset = AssetManager::getInstance().findAnimAssetColor(animAssetName);
+    animAsset = AssetManager::getInstance().findAssetAnimColor(animAssetName);
+}
+
+//-----STATS
+
+void Stat::serializableLoad(QDataStream& dataStream)
+{
+    dataStream >> name >> displayName >> bShow >> priority >> showNotification;
+}
+
+void Stat::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << getType() << name << displayName << bShow << priority << showNotification;
+}
+
+void StatString::serializableLoad(QDataStream& dataStream)
+{
+    Stat::serializableLoad(dataStream);
+
+    dataStream >> value >> maxChars;
+}
+
+void StatString::serializableSave(QDataStream& dataStream) const
+{
+    Stat::serializableSave(dataStream);
+
+    dataStream << value << maxChars;
+}
+
+void StatBool::serializableLoad(QDataStream& dataStream)
+{
+    Stat::serializableLoad(dataStream);
+
+    dataStream >> value;
+}
+
+void StatBool::serializableSave(QDataStream& dataStream) const
+{
+    Stat::serializableSave(dataStream);
+
+    dataStream << value;
+}
+
+void StatLongLong::serializableLoad(QDataStream& dataStream)
+{
+    Stat::serializableLoad(dataStream);
+
+    dataStream >> value >> min >> max;
+}
+
+void StatLongLong::serializableSave(QDataStream& dataStream) const
+{
+    Stat::serializableSave(dataStream);
+
+    dataStream << value << min << max;
+}
+
+void StatDouble::serializableLoad(QDataStream& dataStream)
+{
+    Stat::serializableLoad(dataStream);
+
+    dataStream >> value >> min >> max;
+}
+
+void StatDouble::serializableSave(QDataStream& dataStream) const
+{
+    Stat::serializableSave(dataStream);
+
+    dataStream << value << min << max;
 }
 
 //-----VISUAL
 void SceneryObject::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> pos >> scale >> rotation >> color >> label >> imageAssetName;
-    imageAsset = AssetManager::getInstance().findSceneryObjectImageAsset(imageAssetName);
+    imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
 }
-
+    
 void SceneryObject::serializableSave(QDataStream& dataStream) const
 {
     dataStream << pos << scale << rotation << color << label << imageAssetName;

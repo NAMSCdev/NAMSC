@@ -183,6 +183,7 @@
     <ClCompile Include="src\Story\Action\ActionAudio.cpp" />
     <ClCompile Include="src\Story\Action\ActionStats.cpp" />
     <ClCompile Include="src\Story\Action\ActionVisual.cpp" />
+    <ClCompile Include="src\Story\Data\Asset\Asset.cpp" />
     <ClCompile Include="src\Story\Data\Asset\AssetManager.cpp" />
     <ClCompile Include="src\Story\Data\Serialization\ActionSerialization.cpp" />
     <ClCompile Include="src\Story\Data\Serialization\DataSerialization.cpp" />

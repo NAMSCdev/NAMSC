@@ -10,16 +10,15 @@ public:
 	ActionFilterBrightness() = default;
 	ActionFilterBrightness( Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double addedBrightness, 
 							double percentBrightness, double intensivness, double strength) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength), 
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength), 
 		addedBrightness(addedBrightness), percentBrightness(percentBrightness)  {}
-	ActionFilterBrightness(const ActionFilterBrightness& obj) {
-		*this = obj;
-	}
-	ActionFilterBrightness& operator=(const ActionFilterBrightness& obj) {
+	ActionFilterBrightness(const ActionFilterBrightness& obj) { *this = obj; }
+	ActionFilterBrightness& operator=(const ActionFilterBrightness& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);
-		addedBrightness = obj.addedBrightness;
+		addedBrightness   = obj.addedBrightness;
 		percentBrightness = obj.percentBrightness;
 
 		return *this;

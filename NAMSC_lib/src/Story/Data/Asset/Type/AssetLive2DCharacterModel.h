@@ -31,5 +31,5 @@ public:
 
 protected:
 	///Needed for serialization, to know the class of an object about to be serialization loaded
-	SerializationID	getType() const override { return SerializationID::Live2DCharacterModelAsset; }
+	SerializationID	getType() const override { return SerializationID::AssetLive2DCharacterModel; }
 };

@@ -8,17 +8,16 @@ class ActionFilter : public ActionSceneryObject
 {
 public:
 	ActionFilter() = default;
-	ActionFilter(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, double strength) :
-		ActionSceneryObject(parent, actionID, move(label), move(sceneryObjectName)), intensivness(intensivness), strength(strength) {}
-	ActionFilter(const ActionFilter& obj) {
-		*this = obj;
-	}
-	ActionFilter& operator=(const ActionFilter& obj) {
+	ActionFilter(unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, double strength) :
+		ActionSceneryObject(actionID, move(label), move(sceneryObjectName)), intensivness(intensivness), strength(strength) {}
+	ActionFilter(const ActionFilter& obj) { *this = obj; }
+	ActionFilter& operator=(const ActionFilter& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionSceneryObject::operator=(obj);
 		intensivness = obj.intensivness;
-		strength = obj.strength;
+		strength     = obj.strength;
 
 		return *this;
 	}

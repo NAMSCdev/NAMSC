@@ -14,13 +14,12 @@ public:
 	};
 
 	ActionFilterBlur() = default;
-	ActionFilterBlur(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, 
+	ActionFilterBlur(unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, 
 					 double strength, BlurType blurType) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength), blurType(blurType) {}
-	ActionFilterBlur(const ActionFilterBlur& obj) {
-		*this = obj;
-	}
-	ActionFilterBlur& operator=(const ActionFilterBlur& obj) {
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength), blurType(blurType) {}
+	ActionFilterBlur(const ActionFilterBlur& obj) {	*this = obj; }
+	ActionFilterBlur& operator=(const ActionFilterBlur& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);

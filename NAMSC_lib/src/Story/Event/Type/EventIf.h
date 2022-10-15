@@ -9,35 +9,34 @@ class EventIf final : public Event
 {
 public:
 	EventIf() = default;
-	EventIf(unsigned sceneID, unsigned executionOrder, QString &&condition, QString label = "") :
-		Event(sceneID, executionOrder, move(label)), condition(move(condition))	{}
+	EventIf(unsigned executionOrder, QString&& label, QString &&condition) :
+		Event(executionOrder, move(label)), condition(move(condition))	{}
+	EventIf(const EventIf& obj) { *this = obj; }
+	EventIf& operator=(const EventIf& obj)
+	{
+		if (this == &obj) return *this;
 
+		Event::operator=(obj);
+		condition = obj.condition;
+
+		return *this;
+	}
 	///Executes Event's logic
-	void		run		() override		{}
+	void run() override		{}
 
-	///Accepts EventVisitor
-	void		accept	(EventVisitor* visitor) override		{ visitor->visitEventIf(this); }
+	///AcceptsEventVisitor
+	void accept(EventVisitor* visitor) override	{ visitor->visitEventIf(this); }
 
-protected:
+private:
 	///Needed for serialization, to know the class of an object before the loading performed
-	SerializationID		getType	() const override		{ typeid(EventIf).hash_code(); return SerializationID::EventIf; }
+	SerializationID	getType() const override	{ typeid(EventIf).hash_code(); return SerializationID::EventIf; }
 
 	///A jump might contain a logical expression, so the jump happens only if the [condition] is met
-	QString		condition;
+	QString condition;
 
 	//---SERIALIZATION---
 	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override
-	{
-		Event::serializableLoad(dataStream);
-
-		dataStream >> condition;
-	}
+	void serializableLoad(QDataStream& dataStream) override;
 	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override
-	{
-		Event::serializableSave(dataStream);
-
-		dataStream << condition;
-	}
+	void serializableSave(QDataStream& dataStream) const override;
 };

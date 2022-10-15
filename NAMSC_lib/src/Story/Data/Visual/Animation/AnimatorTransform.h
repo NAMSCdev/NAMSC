@@ -8,21 +8,26 @@ class AnimatorMove final : public AnimatorSceneryObject<AnimNodeDouble2D>
 {
 public:
 	AnimatorMove() = default;
-	AnimatorMove(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
+	AnimatorMove(QString&& animAssetName, double speed, bool bLoop, QString&& sceneryObjectName) :
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), speed, bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().findAnimAssetMove(animAssetName);
+		animAsset = AssetManager::getInstance().findAssetAnimMove(animAssetName);
 	}
-	AnimatorMove(const AnimatorMove&) = default;
-	AnimatorMove& operator=(const AnimatorMove&) = default;
+	AnimatorMove(const AnimatorMove& obj) { *this = obj; }
+	AnimatorMove& operator=(const AnimatorMove& obj)
+	{
+		if (this == &obj) return *this;
+
+		Animator<AnimNodeDouble2D>::operator=(obj);
+
+		return *this;
+	}
 
 	///Changes colors of the SceneryObject
 	void update() override
 	{
 		AnimNodeDouble2D node = currentAnimState();
-#pragma unroll
-		for (int i = 0; i != 2; ++i)
-			sceneryObject->pos[i] = node.state[i];
+		sceneryObject->pos = QPoint(node.state[0], node.state[1]);
 	}
 
 private:
@@ -35,21 +40,26 @@ class AnimatorScale	final : public AnimatorSceneryObject<AnimNodeDouble2D>
 {
 public:
 	AnimatorScale() = default;
-	AnimatorScale(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
+	AnimatorScale(QString&& animAssetName, double speed, bool bLoop, QString&& sceneryObjectName) :
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), speed, bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().findAnimAssetScale(animAssetName);
+		animAsset = AssetManager::getInstance().findAssetAnimScale(animAssetName);
 	}
-	AnimatorScale(const AnimatorScale&) = default;
-	AnimatorScale& operator=(const AnimatorScale&) = default;
+	AnimatorScale(const AnimatorScale& obj) { *this = obj; }
+	AnimatorScale& operator=(const AnimatorScale& obj)
+	{
+		if (this == &obj) return *this;
+
+		AnimatorSceneryObject<AnimNodeDouble2D>::operator=(obj);
+
+		return *this;
+	}
 
 	///Changes colors of the SceneryObject
 	void update() override
 	{
 		AnimNodeDouble2D node = currentAnimState();
-#pragma unroll
-		for (int i = 0; i != 2; ++i)
-			sceneryObject->scale[i] = node.state[i];
+		sceneryObject->scale = QSize(node.state[0], node.state[1]);
 	}
 
 private:
@@ -62,13 +72,20 @@ class AnimatorRotate final : public AnimatorSceneryObject<AnimNodeDouble1D>
 {
 public:
 	AnimatorRotate() = default;
-	AnimatorRotate(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), bLoop, move(sceneryObjectName))
+	AnimatorRotate(QString&& animAssetName, double speed, bool bLoop, QString&& sceneryObjectName) :
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), speed, bLoop, move(sceneryObjectName))
 	{
-		animAsset = AssetManager::getInstance().findAnimAssetRotate(animAssetName);
+		animAsset = AssetManager::getInstance().findAssetAnimRotate(animAssetName);
 	}
-	AnimatorRotate(const AnimatorRotate&) = default;
-	AnimatorRotate& operator=(const AnimatorRotate&) = default;
+	AnimatorRotate(const AnimatorRotate& obj) { *this = obj; }
+	AnimatorRotate& operator=(const AnimatorRotate& obj)
+	{
+		if (this == &obj) return *this;
+
+		AnimatorSceneryObject<AnimNodeDouble1D>::operator=(obj);
+
+		return *this;
+	}
 
 	///Changes colors of the SceneryObject
 	void update() override
@@ -86,13 +103,20 @@ class AnimatorColor final : public AnimatorSceneryObject<AnimNodeDouble4D>
 {
 public:
 	AnimatorColor() = default;
-	AnimatorColor(QString&& animAssetName, bool bLoop, QString&& sceneryObjectName) :
-		AnimatorSceneryObject<AnimNodeDouble4D>(animAssetName, bLoop, move(sceneryObjectName)) 
+	AnimatorColor(QString&& animAssetName, double speed, bool bLoop, QString&& sceneryObjectName) :
+		AnimatorSceneryObject<AnimNodeDouble4D>(move(animAssetName), speed, bLoop, move(sceneryObjectName)) 
 	{
-		animAsset = AssetManager::getInstance().findAnimAssetColor(animAssetName);
+		animAsset = AssetManager::getInstance().findAssetAnimColor(animAssetName);
 	}
-	AnimatorColor(const AnimatorColor&) = default;
-	AnimatorColor& operator=(const AnimatorColor&) = default;
+	AnimatorColor(const AnimatorColor& obj) { *this = obj; }
+	AnimatorColor& operator=(const AnimatorColor& obj)
+	{
+		if (this == &obj) return *this;
+
+		AnimatorSceneryObject<AnimNodeDouble4D>::operator=(obj);
+
+		return *this;
+	}
 
 	///Changes colors of the SceneryObject
 	void update() override 

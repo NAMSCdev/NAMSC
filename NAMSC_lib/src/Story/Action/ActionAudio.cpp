@@ -5,7 +5,7 @@ void ActionChangeMusic::run()
 {
 	Action::run();
 
-	emit onRun(settings);
+	//emit onRun(musicPlaylist);
 }
 
 void ActionPlaySound::run()

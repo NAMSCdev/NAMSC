@@ -10,16 +10,15 @@ public:
 	ActionFilterSaturation() = default;
 	ActionFilterSaturation( Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName, double intensivness, 
 							double strength, int addedSaturation, double percentSaturation) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength),
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength),
 		addedSaturation(addedSaturation), percentSaturation(percentSaturation) {}
-	ActionFilterSaturation(const ActionFilterSaturation& obj) {
-		*this = obj;
-	}
-	ActionFilterSaturation& operator=(const ActionFilterSaturation& obj) {
+	ActionFilterSaturation(const ActionFilterSaturation& obj) {	*this = obj; }
+	ActionFilterSaturation& operator=(const ActionFilterSaturation& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);
-		addedSaturation = obj.addedSaturation;
+		addedSaturation   = obj.addedSaturation;
 		percentSaturation = obj.percentSaturation;
 
 		return *this;

@@ -12,13 +12,14 @@ Sentence::Sentence(Translation &&content, QString &&voiceName, unsigned cps,
 	voice = Story::getInstance().findVoice(this->voiceName); 
 }
 
-const QString Translation::text()
+const QString Translation::text(const QString language)
 {
+	StorySettings &storySettings = StorySettings::getInstance();
 	AssetText *text = nullptr;
-	if (translations.find(StorySettings::language) != translations.end())
-		text = &translations[StorySettings::language];
-	if (translations.find(StorySettings::defaultLanguage) != translations.end())
-		text = &translations[StorySettings::defaultLanguage];
+	if (translations.find(language) != translations.end())
+		text = &translations[language];
+	if (translations.find(storySettings.defaultLanguage) != translations.end())
+		text = &translations[storySettings.defaultLanguage];
 
 	if (text == nullptr)
 	{		
@@ -31,7 +32,9 @@ const QString Translation::text()
 
 	return *text->getText();
 };
-        
+ 
+//[optional]
+/*
 const QVector<unsigned int> Translation::durations()
 {
 	///Skip empty words, so if someone made multiple spaces between words, they will not create empty words
@@ -61,4 +64,4 @@ const QVector<unsigned int> Translation::durations()
 		return QVector<unsigned int>();
 	}
 	return durations;
-}
+}*/

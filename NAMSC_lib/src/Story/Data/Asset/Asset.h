@@ -21,14 +21,15 @@ public:
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
 	virtual		 ~Asset()	= 0;
 
-	///Tries to load an Assent
+	///Tries to load an Asset
+	///todo: describe petter
 	///Throws a noncritical Exception on failure
 	virtual void load()		= 0;
 
 	///Release resources allocated for this asset
 	virtual void unload()	= 0;
 
-	///Returns whether the asset is currently loaded
+	///Returns whether the Asset is currently loaded
 	virtual bool isLoaded() const = 0;
 
 protected:

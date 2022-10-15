@@ -11,20 +11,19 @@ class ActionSceneryObject : public Action
 {
 public:
 	ActionSceneryObject() = default;
-	ActionSceneryObject(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName) :
-		Action(parent, actionID, move(label)), sceneryObjectName(move(sceneryObjectName))
+	ActionSceneryObject(unsigned actionID, QString &&label, QString &&sceneryObjectName) :
+		Action(actionID, move(label)), sceneryObjectName(move(sceneryObjectName))
 	{ 
 		sceneryObject = Story::getInstance().findSceneryObject(this->sceneryObjectName); 
 	}
-	ActionSceneryObject(const ActionSceneryObject& obj) {
-		*this = obj;
-	}
-	ActionSceneryObject& operator=(const ActionSceneryObject& obj) {
+	ActionSceneryObject(const ActionSceneryObject& obj) { *this = obj; }
+	ActionSceneryObject& operator=(const ActionSceneryObject& obj)
+	{
 		if (this == &obj) return *this;
 
 		Action::operator=(obj);
 		sceneryObjectName = obj.sceneryObjectName;
-		sceneryObject = obj.sceneryObject;
+		sceneryObject     = obj.sceneryObject;
 
 		return *this;
 	}

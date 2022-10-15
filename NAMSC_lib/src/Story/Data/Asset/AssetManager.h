@@ -26,7 +26,7 @@ public:
 	///\param name The searched AssetFont
 	///\exception CriticalException Failure finding the AssetFont
 	///\return Pointer to the found AssetFont
-	AssetFont*	findFontAsset(const QString &name)
+	AssetFont*	findAssetFont(const QString &name)
 	{ 
 		return findInArray<AssetFont>(name, fonts);
 	}
@@ -35,7 +35,7 @@ public:
 	///\param name The searched AssetMusic
 	///\exception CriticalException Failure finding the AssetMusic
 	///\return Pointer to the found AssetMusic
-	AssetMusic*	findMusicAsset(const QString &name)
+	AssetMusic*	findAssetMusic(const QString &name)
 	{ 
 		return findInArray<AssetMusic>(name, music);
 	}
@@ -44,7 +44,7 @@ public:
 	///\param name The searched AssetSound
 	///\exception CriticalException Failure finding the AssetSound
 	///\return Pointer to the found AssetSound
-	AssetSound*	findSoundAsset(const QString &name)	
+	AssetSound*	findAssetSound(const QString &name)	
 	{ 
 		return findInArray<AssetSound>(name, sounds);
 	}
@@ -53,7 +53,7 @@ public:
 	///\param name The searched **background** AssetImage
 	///\exception CriticalException failure finding the **background** AssetImage
 	///\return Pointer to the found AssetImage
-	AssetImage*	findSceneryBackgroundImageAsset(const QString &name)
+	AssetImage*	findSceneryBackgroundAssetImage(const QString &name)
 	{ 
 		return findInArray<AssetImage>(name, sceneryBackgroundImages);
 	}
@@ -62,102 +62,102 @@ public:
 	///\param name The searched **sprite** AssetImage
 	///\exception CriticalException failure finding the **sprite** AssetImage
 	///\return Pointer to the found AssetImage
-	AssetImage*	findSceneryObjectImageAsset(const QString &name)
+	AssetImage*	findSceneryObjectAssetImage(const QString &name)
 	{ 
 		return findInArray<AssetImage>(name, sceneryObjectImages);
 	}
 
-	///Finds by `name` an AnimAsset that animates a SceneryObject with a **movement** animation
-	///\param name The searched **movement** AnimAsset
-	///\exception CriticalException failure finding the **movement** AnimAsset
-	///\return Pointer to the found AnimAsset
-	AssetAnim<AnimNodeDouble2D>* findAnimAssetMove(const QString &name)
+	///Finds by `name` an AssetAnim that animates a SceneryObject with a **movement** animation
+	///\param name The searched **movement** AssetAnim
+	///\exception CriticalException failure finding the **movement** AssetAnim
+	///\return Pointer to the found AssetAnim
+	AssetAnim<AnimNodeDouble2D>* findAssetAnimMove(const QString &name)
 	{ 
 		return findInArray<AssetAnim<AnimNodeDouble2D>>(name, moveAnims);
 	}
 
-	///Finds by `name` an AnimAsset that animates a SceneryObject with a **scaling** animation
-	///\param name The searched **scaling** AnimAsset
-	///\exception CriticalException failure finding the **scaling** AnimAsset
-	///\return Pointer to the found AnimAsset
-	AssetAnim<AnimNodeDouble2D>* findAnimAssetScale(const QString &name)
+	///Finds by `name` an AssetAnim that animates a SceneryObject with a **scaling** animation
+	///\param name The searched **scaling** AssetAnim
+	///\exception CriticalException failure finding the **scaling** AssetAnim
+	///\return Pointer to the found AssetAnim
+	AssetAnim<AnimNodeDouble2D>* findAssetAnimScale(const QString &name)
 	{ 
 		return findInArray<AssetAnim<AnimNodeDouble2D>>(name, scaleAnims);
 	}
 
-	///Finds by `name` an AnimAsset that animates a SceneryObject with a **rotation** animation
-	///\param name The searched **rotation** AnimAsset
-	///\exception CriticalException failure finding the **rotation** AnimAsset
-	///\return Pointer to the found AnimAsset
-	AssetAnim<AnimNodeDouble1D>* findAnimAssetRotate(const QString& name)
+	///Finds by `name` an AssetAnim that animates a SceneryObject with a **rotation** animation
+	///\param name The searched **rotation** AssetAnim
+	///\exception CriticalException failure finding the **rotation** AssetAnim
+	///\return Pointer to the found AssetAnim
+	AssetAnim<AnimNodeDouble1D>* findAssetAnimRotate(const QString& name)
 	{
 		return findInArray<AssetAnim<AnimNodeDouble1D>>(name, rotateAnims);
 	}
 
-	///Finds by `name` an AnimAsset that animates a SceneryObject with a **color** animation
-	///\param name The searched **color** AnimAsset
-	///\exception CriticalException failure finding the **color** AnimAsset
-	///\return Pointer to the found AnimAsset
-	AssetAnim<AnimNodeDouble4D>* findAnimAssetColor(const QString& name)
+	///Finds by `name` an AssetAnim that animates a SceneryObject with a **color** animation
+	///\param name The searched **color** AssetAnim
+	///\exception CriticalException failure finding the **color** AssetAnim
+	///\return Pointer to the found AssetAnim
+	AssetAnim<AnimNodeDouble4D>* findAssetAnimColor(const QString& name)
 	{
 		return findInArray<AssetAnim<AnimNodeDouble4D>>(name, colorAnims);
 	}
 
 	//todo: lepszy opis
 	///Insert AssetFont
-	void insertFontAsset(const QString &name, const QString &location, unsigned pos)
+	void insertAssetFont(const QString &name, const QString &location, unsigned pos)
 	{
 		insertAsset<AssetFont>(name, location, pos, fonts);
 	}
 
 	//todo: lepszy opis
 	///Insert AssetMusic
-	bool insertMusicAsset(const QString &name, const QString &location, unsigned pos)
+	bool insertAssetMusic(const QString &name, const QString &location, unsigned pos)
 	{
 		insertAsset<AssetMusic>(name, location, pos, music);
 	}
 
 	//todo: lepszy opis
 	///Insert AssetSound
-	bool insertSoundAsset(const QString &name, const QString &location, unsigned pos)
+	bool insertAssetSound(const QString &name, const QString &location, unsigned pos)
 	{
 		insertAsset<AssetSound>(name, location, pos, sounds);
 	}
 
 	//todo: lepszy opis
-	///Insert SceneryBackgroundImageAsset
-	bool insertSceneryBackgroundImageAsset(const QString &name, const QString &location, unsigned pos)
+	///Insert SceneryBackgroundAssetImage
+	bool insertSceneryBackgroundAssetImage(const QString &name, const QString &location, unsigned pos)
 	{
 		insertAsset<AssetImage>(name, location, pos, sceneryBackgroundImages);
 	}
 
 	//todo: lepszy opis
-	///Insert SceneryObjectImageAsset
-	bool insertSceneryObjectImageAsset(const QString &name, const QString &location, unsigned pos)
+	///Insert SceneryObjectAssetImage
+	bool insertSceneryObjectAssetImage(const QString &name, const QString &location, unsigned pos)
 	{
 		insertAsset<AssetImage>(name, location, pos, sceneryObjectImages);
 	}
 
 	//todo: lepszy opis
-	bool insertMoveAnimAsset(const QString& name, const QString& location, unsigned pos)
+	bool insertMoveAssetAnim(const QString& name, const QString& location, unsigned pos)
 	{
 		insertAsset<AssetAnim<AnimNodeDouble2D>>(name, location, pos, moveAnims);
 	}
 
 	//todo: lepszy opis
-	bool insertAnimAsset(const QString& name, const QString& location, unsigned pos)
+	bool insertAssetAnim(const QString& name, const QString& location, unsigned pos)
 	{
 		insertAsset<AssetAnim<AnimNodeDouble2D>>(name, location, pos, scaleAnims);
 	}
 
 	//todo: lepszy opis
-	bool insertScaleAnimAsset(const QString& name, const QString& location, unsigned pos)
+	bool insertScaleAssetAnim(const QString& name, const QString& location, unsigned pos)
 	{
 		insertAsset<AssetAnim<AnimNodeDouble1D>>(name, location, pos, rotateAnims);
 	}
 
 	//todo: lepszy opis
-	bool insertColorAnimAsset(const QString& name, const QString& location, unsigned pos)
+	bool insertColorAssetAnim(const QString& name, const QString& location, unsigned pos)
 	{
 		insertAsset<AssetAnim<AnimNodeDouble4D>>(name, location, pos, colorAnims);
 	}

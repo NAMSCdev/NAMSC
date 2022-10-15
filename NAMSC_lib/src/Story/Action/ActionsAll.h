@@ -19,8 +19,7 @@
 #include "Story/Action/Visual/Filter/Type/ActionFilterSaturation.h"
 
 #include "Story/Action/Visual/Animation/ActionCharLive2DAnim.h"
-#include "Story/Action/Visual/Animation/ActionSceneryObjectAnim.h"
-#include "Story/Action/Visual/Animation/ActionSceneryObjectHide.h"
+#include "Story/Action/Visual/Animation/ActionSceneryObjectAnimTransform.h"
 #include "Story/Action/Visual/Animation/ActionSceneryObjectShow.h"
 #include "Story/Action/Visual/ActionSetBackground.h"
 #include "Story/Action/Visual/ActionSceneryObjectChange.h"

@@ -9,13 +9,12 @@ class ActionFilterNegative final : public ActionFilter
 {
 public:
 	ActionFilterNegative() = default;
-	ActionFilterNegative(Event *parent, unsigned actionID, double intensivness, 
+	ActionFilterNegative(unsigned actionID, double intensivness, 
 						 double strength, QString &&sceneryObjectName, QString &&label) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
-	ActionFilterNegative(const ActionFilterNegative& obj) {
-		*this = obj;
-	}
-	ActionFilterNegative& operator=(const ActionFilterNegative& obj) {
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength) {}
+	ActionFilterNegative(const ActionFilterNegative& obj) {	*this = obj; }
+	ActionFilterNegative& operator=(const ActionFilterNegative& obj)
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);

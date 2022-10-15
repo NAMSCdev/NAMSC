@@ -7,19 +7,22 @@
 extern QFile logFile;
 
 //Logs information in a `logFile`
-inline void info();
+inline void info()
+{
+	QTextStream(logFile);
+};
 
 ///Allows better Exception messaging and logging for debugging and User Warnings
 struct Exception : QException
 {
 	Exception(const QString &&msg, const char type[], const char function[], const char file[], int line) noexcept
-		: msg(move(msg)), file(move(file)), type(move(type)), function(move(function)), line(line) {}
+		: msg(move(msg)), type(move(type)), function(move(function)), file(move(file)), line(line) {}
 
 	virtual ~Exception() = 0;
 
 	virtual void handle() noexcept;
 protected:
-	//Contains 
+	///Contains the
 	QString details;
 	const QString msg;
 	const QString type;

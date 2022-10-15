@@ -8,13 +8,12 @@ class ActionFilterHue final : public ActionFilter
 {
 public:
 	ActionFilterHue() = default;
-	ActionFilterHue(Event *parent, unsigned actionID, QString &&label, QString &&sceneryObjectName,
+	ActionFilterHue(unsigned actionID, QString &&label, QString &&sceneryObjectName,
 					double intensivness, double strength, int hueShift) :
-		ActionFilter(parent, actionID, move(label), move(sceneryObjectName), intensivness, strength), hueShift(hueShift) {}
-	ActionFilterHue(const ActionFilterHue& obj) {
-		*this = obj;
-	}
-	ActionFilterHue& operator=(const ActionFilterHue& obj) {
+		ActionFilter(actionID, move(label), move(sceneryObjectName), intensivness, strength), hueShift(hueShift) {}
+	ActionFilterHue(const ActionFilterHue& obj) { *this = obj; }
+	ActionFilterHue& operator=(const ActionFilterHue& obj) 
+	{
 		if (this == &obj) return *this;
 
 		ActionFilter::operator=(obj);
