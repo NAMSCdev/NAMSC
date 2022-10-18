@@ -1,0 +1,8 @@
+{
+  "name": "namsc-dependencies",
+  "version-string": "1.0",
+  "dependencies": [
+	"catch2",
+	"trompeloeil"
+	]
+}
