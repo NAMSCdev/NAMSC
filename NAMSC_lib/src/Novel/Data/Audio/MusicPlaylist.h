@@ -12,25 +12,9 @@ class MusicPlaylist
 	friend QDataStream& operator<<(QDataStream&, const MusicPlaylist&);
 public:
 	MusicPlaylist() = default;
-	MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay) :
-		musicAssetsNames(move(musicAssetsNames)), bRandomize(bRandomize), bExclusive(bExclusive), settings(volume, stereo, timesPlayed, delay)
-	{
-		for (const QString& musicAssetName : this->musicAssetsNames)
-			musicAssets.push_back(AssetManager::getInstance().findAssetMusic(musicAssetName));
-	}
+	MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay);
 	MusicPlaylist(MusicPlaylist& obj) { *this = obj; }
-	MusicPlaylist& operator=(const MusicPlaylist& obj)
-	{
-		if (this == &obj) return *this;
-
-		musicAssetsNames = obj.musicAssetsNames;
-		musicAssets = obj.musicAssets;
-		bRandomize = obj.bRandomize;
-		bExclusive = obj.bExclusive;
-		settings = obj.settings;
-
-		return *this;
-	}
+	MusicPlaylist& operator=(const MusicPlaylist& obj);
 
 	///Tries to load an AssetSound
 	void load()
@@ -78,3 +62,23 @@ private:
 	///Saving an object to a binary file
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
+
+inline MusicPlaylist::MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay)
+	: musicAssetsNames(move(musicAssetsNames)), bRandomize(bRandomize), bExclusive(bExclusive), settings(volume, stereo, timesPlayed, delay)
+{
+	for (const QString& musicAssetName : this->musicAssetsNames)
+		musicAssets.push_back(AssetManager::getInstance().findAssetMusic(musicAssetName));
+}
+
+inline MusicPlaylist& MusicPlaylist::operator=(const MusicPlaylist& obj)
+{
+	if (this == &obj) return *this;
+
+	musicAssetsNames = obj.musicAssetsNames;
+	musicAssets = obj.musicAssets;
+	bRandomize = obj.bRandomize;
+	bExclusive = obj.bExclusive;
+	settings = obj.settings;
+
+	return *this;
+}

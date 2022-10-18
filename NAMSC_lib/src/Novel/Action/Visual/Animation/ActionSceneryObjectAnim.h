@@ -19,19 +19,7 @@ public:
 		ActionSceneryObject(move(sceneryObjectName)), animName(move(animName)), speed(speed), bLoop(bLoop) {}
 	ActionSceneryObjectAnim(const ActionSceneryObjectAnim& obj) { *this = obj; }
 	//todo: can this be moved outside the class without breaking InteliSense?
-	ActionSceneryObjectAnim<AnimNode>& operator=(const ActionSceneryObjectAnim<AnimNode>& obj)
-	{
-		if (this == &obj)
-			return *this;
-
-		ActionSceneryObject::operator=(obj);
-		animAssetName = obj.animAssetName;
-		animAsset     = obj.animAsset;
-		speed         = obj.speed;
-		bLoop         = obj.bLoop;
-
-		return (*this)
-	}
+	ActionSceneryObjectAnim<AnimNode>& operator=(const ActionSceneryObjectAnim<AnimNode>& obj);
 
 	///Executes this Action's logic
 	void run() override;
@@ -66,3 +54,18 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+template <class AnimNode> inline
+	ActionSceneryObjectAnim<AnimNode>& ActionSceneryObjectAnim<AnimNode>::operator=(const ActionSceneryObjectAnim<AnimNode>&obj)
+{
+	if (this == &obj)
+		return *this;
+
+	ActionSceneryObject::operator=(obj);
+	animAssetName = obj.animAssetName;
+	animAsset = obj.animAsset;
+	speed = obj.speed;
+	bLoop = obj.bLoop;
+
+	return (*this)
+}

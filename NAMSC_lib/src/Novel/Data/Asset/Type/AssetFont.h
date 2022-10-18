@@ -11,17 +11,7 @@ public:
 	AssetFont(QString&& name, uint pos = 0, bool bExternal = false, QString&& location = "") :
 		Asset(move(name), pos, bExternal, move(location)) {}
 	AssetFont(const AssetFont& obj) { *this = obj; }
-	AssetFont& operator=(const AssetFont& obj) 
-	{
-		if (this == &obj) return *this;
-		
-		Asset::operator=(obj);
-		font = nullptr;
-		fontSize = obj.fontSize;
-		systemFont = false;
-
-		return *this;
-	}
+	AssetFont& operator=(const AssetFont& obj);
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
 	///@todo allow quering the operating system for font
@@ -60,3 +50,15 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline AssetFont& AssetFont::operator=(const AssetFont& obj)
+{
+	if (this == &obj) return *this;
+
+	Asset::operator=(obj);
+	font = nullptr;
+	fontSize = obj.fontSize;
+	systemFont = false;
+
+	return *this;
+}

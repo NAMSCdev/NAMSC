@@ -12,23 +12,9 @@ class Sound
 	friend QDataStream& operator<<(QDataStream&, const Sound&);
 public:
 	Sound() = default;
-	Sound(QString &&soundAssetName, bool bPersistToNewEvent, double volume, double stereo, int timesPlayed, uint delay) :
-		soundAssetName(move(soundAssetName)), bPersistToNewEvent(bPersistToNewEvent), settings(volume, stereo, timesPlayed, delay)
-	{
-		soundAsset = AssetManager::getInstance().findAssetSound(this->soundAssetName);
-	}
+	Sound(QString&& soundAssetName, bool bPersistToNewEvent, double volume, double stereo, int timesPlayed, uint delay);
 	Sound(Sound& obj) { *this = obj; }
-	Sound& operator=(const Sound& obj) 
-	{
-		if (this == &obj) return *this;
-
-		soundAssetName     = obj.soundAssetName;
-		soundAsset         = obj.soundAsset;
-		bPersistToNewEvent = obj.bPersistToNewEvent;
-		settings           = obj.settings;
-
-		return *this;
-	}
+	Sound& operator=(const Sound& obj);
 
 	///Tries to load an AssetSound
 	void load()		{ if (!soundAsset->isLoaded()) soundAsset->load(); player = soundAsset->getSoundPlayer(); }
@@ -60,3 +46,21 @@ private:
 	///Saving an object to a binary file
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
+
+inline Sound::Sound(QString&& soundAssetName, bool bPersistToNewEvent, double volume, double stereo, int timesPlayed, uint delay)
+	: soundAssetName(move(soundAssetName)), bPersistToNewEvent(bPersistToNewEvent), settings(volume, stereo, timesPlayed, delay)
+{
+	soundAsset = AssetManager::getInstance().findAssetSound(this->soundAssetName);
+}
+
+inline Sound& Sound::operator=(const Sound& obj)
+{
+	if (this == &obj) return *this;
+
+	soundAssetName = obj.soundAssetName;
+	soundAsset = obj.soundAsset;
+	bPersistToNewEvent = obj.bPersistToNewEvent;
+	settings = obj.settings;
+
+	return *this;
+}

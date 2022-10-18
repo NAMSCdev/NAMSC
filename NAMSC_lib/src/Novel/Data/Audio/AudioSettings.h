@@ -11,17 +11,7 @@ public:
 	AudioSettings(double volume, double stereo, int timesPlayed, uint delayBetweenReplays) :
 		volume(volume), stereo(stereo), timesPlayed(timesPlayed), delayBetweenReplays(delayBetweenReplays) {}
 	AudioSettings(const AudioSettings& obj) { *this = obj; }
-	AudioSettings& operator=(const AudioSettings& obj)
-	{
-		if (this == &obj) return *this;
-
-		volume              = obj.volume;
-		stereo              = obj.stereo;
-		timesPlayed         = obj.timesPlayed;
-		delayBetweenReplays = obj.delayBetweenReplays;
-
-		return *this;
-	}
+	AudioSettings& operator=(const AudioSettings& obj);
 	///Volume of the played Sound
 	double volume   = 1.0;
 
@@ -46,3 +36,15 @@ private:
 	///Saving an object to a binary file
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
+
+inline AudioSettings& AudioSettings::operator=(const AudioSettings& obj)
+{
+	if (this == &obj) return *this;
+
+	volume = obj.volume;
+	stereo = obj.stereo;
+	timesPlayed = obj.timesPlayed;
+	delayBetweenReplays = obj.delayBetweenReplays;
+
+	return *this;
+}

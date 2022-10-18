@@ -13,13 +13,7 @@ public:
 	AssetAnim(QString name, QString &&location, uint pos = 0) :
 		Asset(move(name), move(location), pos) {}
 	AssetAnim(const AssetAnim& obj) { *this = obj; }
-	AssetAnim& operator=(const AssetAnim& obj) 
-	{
-		if (this == &obj) return *this;
-
-		Asset::operator=(obj);
-		animNodes = nullptr;
-	}
+	AssetAnim& operator=(const AssetAnim& obj);
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
 	void load() override { }
@@ -40,3 +34,12 @@ private:
 	///A smart pointer to the actual data
 	uPtr<QVector<AnimNode>>	animNodes;
 };
+
+template<typename AnimNode> inline
+AssetAnim<AnimNode>& AssetAnim<AnimNode>::operator=(const AssetAnim& obj)
+{
+	if (this == &obj) return *this;
+
+	Asset::operator=(obj);
+	animNodes = nullptr;
+}

@@ -17,21 +17,9 @@ public:
 	public:
 		Choice()	= default;
 		Choice(Translation&& text, QString&& condition, EventJump&& jump, QString&& label) :
-			text(move(text)), condition(condition), jump(move(jump)), label(move(label)) {}
+			text(move(text)), condition(condition), jump(move(jump)), label(move(label)) { }
 		Choice(const Choice& obj) { *this = obj; }
-		Choice& operator=(const Choice& obj)
-		{
-			if (this == &obj) return *this;
-
-			label                = obj.label;
-			text                 = obj.text;
-			condition            = obj.condition;
-			jump                 = obj.jump;
-			label                = obj.label;
-			choiceDisplayOptions = obj.choiceDisplayOptions;
-
-			return *this;
-		}
+		Choice& operator=(const Choice& obj);
 
 		void run();
 
@@ -47,19 +35,9 @@ public:
 
 			ChoiceDisplayOptions() = default;
 			ChoiceDisplayOptions(QString &&fontName, uint fontSize, bool bHideIfConditionNotMet) : 
-				fontName(move(fontName)), fontSize(fontSize), bHideIfConditionNotMet(bHideIfConditionNotMet) {}
+				fontName(move(fontName)), fontSize(fontSize), bHideIfConditionNotMet(bHideIfConditionNotMet) { }
 			ChoiceDisplayOptions(const ChoiceDisplayOptions& obj) { *this = obj; }
-			ChoiceDisplayOptions& operator=(const ChoiceDisplayOptions& obj)
-			{
-				if (this == &obj) return *this;
-
-				fontName               = obj.fontName;
-				font                   = obj.font;
-				fontSize               = obj.fontSize;
-				bHideIfConditionNotMet = obj.bHideIfConditionNotMet;
-
-				return *this;
-			}
+			ChoiceDisplayOptions& operator=(const ChoiceDisplayOptions& obj);
 
 			QString fontName;
 			AssetFont *font;
@@ -98,19 +76,10 @@ public:
 
 	EventChoice() = default;
 	EventChoice(uint executionOrder, QString&& label, Translation&& text, QVector<Choice>&& choices) :
-		Event(executionOrder, move(label)), text(move(text)), choices(move(choices)) {}
+		Event(executionOrder, move(label)), text(move(text)), choices(move(choices)) { }
 	EventChoice(const EventChoice& obj) { *this = obj; }
-	EventChoice& operator=(const EventChoice& obj)
-	{
-		if (this == &obj) return *this;
+	EventChoice& operator=(const EventChoice& obj);
 
-		Event::operator=(obj);
-		label   = obj.label;
-		text    = obj.text;
-		choices = obj.choices;
-
-		return *this;
-	}
 	///Executes this Event's logic
 	void run() override;
 
@@ -137,3 +106,41 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventChoice::Choice& EventChoice::Choice::operator=(const Choice& obj)
+{
+	if (this == &obj) return *this;
+
+	label = obj.label;
+	text = obj.text;
+	condition = obj.condition;
+	jump = obj.jump;
+	label = obj.label;
+	choiceDisplayOptions = obj.choiceDisplayOptions;
+
+	return *this;
+}
+
+inline EventChoice::Choice::ChoiceDisplayOptions& EventChoice::Choice::ChoiceDisplayOptions::operator=(const ChoiceDisplayOptions& obj)
+{
+	if (this == &obj) return *this;
+
+	fontName = obj.fontName;
+	font = obj.font;
+	fontSize = obj.fontSize;
+	bHideIfConditionNotMet = obj.bHideIfConditionNotMet;
+
+	return *this;
+}
+
+inline EventChoice& EventChoice::operator=(const EventChoice& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	label = obj.label;
+	text = obj.text;
+	choices = obj.choices;
+
+	return *this;
+}

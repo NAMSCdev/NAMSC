@@ -12,11 +12,7 @@ public:
 	Asset() = default;
 	Asset(QString&& name, uint pos = 0, bool bExternal = false, QString&& location = "");
 	Asset(const Asset& asset) { *this = asset; }
-	Asset& operator=(const Asset& asset)	
-	{
-		name = asset.name; location = asset.location; bExternal = asset.bExternal; pos = asset.pos;
-		return *this;
-	}
+	Asset& operator=(const Asset& asset);
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
 	virtual ~Asset()		= 0;
 
@@ -70,7 +66,7 @@ inline Asset& Asset::operator=(const Asset& asset)
 	return *this;
 }
 
-inline Asset::Asset(QString && name, uint pos = 0, bool bExternal = false, QString && location = "") :
+inline Asset::Asset(QString&& name, uint pos = 0, bool bExternal = false, QString && location = "") :
 	name(move(name)), location(move(location)), bExternal(bExternal), pos(pos) {}
 
 inline bool operator==(const Asset &lhs, const QString &rhs)

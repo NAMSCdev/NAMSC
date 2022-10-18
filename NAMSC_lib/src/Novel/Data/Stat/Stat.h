@@ -23,25 +23,9 @@ public:
 	};
 
 	Stat() = default;
-	Stat(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification)
-		: name(move(name)), displayName(move(displayName)), bShow(bShow), priority(priority), showNotification(showNotification)
-	{
-		if (this->displayName.isEmpty())
-			this->displayName = this->name;
-	}
+	Stat(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification);
 	Stat(const Stat& obj) { *this = obj; }
-	Stat& operator=(const Stat& obj)
-	{
-		if (this == &obj) return *this;
-
-		name             = obj.name;
-		displayName      = obj.displayName;
-		bShow            = obj.bShow;
-		priority         = obj.priority;
-		showNotification = obj.showNotification;
-
-		return *this;
-	}
+	Stat& operator=(const Stat& obj);
 	virtual ~Stat();
 
 	///Needed for serialization, to know the class of an object about to be serialization loaded
@@ -72,6 +56,26 @@ protected:
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
+inline Stat::Stat(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification)
+	: name(move(name)), displayName(move(displayName)), bShow(bShow), priority(priority), showNotification(showNotification)
+{
+	if (this->displayName.isEmpty())
+		this->displayName = this->name;
+}
+
+inline Stat& Stat::operator=(const Stat& obj)
+{
+	if (this == &obj) return *this;
+
+	name = obj.name;
+	displayName = obj.displayName;
+	bShow = obj.bShow;
+	priority = obj.priority;
+	showNotification = obj.showNotification;
+
+	return *this;
+}
+
 Stat::~Stat() = default;
 
 bool operator<(const Stat &lhs, const Stat &rhs)
@@ -92,18 +96,9 @@ class StatString final : public Stat
 public:
 	StatString() = default;
 	StatString(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification, QString&& value, uint maxChars)
-		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(move(value)), maxChars(maxChars) {}
+		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(move(value)), maxChars(maxChars) { }
 	StatString(const StatString& obj) { *this = obj; }
-	StatString& operator=(const StatString& obj)
-	{
-		if (this == &obj) return *this;
-
-		Stat::operator=(obj);
-		value    = obj.value;
-		maxChars = obj.maxChars;
-
-		return *this;
-	}
+	StatString& operator=(const StatString& obj);
 
 	///Assigns value to the Stat from a QString value
 	///Makes Assigment from EventInput and Evaluators very easy
@@ -130,23 +125,26 @@ private:
 	void serializableSave(QDataStream& dataStream) const override;
 };
 
+inline StatString& StatString::operator=(const StatString& obj)
+{
+	if (this == &obj) return *this;
+
+	Stat::operator=(obj);
+	value = obj.value;
+	maxChars = obj.maxChars;
+
+	return *this;
+}
+
 ///A Stat with the boolean value
 class StatBool final : public Stat
 {
 public:
 	StatBool() = default;
 	StatBool(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification, bool value)
-		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(value) {}
+		: Stat(move(name), move(displayName), bShow, priority, showNotification), value(value) { }
 	StatBool(const StatBool& obj) { *this = obj; }
-	StatBool& operator=(const StatBool& obj)
-	{
-		if (this == &obj) return *this;
-
-		Stat::operator=(obj);
-		value = obj.value;
-
-		return *this;
-	}
+	StatBool& operator=(const StatBool& obj);
 
 	///Assigns value to the Stat from a QString value
 	///Makes Assigment from EventInput and Evaluators very easy
@@ -190,27 +188,25 @@ private:
 	void serializableSave(QDataStream& dataStream) const override;
 };
 
+inline StatBool& StatBool::operator=(const StatBool& obj)
+{
+	if (this == &obj) return *this;
+
+	Stat::operator=(obj);
+	value = obj.value;
+
+	return *this;
+}
+
 ///A Stat with the integer value
 class StatLongLong final : public Stat
 {
 public:
 	StatLongLong() = default;
 	StatLongLong(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification,
-			int value, int min, int max/*, QString&& oppositeStatLabel*/) : 
-		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*,
-		oppositeStatLabel(move(oppositeStatLabel))*/ {}
+		int value, int min, int max/*, QString&& oppositeStatLabel*/);
 	StatLongLong(const StatLongLong& obj) { *this = obj; }
-	StatLongLong& operator=(const StatLongLong& obj)
-	{
-		if (this == &obj) return *this;
-
-		Stat::operator=(obj);
-		value = obj.value;
-		min   = obj.min;
-		max   = obj.max;
-
-		return *this;
-	}
+	StatLongLong& operator=(const StatLongLong& obj);
 
 	///Assigns value to the Stat from a QString value
 	///Makes Assigment from EventInput and Evaluators very easy
@@ -250,26 +246,32 @@ private:
 	void serializableSave(QDataStream& dataStream) const override;
 };
 
+inline StatLongLong::StatLongLong(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification,
+	int value, int min, int max/*, QString&& oppositeStatLabel*/) 
+	: Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*,
+	oppositeStatLabel(move(oppositeStatLabel))*/ { }
+
+inline StatLongLong& StatLongLong::operator=(const StatLongLong& obj)
+{
+	if (this == &obj) return *this;
+
+	Stat::operator=(obj);
+	value = obj.value;
+	min = obj.min;
+	max = obj.max;
+
+	return *this;
+}
+
 ///A Stat with the floating-point value
 class StatDouble final : public Stat
 {
 public:
 	StatDouble() = default;
 	StatDouble(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification,
-			   double value, double min, double max/*, QString&& oppositeStatLabel*/) : 
-		Stat(move(name), move(displayName), bShow, priority, showNotification), value(value), min(min), max(max)/*, oppositeStatLabel(move(oppositeStatLabel))*/ {}
+		double value, double min, double max/*, QString&& oppositeStatLabel*/);
 	StatDouble(const StatDouble& obj) { *this = obj; }
-	StatDouble& operator=(const StatDouble& obj)
-	{
-		if (this == &obj) return *this;
-
-		Stat::operator=(obj);
-		value = obj.value;
-		min   = obj.min;
-		max   = obj.max;
-
-		return *this;
-	}
+	StatDouble& operator=(const StatDouble& obj);
 
 	///Assigns value to the Stat from a QString value
 	///Makes Assigment from EventInput and Evaluators very easy
@@ -299,3 +301,20 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline StatDouble::StatDouble(QString&& name, QString&& displayName, bool bShow, uint priority, ShowNotification showNotification,
+	double value, double min, double max/*, QString&& oppositeStatLabel*/) 
+	: Stat(move(name), move(displayName), bShow, priority, showNotification)
+	, value(value), min(min), max(max)/*, oppositeStatLabel(move(oppositeStatLabel))*/ { }
+
+inline StatDouble& StatDouble::operator=(const StatDouble& obj)
+{
+	if (this == &obj) return *this;
+
+	Stat::operator=(obj);
+	value = obj.value;
+	min = obj.min;
+	max = obj.max;
+
+	return *this;
+}

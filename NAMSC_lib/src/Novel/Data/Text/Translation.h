@@ -15,14 +15,8 @@ public:
 	Translation(const QMap<QString, AssetText>&& translations/*, const QVector<uint>>	&&wordDurations*/) :
 		translations(move(translations))/*, wordDurations(move(wordDurations))*/ {}
 	Translation(const Translation& obj) { *this = obj; }
-	Translation& operator=(const Translation& obj)
-	{
-		if (this == &obj) return *this;
+	Translation& operator=(const Translation& obj);
 
-		translations = obj.translations;
-
-		return *this;
-	}
 	///Return text in the language that is set in NovelSettings
 	const QString text(const QString language = NovelSettings::getInstance().language);
 
@@ -49,3 +43,12 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream &dataStream) const;
 };
+
+inline Translation& Translation::operator=(const Translation& obj)
+{
+	if (this == &obj) return *this;
+
+	translations = obj.translations;
+
+	return *this;
+}

@@ -17,22 +17,10 @@ public:
 	};
 
 	ActionSetBackground() = default;
-	ActionSetBackground(QString &&label, QString &&backgroundAssetName, TransitionType transitionType, 
-						double transitionTime/*, QString &&themeName*/) :
-		Action(move(label)), backgroundAssetName(move(backgroundAssetName)), transitionType(transitionType),
-		transitionTime(transitionTime)/*, themeName(move(themeName))*/ 
-			{ backgroundAsset = AssetManager::getInstance().findSceneryBackgroundAssetImage(this->backgroundAssetName); }
+	ActionSetBackground(QString&& label, QString&& backgroundAssetName, TransitionType transitionType,
+		double transitionTime/*, QString &&themeName*/);
 	ActionSetBackground(const ActionSetBackground& obj) { *this = obj; }
-	ActionSetBackground& operator=(const ActionSetBackground& obj) 
-	{
-		if (this == &obj) return *this;
-
-		Action::operator=(obj);
-		backgroundAssetName = obj.backgroundAssetName;
-		backgroundAsset     = obj.backgroundAsset;
-
-		return *this;
-	}
+	ActionSetBackground& operator=(const ActionSetBackground& obj);
 
 	///Executes this Action's logic
 	void run() override;
@@ -68,3 +56,22 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream &dataStream) const override;
 };
+
+inline ActionSetBackground::ActionSetBackground(QString&& label, QString&& backgroundAssetName, TransitionType transitionType,
+	double transitionTime/*, QString &&themeName*/)
+	: Action(move(label)), backgroundAssetName(move(backgroundAssetName)), transitionType(transitionType),
+	transitionTime(transitionTime)/*, themeName(move(themeName))*/
+{
+	backgroundAsset = AssetManager::getInstance().findSceneryBackgroundAssetImage(this->backgroundAssetName);
+}
+
+inline ActionSetBackground& ActionSetBackground::operator=(const ActionSetBackground& obj)
+{
+	if (this == &obj) return *this;
+
+	Action::operator=(obj);
+	backgroundAssetName = obj.backgroundAssetName;
+	backgroundAsset = obj.backgroundAsset;
+
+	return *this;
+}

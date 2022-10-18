@@ -12,19 +12,9 @@ class EventNarrate : public Event
 public:
 	EventNarrate() = default;
 	EventNarrate(uint executionOrder, QString&& label, QVector<Sentence>&& speech, QString && voiceName) :
-		Event(executionOrder, move(label)), speech(move(speech)), voiceName(move(voiceName)) {}
+		Event(executionOrder, move(label)), speech(move(speech)), voiceName(move(voiceName)) { }
 	EventNarrate(const EventNarrate& obj) { *this = obj; }
-	EventNarrate& operator=(const EventNarrate& obj)
-	{
-		if (this == &obj) return *this;
-
-		Event::operator=(obj);
-		speech    = obj.speech;
-		voiceName = obj.voiceName;
-		voice     = obj.voice;
-
-		return *this;
-	}
+	EventNarrate& operator=(const EventNarrate& obj);
 
 	///Executes this Event's logic
 	virtual void run() override;
@@ -54,3 +44,15 @@ protected:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventNarrate& EventNarrate::operator=(const EventNarrate& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	speech = obj.speech;
+	voiceName = obj.voiceName;
+	voice = obj.voice;
+
+	return *this;
+}

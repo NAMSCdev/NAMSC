@@ -11,15 +11,7 @@ public:
 	AssetText(QString &&name, uint pos = 0, bool bExternal = false, QString &&location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
 	AssetText(const AssetText& obj) { *this = obj; }
-	AssetText &operator=(const AssetText &obj)
-	{
-		if (this == &obj) return *this;
-
-		Asset::operator=(obj);
-		str = nullptr;
-		
-		return *this;
-	}
+	AssetText& operator=(const AssetText& obj);
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
 	void load() override		
@@ -56,3 +48,13 @@ private:
 	///A smart pointer to the actual data
 	uPtr<QString> str;
 };
+
+inline AssetText& AssetText::operator=(const AssetText& obj)
+{
+	if (this == &obj) return *this;
+
+	Asset::operator=(obj);
+	str = nullptr;
+
+	return *this;
+}

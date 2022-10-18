@@ -11,22 +11,9 @@ class ActionSceneryObjectImageChange final : public ActionSceneryObject
 {
 public:
 	ActionSceneryObjectImageChange() = default;
-	ActionSceneryObjectImageChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) :
-		ActionSceneryObject(move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
-	{
-		imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
-	}
+	ActionSceneryObjectImageChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName);
 	ActionSceneryObjectImageChange(const ActionSceneryObjectImageChange& obj) { *this = obj; }
-	ActionSceneryObjectImageChange& operator=(const ActionSceneryObjectImageChange& obj)
-	{
-		if (this == &obj) return *this;
-
-		ActionSceneryObject::operator=(obj);
-		imageAssetName = obj.imageAssetName;
-		imageAsset     = obj.imageAsset;
-
-		return *this;
-	}
+	ActionSceneryObjectImageChange& operator=(const ActionSceneryObjectImageChange& obj);
 
 	///Executes this Action's logic
 	void run() override;
@@ -65,3 +52,20 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline ActionSceneryObjectImageChange::ActionSceneryObjectImageChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) :
+	ActionSceneryObject(move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
+{
+	imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
+}
+
+inline ActionSceneryObjectImageChange& ActionSceneryObjectImageChange::operator=(const ActionSceneryObjectImageChange& obj)
+{
+	if (this == &obj) return *this;
+
+	ActionSceneryObject::operator=(obj);
+	imageAssetName = obj.imageAssetName;
+	imageAsset = obj.imageAsset;
+
+	return *this;
+}

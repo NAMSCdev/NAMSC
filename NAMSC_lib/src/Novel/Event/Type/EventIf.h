@@ -10,17 +10,10 @@ class EventIf final : public Event
 public:
 	EventIf() = default;
 	EventIf(uint executionOrder, QString&& label, QString &&condition) :
-		Event(executionOrder, move(label)), condition(move(condition))	{}
+		Event(executionOrder, move(label)), condition(move(condition))	{ }
 	EventIf(const EventIf& obj) { *this = obj; }
-	EventIf& operator=(const EventIf& obj)
-	{
-		if (this == &obj) return *this;
+	EventIf& operator=(const EventIf& obj);
 
-		Event::operator=(obj);
-		condition = obj.condition;
-
-		return *this;
-	}
 	///Executes this Event's logic
 	void run() override		{}
 
@@ -40,3 +33,13 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventIf& EventIf::operator=(const EventIf& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	condition = obj.condition;
+
+	return *this;
+}

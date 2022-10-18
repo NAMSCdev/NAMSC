@@ -8,17 +8,7 @@ class EventSpeak final : public EventNarrate //TODO: need fix due to the need of
 {
 	EventSpeak(uint executionOrder, QString&& label, QVector<Sentence>&& speech, QString&& voice, QString&& characterName, QString&& displayedName);
 	EventSpeak(const EventSpeak& obj) { *this = obj; }
-	EventSpeak& operator=(const EventSpeak& obj)
-	{
-		if (this == &obj) return *this;
-
-		EventNarrate::operator=(obj);
-		characterName = obj.characterName;
-		character     = obj.character;
-		displayedName = obj.displayedName;
-
-		return *this;
-	}
+	EventSpeak& operator=(const EventSpeak& obj);
 
 	///Executes this Event's logic
 	void run() override;
@@ -47,3 +37,15 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventSpeak& EventSpeak::operator=(const EventSpeak& obj)
+{
+	if (this == &obj) return *this;
+
+	EventNarrate::operator=(obj);
+	characterName = obj.characterName;
+	character = obj.character;
+	displayedName = obj.displayedName;
+
+	return *this;
+}

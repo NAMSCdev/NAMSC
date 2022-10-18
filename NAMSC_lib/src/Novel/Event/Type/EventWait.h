@@ -9,17 +9,9 @@ class EventWait final : public Event
 public:
 	EventWait() = default;
 	EventWait(uint executionOrder, double waitTime, QString &&label) :
-		Event(executionOrder, move(label)), waitTime(waitTime) {}
+		Event(executionOrder, move(label)), waitTime(waitTime) { }
 	EventWait(const EventWait& obj) { *this = obj; }
-	EventWait& operator=(const EventWait& obj)
-	{
-		if (this == &obj) return *this;
-
-		Event::operator=(obj);
-		waitTime = obj.waitTime;
-
-		return *this;
-	}
+	EventWait& operator=(const EventWait& obj);
 
 	///Executes this Event's logic
 	void run() override;
@@ -42,3 +34,13 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventWait& EventWait::operator=(const EventWait& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	waitTime = obj.waitTime;
+
+	return *this;
+}

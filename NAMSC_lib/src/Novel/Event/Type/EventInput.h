@@ -10,32 +10,10 @@ class EventInput final : public Event
 public:
 	EventInput() = default;
 	EventInput(uint executionOrder, QString&& label, QString&& inputStat, bool bDigitsOnly, long long min, long long max, uint minCharacters, QString&& regex,
-			   bool bStatRelated, QString&& logicalExpression, int tries, uint successJumpSceneId, uint successJumpExecutionOrder, QString&& successCondition,
-			   uint failureJumpSceneId, uint failureJumpExecutionOrder, QString&& failureCondition) :
-		Event(executionOrder, move(label)), inputStat(move(inputStat)), bDigitsOnly(bDigitsOnly), min(min), max(max), minCharacters(minCharacters), regex(move(regex)),
-		bStatRelated(bStatRelated), logicalExpression(move(logicalExpression)), tries(tries),
-		successJump(0, 0, successJumpSceneId, successJumpExecutionOrder, move(successCondition)),
-		failureJump(0, 0, failureJumpSceneId, failureJumpExecutionOrder, move(failureCondition)) {}
+		bool bStatRelated, QString&& logicalExpression, int tries, uint successJumpSceneId, uint successJumpExecutionOrder, QString&& successCondition,
+		uint failureJumpSceneId, uint failureJumpExecutionOrder, QString&& failureCondition);
 	EventInput(const EventInput& obj) { *this = obj; }
-	EventInput& operator=(const EventInput& obj)
-	{
-		if (this == &obj) return *this;
-
-		Event::operator=(obj);
-		inputStat         = obj.inputStat;
-		bDigitsOnly       = obj.bDigitsOnly;
-		min               = obj.min;
-		max               = obj.max;
-		minCharacters     = obj.minCharacters;
-		regex             = obj.regex;
-		bStatRelated      = obj.bStatRelated;
-		logicalExpression = obj.logicalExpression;
-		tries	          = obj.tries;
-		successJump       = obj.successJump;
-		failureJump       = obj.failureJump;
-
-		return *this;
-	}
+	EventInput& operator=(const EventInput& obj);
 	///Executes this Event's logic
 	void run() override;
 
@@ -98,3 +76,31 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventInput::EventInput(uint executionOrder, QString&& label, QString&& inputStat, bool bDigitsOnly, long long min, long long max, uint minCharacters, QString&& regex,
+	bool bStatRelated, QString&& logicalExpression, int tries, uint successJumpSceneId, uint successJumpExecutionOrder, QString&& successCondition,
+	uint failureJumpSceneId, uint failureJumpExecutionOrder, QString&& failureCondition) :
+	Event(executionOrder, move(label)), inputStat(move(inputStat)), bDigitsOnly(bDigitsOnly), min(min), max(max), minCharacters(minCharacters), regex(move(regex)),
+	bStatRelated(bStatRelated), logicalExpression(move(logicalExpression)), tries(tries),
+	successJump(0, 0, successJumpSceneId, successJumpExecutionOrder, move(successCondition)),
+	failureJump(0, 0, failureJumpSceneId, failureJumpExecutionOrder, move(failureCondition)) { }
+
+inline EventInput& EventInput::operator=(const EventInput& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	inputStat = obj.inputStat;
+	bDigitsOnly = obj.bDigitsOnly;
+	min = obj.min;
+	max = obj.max;
+	minCharacters = obj.minCharacters;
+	regex = obj.regex;
+	bStatRelated = obj.bStatRelated;
+	logicalExpression = obj.logicalExpression;
+	tries = obj.tries;
+	successJump = obj.successJump;
+	failureJump = obj.failureJump;
+
+	return *this;
+}

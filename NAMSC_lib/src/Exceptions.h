@@ -16,7 +16,7 @@ inline void info()
 struct Exception : QException
 {
 	Exception(const QString &&msg, const char type[], const char function[], const char file[], int line) noexcept
-		: msg(move(msg)), type(move(type)), function(move(function)), file(move(file)), line(line) {}
+		: msg(move(msg)), type(move(type)), function(move(function)), file(move(file)), line(line) { }
 
 	virtual ~Exception() = 0;
 

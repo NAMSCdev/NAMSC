@@ -16,16 +16,7 @@ public:
 	Character() = default;
 	Character(QString&& defaultVoiceName);
 	Character(const Character& obj) { *this = obj; }
-	Character& operator=(const Character& obj)
-	{
-		if (this == &obj) return *this;
-
-		SceneryObject::operator=(obj);
-		defaultVoiceName = obj.defaultVoiceName;
-		defaultVoice     = obj.defaultVoice;
-
-		return *this;
-	}
+	Character& operator=(const Character& obj);
 
 
 private:
@@ -45,3 +36,14 @@ private:
 	///Saving an object to a binary file
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
+
+inline Character& Character::operator=(const Character& obj)
+{
+	if (this == &obj) return *this;
+
+	SceneryObject::operator=(obj);
+	defaultVoiceName = obj.defaultVoiceName;
+	defaultVoice = obj.defaultVoice;
+
+	return *this;
+}

@@ -15,23 +15,10 @@ public:
 	};
 
 	ActionSceneryObjectVisibilityChange() = default;
-	ActionSceneryObjectVisibilityChange(QString &&label, QString &&sceneryObjectName,
-							AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation, bool bShow) :
-		ActionSceneryObject(move(label), move(sceneryObjectName)), appearEffectType(appearEffectType),
-		duration(duration), bAppear(bAppear), bPerserveAnimation(bPerserveAnimation), bShow(bShow) {}
+	ActionSceneryObjectVisibilityChange(QString&& label, QString&& sceneryObjectName,
+		AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation, bool bShow);
 	ActionSceneryObjectVisibilityChange(const ActionSceneryObjectVisibilityChange& obj) { *this = obj; }
-	ActionSceneryObjectVisibilityChange& operator=(const ActionSceneryObjectVisibilityChange& obj)
-	{
-		if (this == &obj) return *this;
-
-		ActionSceneryObject::operator=(obj);
-		appearEffectType   = obj.appearEffectType;
-		duration           = obj.duration;
-		bAppear            = obj.bAppear;
-		bPerserveAnimation = obj.bPerserveAnimation;
-		bShow              = obj.bShow;
-		return *this;
-	}
+	ActionSceneryObjectVisibilityChange& operator=(const ActionSceneryObjectVisibilityChange& obj);
 
 	///Executes this Action's logic
 	void run() override;
@@ -69,3 +56,21 @@ protected:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream &dataStream) const override;
 };
+
+inline ActionSceneryObjectVisibilityChange::ActionSceneryObjectVisibilityChange(QString&& label, QString&& sceneryObjectName,
+	AppearEffectType appearEffectType, double duration, bool bAppear, bool bPerserveAnimation, bool bShow) 
+	: ActionSceneryObject(move(label), move(sceneryObjectName)), appearEffectType(appearEffectType),
+	duration(duration), bAppear(bAppear), bPerserveAnimation(bPerserveAnimation), bShow(bShow) { }
+
+inline ActionSceneryObjectVisibilityChange& ActionSceneryObjectVisibilityChange::operator=(const ActionSceneryObjectVisibilityChange& obj)
+{
+	if (this == &obj) return *this;
+
+	ActionSceneryObject::operator=(obj);
+	appearEffectType = obj.appearEffectType;
+	duration = obj.duration;
+	bAppear = obj.bAppear;
+	bPerserveAnimation = obj.bPerserveAnimation;
+	bShow = obj.bShow;
+	return *this;
+}

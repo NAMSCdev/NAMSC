@@ -9,19 +9,10 @@ class EventJump final : public Event
 public:
 	EventJump() = default;
 	EventJump(uint executionOrder, QString&& label, uint jumpSceneId, uint jumpExecutionOrder, QString &&condition) :
-		Event(executionOrder, move(label)), jumpSceneId(jumpSceneId), jumpExecutionOrder(jumpExecutionOrder), condition(move(condition)) {}
+		Event(executionOrder, move(label)), jumpSceneId(jumpSceneId), jumpExecutionOrder(jumpExecutionOrder), condition(move(condition)) { }
 	EventJump(const EventJump& obj) { *this = obj; }
-	EventJump& operator=(const EventJump& obj)
-	{
-		if (this == &obj) return *this;
+	EventJump& operator=(const EventJump& obj);
 
-		Event::operator=(obj);
-		jumpSceneId        = obj.jumpSceneId;
-		jumpExecutionOrder = obj.jumpExecutionOrder;
-		condition          = obj.condition;
-
-		return *this;
-	}
 	///Executes this Event's logic
 	void run() override;
 
@@ -49,3 +40,15 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventJump& EventJump::operator=(const EventJump& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+	jumpSceneId = obj.jumpSceneId;
+	jumpExecutionOrder = obj.jumpExecutionOrder;
+	condition = obj.condition;
+
+	return *this;
+}

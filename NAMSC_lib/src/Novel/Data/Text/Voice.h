@@ -21,35 +21,10 @@ public:
 	};
 
 	Voice() = default;
-	Voice(QString &&fontAssetName, QString &&insertionAssetSoundName, uint fontSize, bool bold, bool italic, 
-		  bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None) : 
-		fontAssetName(move(fontAssetName)), insertionAssetSoundName(move(insertionAssetSoundName)), fontSize(fontSize), bold(bold), italic(italic),
-		underscore(underscore), alignment(alignment), lipSync(lipSync)
-	{
-		this->color = color;
-		fontAsset = AssetManager::getInstance().findAssetFont(this->fontAssetName);
-		insertionAssetSound = AssetManager::getInstance().findAssetSound(this->insertionAssetSoundName);
-	}
+	Voice(QString&& fontAssetName, QString&& insertionAssetSoundName, uint fontSize, bool bold, bool italic,
+		bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None);
 	Voice(const Voice& obj) { *this = obj; }
-	Voice& operator=(const Voice& obj)
-	{
-		if (this == &obj) return *this;
-
-		fontAssetName = obj.fontAssetName;
-		fontAsset = obj.fontAsset;
-		insertionAssetSoundName = obj.insertionAssetSoundName;
-		insertionAssetSound = obj.insertionAssetSound;
-		fontSize = obj.fontSize;
-		bold = obj.bold;
-		italic = obj.italic;
-		underscore = obj.underscore;
-		cpsMultiplier = obj.cpsMultiplier;
-		color = obj.color;
-		alignment = obj.alignment;
-		lipSync = obj.lipSync;
-
-		return *this;
-	}
+	Voice& operator=(const Voice& obj);
 
 private:
 	///Name to the Font used to display the text spoken by this Voice
@@ -98,3 +73,33 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const;
 };
+
+inline Voice::Voice(QString&& fontAssetName, QString&& insertionAssetSoundName, uint fontSize, bool bold, bool italic,
+	bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None) :
+	fontAssetName(move(fontAssetName)), insertionAssetSoundName(move(insertionAssetSoundName)), fontSize(fontSize), bold(bold), italic(italic),
+	underscore(underscore), alignment(alignment), lipSync(lipSync)
+{
+	this->color = color;
+	fontAsset = AssetManager::getInstance().findAssetFont(this->fontAssetName);
+	insertionAssetSound = AssetManager::getInstance().findAssetSound(this->insertionAssetSoundName);
+}
+
+inline Voice& Voice::operator=(const Voice& obj)
+{
+	if (this == &obj) return *this;
+
+	fontAssetName = obj.fontAssetName;
+	fontAsset = obj.fontAsset;
+	insertionAssetSoundName = obj.insertionAssetSoundName;
+	insertionAssetSound = obj.insertionAssetSound;
+	fontSize = obj.fontSize;
+	bold = obj.bold;
+	italic = obj.italic;
+	underscore = obj.underscore;
+	cpsMultiplier = obj.cpsMultiplier;
+	color = obj.color;
+	alignment = obj.alignment;
+	lipSync = obj.lipSync;
+
+	return *this;
+}

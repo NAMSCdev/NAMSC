@@ -23,19 +23,8 @@ public:
 	Scenery() = default;
 	Scenery(QVector<QString> &&objectNames, QVector<QString> &&characterNames, QVector<Sound> &&sounds, MusicPlaylist &&musicPlaylist);
 	Scenery(const Scenery& obj) { *this = obj; }
-	Scenery& operator=(const Scenery& obj)
-	{
-		if (this == &obj) return *this;
+	Scenery& operator=(const Scenery& obj);
 
-		objectNames    = obj.objectNames;
-		objects        = obj.objects;
-		characterNames = obj.characterNames;
-		characters     = obj.characters;
-		sounds         = obj.sounds;
-		musicPlaylist  = obj.musicPlaylist;
-
-		return *this;
-	}
 	///Scenery's logic
 	void run();
 
@@ -85,3 +74,17 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const;
 };
+
+inline Scenery& Scenery::operator=(const Scenery& obj)
+{
+	if (this == &obj) return *this;
+
+	objectNames = obj.objectNames;
+	objects = obj.objects;
+	characterNames = obj.characterNames;
+	characters = obj.characters;
+	sounds = obj.sounds;
+	musicPlaylist = obj.musicPlaylist;
+
+	return *this;
+}

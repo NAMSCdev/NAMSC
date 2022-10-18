@@ -12,11 +12,7 @@ class SceneryObject
 	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
 public:
 	SceneryObject() = default;
-	SceneryObject(QPoint pos, QSize scale, double rotation, QVarLengthArray<double, 4> &&color, QString &&label, QString &&imageAssetName) :
-		pos(pos), scale(scale), rotation(rotation), color(move(color)), label(move(label)), imageAssetName(move(imageAssetName))
-	{
-		imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
-	}
+	SceneryObject(QPoint pos, QSize scale, double rotation, QVarLengthArray<double, 4>&& color, QString&& label, QString&& imageAssetName);
 
 	virtual ~SceneryObject() = default;
 
@@ -52,3 +48,9 @@ protected:
 	///Saving an object to a binary file
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
+
+inline SceneryObject::SceneryObject(QPoint pos, QSize scale, double rotation, QVarLengthArray<double, 4>&& color, QString&& label, QString&& imageAssetName)
+	: pos(pos), scale(scale), rotation(rotation), color(move(color)), label(move(label)), imageAssetName(move(imageAssetName))
+{
+	imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
+}

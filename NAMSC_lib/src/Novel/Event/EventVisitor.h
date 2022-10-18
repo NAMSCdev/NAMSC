@@ -19,15 +19,15 @@ class EventRenPyScript;
 class EventVisitor
 {
 public:	
-	virtual void visitEventChoice			(EventChoice*)			{}
-	virtual void visitEventEndIf			(EventEndIf*)			{}
-	virtual void visitEventIf		(EventIf*)		{}
-	virtual void visitEventInput			(EventInput*)			{}
-	virtual void visitEventJump		(EventJump*)			{}
-	virtual void visitEventNarrate			(EventNarrate*)			{}
-	virtual void visitEventSpeak			(EventSpeak*)			{}
-	virtual void visitEventWait		(EventWait*)			{}
+	virtual void visitEventChoice(EventChoice*) { }
+	virtual void visitEventEndIf(EventEndIf*) { }
+	virtual void visitEventIf(EventIf*) { }
+	virtual void visitEventInput(EventInput*) { }
+	virtual void visitEventJump(EventJump*) { }
+	virtual void visitEventNarrate(EventNarrate*) { }
+	virtual void visitEventSpeak(EventSpeak*) { }
+	virtual void visitEventWait(EventWait*) { }
 
 	///[optional]
-	virtual void visitEventRenPy			(EventRenPyScript*)		{}
+	virtual void visitEventRenPy(EventRenPyScript*) { }
 };

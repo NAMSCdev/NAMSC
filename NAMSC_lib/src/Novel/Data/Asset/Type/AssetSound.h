@@ -11,15 +11,7 @@ public:
 	AssetSound(QString &&name, uint pos = 0, bool bExternal = false, QString &&location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
 	AssetSound(const AssetSound& obj) {	*this = obj; }
-	AssetSound& operator=(const AssetSound& obj)
-	{
-		if (this == &obj) return *this;
-
-		Asset::operator=(obj);
-		mediaPlayer = nullptr;
-
-		return *this;
-	}
+	AssetSound& operator=(const AssetSound& obj);
 	///Tries to load an Assent
 	///Throws a noncritical Exception on failure
 	void load() override				
@@ -44,3 +36,13 @@ protected:
 	///A smart pointer to the actual data
 	uPtr<QMediaPlayer> mediaPlayer;
 };
+
+inline AssetSound& AssetSound::operator=(const AssetSound& obj)
+{
+	if (this == &obj) return *this;
+
+	Asset::operator=(obj);
+	mediaPlayer = nullptr;
+
+	return *this;
+}

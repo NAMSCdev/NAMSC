@@ -11,15 +11,7 @@ public:
 	AssetImage(QString&& name, uint pos = 0, bool bExternal = false, QString&& location = "") :
 		Asset(move(name), pos, bExternal, move(location)) { }
 	AssetImage(const AssetImage& obj) { *this = obj; }
-	AssetImage& operator=(const AssetImage& obj) 
-	{
-		if (this == &obj) return *this;
-
-		Asset::operator=(obj);
-		img = nullptr;
-
-		return *this;
-	}
+	AssetImage& operator=(const AssetImage& obj);
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
 	virtual ~AssetImage() = 0;
 
@@ -43,3 +35,13 @@ protected:
 	///A smart pointer to the actual data
 	uPtr<QImage> img;
 };
+
+inline AssetImage& AssetImage::operator=(const AssetImage& obj)
+{
+	if (this == &obj) return *this;
+
+	Asset::operator=(obj);
+	img = nullptr;
+
+	return *this;
+}

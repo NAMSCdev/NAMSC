@@ -10,16 +10,9 @@ class EventEndIf final : public Event
 public:
 	EventEndIf() = default;
 	EventEndIf(uint executionOrder, QString&& label) :
-		Event(executionOrder, move(label)) {}
+		Event(executionOrder, move(label)) { }
 	EventEndIf(const EventEndIf& obj) { *this = obj; }
-	EventEndIf& operator=(const EventEndIf& obj)
-	{
-		if (this == &obj) return *this;
-
-		Event::operator=(obj);
-
-		return *this;
-	}
+	EventEndIf& operator=(const EventEndIf& obj);
 	///Executes this Event's logic
 	void run() override;
 
@@ -36,3 +29,12 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline EventEndIf& EventEndIf::operator=(const EventEndIf& obj)
+{
+	if (this == &obj) return *this;
+
+	Event::operator=(obj);
+
+	return *this;
+}

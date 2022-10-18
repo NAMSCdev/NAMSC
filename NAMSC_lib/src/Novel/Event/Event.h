@@ -16,18 +16,10 @@ class Event
 public:
 	Event() = default;
 	Event(uint executionOrder, QString&& label) :
-		  executionOrder(executionOrder), label(move(label)) {}
+		  executionOrder(executionOrder), label(move(label)) { }
 	Event(const Event& obj) { *this = obj; }
-	Event& operator=(const Event& obj)
-	{
-		if (this == &obj) return *this;
+	Event& operator=(const Event& obj);
 
-		label          = obj.label;
-		executionOrder = obj.executionOrder;
-		actions        = obj.actions;
-
-		return *this;
-	}
 	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Event() = 0;
 
@@ -68,4 +60,15 @@ protected:
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
-Event::~Event() = default;
+inline Event::~Event() = default;
+
+inline Event& Event::operator=(const Event& obj)
+{
+	if (this == &obj) return *this;
+
+	label = obj.label;
+	executionOrder = obj.executionOrder;
+	actions = obj.actions;
+
+	return *this;
+}

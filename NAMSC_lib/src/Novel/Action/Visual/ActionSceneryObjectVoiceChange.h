@@ -11,20 +11,9 @@ class ActionSceneryObjectVoiceChange final : public ActionSceneryObject
 {
 public:
 	ActionSceneryObjectVoiceChange() = default;
-	ActionSceneryObjectVoiceChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) :
-		ActionSceneryObject(move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
-	{
-		voice = Novel::getInstance().findVoice(imageAssetName);
-	}
+	ActionSceneryObjectVoiceChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName);
 	ActionSceneryObjectVoiceChange(const ActionSceneryObjectVoiceChange& obj) { *this = obj; }
-	ActionSceneryObjectVoiceChange& operator=(const ActionSceneryObjectVoiceChange& obj)
-	{
-		if (this == &obj) return *this;
-		voiceName = obj.voiceName;
-		voice     = obj.voice;
-
-		return *this;
-	}
+	ActionSceneryObjectVoiceChange& operator=(const ActionSceneryObjectVoiceChange& obj);
 
 	///Executes this Action's logic
 	void run() override;
@@ -63,3 +52,19 @@ private:
 	///Saving an object to a binary file
 	void serializableSave(QDataStream& dataStream) const override;
 };
+
+inline ActionSceneryObjectVoiceChange::ActionSceneryObjectVoiceChange(
+	Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) 
+	: ActionSceneryObject(move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
+{
+	voice = Novel::getInstance().findVoice(imageAssetName);
+}
+
+inline ActionSceneryObjectVoiceChange& ActionSceneryObjectVoiceChange::operator=(const ActionSceneryObjectVoiceChange& obj)
+{
+	if (this == &obj) return *this;
+	voiceName = obj.voiceName;
+	voice = obj.voice;
+
+	return *this;
+}
