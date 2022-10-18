@@ -154,10 +154,12 @@
     <ClInclude Include="src\Novel\Data\Text\Sentence.h" />
     <ClInclude Include="src\Novel\Data\Text\Translation.h" />
     <ClInclude Include="src\Novel\Data\Text\Voice.h" />
-    <ClInclude Include="src\Novel\Data\Visual\Animation\Animator.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBase.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorInterface.h" />
-    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorTransform.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObject.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNode.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorTransform.h" />
     <ClInclude Include="src\Novel\Data\Visual\MainMenuTheme.h" />
     <ClInclude Include="src\Novel\Data\Visual\Scenery\Character.h" />
     <ClInclude Include="src\Novel\Data\Visual\Scenery\Scenery.h" />

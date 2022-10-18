@@ -46,7 +46,7 @@ protected:
 	///Needed for serialization, to know the class of an object before the loading performed
 	virtual SerializationID getType() const = 0;
 
-	///Ensures that all Assets have their resources loaded
+	///Ensures that all the Resources are loaded
 	virtual void ensureResourcesAreLoaded() {}
 
 	//---SERIALIZATION---

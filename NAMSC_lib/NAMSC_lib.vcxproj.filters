@@ -126,6 +126,9 @@
     <Filter Include="Header Files\Novel\Event\Visitor">
       <UniqueIdentifier>{d860a747-2399-4f09-9f0e-912b03e429a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation\Type">
+      <UniqueIdentifier>{80695e86-4de5-4d0c-86ea-542e25620983}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Global.h">
@@ -293,13 +296,10 @@
     <ClInclude Include="src\Novel\Data\Visual\Scenery\Character.h">
       <Filter>Header Files\Novel\Data\Visual\Scenery</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorTransform.h">
-      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNode.h">
       <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\Animator.h">
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBase.h">
       <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Data\Chapter.h">
@@ -361,6 +361,15 @@
     </ClInclude>
     <ClInclude Include="src\Novel\Data\NovelFlowInterface.h">
       <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorTransform.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObject.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

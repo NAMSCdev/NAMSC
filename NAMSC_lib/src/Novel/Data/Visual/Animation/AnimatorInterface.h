@@ -60,30 +60,6 @@ protected:
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
-class AnimatorSceneryObjectInterface : public AnimatorInterface
-{
-public:
-	AnimatorSceneryObjectInterface() = default;
-	AnimatorSceneryObjectInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName);
-	AnimatorSceneryObjectInterface(const AnimatorSceneryObjectInterface& obj) { *this = obj; }
-	AnimatorSceneryObjectInterface& operator=(const AnimatorSceneryObjectInterface& obj);
-
-	virtual bool checkForErrors() override;
-
-protected:
-	virtual void ensureResourcesAreLoaded();
-
-	///Name to the Scenery Object, so it can be loaded (if needed)
-	QString		   sceneryObjectName;
-	///Scenery Object that will be affected by this Animator
-	SceneryObject* sceneryObject;
-
-	///Loading an object from a binary file
-	virtual void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
-	virtual void serializableSave(QDataStream& dataStream) const override;
-};
-
 
 
 

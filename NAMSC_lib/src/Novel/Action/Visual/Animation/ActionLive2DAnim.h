@@ -10,7 +10,7 @@
 class ActionVisitorCorrectLive2DAnimAsset;
 
 ///[optional] Animates a Character with Live2D
-///Could be synced with the Speech, have custom duration, or an infinite one
+///Could be synced with the Sentence, have a custom duration, or an infinite one
 ///@todo [optional]Animations should be able to be queued, so instead of changing one animation, there should be a more robust struct for holding data about it and every Character should store currently played LIST of animations 
 class ActionLive2DAnim final : public Action
 {
