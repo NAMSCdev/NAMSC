@@ -2,7 +2,8 @@
   "name": "namsc-dependencies",
   "version-string": "1.0",
   "dependencies": [
-    "qt",
+    "qtbase",
+    "qtmultimedia",
     "catch2",
     "trompeloeil"
   ]
