@@ -60,6 +60,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgConfiguration>Debug</VcpkgConfiguration>
+    <VcpkgAdditionalInstallOptions>--feature-flags=versions</VcpkgAdditionalInstallOptions>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
