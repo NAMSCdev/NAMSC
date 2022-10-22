@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_engine", "NAMSC_engine\NAMSC_engine.vcxproj", "{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_test", "NAMSC_test\NAMSC_test.vcxproj", "{977F0249-5A54-42B3-9DA5-1ECD858BC73F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,6 +17,10 @@ Global
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Debug|x64.Build.0 = Debug|x64
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Release|x64.ActiveCfg = Release|x64
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Release|x64.Build.0 = Release|x64
+		{977F0249-5A54-42B3-9DA5-1ECD858BC73F}.Debug|x64.ActiveCfg = Debug|x64
+		{977F0249-5A54-42B3-9DA5-1ECD858BC73F}.Debug|x64.Build.0 = Debug|x64
+		{977F0249-5A54-42B3-9DA5-1ECD858BC73F}.Release|x64.ActiveCfg = Debug|x64
+		{977F0249-5A54-42B3-9DA5-1ECD858BC73F}.Release|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
