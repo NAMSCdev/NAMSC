@@ -12,7 +12,7 @@ inline void info()
 	QTextStream(logFile);
 };
 
-///Allows better Exception messaging and logging for debugging and User Warnings
+/// Allows better Exception messaging and logging for debugging and User Warnings
 struct Exception : QException
 {
 	Exception(const QString &&msg, const char type[], const char function[], const char file[], int line) noexcept
@@ -22,7 +22,7 @@ struct Exception : QException
 
 	virtual void handle() noexcept;
 protected:
-	///Contains the
+	/// Contains the
 	QString details;
 	const QString msg;
 	const QString type;

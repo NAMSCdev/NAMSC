@@ -16,7 +16,7 @@ public:
 	MusicPlaylist(MusicPlaylist& obj) { *this = obj; }
 	MusicPlaylist& operator=(const MusicPlaylist& obj);
 
-	///Tries to load an AssetSound
+	/// Tries to load an AssetSound
 	void load()
 	{
 		for (AssetMusic* assetMusic : musicAssets)
@@ -26,7 +26,7 @@ public:
 		if (!musicAssets.isEmpty())
 			player = musicAssets.at(0)->getMusicPlayer();
 	}
-	///Returns whether the asset is currently loaded
+	/// Returns whether the asset is currently loaded
 	bool isLoaded() 
 	{
 		for (const AssetMusic*& assetMusic : musicAssets)
@@ -35,36 +35,39 @@ public:
 		return true;
 	}
 
-	///todo: describe
+	/// todo: describe
 	void shufflePlaylist();
 
-	///todo: describe
+	/// todo: describe
 	QMediaPlayer* player;
 
 private:
-	///Names of the AssetMusics, so they can be loaded (if needed) and played
+	/// Names of the AssetMusics, so they can be loaded (if needed) and played
 	QVector<QString> musicAssetsNames;
-	///AssetMusics to be played
+	/// AssetMusics to be played
 	QVector<AssetMusic*> musicAssets;
 
-	///[low optional] Whether to randomize Music order
+	/// [low optional] Whether to randomize Music order
 	bool bRandomize = false;
 
-	///[low optional] Whether every Music should be played at least once
+	/// [low optional] Whether every Music should be played at least once
 	bool bExclusive = false;
 
-	///Common properties of Actions that manage Audio
+	/// Common properties of Actions that manage Audio
 	AudioSettings settings;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream);
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
-inline MusicPlaylist::MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay)
-	: musicAssetsNames(move(musicAssetsNames)), bRandomize(bRandomize), bExclusive(bExclusive), settings(volume, stereo, timesPlayed, delay)
+
+
+
+inline MusicPlaylist::MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay) : 
+	musicAssetsNames(move(musicAssetsNames)), bRandomize(bRandomize), bExclusive(bExclusive), settings(volume, stereo, timesPlayed, delay)
 {
 	for (const QString& musicAssetName : this->musicAssetsNames)
 		musicAssets.push_back(AssetManager::getInstance().findAssetMusic(musicAssetName));

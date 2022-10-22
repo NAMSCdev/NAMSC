@@ -17,7 +17,7 @@
 #include "Novel/Data/Visual/Animation/AnimNode.h"
 #include "Novel/Data/Visual/Animation/AnimatorBase.h"
 #include "Novel/Data/Visual/Animation/AnimatorInterface.h"
-#include "Novel/Data/Visual/Animation/AnimatorTransform.h"
+#include "Novel/Data/Visual/Animation/Type/AnimatorMove.h"
 
 #include "Novel/Data/Visual/Scenery/SceneryObject.h"
 #include "Novel/Data/Visual/Scenery/Character.h"
@@ -54,7 +54,7 @@ void NovelState::serializableLoad(QDataStream &dataStream)
     }
 }
 
-void NovelState::serializableSave(QDataStream &dataStream) const
+void NovelState::serializableSave(QDataStream& dataStream) const
 {
     dataStream << saveSlot << sceneID << eventID  << date << image << stats.size();
     for (const uPtr<Stat> &stat : stats)
@@ -96,7 +96,7 @@ void Sentence::serializableLoad(QDataStream &dataStream)
     voice = Novel::getInstance().findVoice(voiceName);
 }
 
-void Sentence::serializableSave(QDataStream &dataStream) const
+void Sentence::serializableSave(QDataStream& dataStream) const
 {
     dataStream << SerializationID::Sentence << content << voiceName << cps << bEndWithInput << waitBeforeContinueTime;
 }
@@ -217,7 +217,7 @@ void AnimatorSceneryObjectInterface::serializableLoad(QDataStream& dataStream)
     AnimatorInterface::serializableLoad(dataStream);
     dataStream >> sceneryObjectName;
 
-    sceneryObject = Novel::getInstance().findSceneryObject();
+    sceneryObject = Novel::getInstance().findSceneryObject(sceneryObjectName);
 }
 
 void AnimatorSceneryObjectInterface::serializableSave(QDataStream& dataStream) const

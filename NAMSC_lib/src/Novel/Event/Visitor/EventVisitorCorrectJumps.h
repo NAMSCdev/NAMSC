@@ -3,7 +3,7 @@
 
 #include "Novel/Event/EventsAll.h"
 
-///CorrectsJump
+/// CorrectsJump
 class EventVisitorCorrectJumps final : public EventVisitor
 {
 public:
@@ -14,13 +14,13 @@ public:
 	virtual void visitEventJump(EventJump *e) override			{ changeID(e); }
 
 private:
-	///Changes IDs
+	/// Changes IDs
 	void changeID(Event* event)			
 	{ 
 		
 	}
 
-	///The ID to be replaced, if an Event has this executionOrder
+	/// The ID to be replaced, if an Event has this executionOrder
 	int oldID;
 
 	int newID;

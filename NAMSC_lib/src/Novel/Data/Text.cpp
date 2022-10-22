@@ -23,7 +23,7 @@ const QString Translation::text(const QString language)
 
 	if (text == nullptr)
 	{		
-		///TODO: Exceptions
+		/// TODO: Exceptions
 		return "";
 	}
 
@@ -37,10 +37,10 @@ const QString Translation::text(const QString language)
 /*
 const QVector<uint> Translation::durations()
 {
-	///Skip empty words, so if someone made multiple spaces between words, they will not create empty words
+	/// Skip empty words, so if someone made multiple spaces between words, they will not create empty words
 	QStringList words = text().split(" ", Qt::SplitBehaviorFlags::SkipEmptyParts);
 
-	///Remove things that are not words (made of whitechars only)
+	/// Remove things that are not words (made of whitechars only)
 	words.removeIf([](const QString word) -> bool
 		   {
 			   for (QChar c : word)
@@ -49,18 +49,18 @@ const QVector<uint> Translation::durations()
 			   return true;
 		   });
 
-	///Try to retrieve durations for this language
+	/// Try to retrieve durations for this language
 	QVector<uint> durations;
 	if (wordDurations.find(NovelSettings::language) != wordDurations.end())
 		durations = wordDurations[NovelSettings::language];
 	if (wordDurations.find(NovelSettings::defaultLanguage) != wordDurations.end())
 		durations = wordDurations[NovelSettings::defaultLanguage];
 
-	///Check if size 
+	/// Check if size 
 	if (words.size() != durations.size())
 	{
-		///todo: WARN USER ABOUT THIS
-		///returns empty (invalid) durations, which will default the speed to CharByChar instead
+		/// todo: WARN USER ABOUT THIS
+		/// returns empty (invalid) durations, which will default the speed to CharByChar instead
 		return QVector<uint>();
 	}
 	return durations;

@@ -18,7 +18,10 @@
 #include "Novel/Action/Visual/Filter/Type/ActionFilterSaturation.h"
 
 #include "Novel/Action/Visual/Animation/ActionLive2DAnim.h"
-#include "Novel/Action/Visual/Animation/ActionSceneryObjectAnimTransform.h"
-#include "Novel/Action/Visual/Animation/ActionSceneryObjectVisibilityChange.h"
+#include "Novel/Action/Visual/Animation/Type/ActionSceneryObjectAnimMove.h"
+#include "Novel/Action/Visual/Animation/Type/ActionSceneryObjectAnimScale.h"
+#include "Novel/Action/Visual/Animation/Type/ActionSceneryObjectAnimRotate.h"
+#include "Novel/Action/Visual/Animation/Type/ActionSceneryObjectAnimColor.h"
+#include "Novel/Action/Visual/Animation/Type/ActionSceneryObjectVisibility.h"
 #include "Novel/Action/Visual/ActionSetBackground.h"
 #include "Novel/Action/Visual/ActionSceneryObjectImageChange.h"

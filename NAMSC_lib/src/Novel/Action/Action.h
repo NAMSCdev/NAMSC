@@ -1,11 +1,11 @@
 #pragma once
 #include "Global.h"
-
-#include "Novel/Action/ActionVisitor.h"
 #include "Novel/Data/NovelFlowInterface.h"
 
+#include "Novel/Action/ActionVisitor.h"
+
 class Event;
-///Action is an additional work added to an Event
+/// Action is an additional work added to an Event
 class Action : public QObject, public NovelFlowInterface
 {
 	Q_OBJECT
@@ -20,43 +20,45 @@ public:
 	Action() = default;
 	Action(const Action& obj) { *this = obj; }
 	Action& operator=(const Action& obj);
-	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
+	/// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Action() = 0;
 
-	///Execution of an Action
+	/// Execution of an Action
 	virtual void run() override { ensureResourcesAreLoaded(); }
 
-	///Some Actions are designed to update things and should be called frequently until the end of the Event
+	/// Some Actions are designed to update things and should be called frequently until the end of the Event
 	virtual void update() override { NovelFlowInterface::update(); }
 
-	///Some Actions need to access the data, that is a part of the Save
-	///Must be called after the Save is loaded
+	/// Some Actions need to access the data, that is a part of the Save
+	/// Must be called after the Save is loaded
 	virtual void syncWithSave()	override {}
 
-	///Checks if the Action doesn't have any errors, which would halt the Novel execution
-	virtual bool checkForErrors() override {}
+	/// Checks if the Action doesn't have any errors, which would halt the Novel execution
+	virtual bool checkForErrors() const override {}
 
-	///Cleanup of an Action
+	/// Cleanup of an Action
 	virtual void end() override;
 
-	///Accept ActionVisitor, which will be run repending on the object's class
+	/// Accept ActionVisitor, which will be run repending on the object's class
 	virtual void accept(ActionVisitor *visitor)	= 0;
 
 protected:
-	///Needed for serialization, to know the class of an object before the loading performed
+	/// Needed for Serialization, to know the class of an object before the loading performed
 	virtual SerializationID getType() const = 0;
 
-	///Ensures that all the Resources are loaded
+	/// Ensures that all the Resources are loaded
 	virtual void ensureResourcesAreLoaded() {}
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream &dataStream);
-	///Saving an object to a binary file
-	virtual void serializableSave(QDataStream &dataStream) const;
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
 
 
 
-Action::~Action() = default;
+inline Action::~Action() = default;

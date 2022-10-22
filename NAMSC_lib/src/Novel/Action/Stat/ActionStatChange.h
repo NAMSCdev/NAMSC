@@ -3,41 +3,49 @@
 
 #include "Novel/Action/Stat/ActionStat.h"
 
-///Assigns a new value to a Stat
+/// Assigns a new value to a Stat
 class ActionStatChange final : public ActionStat
 {
 public:
-	ActionStatChange() = default;
+	ActionStatChange() noexcept = default;
 	ActionStatChange(QString&& statName, QString&& expression);
-	ActionStatChange(const ActionStatChange& obj) { *this = obj; }
-	ActionStatChange& operator=(const ActionStatChange& obj);
+	ActionStatChange(const ActionStatChange& obj) noexcept { *this = obj; }
+	ActionStatChange& operator=(const ActionStatChange& obj) noexcept;
 
-	///Executes this Action's logic
+	/// Executes the ActionStatChange's logic
 	void run() override;
 
-	///Checks if there are no errors in `statName` or `expression`
-	bool checkForErrors() override;
+	/// Checks if there are no errors in `statName` or `expression`
+	/// \todo Implement `expression` checking
+	bool checkForErrors() const noexcept override;
 
-	///Accepts an ActionVisitor
+	/// Accepts an ActionVisitor
+	/// \param vistor Pointer to a concrete Visitor derived from an ActionVisitor
 	void accept(ActionVisitor* visitor) override { visitor->visitActionStatChange(this); }
 
 signals:
-	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(Stat	*stat, QString expression);
+	/// A Qt signal emitted after the ActionStatChange's `void run()` allowing for data read
+	/// \param stat The Stat that had its `value` changed
+	/// \param expression Contains formula for calculating a new value for the Stat. It could refer to other Stats and perfrom arithmetic operations on them
+	void onRun(const Stat* stat, const QString& expression) const;
 
 private:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	SerializationID	getType() const override { return SerializationID::ActionStatChange; }
 
-	///New value of the Stat is calculated from this expression
+	/// New value of the Stat is calculated from this expression
 	QString	expression;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override;
-	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override;
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	void serializableLoad(QDataStream& dataStream) override;
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const override;
 };
+
+
 
 
 inline ActionStatChange::ActionStatChange(QString&& statName, QString&& expression) :
@@ -53,4 +61,21 @@ inline ActionStatChange& ActionStatChange::operator=(const ActionStatChange& obj
 	expression = obj.expression;
 
 	return *this;
+}
+
+inline bool ActionStatChange::checkForErrors() const
+{
+	bool bFailed = ActionStat::checkForErrors();
+	if (bFailed)
+		return true;
+
+	try
+	{
+
+	}
+	catch (...)
+	{
+
+	}
+	return false;
 }

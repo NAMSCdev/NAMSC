@@ -3,38 +3,38 @@
 
 #include "Novel/Event/Type/EventNarrate.h"
 
-///Displays text said by one of the Characters, defaults to the default Character's voice, but can be customized
+/// Displays text said by one of the Characters, defaults to the default Character's voice, but can be customized
 class EventSpeak final : public EventNarrate //TODO: need fix due to the need of lack of inheritance
 {
 	EventSpeak(uint executionOrder, QString&& label, QVector<Sentence>&& speech, QString&& voice, QString&& characterName, QString&& displayedName);
 	EventSpeak(const EventSpeak& obj) { *this = obj; }
 	EventSpeak& operator=(const EventSpeak& obj);
 
-	///Executes this Event's logic
+	/// Executes this Event's logic
 	void run() override;
 
-	///Accepts an EventVisitor
+	/// Accepts an EventVisitor
 	void accept(EventVisitor* visitor) override { visitor->visitEventNarrate(this); }
 
 signals:
-	///A Qt signal executing after the Event's `run()` allowing for data read (and write if it is a pointer)
+	/// A Qt signal emitted after the Event's `void run()` allowing for data read
 	void onRun(QVector<Sentence> speech, Voice* voice, Character* character, QString displayedName);
 
 private:
-	///Needed for serialization, to know the class of an object before the loading performed
+	/// Needed for Serialization, to know the class of an object before the loading performed
 	SerializationID getType() const override	{ return SerializationID::EventSpeak; }
 
-	///Character identification name
+	/// Character identification name
 	QString    characterName;
 	Character* character;
 
-	///The speaking Character's displayed name
+	/// The speaking Character's displayed name
 	QString displayedName;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const override;
 };
 

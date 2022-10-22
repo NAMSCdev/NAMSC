@@ -1,6 +1,7 @@
 #pragma once
+#include "Global.h"
 
-///[optional?] Adjustable look options for Main Menu
+/// [optional?] Adjustable look options for Main Menu
 class MainMenuTheme
 {
 	//Friends for serialization
@@ -11,12 +12,12 @@ public:
 
 protected:
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream &dataStream)
 	{
 	}
-	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const
 	{
 	}
 };

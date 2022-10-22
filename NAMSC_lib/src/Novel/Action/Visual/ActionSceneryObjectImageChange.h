@@ -6,57 +6,60 @@
 #include "Novel/Data/Asset/Type/AssetImage.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
-///Changes scene basic a SceneryObject or the viewport
+class ActionVisitorCorrectSceneryObjectAssetImage;
+/// Changes scene basic a SceneryObject or the viewport
 class ActionSceneryObjectImageChange final : public ActionSceneryObject
 {
+	friend ActionVisitorCorrectSceneryObjectAssetImage;
 public:
 	ActionSceneryObjectImageChange() = default;
-	ActionSceneryObjectImageChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName);
+	ActionSceneryObjectImageChange(QString&& sceneryObjectName, QString&& imageAssetName);
 	ActionSceneryObjectImageChange(const ActionSceneryObjectImageChange& obj) { *this = obj; }
 	ActionSceneryObjectImageChange& operator=(const ActionSceneryObjectImageChange& obj);
 
-	///Executes this Action's logic
+	/// Executes the Action's logic
 	void run() override;
 
-	///Accepts an ActionVisitor
+	/// Accepts an ActionVisitor
+	/// \param vistor Pointer to a concrete Visitor derived from an ActionVisitor
 	void accept(ActionVisitor* visitor) override { visitor->visitActionSceneryObjectImageChange(this); }
 
 signals:
-	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
+	/// A Qt signal emitted after the Action's `void run()` allowing for data read
 	void onRun(SceneryObject* sceneryObject, QImage* image);
 
 private:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	SerializationID getType() const override { return SerializationID::ActionSetBackground; }
 
-	///Ensures Assets are loaded and if not - loads it
-	void ensureResourcesAreLoaded() override
-	{
-		ActionSceneryObject::ensureResourcesAreLoaded();
-		if (imageAsset->isLoaded())
-			imageAsset->load();
-	}
+	/// Ensures Assets are loaded and if not - loads it
+	void ensureResourcesAreLoaded() override;
 
 	//@todo [optional] Replace single images with an array of them
 	//name to the Images that will replace SceneryObjectPart's images identified by IDs
 	//QVector<QPair<uint, QString>>	sceneryObjectParts;
 
-	///Name to the AssetImage that will replace the old Image in the affected SceneryObject
-	QString imageAssetName;
-	///Image that will replace the old Image in the affected SceneryObject
-	AssetImage* imageAsset;
+	/// Name to the AssetImage that will replace the old Image in the affected *SceneryObject*
+	QString		assetImageName;
+	/// Asset of the Image that will replace the old Image in the affected *SceneryObject*
+	AssetImage* assetImage;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const override;
 };
 
-inline ActionSceneryObjectImageChange::ActionSceneryObjectImageChange(Event* parent, uint actionID, QString&& label, QString&& sceneryObjectName, QString&& imageAssetName) :
-	ActionSceneryObject(move(label), move(sceneryObjectName)), imageAssetName(move(imageAssetName))
+
+
+
+inline ActionSceneryObjectImageChange::ActionSceneryObjectImageChange(QString&& sceneryObjectName, QString&& assetImageName) :
+	ActionSceneryObject(move(sceneryObjectName)), assetImageName(move(assetImageName))
 {
-	imageAsset = AssetManager::getInstance().findSceneryObjectAssetImage(imageAssetName);
+	assetImage = AssetManager::getInstance().findSceneryObjectAssetImage(assetImageName);
 }
 
 inline ActionSceneryObjectImageChange& ActionSceneryObjectImageChange::operator=(const ActionSceneryObjectImageChange& obj)
@@ -64,8 +67,16 @@ inline ActionSceneryObjectImageChange& ActionSceneryObjectImageChange::operator=
 	if (this == &obj) return *this;
 
 	ActionSceneryObject::operator=(obj);
-	imageAssetName = obj.imageAssetName;
-	imageAsset = obj.imageAsset;
+	assetImageName = obj.assetImageName;
+	assetImage     = obj.assetImage;
 
 	return *this;
+}
+
+inline void ActionSceneryObjectImageChange::ensureResourcesAreLoaded()
+{
+	ActionSceneryObject::ensureResourcesAreLoaded();
+
+	if (assetImage->isLoaded())
+		assetImage->load();
 }

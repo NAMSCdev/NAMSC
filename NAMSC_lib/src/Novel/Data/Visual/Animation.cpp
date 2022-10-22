@@ -20,20 +20,12 @@ bool AnimatorSceneryObjectInterface::checkForErrors()
     return true;
 }
 
-//Constructors that refer to the Novel
-
-AnimatorSceneryObjectInterface::AnimatorSceneryObjectInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName) :
-    AnimatorInterface(startTime, speed, timesPlayed, move(animAssetName)), sceneryObjectName(move(sceneryObjectName))
-{
-    sceneryObject = Novel::getInstance().findSceneryObject(sceneryObjectName);
-}
-
 //AnimatorBase
 
 template<typename AnimNode>
 void AnimatorBase<AnimNode>::run()
 {
-    ensureResourcesAreLoaded();
+        ensureResourcesAreLoaded();
     startTime = QTime::currentTime();
     currentNode = nodes->cbegin();
     nextNode = currentNode + 1;

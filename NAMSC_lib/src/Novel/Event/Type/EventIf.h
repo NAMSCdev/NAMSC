@@ -3,8 +3,8 @@
 
 #include "Novel/Event/Event.h"
 
-///Ends an EventIf previous instance
-///[optional todo] make checks and prevent placing umatched EndIf in editor
+/// Ends an EventIf previous instance
+/// [optional todo] make checks and prevent placing umatched EndIf in editor
 class EventIf final : public Event
 {
 public:
@@ -14,23 +14,23 @@ public:
 	EventIf(const EventIf& obj) { *this = obj; }
 	EventIf& operator=(const EventIf& obj);
 
-	///Executes this Event's logic
+	/// Executes this Event's logic
 	void run() override		{}
 
-	///AcceptsEventVisitor
+	/// AcceptsEventVisitor
 	void accept(EventVisitor* visitor) override	{ visitor->visitEventIf(this); }
 
 private:
-	///Needed for serialization, to know the class of an object before the loading performed
+	/// Needed for Serialization, to know the class of an object before the loading performed
 	SerializationID	getType() const override	{ return SerializationID::EventIf; }
 
-	///A jump might contain a logical expression, so the jump happens only if the [condition] is met
+	/// A jump might contain a logical expression, so the jump happens only if the [condition] is met
 	QString condition;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const override;
 };
 

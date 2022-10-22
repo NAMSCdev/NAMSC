@@ -2,71 +2,69 @@
 #include "Global.h"
 
 #include "Novel/Action/Audio/ActionAudio.h"
-
 #include "Novel/Data/Audio/Sound.h"
-
-#include "Novel/Data/Asset/Type/AssetSound.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
-///Changes background Music played along while the Scene is displayed
+class ActionVisitorCorrectSoundAssetAudio;
+
+/// Changes Sounds queued in the Scenery to be played at the right `timespan`
 class ActionPlaySound final : public ActionAudio
 {
+	friend ActionVisitorCorrectSoundAssetAudio;
 public:
-	ActionPlaySound() = default;
-	ActionPlaySound(AudioSettings settings, QVector<QString>&& soundAssetName, bool bPersistToNewEvent);
+	ActionPlaySound() noexcept = default;
+	ActionPlaySound(AudioSettings settings, QVector<QString>&& assetAudioNames, bool bPersistToNewEvent);
 	ActionPlaySound(double volume, double stereo, int timesPlayed, uint delayBetweenReplays, 
-					QVector<QString>&& soundAssetName, bool bPersistToNewEvent);
-	ActionPlaySound(const ActionPlaySound& obj) { *this = obj; }
-	ActionPlaySound& operator=(const ActionPlaySound& obj);
+					QVector<QString>&& assetAudioNames, bool bPersistToNewEvent);
+	ActionPlaySound(const ActionPlaySound& obj) noexcept { *this = obj; }
+	ActionPlaySound& operator=(const ActionPlaySound& obj) noexcept;
 
-	///Executes this Action's logic
+	/// Executes the ActionPlaySound's logic
 	void run() override;
 
-	///Checks if the Action can load the `assetSoundList`
-	bool checkForErrors() override;
+	/// Checks if the ActionPlaySound can load Resources associated with it
+	bool checkForErrors() const override;
 
-	///Accepts an ActionVisitor
+	/// Accepts an ActionVisitor
+	/// \param vistor Pointer to a concrete Visitor derived from an ActionVisitor
 	void accept(ActionVisitor* visitor) override { visitor->visitActionPlaySound(this); }
 
 signals:
-	///A Qt signal executing after the Action's `run()` allowing for data read (and write if it is a pointer)
-	void onRun(Sound* sound);
+	/// A Qt signal emitted after the ActionPlaySound's `void run()` allowing for data read
+	/// \param sound AssetAudio list of Sounds that overwrote the Scenery's one
+	void onRun(const QVector<Sound>* sound) const;
 
 private:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	SerializationID	getType() const override { return SerializationID::ActionPlaySound; }
 
-	///Ensures Assets are loaded and if not - loads them
+	/// Ensures Assets are loaded and if not - loads them
 	void ensureResourcesAreLoaded() override;
 	
-	///Names of the AssetSounds, so they can be loaded (if needed) and played
-	QVector<QString> assetSoundNames;
-	///SoundsAsset to be played
-	QVector<AssetSound*> assetSoundList;
-
-	///Whether the Sound should be cut if user gets to the next Scene's Event before the end of this Sound
-	///@todo implement this
+	/// [optional] Whether the Sound should be cut if user gets to the next Scene's Event before the end of this Sound
 	bool bPersistToNewEvent = false;
 	
 	//---SERIALIZATION---
-	///Loading an object from a binary file
-	void serializableLoad(QDataStream &dataStream) override;
-	///Saving an object to a binary file
-	void serializableSave(QDataStream &dataStream) const override;
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	void serializableLoad(QDataStream& dataStream) override;
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const override;
 };
 
 
 
 
 inline ActionPlaySound::ActionPlaySound(AudioSettings settings, QVector<QString>&& soundAssetName, bool bPersistToNewEvent) :
-	ActionAudio(settings), assetSoundNames(move(assetSoundNames)), bPersistToNewEvent(bPersistToNewEvent)
+	ActionAudio(settings, move(assetAudioNames)), bPersistToNewEvent(bPersistToNewEvent)
 {
-	for (QString& soundAssetName : this->assetSoundNames)
-		this->assetSoundList.push_back(AssetManager::getInstance().findAssetSound(soundAssetName));
+	for (QString& soundAssetName : this->assetAudioNames)
+		this->assetAudioList.push_back(AssetManager::getInstance().findSoundAssetAudio(soundAssetName));
 }
 
-inline ActionPlaySound::ActionPlaySound(double volume, double stereo, int timesPlayed, uint delayBetweenReplays, QVector<QString>&& soundAssetName, bool bPersistToNewEvent) :
-	ActionPlaySound(AudioSettings(volume, stereo, timesPlayed, delayBetweenReplays), move(assetSoundNames), bPersistToNewEvent)
+inline ActionPlaySound::ActionPlaySound(double volume, double stereo, int timesPlayed, uint delayBetweenReplays, QVector<QString>&& assetAudioNames, bool bPersistToNewEvent) :
+	ActionPlaySound(AudioSettings(volume, stereo, timesPlayed, delayBetweenReplays), move(assetAudioNames), bPersistToNewEvent)
 {
 }
 
@@ -75,8 +73,6 @@ inline ActionPlaySound& ActionPlaySound::operator=(const ActionPlaySound& obj)
 	if (this == &obj) return *this;
 
 	ActionAudio::operator=(obj);
-	assetSoundNames = obj.assetSoundNames;
-	assetSoundList = obj.assetSoundList;
 	bPersistToNewEvent = obj.bPersistToNewEvent;
 
 	return *this;
@@ -84,7 +80,45 @@ inline ActionPlaySound& ActionPlaySound::operator=(const ActionPlaySound& obj)
 
 inline void ActionPlaySound::ensureResourcesAreLoaded()
 { 
-	for (AssetSound* assetSound : assetSoundList)
-		if (!assetSound->isLoaded())
-			assetSound->load();
+	for (AssetAudio* assetAudio : assetAudioList)
+		if (!assetAudio->isLoaded())
+			assetAudio->load();
+}
+
+inline bool ActionPlaySound::checkForErrors() const
+{
+	try
+	{
+		const AssetManager& assetManager = AssetManager::getInstance();
+		for (const QString& name : assetAudioNames)
+		{
+			//Check if name is undefined
+			if (name == "")
+			{
+				qDebug() << "No AssetAudio assigned. Was it deleted and not replaced?";
+				return true;
+			}
+
+			//Check if there is an object with this name in the AssetManager's container 
+			const AssetAudio* assetAudio = assetManager.findSoundAssetAudio(name);
+			if (assetAudio == nullptr)
+			{
+				qDebug() << "Sound AssetAudio \"" + name + "\" not found by the AssetManager. Definition file might be corrupted.";
+				return true;
+			}
+
+			//Check if the Asset is still there in the User's filesystem
+			const QPair<bool, QString> fileExistence = assetAudio->checkFileExistence();
+			if (!fileExistence.first)
+			{
+				qDebug() << "Could not find a file \"" + fileExistence.second + "\".";
+				return true;
+			}
+		}
+	}
+	catch (...)
+	{
+		return true;
+	}
+	return false;
 }

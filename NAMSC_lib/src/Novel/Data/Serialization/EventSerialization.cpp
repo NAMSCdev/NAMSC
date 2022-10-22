@@ -77,8 +77,8 @@ void Event::serializableLoad(QDataStream& dataStream)
 		case SerializationID::ActionSceneryObjectAnimColor:
 			action = new ActionSceneryObjectAnimColor();
 			break;
-		case SerializationID::ActionSceneryObjectVisibilityChange:
-			action = new ActionSceneryObjectVisibilityChange();
+		case SerializationID::ActionSceneryObjectVisibility:
+			action = new ActionSceneryObjectVisibility();
 			break;
 		case SerializationID::ActionSceneryObjectImageChange:   
 			action = new ActionSceneryObjectImageChange();

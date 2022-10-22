@@ -6,7 +6,7 @@
 
 #include "Novel/Data/Visual/Scenery/SceneryObject.h"
 
-///Represents a Character in tbe Novel
+/// Represents a Character in tbe Novel
 class Character final : public SceneryObject
 {
 	//Friends for serialization
@@ -20,9 +20,9 @@ public:
 
 
 private:
-	///Name of the default Voice that will be assigned to EventSpeak 
+	/// Name of the default Voice that will be assigned to EventSpeak 
 	QString		defaultVoiceName;
-	///Default Voice - formatting of the Text
+	/// Default Voice - formatting of the Text
 	Voice		*defaultVoice;
 
 	//QString			idleLive2DAnimName;
@@ -31,9 +31,9 @@ private:
 	//AssetLive2DAnim *currentLive2DAnim;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream);
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
 

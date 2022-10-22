@@ -30,7 +30,7 @@ enum class SerializationID
     ActionChangeMusic                   = 0,
     ActionPlaySound                     = 1,
     ActionStatHide                      = 2, 
-    ActionStatVisibility                      = 3, 
+    ActionStatVisibility                = 3, 
     ActionStatChange                    = 4, 
     ActionEffectBlur                    = 5, 
     ActionEffectDistort                 = 6, 
@@ -48,7 +48,7 @@ enum class SerializationID
     ActionSceneryObjectAnimScale        = 18,
     ActionSceneryObjectAnimRotate       = 19,
     ActionSceneryObjectAnimColor        = 20,
-    ActionSceneryObjectVisibilityChange = 21,
+    ActionSceneryObjectVisibility = 21,
     ActionSceneryObjectImageChange      = 22,  
     ActionSceneryObjectVoiceChange      = 23,
     ActionSetBackground                 = 24,
@@ -90,7 +90,7 @@ template <class T>
 using uPtr = std::unique_ptr<T>;
 using std::move;
 
-///Serialization loading
+/// Serialization loading
 template<typename T>
 concept SerializableLoad = requires(QDataStream &dataStream, T const &t)
 {
@@ -103,7 +103,7 @@ QDataStream &operator>>(QDataStream&, T &t)
     return dataStream;
 }
 
-///Serialization saving
+/// Serialization saving
 template<typename T>
 concept SerializableSave = requires(QDataStream &dataStream, T const &t)
 {
@@ -117,19 +117,25 @@ QDataStream &operator<<(QDataStream &device, const T &t)
 }
 
 template<class Type>
-Type* findInArray(const QString &name, QVector<Type> &vector)
+Type* findInArray(const QString& name, const QVector<Type>& vector)
 {
-    auto element = std::find(vector.begin(), vector.end(), name);
-    if (element == vector.end())
+    auto element = std::find(vector.cbegin(), vector.cend(), name);
+    if (element == vector.cend())
+    {
         error(QString(typeid(Type).name()) + " with a name \"" + name + "\" could not be found!");
+        return nullptr;
+    }
     return &(*element);
 }
 
 template<class Type>
-Type* findInuPtrArray(const QString &name, QVector<uPtr<Type>> &vector)
+Type* findInuPtrArray(const QString& name, const QVector<uPtr<Type>>& vector)
 {
-    auto element = std::find(vector.begin(), vector.end(), name);
-    if (element == vector.end())
+    auto element = std::find(vector.cbegin(), vector.cend(), name);
+    if (element == vector.cend())
+    {
         error(QString(typeid(Type).name()) + " with a name \"" + name + "\" could not be found!");
+        return nullptr;
+    }
     return element->get();
 }

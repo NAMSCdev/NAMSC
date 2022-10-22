@@ -6,45 +6,41 @@
 class AnimatorSceneryObjectInterface : public AnimatorInterface
 {
 public:
-	AnimatorSceneryObjectInterface() = default;
-	AnimatorSceneryObjectInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName);
-	AnimatorSceneryObjectInterface(const AnimatorSceneryObjectInterface& obj) { *this = obj; }
-	AnimatorSceneryObjectInterface& operator=(const AnimatorSceneryObjectInterface& obj);
+	AnimatorSceneryObjectInterface() noexcept = default;
+	AnimatorSceneryObjectInterface(QTime startTime, double speed, int timesPlayed, QString&& assetAnimName, QString&& sceneryObjectName) noexcept;
+	AnimatorSceneryObjectInterface(const AnimatorSceneryObjectInterface& obj) noexcept { *this = obj; }
+	AnimatorSceneryObjectInterface& operator=(const AnimatorSceneryObjectInterface& obj) noexcept;
 
-	///Checks if the AnimatorSceneryObjectInterface doesn't have any errors, which would halt the Novel execution
-	virtual bool checkForErrors() override;
+	/// Checks if the AnimatorSceneryObjectInterface doesn't have any errors, which would halt the Novel execution
+	virtual bool checkForErrors() noexcept override;
 
 protected:
-	///Ensures that all the Resources are loaded
-	virtual void ensureResourcesAreLoaded();
-
-	///Name to the Scenery Object, so it can be loaded (if needed)
+	/// Name to the Scenery Object, so it can be loaded (if needed)
 	QString		   sceneryObjectName;
-	///Scenery Object that will be affected by this Animator
+	/// Scenery Object that will be affected by this Animator
 	SceneryObject* sceneryObject;
 
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const override;
 };
 
 
 
 
-inline AnimatorInterface::AnimatorInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName) :
-	startTime(startTime), speed(speed), timesPlayed(timesPlayed), animAssetName(move(animAssetName))
+inline AnimatorSceneryObjectInterface::AnimatorSceneryObjectInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName) :
+	AnimatorInterface(startTime, speed, timesPlayed, animAssetName), sceneryObjectName(move(sceneryObjectName))
 {
 }
 
-inline AnimatorInterface& AnimatorInterface::operator=(const AnimatorInterface& obj)
+inline AnimatorSceneryObjectInterface& AnimatorSceneryObjectInterface::operator=(const AnimatorSceneryObjectInterface& obj)
 {
 	if (this == &obj) return *this;
 
-	startTime     = obj.startTime;
-	speed         = obj.speed;
-	timesPlayed   = obj.timesPlayed;
-	animAssetName = obj.animAssetName;
+	AnimatorInterface::operator=(obj);
+	sceneryObjectName = obj.sceneryObjectName;
+	sceneryObject     = obj.sceneryObject;
 
 	return *this;
 }

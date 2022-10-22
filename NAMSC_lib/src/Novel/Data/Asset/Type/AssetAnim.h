@@ -10,36 +10,36 @@ class AssetAnim : public Asset
 {
 public:
 	AssetAnim() = default;
-	AssetAnim(QString name, QString &&location, uint pos = 0) :
-		Asset(move(name), move(location), pos) {}
-	AssetAnim(const AssetAnim& obj) { *this = obj; }
-	AssetAnim& operator=(const AssetAnim& obj);
-	///Tries to load an Assent
-	///Throws a noncritical Exception on failure
+	AssetAnim(QString&& name, uint pos = 0,  QString&& location = "");
+	AssetAnim(const AssetAnim&) = delete;
+	AssetAnim& operator=(const AssetAnim&) = delete;
+
+	/// Tries to load an Assent
+	/// Throws a noncritical Exception on failure
 	void load() override { }
 
-	///Release resources allocated for this asset
+	/// Release resources allocated for this asset
 	void unload() override { animNodes.reset(); }
 
- 	///Returns whether the asset is currently loaded
+ 	/// Returns whether the asset is currently loaded
 	bool isLoaded() const override { return animNodes.get() != nullptr; }
 
-	///Returns a pointer to the AnimNodes that this Asset holds
+	/// Returns a pointer to the AnimNodes that this Asset holds
 	QVector<AnimNode>* getAnimNodes() { return animNodes.get(); }
 
 private:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	SerializationID	getType() const override { return SerializationID::AssetAnim; }
 
-	///A smart pointer to the actual data
+	/// A smart pointer to the actual data
 	uPtr<QVector<AnimNode>>	animNodes;
 };
 
-template<typename AnimNode> inline
-AssetAnim<AnimNode>& AssetAnim<AnimNode>::operator=(const AssetAnim& obj)
-{
-	if (this == &obj) return *this;
 
-	Asset::operator=(obj);
-	animNodes = nullptr;
+
+
+template<typename AnimNode>
+inline AssetAnim<AnimNode>::AssetAnim(QString&& name, uint pos, QString&& location) :
+	Asset(move(name), pos, move(location))
+{
 }

@@ -19,14 +19,14 @@ void ActionSetBackground::run()
 
 //ANIMATION
 
-void ActionSceneryObjectVisibilityChange::run()
+void ActionSceneryObjectVisibility::run()
 {
 	ensureResourcesAreLoaded();
 
 	Action::run();
 }
 
-///[optional]
+/// [optional]
 void ActionLive2DAnim::run()
 {
 	ensureResourcesAreLoaded();
@@ -34,7 +34,7 @@ void ActionLive2DAnim::run()
 	Action::run();
 }
 
-///[optional] EFFECTS
+/// [optional] EFFECTS
 
 void ActionEffectBlur::run()
 {
@@ -57,7 +57,7 @@ void ActionEffectGlow::run()
 	Action::run();
 }
 
-///[optional] FILTERS
+/// [optional] FILTERS
 void ActionFilterBlur::run()
 {
 	ensureResourcesAreLoaded();

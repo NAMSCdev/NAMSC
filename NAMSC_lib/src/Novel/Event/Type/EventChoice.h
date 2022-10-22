@@ -5,7 +5,7 @@
 #include "Novel/Event/Type/EventJump.h"
 #include "Novel/Data/Text/Translation.h"
 
-///Creates a Choice selection window
+/// Creates a Choice selection window
 class EventChoice final : public Event
 {
 public:
@@ -23,10 +23,10 @@ public:
 
 		void run();
 
-		///Text that is displayed as a Choice for the player
+		/// Text that is displayed as a Choice for the player
 		Translation	text;
 
-		///[optional] Choice display settings
+		/// [optional] Choice display settings
 		struct ChoiceDisplayOptions
 		{
 			//Friends for serialization
@@ -43,7 +43,7 @@ public:
 			AssetFont *font;
 			uint fontSize;
 
-			///Normally, if the Choice is not available, it will be greyed out, setting this to [true] will make the Choice not appear at all
+			/// Normally, if the Choice is not available, it will be greyed out, setting this to [true] will make the Choice not appear at all
 			bool bHideIfConditionNotMet;
 
         private:
@@ -58,19 +58,19 @@ public:
 		void onRun(Translation& text, ChoiceDisplayOptions& choiceDisplayOptions, QString& label, QString& condition);
 	
 	private:
-		///A label that will be displayed in the Editor (and RenPy if implemented) to help navigation
+		/// A label that will be displayed in the Editor (and RenPy if implemented) to help navigation
 		QString label;
 
-		///Logical condition that needs to be fulfilled in order for this Choice to be available
+		/// Logical condition that needs to be fulfilled in order for this Choice to be available
 		QString condition;
 
-		///If player chooses this Choice, this jump will be performed
+		/// If player chooses this Choice, this jump will be performed
 		EventJump jump;
 
 		//---SERIALIZATION---
-		///Loading an object from a binary file
+		/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 		void serializableLoad(QDataStream& dataStream);
-		///Saving an object to a binary file
+		/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 		void serializableSave(QDataStream& dataStream) const;
 	};
 
@@ -80,30 +80,30 @@ public:
 	EventChoice(const EventChoice& obj) { *this = obj; }
 	EventChoice& operator=(const EventChoice& obj);
 
-	///Executes this Event's logic
+	/// Executes this Event's logic
 	void run() override;
 
-	///Accepts an EventVisitor
+	/// Accepts an EventVisitor
 	void accept(EventVisitor* visitor) override		{ visitor->visitEventChoice(this); }
 
 signals:
-	///A Qt signal executing after the Event's `run()` allowing for data read (and write if it is a pointer)
+	/// A Qt signal emitted after the Event's `void run()` allowing for data read
 	void onRun(Translation text);
 
 private:
-	///Needed for serialization, to know the class of an object before the loading performed
+	/// Needed for Serialization, to know the class of an object before the loading performed
 	SerializationID	getType() const override		{ return SerializationID::EventChoice; }
 
-	///A text to be displayed during Choice selection screen
+	/// A text to be displayed during Choice selection screen
 	Translation text;
 
-	///Contains all available choices
+	/// Contains all available choices
 	QVector<Choice>	choices;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const override;
 };
 

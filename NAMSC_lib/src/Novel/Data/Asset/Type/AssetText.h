@@ -3,23 +3,23 @@
 
 #include "Novel/Data/Asset/Asset.h"
 
-///Allows Image loading and its memory management
+/// Allows Image loading and its memory management
 class AssetText final : public Asset
 {
 public:
 	AssetText() = default;
-	AssetText(QString &&name, uint pos = 0, bool bExternal = false, QString &&location = "") :
-		Asset(move(name), pos, bExternal, move(location)) { }
-	AssetText(const AssetText& obj) { *this = obj; }
-	AssetText& operator=(const AssetText& obj);
-	///Tries to load an Assent
-	///Throws a noncritical Exception on failure
+	AssetText(QString&& name, uint pos = 0, QString&& location = "");
+	AssetText(const AssetText& obj) = delete;
+	AssetText& operator=(const AssetText& obj) = delete;
+
+	/// Tries to load an Assent
+	/// Throws a noncritical Exception on failure
 	void load() override		
 	{
 		QFile file(location);
 		if (!file.open(QIODevice::ReadOnly)) 
 		{
-			///TODO: add some Exception
+			/// TODO: add some Exception
 		}
 		QDataStream datastream(&file);
 		datastream.skipRawData(pos);
@@ -35,26 +35,24 @@ public:
 		return true;
 	}
 
-	///Release resources allocated for this asset
+	/// Release resources allocated for this asset
 	void unload() override { str.reset(); }
 
-	///Returns a pointer to the QImage object that this Asset holds
+	/// Returns a pointer to the QImage object that this Asset holds
 	QString* getText() { return str.get(); }
 
 private:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	SerializationID	getType() const override { return SerializationID::AssetText; }
 
-	///A smart pointer to the actual data
+	/// A smart pointer to the actual data
 	uPtr<QString> str;
 };
 
-inline AssetText& AssetText::operator=(const AssetText& obj)
+
+
+
+inline AssetText::AssetText(QString&& name, uint pos = 0, QString&& location = "") :
+	Asset(move(name), pos, move(location)) 
 {
-	if (this == &obj) return *this;
-
-	Asset::operator=(obj);
-	str = nullptr;
-
-	return *this;
 }

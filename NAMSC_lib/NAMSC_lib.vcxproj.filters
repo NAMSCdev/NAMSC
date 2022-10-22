@@ -129,6 +129,12 @@
     <Filter Include="Header Files\Novel\Data\Visual\Animation\Type">
       <UniqueIdentifier>{80695e86-4de5-4d0c-86ea-542e25620983}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Novel\Action\Visual\Animation\Type">
+      <UniqueIdentifier>{7e62eb7b-f272-41df-a723-059756853e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Stat\Type">
+      <UniqueIdentifier>{e03a9efd-a006-4de3-a41d-2c98f192eb0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Global.h">
@@ -165,12 +171,6 @@
       <Filter>Header Files\Novel\Action\Visual\Animation\Optional</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.h">
-      <Filter>Header Files\Novel\Action\Visual\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h">
-      <Filter>Header Files\Novel\Action\Visual\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectShow.h">
       <Filter>Header Files\Novel\Action\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Action\Visual\ActionSceneryObject.h">
@@ -233,19 +233,10 @@
     <ClInclude Include="src\Novel\Data\Asset\AssetManager.h">
       <Filter>Header Files\Novel\Data\Asset</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetMusic.h">
-      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetSound.h">
+    <ClInclude Include="src\Novel\Data\Asset\Type\AssetAudio.h">
       <Filter>Header Files\Novel\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetText.h">
-      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetAnim.h">
-      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetFont.h">
       <Filter>Header Files\Novel\Data\Asset\Type</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetImage.h">
@@ -362,14 +353,50 @@
     <ClInclude Include="src\Novel\Data\NovelFlowInterface.h">
       <Filter>Header Files\Novel\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorTransform.h">
-      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObject.h">
       <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h">
       <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimMove.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimRotate.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimScale.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectVisibility.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimColor.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorMove.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorRotate.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorScale.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorColor.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Asset\Type\AssetAnim.h">
+      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatLongLong.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatString.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatDouble.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +429,9 @@
     </ClCompile>
     <ClCompile Include="src\Novel\Data\Asset.cpp">
       <Filter>Source Files\Story\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\NovelReferals.cpp">
+      <Filter>Source Files\Story</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

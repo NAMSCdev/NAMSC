@@ -117,8 +117,11 @@
     <ClInclude Include="src\Novel\Action\Visual\ActionSetBackground.h" />
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionLive2DAnim.h" />
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.h" />
-    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimTransform.h" />
-    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectShow.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimColor.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimMove.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimRotate.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectAnimScale.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\Type\ActionSceneryObjectVisibility.h" />
     <ClInclude Include="src\Novel\Action\Visual\Effect\ActionEffect.h" />
     <ClInclude Include="src\Novel\Action\Visual\Effect\Type\ActionEffectBlur.h" />
     <ClInclude Include="src\Novel\Action\Visual\Effect\Type\ActionEffectDistort.h" />
@@ -134,12 +137,10 @@
     <ClInclude Include="src\Novel\Data\Asset\Asset.h" />
     <ClInclude Include="src\Novel\Data\Asset\AssetManager.h" />
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetAnim.h" />
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetFont.h" />
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetImage.h" />
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetLive2DAnim.h" />
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetLive2DModel.h" />
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetMusic.h" />
-    <ClInclude Include="src\Novel\Data\Asset\Type\AssetSound.h" />
+    <ClInclude Include="src\Novel\Data\Asset\Type\AssetAudio.h" />
     <ClInclude Include="src\Novel\Data\Asset\Type\AssetText.h" />
     <ClInclude Include="src\Novel\Data\Audio\AudioSettings.h" />
     <ClInclude Include="src\Novel\Data\Audio\MusicPlaylist.h" />
@@ -150,6 +151,9 @@
     <ClInclude Include="src\Novel\Data\Save\NovelState.h" />
     <ClInclude Include="src\Novel\Data\Scene.h" />
     <ClInclude Include="src\Novel\Data\Stat\Stat.h" />
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatDouble.h" />
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatLongLong.h" />
+    <ClInclude Include="src\Novel\Data\Stat\Type\StatString.h" />
     <ClInclude Include="src\Novel\Data\StorySettings.h" />
     <ClInclude Include="src\Novel\Data\Text\Sentence.h" />
     <ClInclude Include="src\Novel\Data\Text\Translation.h" />
@@ -159,7 +163,10 @@
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObject.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNode.h" />
-    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorTransform.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorColor.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorMove.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorRotate.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\Type\AnimatorScale.h" />
     <ClInclude Include="src\Novel\Data\Visual\MainMenuTheme.h" />
     <ClInclude Include="src\Novel\Data\Visual\Scenery\Character.h" />
     <ClInclude Include="src\Novel\Data\Visual\Scenery\Scenery.h" />
@@ -192,6 +199,7 @@
     <ClCompile Include="src\Novel\Data\Serialization\EventSerialization.cpp" />
     <ClCompile Include="src\Novel\Data\Text.cpp" />
     <ClCompile Include="src\Novel\Data\Visual\Animation.cpp" />
+    <ClCompile Include="src\Novel\NovelReferals.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

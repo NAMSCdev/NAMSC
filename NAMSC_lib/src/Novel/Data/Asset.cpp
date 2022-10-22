@@ -18,7 +18,7 @@ void AssetFont::serializableLoad(QDataStream& dataStream)
 {
 	dataStream >> fontSize >> systemFont;
 }
-///Saving an object to a binary file
+
 void AssetFont::serializableSave(QDataStream& dataStream) const
 {
 	dataStream << fontSize << systemFont;

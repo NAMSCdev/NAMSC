@@ -1,7 +1,7 @@
 #pragma once
 #include "Global.h"
 
-///Forward declaration of all Actions for the ActionVisitor
+/// Forward declaration of all Actions for the ActionVisitor
 class ActionStatChange;
 class ActionChangeMusic;
 class ActionPlaySound;
@@ -11,9 +11,9 @@ class ActionSceneryObjectAnimMove;
 class ActionSceneryObjectAnimScale;
 class ActionSceneryObjectAnimRotate;
 class ActionSceneryObjectAnimColor;
-class ActionSceneryObjectVisibilityChange;
+class ActionSceneryObjectVisibility;
 class ActionSceneryObjectVoiceChange;
-///[optional]
+/// [optional]
 class ActionStatHide;
 class ActionStatVisibility;
 class ActionLive2DAnim;
@@ -28,8 +28,8 @@ class ActionFilterHue;
 class ActionFilterNegative;
 class ActionFilterSaturation;
 
-///Base class of a visitor for Events
-///We will not write the abstract class here, like it should be, but default to doing nothing and allow for the overload
+/// Base class of a visitor for Events
+/// We will not write the abstract class here, like it should be, but default to doing nothing and allow for the overload
 class ActionVisitor
 {
 public:
@@ -46,10 +46,10 @@ public:
 	virtual void visitActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale* action)				{}
 	virtual void visitActionSceneryObjectAnimRotate(ActionSceneryObjectAnimRotate* action)				{}
 	virtual void visitActionSceneryObjectAnimColor(ActionSceneryObjectAnimColor* action)				{}
-	virtual void visitActionSceneryObjectVisibilityChange(ActionSceneryObjectVisibilityChange* action)	{}
+	virtual void visitActionSceneryObjectVisibility(ActionSceneryObjectVisibility* action)	{}
 	virtual void visitActionSceneryObjectVoiceChange(ActionSceneryObjectVoiceChange* action)			{}
-	///[optional]
-	virtual void visitActionStatVisibility(ActionStatVisibility* action)											{}
+	/// [optional]
+	virtual void visitActionStatVisibility(ActionStatVisibility* action)								{}
 	virtual void visitActionEffectBlur(ActionEffectBlur* action)										{}
 	virtual void visitActionEffectDistort(ActionEffectDistort* action)									{}
 	virtual void visitActionEffectGlow(ActionEffectGlow* action)										{}

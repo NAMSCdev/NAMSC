@@ -7,49 +7,48 @@ class Asset
 	friend QDataStream& operator>>(QDataStream&, Asset&);
 	friend QDataStream& operator<<(QDataStream&, const Asset&);
 	//Other friends
-	friend bool operator==(const Asset &lhs, const QString &rhs);
+	friend bool operator==(const Asset& lhs, const QString& rhs);
 public:
 	Asset() = default;
-	Asset(QString&& name, uint pos = 0, bool bExternal = false, QString&& location = "");
-	Asset(const Asset& asset) { *this = asset; }
-	Asset& operator=(const Asset& asset);
-	///The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
-	virtual ~Asset()		= 0;
+	Asset(QString&& name, uint pos = 0, QString&& location = "");
+	Asset(const Asset& obj)            = delete;
+	Asset& operator=(const Asset& obj) = delete;
 
-	///Tries to load an Asset
-	///todo: describe petter
-	///Throws a noncritical Exception on failure
-	virtual void load()		= 0;
+	/// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
+	virtual ~Asset()              = 0;
 
-	///Release resources allocated for this asset
-	virtual void unload()	= 0;
+	/// Tries to load an Asset
+	/// @exception Throws a noncritical Exception on failure
+	/// @todo more intelligent loading when it is a compact file, so it is not opened and closed multiple times (static members in AssetManager that open and close on demand should do the trick)
+	virtual void load()           = 0;
 
-	///Returns whether the Asset is currently loaded
+	/// Release resources allocated for this asset
+	virtual void unload()         = 0;
+
+	/// Returns whether the Asset is currently loaded
 	virtual bool isLoaded() const = 0;
 
+	/// Checks whether the file that the Asset refers to is present in the filesystem
+	QPair<bool, QString> checkFileExistence() const;
+
 protected:
-	///Needed for serialization, to know the class of an object about to be serialization loaded
+	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	virtual SerializationID	getType() const	= 0;
 
-	///Identificator for the Asset
+	/// Identificator for the Asset
 	QString	name;
 
-	///Location of the resource
+	/// Location of the resource
 	QString	location;
 
-	///Whether the location is relevant and the Asset should be loaded from external file
-	///@todo implement this
-	bool bExternal = false;
-
-	///If many Assets share the same binary file, we need to remember positions of every Asset
-	///@todo implement this
+	/// [optional]If many Assets share the same binary file, we need to remember position of every Asset
 	uint pos = 0;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream &dataStream);
-	///Saving an object to a binary file
-	virtual void serializableSave(QDataStream &dataStream) const;
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+	virtual void serializableSave(QDataStream& dataStream) const;
 };
 
 
@@ -57,19 +56,20 @@ protected:
 
 inline Asset::~Asset() = default;
 
-inline Asset& Asset::operator=(const Asset& asset)
+inline Asset::Asset(QString&& name, uint pos = 0, QString&& location = "") :
+	name(move(name)), location(move(location)), pos(pos)
 {
-	name      = asset.name;
-	location  = asset.location; 
-	bExternal = asset.bExternal; 
-	pos       = asset.pos;
-	return *this;
 }
 
-inline Asset::Asset(QString&& name, uint pos = 0, bool bExternal = false, QString && location = "") :
-	name(move(name)), location(move(location)), bExternal(bExternal), pos(pos) {}
+inline QPair<bool, QString> Asset::checkFileExistence() const
+{
+	if (location == "") 
+		return { QFile::exists("resource.bin"), "resource.bin" };
 
-inline bool operator==(const Asset &lhs, const QString &rhs)
+	return { QFile::exists(location), location };
+}
+
+inline bool operator==(const Asset& lhs, const QString& rhs)
 {
 	return lhs.name == rhs;
 }

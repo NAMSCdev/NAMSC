@@ -6,7 +6,7 @@
 #include "Novel/Data/Text/Sentence.h"
 #include "Novel/Data/Text/Voice.h"
 
-///Displays narrated text
+/// Displays narrated text
 class EventNarrate : public Event
 {
 public:
@@ -16,32 +16,32 @@ public:
 	EventNarrate(const EventNarrate& obj) { *this = obj; }
 	EventNarrate& operator=(const EventNarrate& obj);
 
-	///Executes this Event's logic
+	/// Executes this Event's logic
 	virtual void run() override;
 
-	///Accepts an EventVisitor
+	/// Accepts an EventVisitor
 	virtual void accept(EventVisitor* visitor) override { visitor->visitEventNarrate(this); }
 
 signals:
-	///A Qt signal executing after the Event's `run()` allowing for data read (and write if it is a pointer)
+	/// A Qt signal emitted after the Event's `void run()` allowing for data read
 	void onRun(QVector<Sentence> speech, Voice* voice);
 
 protected:
-	///Needed for serialization, to know the class of an object before the loading performed
+	/// Needed for Serialization, to know the class of an object before the loading performed
 	virtual SerializationID	getType() const override { return SerializationID::EventNarrate; }
 
-	///Text to be displayed
+	/// Text to be displayed
 	QVector<Sentence> speech;
 
-	///Name to the Voice used to play this Speech
+	/// Name to the Voice used to play this Speech
 	QString voiceName;
-	///todo:description
+	/// todo:description
 	Voice*  voice;
 
 	//---SERIALIZATION---
-	///Loading an object from a binary file
+	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;
-	///Saving an object to a binary file
+	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const override;
 };
 

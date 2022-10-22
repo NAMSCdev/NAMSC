@@ -2,18 +2,19 @@
 #include "Global.h"
 
 #include "Novel/Data/Visual/Animation/AnimatorBase.h"
+#include "Novel/Data/Visual/Animation/AnimatorSceneryObjectInterface.h"
 
-
+//Performs an Animation on a SceneryObject
 template<typename AnimNode>
 class AnimatorSceneryObject : public AnimatorBase<AnimNode>, public AnimatorSceneryObjectInterface
 {
 public:
 	AnimatorSceneryObject() = default;
-	AnimatorSceneryObject(QTime startTime, double speed, int timesPlayed, QString&& sceneryObjectName, QString&& animAssetName);
+	AnimatorSceneryObject(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName);
 	AnimatorSceneryObject(const AnimatorSceneryObject<AnimNode>& obj) { *this = obj; }
 	AnimatorSceneryObject<AnimNode>& operator=(const AnimatorSceneryObject<AnimNode>& obj);
 
-	///Checks if the AnimatorSceneryObject doesn't have any errors, which would halt the Novel execution
+	/// Checks if the AnimatorSceneryObject doesn't have any errors, which would halt the Novel execution
 	virtual bool checkForErrors() override;
 
 protected:
@@ -24,7 +25,7 @@ protected:
 
 
 template<typename AnimNode>
-inline AnimatorSceneryObject<AnimNode>::AnimatorSceneryObject(QTime startTime, double speed, int timesPlayed, QString&& sceneryObjectName, QString&& animAssetName) :
+inline AnimatorSceneryObject<AnimNode>::AnimatorSceneryObject(QTime startTime, double speed, int timesPlayed, QString&& animAssetName, QString&& sceneryObjectName) :
 	AnimatorSceneryObjectInterface(startTime, speed, timesPlayed, move(sceneryObjectName), move(animAssetName))
 {
 }
