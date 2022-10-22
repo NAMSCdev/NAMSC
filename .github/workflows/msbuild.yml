@@ -25,6 +25,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: vcpkg update
+      run: vcpkg update
     - name: vcpkg install
       run: vcpkg install
       
