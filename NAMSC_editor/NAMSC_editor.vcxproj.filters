@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Graph">
+      <UniqueIdentifier>{428d29cb-fd62-48ea-8026-58b4c144607a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graph">
+      <UniqueIdentifier>{c43d6fc8-c457-4380-b555-cce9b0805abe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="NAMSC_editor.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="NAMSC_editor.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="NAMSC_editor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClCompile Include="NAMSC_editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <None Include="NAMSC_editor.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <ResourceCompile Include="NAMSC_editor.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphNode.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphConnectionPoint.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphNodeBody.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphArrow.cpp">
+      <Filter>Source Files\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomQGraphicsView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="GraphNode.h">
+      <Filter>Header Files\Graph</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphConnectionPoint.h">
+      <Filter>Header Files\Graph</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphNodeBody.h">
+      <Filter>Header Files\Graph</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphArrow.h">
+      <Filter>Header Files\Graph</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomQGraphicsView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>
