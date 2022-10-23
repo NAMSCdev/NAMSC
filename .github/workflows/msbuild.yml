@@ -45,7 +45,7 @@ jobs:
             
     
     - name: vcpkg install packages
-      run: vcpkg install --triplet=x64-windows
+      run: vcpkg install --triplet=x64-windows --feature-flags="versions"
       
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
