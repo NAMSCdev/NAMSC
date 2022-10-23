@@ -38,7 +38,9 @@ jobs:
       env:
          cache-name: cache-vcpkg
       with:
-          path: C:/vcpkg/packages/
+          path: | 
+            C:/vcpkg/packages/
+            C:/vcpkg/installed/
           key: vcpkg-cache-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             vcpkg-cache-
