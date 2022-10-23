@@ -7,9 +7,11 @@
       "default-features": false,
       "features": [
         "gui",
-        "widgets"
+        "widgets",
+        "concurrent"
       ]
     },
+    "qtmultimedia",
     "catch2",
     "trompeloeil"
   ],
@@ -17,6 +19,10 @@
   "overrides": [
     {
       "name": "qtbase",
+      "version": "6.3.2"
+    },
+    {
+      "name": "qtmultimedia",
       "version": "6.3.2"
     },
     {

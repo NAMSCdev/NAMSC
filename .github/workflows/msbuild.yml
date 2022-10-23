@@ -39,7 +39,6 @@ jobs:
          cache-name: cache-vcpkg
       with:
           path: | 
-            C:/vcpkg/packages/
             C:/vcpkg/installed/
             C:/Users/runneradmin/AppData/Local/vcpkg/archives
           key: vcpkg-cache-${{ hashFiles('vcpkg.json') }}
