@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 #include "GraphNode.h"
 #include "ui_NAMSC_editor.h"
-
+#include "GraphView.h"
 
 class NAMSC_editor : public QMainWindow
 {
@@ -18,6 +18,9 @@ public:
 private:
     Ui::NAMSC_editorClass ui;
 
+    GraphView* gview;
     QGraphicsScene* scene;
+    QGraphicsView* view;
     GraphNode* node;
+    GraphNode* node2;
 };

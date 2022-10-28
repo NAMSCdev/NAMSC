@@ -5,8 +5,6 @@
 
 class GraphNodeBody : public QGraphicsObject
 {
-	Q_OBJECT
-
 public:
 	GraphNodeBody(QGraphicsObject *parent, QRectF bBox);
 	~GraphNodeBody();
@@ -16,7 +14,9 @@ public:
 	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 	QString label;
+
 private:
+	QSizeF originalSize; // for potential rescaling due to connection point addition
 	QRectF nodeBodyBoundingRect;
 	qreal roundedCornersRadius = 10;
 };

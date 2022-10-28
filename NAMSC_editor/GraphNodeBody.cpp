@@ -4,6 +4,7 @@
 GraphNodeBody::GraphNodeBody(QGraphicsObject* parent, QRectF bBox)
 	: QGraphicsObject(parent), nodeBodyBoundingRect(bBox)
 {
+	//setParent(parent);
 	//setFlag(ItemIsMovable);
 	// TODO
 }
@@ -28,16 +29,17 @@ void GraphNodeBody::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 	QPen pen(Qt::black, roundedCornersRadius);
 	pen.setWidth(1);
 
-	QLinearGradient gradient(QPointF(0.0, 0.0),
-		QPointF(2.0, nodeBodyBoundingRect.height()));
+	QBrush brush(QColor{ 100, 100, 100, 240 }, Qt::SolidPattern);
+	//QLinearGradient gradient(QPointF(0.0, 0.0), QPointF(2.0, nodeBodyBoundingRect.height()));
 
-	gradient.setColorAt(0.0, Qt::white);
-	gradient.setColorAt(0.08, Qt::gray);
-	gradient.setColorAt(0.97, Qt::gray);
-	gradient.setColorAt(1.0, Qt::black);
+	//gradient.setColorAt(0.0, Qt::white);
+	//gradient.setColorAt(0.08, Qt::gray);
+	//gradient.setColorAt(0.97, Qt::gray);
+	//gradient.setColorAt(1.0, Qt::black);
 
 	painter->setPen(pen);
-	painter->fillPath(path, gradient);
+	//painter->fillPath(path, gradient);
+	painter->fillPath(path, brush);
 	painter->drawPath(path);
 
 	// Draw text
@@ -47,5 +49,4 @@ void GraphNodeBody::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 	QFontMetrics metrics = painter->fontMetrics();
 	QRect textboundingRect = boundingRect().toRect();
 	painter->drawText(0, 0, boundingRect().width(), boundingRect().height(), Qt::AlignCenter | Qt::TextWordWrap, label, &textboundingRect);
-	//painter->drawText(QPointF{boundingRect().width() / 2 - metrics.averageCharWidth() * label.length() / 2, boundingRect().height() / 2}, label);
 }
