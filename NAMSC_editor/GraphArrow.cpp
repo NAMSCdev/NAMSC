@@ -67,5 +67,5 @@ void GraphArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	painter->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter->drawLine(line);
 
-	qDebug() << "XD";
+	//qDebug() << "XD";
 }

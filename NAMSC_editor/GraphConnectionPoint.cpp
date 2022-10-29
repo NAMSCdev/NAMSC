@@ -21,7 +21,7 @@ void GraphConnectionPoint::paint(QPainter* painter, const QStyleOptionGraphicsIt
 	if (arrow) {
 		arrow->adjust();
 	}
-	qDebug() << "gcp";
+	//qDebug() << "gcp";
 }
 
 void GraphConnectionPoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
