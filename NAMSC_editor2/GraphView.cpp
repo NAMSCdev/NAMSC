@@ -1,4 +1,5 @@
 #include "GraphView.h"
+#include "GraphView.h"
 #include <nodes/Node>
 #include <nodes/FlowScene>
 #include <QMouseEvent>
@@ -21,17 +22,5 @@ void GraphView::addNode(const QString& modelName, const QPoint& pos)
 	}
 	else {
 		// Exception?
-	}
-}
-
-void GraphView::mousePressEvent(QMouseEvent* event)
-{
-	FlowView::mousePressEvent(event);
-
-	if (event->button() == Qt::RightButton) {
-		qDebug() << "right button pressed on graph view!";
-		if (itemAt(event->pos())) {
-			qDebug() << "Pressed item: " << "pos: " << itemAt(event->pos());
-		}
 	}
 }

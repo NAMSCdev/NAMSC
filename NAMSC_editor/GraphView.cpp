@@ -1,5 +1,7 @@
 #include "GraphView.h"
 #include <QKeyEvent>
+#include <ranges>
+#include <QPointF>
 
 GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -7,6 +9,39 @@ GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
+    setDragMode(ScrollHandDrag);
+}
+
+void GraphView::mousePressEvent(QMouseEvent* event)
+{
+    QGraphicsView::mousePressEvent(event);
+
+    if (event->button() == Qt::MiddleButton)
+    {
+        // Store original position.
+        mousePressOrigin = mapToScene(event->pos());
+        qDebug() << "Middle button registered, pos: " << mousePressOrigin;
+    }
+}
+
+void GraphView::mouseMoveEvent(QMouseEvent* event)
+{
+    QGraphicsView::mouseMoveEvent(event);
+
+    if (scene()->mouseGrabberItem() == nullptr && event->buttons() == Qt::MiddleButton)
+    {
+
+        //QPointF oldPos = mapToScene(mousePressOrigin);
+        //QPointF newPos = mapToScene(event->pos());
+        //QPointF translation = newPos - oldPos;
+
+        //translate(translation.x(), translation.y());
+
+        //mousePressOrigin = event->pos();
+        QPointF difference = mousePressOrigin - mapToScene(event->pos());
+        setSceneRect(sceneRect().translated(difference.x(), difference.y()));
+    }
+
 }
 
 void GraphView::zoomIn()
@@ -39,24 +74,33 @@ void GraphView::wheelEvent(QWheelEvent* event)
 
 void GraphView::drawBackground(QPainter* painter, const QRectF& rect)
 {
-    Q_UNUSED(rect);
+    //Q_UNUSED(rect);
 
-    // Shadow
-    QRectF sceneRect = this->sceneRect();
-    QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
-    QRectF bottomShadow(sceneRect.left() + 5, sceneRect.bottom(), sceneRect.width(), 5);
-    if (rightShadow.intersects(rect) || rightShadow.contains(rect))
-        painter->fillRect(rightShadow, Qt::darkGray);
-    if (bottomShadow.intersects(rect) || bottomShadow.contains(rect))
-        painter->fillRect(bottomShadow, Qt::darkGray);
+    // Grid
+    QPen pen;
+    pen.setStyle(Qt::DashLine);
+    pen.setWidth(2);
+    pen.setBrush(Qt::gray);
+    painter->setPen(pen);
+    
+    //auto visibleArea = mapToScene(pos());
+    //auto visibleArea = mapToScene(this->width(), this->height());
+    //auto visibleArea = mapToScene(rect.topLeft().toPoint());
+    auto visibleArea = mapToScene(this->viewport()->geometry()).boundingRect();
 
-    // Fill
-    QLinearGradient gradient(sceneRect.topLeft(), sceneRect.bottomRight());
-    gradient.setColorAt(0, Qt::white);
-    gradient.setColorAt(1, Qt::lightGray);
-    painter->fillRect(rect.intersected(sceneRect), gradient);
-    painter->setBrush(Qt::NoBrush);
-    painter->drawRect(sceneRect);
+    int step = 100;
+    // Horizontal
+    QLine hline({ (int)visibleArea.x(), (int)visibleArea.y() - ((int)visibleArea.y() % step) }, { (int)visibleArea.x() + (int)visibleArea.width(), (int)visibleArea.y() - ((int)visibleArea.y() % step) });
+    for (int i = 0; i < visibleArea.height(); i += step) {
+        painter->drawLine(hline);
+        hline.translate(0, step);
+    }
+    // Vertical
+    QLine vline({ (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y()}, { (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() + (int)visibleArea.height()});
+    for (int i = 0; i < visibleArea.width(); i += step) {
+        painter->drawLine(vline);
+        vline.translate(step, 0);
+    }
 }
 
 void GraphView::scaleView(qreal scaleFactor)

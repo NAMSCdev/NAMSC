@@ -8,6 +8,9 @@ class GraphView : public QGraphicsView
 public:
 	GraphView(QWidget* parent = nullptr);
 
+	void mousePressEvent(QMouseEvent* event) override;
+	void mouseMoveEvent(QMouseEvent* event) override;
+
 public slots:
 	void zoomIn();
 	void zoomOut();
@@ -17,5 +20,8 @@ protected:
 	void wheelEvent(QWheelEvent* event) override;
 	void drawBackground(QPainter* painter, const QRectF& rect) override;
 	void scaleView(qreal scaleFactor);
+
+private:
+	QPointF mousePressOrigin;
 };
 
