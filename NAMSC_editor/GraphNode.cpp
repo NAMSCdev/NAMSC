@@ -8,6 +8,7 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	setFlag(ItemHasNoContents);
 	setFlag(ItemIsMovable);
 	setCacheMode(DeviceCoordinateCache); // Not required - potentialy increases performance
+	setFlag(ItemSendsScenePositionChanges);
 	//setZValue(-1); // example zvalue usage
 }
 
@@ -139,4 +140,14 @@ std::shared_ptr<GraphConnectionPoint> GraphNode::connectionPointAt(GraphConnecti
 	}
 
 	return nullptr;
+}
+
+QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+	int step = 100;
+	if (change == ItemPositionChange) {
+		return QPointF(value.toPointF().x() - ((int)value.toPointF().x() % step), value.toPointF().y() - ((int)value.toPointF().y() % step));
+	}
+
+	return QGraphicsItem::itemChange(change, value);
 }
