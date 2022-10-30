@@ -25,6 +25,8 @@ public:
 
 	std::shared_ptr<GraphConnectionPoint> connectionPointAt(GraphConnectionType type, size_t index);
 
+	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+
 private:
 	QRectF nodeBoundingRect;
 	GraphNodeBody nodeBody;
