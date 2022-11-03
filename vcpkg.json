@@ -2,16 +2,11 @@
   "name": "namsc-dependencies",
   "version-string": "1.0",
   "dependencies": [
-    {
-      "name": "qtbase",
-      "default-features": false,
-      "features": [
-        "gui",
-        "widgets",
-        "concurrent"
-      ]
-    },
+    "qtbase",
+    "pthread",
+    "qtshadertools",
     "qtmultimedia",
+    "qttools",
     "catch2",
     "trompeloeil"
   ],
@@ -23,6 +18,10 @@
     },
     {
       "name": "qtmultimedia",
+      "version": "6.3.2"
+    },
+    {
+      "name": "qttools",
       "version": "6.3.2"
     },
     {
