@@ -11,25 +11,14 @@ GraphArrow::GraphArrow(GraphConnectionPoint* source, GraphConnectionPoint* dest)
 GraphArrow::~GraphArrow()
 { }
 
-//void GraphArrow::setSourcePoint(const QPointF point)
-//{
-//	sourcePoint = point;
-//}
-//
-//void GraphArrow::setDestinationPoint(const QPointF point)
-//{
-//	destinationPoint = point;
-//}
-
 void GraphArrow::adjust()
 {
 	if (not connectionSource || not connectionDestination) {
 		return;
 	}
 
-
 	QLineF line(mapFromScene(connectionSource->scenePos()), mapFromScene(connectionDestination->scenePos()));
-	qreal length = line.length();
+	//qreal length = line.length();
 
 	prepareGeometryChange();
 	
@@ -47,7 +36,7 @@ QRectF GraphArrow::boundingRect() const
     qreal extra = (penWidth) / 2.0;
 
     return QRectF(sourcePoint, QSizeF(destinationPoint.x() - sourcePoint.x(),
-                                      destinationPoint.y() - sourcePoint.y()))
+		destinationPoint.y() - sourcePoint.y()))
         .normalized()
         .adjusted(-extra, -extra, extra, extra);
 }
@@ -59,13 +48,12 @@ void GraphArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	}
 
 	QLineF line(sourcePoint, destinationPoint);
-	if (qFuzzyCompare(line.length(), qreal(0.)))
+	if (qFuzzyCompare(line.length(), qreal(0.))) {
 		return;
+	}
 
 	// Draw the line itself
 	//painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter->drawLine(line);
-
-	//qDebug() << "XD";
 }

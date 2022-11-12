@@ -7,7 +7,7 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	//setParent(parent);
 	setFlag(ItemHasNoContents);
 	setFlag(ItemIsMovable);
-	setCacheMode(DeviceCoordinateCache); // Not required - potentialy increases performance
+	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
 	setFlag(ItemSendsScenePositionChanges);
 	//setZValue(-1); // example zvalue usage
 }
@@ -42,8 +42,6 @@ void GraphNode::appendConnectionPoint(GraphConnectionType type)
 	
 	switch (type) {
 	case GraphConnectionType::In:
-		//pointPos += QPointF{ 5 , inputConnectionPointList.size() * point->boundingRect().height() * 1.4};
-		//point->setPos(pointPos);
 		pointPos.setX(pointPos.x() + 5);
 		inputConnectionPointList.append(point);
 		delta = { 0, boundingRect().height() / inputConnectionPointList.size() * 0.6 };
@@ -53,8 +51,6 @@ void GraphNode::appendConnectionPoint(GraphConnectionType type)
 		}
 		break;
 	case GraphConnectionType::Out:
-		//pointPos += QPointF{ boundingRect().width() - point->boundingRect().width() - 5 , outputConnectionPointList.size() * point->boundingRect().height() * 1.4};
-		//point->setPos(pointPos);
 		pointPos.setX(pointPos.x() + boundingRect().width() - point->boundingRect().width() - 5);
 		outputConnectionPointList.append(point);
 		delta = { 0, boundingRect().height() / outputConnectionPointList.size() * 0.6 };

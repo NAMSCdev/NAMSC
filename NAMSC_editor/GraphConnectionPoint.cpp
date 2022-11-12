@@ -5,6 +5,7 @@ GraphConnectionPoint::GraphConnectionPoint(QGraphicsObject* parent)
 	: QGraphicsObject(parent), pointBoundingRect(0, 0, 10, 10)
 { 
 	setAcceptHoverEvents(true);
+	setFlag(ItemSendsScenePositionChanges);
 }
 
 GraphConnectionPoint::~GraphConnectionPoint()
@@ -18,10 +19,15 @@ QRectF GraphConnectionPoint::boundingRect() const
 void GraphConnectionPoint::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	painter->fillRect(pointBoundingRect, pointColor);
-	if (arrow) {
+}
+
+QVariant GraphConnectionPoint::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+	if (change == ItemScenePositionHasChanged && arrow) {
 		arrow->adjust();
 	}
-	//qDebug() << "gcp";
+
+	return QGraphicsItem::itemChange(change, value);
 }
 
 void GraphConnectionPoint::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
