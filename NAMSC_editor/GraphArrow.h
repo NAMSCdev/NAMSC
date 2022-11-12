@@ -17,8 +17,8 @@ public:
 	void adjust();
 
 	// Inherited via QGraphicsItem
-	virtual QRectF boundingRect() const override;
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+	QRectF boundingRect() const override;
+	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 private:
 	QPointF sourcePoint;
