@@ -90,13 +90,13 @@ void GraphView::drawBackground(QPainter* painter, const QRectF& rect)
 
     int step = 100;
     // Horizontal
-    QLine hline({ (int)visibleArea.x(), (int)visibleArea.y() - ((int)visibleArea.y() % step) }, { (int)visibleArea.x() + (int)visibleArea.width(), (int)visibleArea.y() - ((int)visibleArea.y() % step) });
+    QLine hline({ (int)visibleArea.x() - ((int)visibleArea.x() % step) - step, (int)visibleArea.y() - ((int)visibleArea.y() % step)}, {(int)visibleArea.x() + (int)visibleArea.width(), (int)visibleArea.y() - ((int)visibleArea.y() % step)});
     for (int i = 0; i < visibleArea.height(); i += step) {
         painter->drawLine(hline);
         hline.translate(0, step);
     }
     // Vertical
-    QLine vline({ (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y()}, { (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() + (int)visibleArea.height()});
+    QLine vline({ (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() - ((int)visibleArea.y() % step) - step}, {(int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() + (int)visibleArea.height()});
     for (int i = 0; i < visibleArea.width(); i += step) {
         painter->drawLine(vline);
         vline.translate(step, 0);

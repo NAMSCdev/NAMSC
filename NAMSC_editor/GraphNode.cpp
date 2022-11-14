@@ -1,5 +1,6 @@
-#include "GraphNode.h"
+﻿#include "GraphNode.h"
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 
 GraphNode::GraphNode(QGraphicsObject* parent)
 	: QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(0, 0, 300, 200)))
@@ -138,11 +139,25 @@ std::shared_ptr<GraphConnectionPoint> GraphNode::connectionPointAt(GraphConnecti
 	return nullptr;
 }
 
+void GraphNode::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+	if (event->button() == Qt::LeftButton) {
+		lastLeftMousePressPoint = event->scenePos();
+	}
+}
+
 QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)
 {
 	int step = 100;
 	if (change == ItemPositionChange) {
-		return QPointF(value.toPointF().x() - ((int)value.toPointF().x() % step), value.toPointF().y() - ((int)value.toPointF().y() % step));
+		//return QPoint(value.toPoint().x() - (value.toPoint().x() % step), value.toPoint().y() - (value.toPoint().y() % step));
+		//std::function funX = value.toPoint().x() + lastLeftMousePressPoint.toPoint().x() > 0 ? std::ceilf : std::floorf;
+		//std::function funY = value.toPoint().y() + lastLeftMousePressPoint.toPoint().y() > 0 ? std::ceilf : std::floorf;
+		//auto res = QPoint((value.toPoint().x() + (lastLeftMousePressPoint.toPoint().x() % step)) / step * step, (value.toPoint().y() + (lastLeftMousePressPoint.toPoint().y() % step)) / step * step);
+
+		auto res = QPoint(std::round((value.toPointF().x() + (lastLeftMousePressPoint.toPoint().x() % step)) / step) * step, std::round((value.toPointF().y() + (lastLeftMousePressPoint.toPoint().y() % step)) / step) * step);
+
+		return res;
 	}
 
 	return QGraphicsItem::itemChange(change, value);
