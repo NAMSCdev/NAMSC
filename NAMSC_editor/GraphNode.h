@@ -25,10 +25,13 @@ public:
 
 	std::shared_ptr<GraphConnectionPoint> connectionPointAt(GraphConnectionType type, size_t index);
 
+
+	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
 private:
 	QRectF nodeBoundingRect;
+	QPointF lastLeftMousePressPoint;
 	GraphNodeBody nodeBody;
 	QList<std::shared_ptr<GraphConnectionPoint>> inputConnectionPointList;
 	QList<std::shared_ptr<GraphConnectionPoint>> outputConnectionPointList;
