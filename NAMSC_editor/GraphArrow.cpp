@@ -47,13 +47,17 @@ void GraphArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 		return;
 	}
 
-	QLineF line(sourcePoint, destinationPoint);
-	if (qFuzzyCompare(line.length(), qreal(0.))) {
+	QPainterPath path(sourcePoint);
+	path.cubicTo(QPointF{ sourcePoint.x(), (destinationPoint.y() + sourcePoint.y()) / 2 }, QPointF{ destinationPoint.x(), (destinationPoint.y() + sourcePoint.y()) / 2 }, destinationPoint);
+
+	//QLineF line(sourcePoint, destinationPoint);
+	if (qFuzzyCompare(path.length(), qreal(0.))) {
 		return;
 	}
 
 	// Draw the line itself
 	//painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	painter->drawLine(line);
+	//painter->drawLine(line);
+	painter->drawPath(path);
 }

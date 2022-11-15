@@ -20,11 +20,11 @@
     <Filter Include="Header Files\NodeEditor">
       <UniqueIdentifier>{7b9805ac-a932-4e78-8429-5173298d54f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Source Files">
+    <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Source Files\NodeEditor">
+    <Filter Include="Source Files\NodeEditor">
       <UniqueIdentifier>{97ce8424-5d3a-4667-97fb-6ee5ed73d7af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -39,7 +39,7 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <ClCompile Include="NAMSC_editor.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <None Include="NAMSC_editor.ico">
       <Filter>Resource Files</Filter>
@@ -50,22 +50,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphNodeBody.cpp">
-      <Filter>Resource Files\Source Files\NodeEditor</Filter>
+      <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
     <ClCompile Include="GraphNode.cpp">
-      <Filter>Resource Files\Source Files\NodeEditor</Filter>
+      <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
     <ClCompile Include="GraphConnectionPoint.cpp">
-      <Filter>Resource Files\Source Files\NodeEditor</Filter>
+      <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
     <ClCompile Include="GraphArrow.cpp">
-      <Filter>Resource Files\Source Files\NodeEditor</Filter>
+      <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
     <ClCompile Include="GraphView.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
