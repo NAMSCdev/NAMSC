@@ -4,7 +4,13 @@
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
+    // Prepare ui
     ui.setupUi(this);
+
+    ui.mainSplitter->setSizes({ 20, 60, 20 });
+    // ui.middlePanel->setSizes({ 80, 20 });
+    ui.middlePanel->setStretchFactor(0, 70);
+    ui.middlePanel->setStretchFactor(1, 30);
 
     ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
