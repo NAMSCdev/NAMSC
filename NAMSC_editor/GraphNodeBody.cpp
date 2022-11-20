@@ -4,6 +4,7 @@
 GraphNodeBody::GraphNodeBody(QGraphicsObject* parent, QRectF bBox)
 	: QGraphicsObject(parent), nodeBodyBoundingRect(bBox)
 {
+	setDefaultBorderPen();
 	//setParent(parent);
 	//setFlag(ItemIsMovable);
 	// TODO
@@ -26,27 +27,31 @@ void GraphNodeBody::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 	QPainterPath path;
 	path.addRoundedRect(nodeBodyBoundingRect, roundedCornersRadius, roundedCornersRadius);
 
-	QPen pen(Qt::black, roundedCornersRadius);
-	pen.setWidth(1);
-
 	QBrush brush(QColor{ 100, 100, 100, 240 }, Qt::SolidPattern);
-	//QLinearGradient gradient(QPointF(0.0, 0.0), QPointF(2.0, nodeBodyBoundingRect.height()));
 
-	//gradient.setColorAt(0.0, Qt::white);
-	//gradient.setColorAt(0.08, Qt::gray);
-	//gradient.setColorAt(0.97, Qt::gray);
-	//gradient.setColorAt(1.0, Qt::black);
-
-	painter->setPen(pen);
-	//painter->fillPath(path, gradient);
+	// Draw body
+	painter->setPen(nodeBorderPen);
 	painter->fillPath(path, brush);
 	painter->drawPath(path);
 
 	// Draw text
-	QFont font = QFont("Calibri", 16);
-	painter->setPen(QColor{ 255, 255, 255 });
-	painter->setFont(font);
+	painter->setPen(textPen);
+	painter->setFont(textFont);
 	QFontMetrics metrics = painter->fontMetrics();
 	QRect textboundingRect = boundingRect().toRect();
 	painter->drawText(0, 0, boundingRect().width(), boundingRect().height(), Qt::AlignCenter | Qt::TextWordWrap, label, &textboundingRect);
+}
+
+void GraphNodeBody::setSelectedBorderPen()
+{
+	nodeBorderPen = QPen(Qt::red, roundedCornersRadius);
+	nodeBorderPen.setWidth(2);
+	update();
+}
+
+void GraphNodeBody::setDefaultBorderPen()
+{
+	nodeBorderPen = QPen(Qt::black, roundedCornersRadius);
+	nodeBorderPen.setWidth(1);
+	update();
 }

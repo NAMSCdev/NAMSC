@@ -18,9 +18,7 @@ public:
 private:
     Ui::NAMSC_editorClass ui;
 
-    GraphView* gview;
     QGraphicsScene* scene;
-    QGraphicsView* view;
     GraphNode* node;
     GraphNode* node2;
 };
