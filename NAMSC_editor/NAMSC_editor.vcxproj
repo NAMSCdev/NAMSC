@@ -124,6 +124,7 @@
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollapseButton.h" />
     <ClInclude Include="GraphArrow.h" />
     <QtMoc Include="GraphView.h" />
     <QtMoc Include="GraphConnectionPoint.h" />

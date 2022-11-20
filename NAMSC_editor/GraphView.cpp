@@ -73,8 +73,6 @@ void GraphView::wheelEvent(QWheelEvent* event)
 
 void GraphView::drawBackground(QPainter* painter, const QRectF& rect)
 {
-    //Q_UNUSED(rect);
-
     // Grid
     QPen pen;
     pen.setStyle(Qt::DashLine);
@@ -88,6 +86,7 @@ void GraphView::drawBackground(QPainter* painter, const QRectF& rect)
     auto visibleArea = mapToScene(this->viewport()->geometry()).boundingRect();
 
     int step = 100;
+
     // Horizontal
     QLine hline({
 	                static_cast<int>(visibleArea.x()) - (static_cast<int>(visibleArea.x()) % step) - step,

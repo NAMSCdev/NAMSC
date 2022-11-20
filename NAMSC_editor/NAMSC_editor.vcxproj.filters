@@ -86,5 +86,8 @@
     <ClInclude Include="GraphArrow.h">
       <Filter>Header Files\NodeEditor</Filter>
     </ClInclude>
+    <ClInclude Include="CollapseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
