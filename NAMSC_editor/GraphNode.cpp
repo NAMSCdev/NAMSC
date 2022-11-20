@@ -10,6 +10,7 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	setFlag(ItemIsMovable);
 	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
 	setFlag(ItemSendsScenePositionChanges);
+	setFlag(ItemIsFocusable);
 	//setZValue(-1); // example zvalue usage
 }
 
@@ -61,7 +62,7 @@ void GraphNode::appendConnectionPoint(GraphConnectionType type)
 		}
 		break;
 	default:
-		// error?
+		// TODO error?
 		break;
 	}
 
@@ -83,7 +84,7 @@ void GraphNode::insertConnectionPoint(GraphConnectionType type, size_t index)
 		}
 		break;
 	default:
-		// error?
+		// TODO error?
 		break;
 	}
 }
@@ -103,7 +104,7 @@ void GraphNode::removeConnectionPoint(GraphConnectionType type, size_t index)
 		}
 		break;
 	default:
-		// error?
+		// TODO error?
 		break;
 	}
 }
@@ -132,7 +133,7 @@ std::shared_ptr<GraphConnectionPoint> GraphNode::connectionPointAt(GraphConnecti
 		}
 		break;
 	default:
-		// error?
+		// TODO error?
 		break;
 	}
 
@@ -141,9 +142,35 @@ std::shared_ptr<GraphConnectionPoint> GraphNode::connectionPointAt(GraphConnecti
 
 void GraphNode::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton) {
+	if (event->button() == Qt::LeftButton) 
+	{
 		lastLeftMousePressPoint = event->scenePos();
 	}
+
+}
+
+void GraphNode::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+	if (event->button() == Qt::LeftButton && lastLeftMousePressPoint == event->scenePos())
+	{
+		// TODO item is selected. Apply changes to ui if necessary
+		nodeBody.setSelectedBorderPen();
+	}
+
+	QGraphicsObject::mouseReleaseEvent(event);
+}
+
+// TODO change widget on stack
+void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+	qDebug() << "Double clicked on node:" << nodeBody.label;
+	QGraphicsObject::mouseDoubleClickEvent(event);
+}
+
+void GraphNode::focusOutEvent(QFocusEvent* event)
+{
+	nodeBody.setDefaultBorderPen();
+	QGraphicsObject::focusOutEvent(event);
 }
 
 QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)

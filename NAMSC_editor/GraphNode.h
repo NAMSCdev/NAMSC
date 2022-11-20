@@ -11,8 +11,8 @@ public:
 	~GraphNode();
 
 	// Inherited via QGraphicsItem
-	virtual QRectF boundingRect() const override;
-	virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+	QRectF boundingRect() const override;
+	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 	void setLabel(QString label);
 
@@ -25,14 +25,19 @@ public:
 
 	std::shared_ptr<GraphConnectionPoint> connectionPointAt(GraphConnectionType type, size_t index);
 
-
 	void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+
+	void focusOutEvent(QFocusEvent* event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
 private:
 	QRectF nodeBoundingRect;
 	QPointF lastLeftMousePressPoint;
 	GraphNodeBody nodeBody;
+	// TODO there should be a pointer to the in game scene
 	QList<std::shared_ptr<GraphConnectionPoint>> inputConnectionPointList;
 	QList<std::shared_ptr<GraphConnectionPoint>> outputConnectionPointList;
 

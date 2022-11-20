@@ -6,13 +6,13 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 {
     ui.setupUi(this);
 
-    ui.graphicsView->setSceneRect(ui.graphicsView->contentsRect());
+    ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(ui.graphicsView->rect());
+    scene->setSceneRect(ui.graphView->rect());
 
     //view->setViewport(new QOpenGLWidget);
-    ui.graphicsView->setScene(scene);
+    ui.graphView->setScene(scene);
     scene->setSceneRect(this->rect());
 
     node = new GraphNode;

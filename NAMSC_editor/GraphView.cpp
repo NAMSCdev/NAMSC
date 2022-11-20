@@ -9,7 +9,7 @@ GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 	setViewportUpdateMode(BoundingRectViewportUpdate);
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
-    setDragMode(ScrollHandDrag);
+    //setDragMode(ScrollHandDrag);
 }
 
 void GraphView::mousePressEvent(QMouseEvent* event)
@@ -20,7 +20,6 @@ void GraphView::mousePressEvent(QMouseEvent* event)
     {
         // Store original position.
         mousePressOrigin = mapToScene(event->pos());
-        qDebug() << "Middle button registered, pos: " << mousePressOrigin;
     }
 }
 
@@ -90,14 +89,28 @@ void GraphView::drawBackground(QPainter* painter, const QRectF& rect)
 
     int step = 100;
     // Horizontal
-    QLine hline({ (int)visibleArea.x() - ((int)visibleArea.x() % step) - step, (int)visibleArea.y() - ((int)visibleArea.y() % step)}, {(int)visibleArea.x() + (int)visibleArea.width(), (int)visibleArea.y() - ((int)visibleArea.y() % step)});
-    for (int i = 0; i < visibleArea.height(); i += step) {
+    QLine hline({
+	                static_cast<int>(visibleArea.x()) - (static_cast<int>(visibleArea.x()) % step) - step,
+	                static_cast<int>(visibleArea.y()) - (static_cast<int>(visibleArea.y()) % step)
+                },
+                {
+	                static_cast<int>(visibleArea.x()) + static_cast<int>(visibleArea.width()),
+	                static_cast<int>(visibleArea.y()) - (static_cast<int>(visibleArea.y()) % step)
+                });
+    for (int i = 0; i < visibleArea.height() + step; i += step) {
         painter->drawLine(hline);
         hline.translate(0, step);
     }
     // Vertical
-    QLine vline({ (int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() - ((int)visibleArea.y() % step) - step}, {(int)visibleArea.x() - ((int)visibleArea.x() % step), (int)visibleArea.y() + (int)visibleArea.height()});
-    for (int i = 0; i < visibleArea.width(); i += step) {
+    QLine vline({
+	                static_cast<int>(visibleArea.x()) - (static_cast<int>(visibleArea.x()) % step),
+	                static_cast<int>(visibleArea.y()) - (static_cast<int>(visibleArea.y()) % step) - step
+                },
+                {
+	                static_cast<int>(visibleArea.x()) - (static_cast<int>(visibleArea.x()) % step),
+	                static_cast<int>(visibleArea.y()) + static_cast<int>(visibleArea.height())
+                });
+    for (int i = 0; i < visibleArea.width() + step; i += step) {
         painter->drawLine(vline);
         vline.translate(step, 0);
     }
