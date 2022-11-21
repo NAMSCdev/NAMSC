@@ -114,6 +114,7 @@
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
     <ClCompile Include="GraphNodeBody.cpp" />
+    <ClCompile Include="NodeManager.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="NAMSC_editor.ui" />
     <QtMoc Include="NAMSC_editor.h" />
@@ -126,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="CollapseButton.h" />
     <ClInclude Include="GraphArrow.h" />
+    <ClInclude Include="NodeManager.h" />
     <QtMoc Include="GraphView.h" />
     <QtMoc Include="GraphConnectionPoint.h" />
     <ClInclude Include="GraphNode.h" />

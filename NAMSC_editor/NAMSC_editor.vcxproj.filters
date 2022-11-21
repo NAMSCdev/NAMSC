@@ -67,6 +67,9 @@
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NodeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
@@ -87,6 +90,9 @@
       <Filter>Header Files\NodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="CollapseButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
