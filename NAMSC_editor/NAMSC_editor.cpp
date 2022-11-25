@@ -1,5 +1,8 @@
 ﻿#include "NAMSC_editor.h"
 #include <QGraphicsWidget>
+#include <qfilesystemmodel.h>
+#include "Preview.h"
+
 
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
@@ -47,6 +50,14 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     scene->addItem(node2);
 
     node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
+
+	QFileSystemModel* model = new QFileSystemModel;
+    model->setRootPath(QDir::currentPath());
+    ui.assetsTree->setModel(model);
+    ui.assetsTree->hideColumn(1);
+    ui.assetsTree->hideColumn(3);
+    ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
+	connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
 }
 
 NAMSC_editor::~NAMSC_editor()
