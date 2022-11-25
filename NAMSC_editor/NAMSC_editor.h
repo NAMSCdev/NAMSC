@@ -17,6 +17,7 @@ class NAMSC_editor : public QMainWindow
 public:
     NAMSC_editor(QWidget *parent = nullptr);
     ~NAMSC_editor();
+    void prepareAssetsTree();
 
 private:
     Ui::NAMSC_editorClass ui;
