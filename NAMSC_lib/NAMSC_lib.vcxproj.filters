@@ -143,9 +143,6 @@
     <ClInclude Include="src\Exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Evaluators.h">
-      <Filter>Header Files\Novel</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Action\Audio\ActionAudio.h">
       <Filter>Header Files\Novel\Action\Audio</Filter>
     </ClInclude>
@@ -398,6 +395,12 @@
     <ClInclude Include="src\Novel\Data\Stat\Type\StatDouble.h">
       <Filter>Header Files\Novel\Data\Stat\Type</Filter>
     </ClInclude>
+    <ClInclude Include="src\Novel\Evaluators.h">
+      <Filter>Header Files\Novel</Filter>
+    </ClInclude>
+    <ClInclude Include="Evaluator.cpp">
+      <Filter>Header Files\Novel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions.cpp">
@@ -432,6 +435,9 @@
     </ClCompile>
     <ClCompile Include="src\Novel\NovelReferals.cpp">
       <Filter>Source Files\Story</Filter>
+    </ClCompile>
+    <ClCompile Include="Evaluators.cpp">
+      <Filter>Header Files\Novel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

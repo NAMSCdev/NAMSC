@@ -453,3 +453,5 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+vcpkg_installed/*

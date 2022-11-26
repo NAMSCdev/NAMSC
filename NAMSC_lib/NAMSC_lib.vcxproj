@@ -31,13 +31,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.3.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;multimedia</QtModules>
+    <QtInstall>6.2.4_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets;multimedia;qml</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.3.1_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;multimedia</QtModules>
+    <QtInstall>6.2.4_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets;multimedia;qml</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -189,6 +189,8 @@
     <ClInclude Include="src\Novel\RenPyTranslator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Evaluator.cpp" />
+    <ClCompile Include="Evaluators.cpp" />
     <ClCompile Include="src\Exceptions.cpp" />
     <ClCompile Include="src\Novel\Action\ActionAudio.cpp" />
     <ClCompile Include="src\Novel\Action\ActionStats.cpp" />
