@@ -8,6 +8,7 @@ class GraphNode : public QGraphicsObject
 {
 public:
 	GraphNode(QGraphicsObject *parent = nullptr);
+	GraphNode(const QPoint& pos, QGraphicsObject* parent = nullptr);
 	~GraphNode();
 
 	// Inherited via QGraphicsItem
@@ -40,5 +41,7 @@ private:
 	// TODO there should be a pointer to the in game scene
 	QList<std::shared_ptr<GraphConnectionPoint>> inputConnectionPointList;
 	QList<std::shared_ptr<GraphConnectionPoint>> outputConnectionPointList;
+
+	void setFlags();
 
 };

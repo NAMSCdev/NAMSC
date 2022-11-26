@@ -14,5 +14,6 @@ public:
 	void dragEnterEvent(QDragEnterEvent* event) override;
 	void dropEvent(QDropEvent* event) override;
 
+public slots:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 };

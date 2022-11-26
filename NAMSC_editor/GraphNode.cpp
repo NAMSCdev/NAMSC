@@ -6,12 +6,13 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	: QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(0, 0, 300, 200)))
 {
 	//setParent(parent);
-	setFlag(ItemHasNoContents);
-	setFlag(ItemIsMovable);
-	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
-	setFlag(ItemSendsScenePositionChanges);
-	setFlag(ItemIsFocusable);
+	setFlags();
 	//setZValue(-1); // example zvalue usage
+}
+
+GraphNode::GraphNode(const QPoint& pos, QGraphicsObject* parent) : QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(pos, pos + QPoint{300, 200})))
+{
+	setFlags();
 }
 
 GraphNode::~GraphNode()
@@ -188,4 +189,13 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)
 	}
 
 	return QGraphicsItem::itemChange(change, value);
+}
+
+void GraphNode::setFlags()
+{
+	setFlag(ItemHasNoContents);
+	setFlag(ItemIsMovable);
+	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
+	setFlag(ItemSendsScenePositionChanges);
+	setFlag(ItemIsFocusable);
 }

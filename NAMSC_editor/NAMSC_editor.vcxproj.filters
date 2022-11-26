@@ -70,12 +70,18 @@
     <ClCompile Include="NodeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Preview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
       <Filter>Header Files\NodeEditor</Filter>
     </QtMoc>
     <QtMoc Include="GraphView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Preview.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

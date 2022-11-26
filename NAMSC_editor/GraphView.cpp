@@ -1,7 +1,9 @@
 #include "GraphView.h"
 #include <QKeyEvent>
+#include <QMenu>
 #include <ranges>
 #include <QPointF>
+#include "GraphNode.h"
 
 GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -10,6 +12,8 @@ GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 	setRenderHint(QPainter::Antialiasing);
 	setTransformationAnchor(AnchorUnderMouse);
     //setDragMode(ScrollHandDrag);
+
+    createContextMenu();
 }
 
 void GraphView::mousePressEvent(QMouseEvent* event)
@@ -26,10 +30,9 @@ void GraphView::mousePressEvent(QMouseEvent* event)
 void GraphView::mouseMoveEvent(QMouseEvent* event)
 {
     QGraphicsView::mouseMoveEvent(event);
-
-    if (scene()->mouseGrabberItem() == nullptr && event->buttons() == Qt::MiddleButton)
+ 
+    if (/*scene()->mouseGrabberItem() == nullptr && */ event->buttons() == Qt::MiddleButton)
     {
-
         //QPointF oldPos = mapToScene(mousePressOrigin);
         //QPointF newPos = mapToScene(event->pos());
         //QPointF translation = newPos - oldPos;
@@ -122,4 +125,31 @@ void GraphView::scaleView(qreal scaleFactor)
         return;
 
     scale(scaleFactor, scaleFactor);
+}
+
+void GraphView::contextMenuEvent(QContextMenuEvent* event)
+{
+    contextMenuPosition = mapToScene(event->pos());
+
+    QMenu menu(this);
+    menu.addAction(createNodeAction);
+    menu.exec(event->globalPos());
+
+    qDebug() << scene()->itemAt(mapToScene(event->pos()), QTransform()); // Nodes detection
+}
+
+void GraphView::createContextMenu()
+{
+    createNodeAction = new QAction(tr("Create Node"), this);
+    // createNodeAction->setShortcut();
+    createNodeAction->setStatusTip(tr("Create node at the current cursor's position"));
+
+    connect(createNodeAction, &QAction::triggered, this, &GraphView::createNode);
+}
+
+void GraphView::createNode()
+{
+    int step = 100;
+    QPoint roundedPos = QPoint{ static_cast<int>(std::round(contextMenuPosition.x() / step)) * step, static_cast<int>(std::round(contextMenuPosition.y() / step)) * step };
+    scene()->addItem(new GraphNode(roundedPos));
 }

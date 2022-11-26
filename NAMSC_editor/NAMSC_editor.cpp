@@ -1,6 +1,7 @@
 ﻿#include "NAMSC_editor.h"
 #include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
+#include "Preview.h"
 
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)

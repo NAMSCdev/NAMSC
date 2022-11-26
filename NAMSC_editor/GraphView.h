@@ -20,8 +20,16 @@ protected:
 	void wheelEvent(QWheelEvent* event) override;
 	void drawBackground(QPainter* painter, const QRectF& rect) override;
 	void scaleView(qreal scaleFactor);
+	void contextMenuEvent(QContextMenuEvent* event) override;
 
 private:
+	void createContextMenu();
+
 	QPointF mousePressOrigin;
+	QPointF contextMenuPosition;
+	QAction* createNodeAction;
+
+private slots:
+	void createNode();
 };
 
