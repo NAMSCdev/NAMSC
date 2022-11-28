@@ -6,6 +6,7 @@
 #include "GraphNode.h"
 #include "ui_NAMSC_editor.h"
 #include "GraphView.h"
+#include "CollapseButton.h"
 
 class NAMSC_editor : public QMainWindow
 {

@@ -13,6 +13,10 @@ public:
         setStyleSheet("background:none");
         setIconSize(QSize(8, 8));
         setFont(QApplication::font());
+        setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        setArrowType(Qt::RightArrow);
+        setAutoRaise(true);
+        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
         connect(this, &QToolButton::toggled, [=](bool checked) {
             setArrowType(checked ? Qt::ArrowType::DownArrow : Qt::ArrowType::RightArrow);
         content_ != nullptr && checked ? showContent() : hideContent();

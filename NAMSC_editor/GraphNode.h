@@ -15,8 +15,6 @@ public:
 	QRectF boundingRect() const override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-	void setLabel(QString label);
-
 	void appendConnectionPoint(GraphConnectionType type);
 	void insertConnectionPoint(GraphConnectionType type, size_t index);
 	void removeConnectionPoint(GraphConnectionType type, size_t index);
@@ -33,6 +31,11 @@ public:
 
 	void focusOutEvent(QFocusEvent* event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+
+	QString getLabel() const;
+
+public slots:
+	void setLabel(QString label);
 
 private:
 	QRectF nodeBoundingRect;

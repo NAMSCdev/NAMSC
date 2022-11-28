@@ -39,13 +39,13 @@ void GraphNodeBody::paint(QPainter* painter, const QStyleOptionGraphicsItem* opt
 	painter->setFont(textFont);
 	QFontMetrics metrics = painter->fontMetrics();
 	QRect textboundingRect = boundingRect().toRect();
-	painter->drawText(0, 0, boundingRect().width(), boundingRect().height(), Qt::AlignCenter | Qt::TextWordWrap, label, &textboundingRect);
+	painter->drawText(boundingRect().x(), boundingRect().y(), boundingRect().width(), boundingRect().height(), Qt::AlignCenter | Qt::TextWordWrap, label, &textboundingRect);
 }
 
 void GraphNodeBody::setSelectedBorderPen()
 {
 	nodeBorderPen = QPen(Qt::red, roundedCornersRadius);
-	nodeBorderPen.setWidth(2);
+	nodeBorderPen.setWidth(4);
 	update();
 }
 

@@ -1,6 +1,8 @@
 ﻿#include "NAMSC_editor.h"
 #include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
+
+#include "BasicNodeProperties.h"
 #include "Preview.h"
 
 NAMSC_editor::NAMSC_editor(QWidget *parent)
@@ -10,7 +12,6 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.setupUi(this);
 
     ui.mainSplitter->setSizes({ 20, 60, 20 });
-    // ui.middlePanel->setSizes({ 80, 20 });
     ui.middlePanel->setStretchFactor(0, 70);
     ui.middlePanel->setStretchFactor(1, 30);
 
@@ -30,8 +31,6 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     node->appendConnectionPoint(GraphConnectionType::In);
     node->appendConnectionPoint(GraphConnectionType::In);
     node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
 
     node->appendConnectionPoint(GraphConnectionType::Out);
     node->appendConnectionPoint(GraphConnectionType::Out);
@@ -57,6 +56,17 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.assetsTree->hideColumn(3);
     ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
 	connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
+
+    auto* cbutton = new CollapseButton(ui.propertiesWidget);
+    auto* props = new BasicNodeProperties(ui.propertiesWidget);
+    props->setScene(scene);
+    connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
+    props->show();
+    cbutton->setText("Basic node options");
+    cbutton->setContent(props);
+    ui.propertiesLayout->addWidget(cbutton);
+    ui.propertiesLayout->addWidget(props);
+    ui.propertiesLayout->addStretch();
 }
 
 NAMSC_editor::~NAMSC_editor()

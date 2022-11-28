@@ -136,6 +136,7 @@ void GraphView::contextMenuEvent(QContextMenuEvent* event)
     menu.exec(event->globalPos());
 
     qDebug() << scene()->itemAt(mapToScene(event->pos()), QTransform()); // Nodes detection
+    qDebug() << scene()->focusItem(); // Nodes are usually focused welp
 }
 
 void GraphView::createContextMenu()

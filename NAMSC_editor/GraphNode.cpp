@@ -10,7 +10,7 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	//setZValue(-1); // example zvalue usage
 }
 
-GraphNode::GraphNode(const QPoint& pos, QGraphicsObject* parent) : QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(pos, pos + QPoint{300, 200})))
+GraphNode::GraphNode(const QPoint& pos, QGraphicsObject* parent) : QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(pos, pos + QPoint{ 300, 200 })))
 {
 	setFlags();
 }
@@ -34,7 +34,7 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void GraphNode::setLabel(QString label)
 {
-	nodeBody.label = label;
+	nodeBody.label = std::move(label);
 }
 
 void GraphNode::appendConnectionPoint(GraphConnectionType type)
@@ -152,12 +152,6 @@ void GraphNode::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void GraphNode::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton && lastLeftMousePressPoint == event->scenePos())
-	{
-		// TODO item is selected. Apply changes to ui if necessary
-		nodeBody.setSelectedBorderPen();
-	}
-
 	QGraphicsObject::mouseReleaseEvent(event);
 }
 
@@ -170,7 +164,6 @@ void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 
 void GraphNode::focusOutEvent(QFocusEvent* event)
 {
-	nodeBody.setDefaultBorderPen();
 	QGraphicsObject::focusOutEvent(event);
 }
 
@@ -188,7 +181,24 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)
 		return res;
 	}
 
+	if (change == ItemSelectedHasChanged)
+	{
+		if (value == true)
+		{
+			nodeBody.setSelectedBorderPen();
+		}
+		else
+		{
+			nodeBody.setDefaultBorderPen();
+		}
+	}
+
 	return QGraphicsItem::itemChange(change, value);
+}
+
+QString GraphNode::getLabel() const
+{
+	return nodeBody.label;
 }
 
 void GraphNode::setFlags()
@@ -198,4 +208,5 @@ void GraphNode::setFlags()
 	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
 	setFlag(ItemSendsScenePositionChanges);
 	setFlag(ItemIsFocusable);
+	setFlag(ItemIsSelectable);
 }
