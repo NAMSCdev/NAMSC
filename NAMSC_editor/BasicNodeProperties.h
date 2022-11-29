@@ -4,13 +4,14 @@
 
 #include "GraphNode.h"
 #include "ui_BasicNodeProperties.h"
+#include "CollapseButton.h"
 
 class BasicNodeProperties : public QFrame
 {
 	Q_OBJECT
 
 public:
-	BasicNodeProperties(QWidget *parent = nullptr);
+	BasicNodeProperties(QGraphicsScene* scene, QWidget *parent = nullptr);
 	~BasicNodeProperties();
 
 	void setScene(QGraphicsScene* scene);

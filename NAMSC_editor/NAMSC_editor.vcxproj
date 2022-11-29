@@ -118,6 +118,7 @@
     <ClCompile Include="GraphNodeBody.cpp" />
     <ClCompile Include="NodeManager.cpp" />
     <ClCompile Include="Preview.cpp" />
+    <ClCompile Include="NodeGraphPropertiesManager.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="BasicNodeProperties.ui" />
     <QtUic Include="NAMSC_editor.ui" />
@@ -129,6 +130,7 @@
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NodeGraphPropertiesManager.h" />
     <QtMoc Include="BasicNodeProperties.h" />
     <ClInclude Include="CollapseButton.h" />
     <ClInclude Include="GraphArrow.h" />

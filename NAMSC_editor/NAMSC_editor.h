@@ -6,7 +6,7 @@
 #include "GraphNode.h"
 #include "ui_NAMSC_editor.h"
 #include "GraphView.h"
-#include "CollapseButton.h"
+#include "NodeGraphPropertiesManager.h"
 
 class NAMSC_editor : public QMainWindow
 {
@@ -19,6 +19,7 @@ public:
 private:
     Ui::NAMSC_editorClass ui;
 
+    NodeGraphPropertiesManager* nodePropertiesManager;
     QGraphicsScene* scene;
     GraphNode* node;
     GraphNode* node2;

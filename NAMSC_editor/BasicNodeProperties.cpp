@@ -2,11 +2,13 @@
 
 #include <QGraphicsScene>
 
-BasicNodeProperties::BasicNodeProperties(QWidget *parent)
-	: QFrame(parent)
+BasicNodeProperties::BasicNodeProperties(QGraphicsScene* scene, QWidget *parent)
+	: QFrame(parent), scene(scene)
 {
 	ui.setupUi(this);
-
+	ui.collapseButton->setContent(ui.content);
+	ui.collapseButton->setText("Basic node properties");
+	connect(scene, &QGraphicsScene::selectionChanged, this, &BasicNodeProperties::selectedNodeChanged);
 }
 
 BasicNodeProperties::~BasicNodeProperties()
