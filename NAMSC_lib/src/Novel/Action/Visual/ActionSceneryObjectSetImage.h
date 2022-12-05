@@ -46,7 +46,7 @@ private:
 
 	///\todo [optional] Replace single images with an array of them
 	///Names of the Images that will replace SceneryObjectPart's images identified by IDs
-	//QList<QPair<uint, QString>>	sceneryObjectParts;
+	//std::vector<std::pair<uint, QString>>	sceneryObjectParts;
 
 	QString     assetImageName_ = "";
 	AssetImage* assetImage_     = nullptr;

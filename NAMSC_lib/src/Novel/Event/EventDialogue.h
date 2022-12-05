@@ -9,9 +9,9 @@ class EventDialogue final : public Event
 public:
 	EventDialogue(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const QList<Sentence>& sentence);
+	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentence);
 	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const QList<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions);
+	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions);
 	EventDialogue(const EventDialogue& obj)         = delete;
 	EventDialogue& operator=(const EventDialogue& obj) noexcept;
 	bool operator==(const EventDialogue& obj) const noexcept;
@@ -24,18 +24,18 @@ public:
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the EventDialogue's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QList<Sentence>* sentences)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::vector<Sentence>* sentences)> onRun) noexcept;
 
 	void acceptVisitor(EventVisitor* visitor) override;
 
-	QList<Sentence> sentences;
+	std::vector<Sentence> sentences;
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;
 
 	/// A function pointer that is called (if not nullptr) after the EventDialogue's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, QList<Sentence>* sentences)> onRun_ = nullptr;
+	std::function<void(Event* const parentEvent, Scene* const parentScene, std::vector<Sentence>* sentences)> onRun_ = nullptr;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file

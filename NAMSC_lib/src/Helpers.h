@@ -5,40 +5,11 @@
 namespace NovelLib
 {
 	template<typename T>
-	const T* getFromNamedMap(const QHash<QString, T>& map, const QString& name, const QString& type) noexcept
-	{
-		if (!map.contains(name))
-		{
-			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
-			return nullptr;
-		}
-
-		return &(*map.constFind(name));
-	}
+	const T* getFromNamedMap(const std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept;
 
 	template<typename T>
-	T* getFromNamedMap(QHash<QString, T>& map, const QString& name, const QString& type) noexcept
-	{
-		if (!map.contains(name))
-		{
-			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
-			return nullptr;
-		}
-
-		return &(*map.find(name));
-	}
+	T* getFromNamedMap(std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept;
 
 	template<typename T>
-	bool removeFromNamedMap(QHash<QString, T>& map, const QString& name, const QString& type) noexcept
-	{
-		if (!map.contains(name))
-		{
-			qDebug() << "Tried to remove a non-existent " << type << " \"" << name << "\"";
-			return false;
-		}
-
-		map.remove(name);
-
-		return true;
-	}
+	bool removeFromNamedMap(std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept;
 }

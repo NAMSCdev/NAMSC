@@ -8,6 +8,7 @@ public:
 	AnimatorSceneryObjectColor()                                                 = delete;
 	AnimatorSceneryObjectColor(SceneryObject* const parentSceneryObject, AssetAnim<AnimNodeDouble4D>* const assetAnim, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectColor(const AnimatorSceneryObjectColor& obj)            = delete;
+	AnimatorSceneryObjectColor(AnimatorSceneryObjectColor&& obj)                 = default;
 	AnimatorSceneryObjectColor& operator=(const AnimatorSceneryObjectColor& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectColor& obj) const                 = delete;
 	bool operator!=(const AnimatorSceneryObjectColor& obj) const                 = delete;

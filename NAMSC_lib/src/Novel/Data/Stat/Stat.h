@@ -25,7 +25,8 @@ public:
 
 	Stat() = default;
 	Stat(const QString& name, const QString& displayName, bool bShow, uint priority, const ShowNotification showNotification);
-	Stat(const Stat& obj) = default;
+	Stat(const Stat& obj)     = default;
+	Stat(Stat&& obj)          = default;
 	Stat& operator=(Stat obj) = delete;
 	bool operator==(const Stat& obj) const = default;
 	bool operator!=(const Stat& obj) const = default;

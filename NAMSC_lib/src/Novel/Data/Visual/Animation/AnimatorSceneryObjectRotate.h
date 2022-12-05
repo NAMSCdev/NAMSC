@@ -8,6 +8,7 @@ public:
 	AnimatorSceneryObjectRotate()                                                  = delete;
 	AnimatorSceneryObjectRotate(SceneryObject* const parentSceneryObject, AssetAnim<AnimNodeDouble1D>* const assetAnim, uint priority, uint startTime, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectRotate(const AnimatorSceneryObjectRotate& obj)            = delete;
+	AnimatorSceneryObjectRotate(AnimatorSceneryObjectRotate&& obj)                 = default;
 	AnimatorSceneryObjectRotate& operator=(const AnimatorSceneryObjectRotate& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectRotate& obj) const                  = delete;
 	bool operator!=(const AnimatorSceneryObjectRotate& obj) const                  = delete;

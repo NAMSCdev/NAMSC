@@ -10,6 +10,7 @@ public:
 	StatLongLong(const QString& name, const QString& displayName, bool bShow, uint priority, 
 				 const ShowNotification showNotification, int value, int min, int max);
 	StatLongLong(const StatLongLong& obj)          = default;
+	StatLongLong(StatLongLong&& obj)               = default;
 	StatLongLong& operator=(StatLongLong obj) noexcept;
 	bool operator==(const StatLongLong& obj) const = default;
 	bool operator!=(const StatLongLong& obj) const = default; //{ return !(*this == obj); }

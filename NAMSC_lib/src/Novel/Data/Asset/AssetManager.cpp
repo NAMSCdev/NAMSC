@@ -58,50 +58,50 @@ AssetImage* AssetManager::getAssetImageSceneryObject(const QString& assetImageNa
 	return getAsset<AssetImage>(assetImageName, objectImages_);
 }
 
-bool AssetManager::insertAssetAnimColor(const QString& assetAnimColor, uint size, uint pos, const QString& path) 
+void AssetManager::insertAssetAnimColor(const QString& assetAnimColor, uint size, uint pos, const QString& path) 
 {
 	insertAsset<AssetAnimColor>(assetAnimColor, size, pos, path, colorAnims_);
 }
 
-bool AssetManager::insertAssetAnimMove(const QString& name, uint size, uint pos, const QString& path)
+void AssetManager::insertAssetAnimMove(const QString& name, uint size, uint pos, const QString& path)
 {
 	insertAsset<AssetAnimMove>(name, size, pos, path, moveAnims_);
 }
 
-bool AssetManager::insertAssetAnimRotate(const QString& name, uint size, uint pos, const QString& path)
+void AssetManager::insertAssetAnimRotate(const QString& name, uint size, uint pos, const QString& path)
 {
 	insertAsset<AssetAnimRotate>(name, size, pos, path, rotateAnims_);
 }
 
-bool AssetManager::insertAssetAnimScale(const QString& name, uint size, uint pos, const QString& path)
+void AssetManager::insertAssetAnimScale(const QString& name, uint size, uint pos, const QString& path)
 {
 	insertAsset<AssetAnimScale>(name, size, pos, path, scaleAnims_);
 }
 
-bool AssetManager::insertSceneryBackgroundAssetImage(const QString& name, uint size, uint pos, const QString& path)
+void AssetManager::insertAssetImageSceneryBackground(const QString& name, uint size, uint pos, const QString& path)
 {
 	insertAsset<AssetImage>(name, size, pos, path, backgroundImages_);
 }
 
-bool AssetManager::insertSceneryObjectAssetImage(const QString& name, uint size, uint pos, const QString& path)
+void AssetManager::insertAssetImageSceneryObject(const QString& name, uint size, uint pos, const QString& path)
 {
 	insertAsset<AssetImage>(name, size, pos, path, objectImages_);
 }
 
 void AssetManager::saveAllAssets()
 {
-	for (Asset& asset : colorAnims_)
-		asset.save();
-	for (Asset& asset : moveAnims_)
-		asset.save();
-	for (Asset& asset : rotateAnims_)
-		asset.save();
-	for (Asset& asset : scaleAnims_)
-		asset.save();
-	for (Asset& asset : backgroundImages_)
-		asset.save();
-	for (Asset& asset : objectImages_)
-		asset.save();
+	//for (std::pair<const QString, AssetAnimColor>& asset : colorAnims_)
+	//	asset.second.save();
+	//for (std::pair<const QString, AssetAnimMove>& asset : moveAnims_)
+	//	asset.second.save();
+	//for (std::pair<const QString, AssetAnimRotate>& asset : rotateAnims_)
+	//	asset.second.save();
+	//for (std::pair<const QString, AssetAnimScale>& asset : scaleAnims_)
+	//	asset.second.save();
+	//for (std::pair<const QString, AssetImage>& asset : backgroundImages_)
+	//	asset.second.save();
+	//for (std::pair<const QString, AssetImage>& asset : objectImages_)
+	//	asset.second.save();
 }
 
 void AssetManager::correctAssets(QString name, uint oldSize, uint size, uint pos, QString path)
@@ -109,7 +109,7 @@ void AssetManager::correctAssets(QString name, uint oldSize, uint size, uint pos
 }
 
 template<typename AssetType>
-AssetType* AssetManager::getAsset(const QString& name, QHash<QString, AssetType>& map) noexcept
+const AssetType* AssetManager::getAsset(const QString& name, const std::unordered_map<QString, AssetType>& map) const noexcept
 {
 	if (map.contains(name))
 		return &map[name];
@@ -117,15 +117,23 @@ AssetType* AssetManager::getAsset(const QString& name, QHash<QString, AssetType>
 }
 
 template<typename AssetType>
-void AssetManager::insertAsset(const QString& name, uint size, uint pos, const QString& path, QHash<QString, AssetType>& map)
+AssetType* AssetManager::getAsset(const QString& name, std::unordered_map<QString, AssetType>& map) noexcept
 {
 	if (map.contains(name))
-		qCritical() << this << NovelLib::ErrorType::General << "An Asset with name (object's name: \"" << name << "\") already exists!";
-	map.emplace(name, size, pos, path);
+		return &map[name];
+	return nullptr;
 }
 
 template<typename AssetType>
-void AssetManager::loadDefinitions(const QString& path, QHash<QString, AssetType>& map)
+void AssetManager::insertAsset(const QString& name, uint size, uint pos, const QString& path, std::unordered_map<QString, AssetType>& map)
+{
+	if (map.contains(name))
+		qCritical() << this << NovelLib::ErrorType::General << "An Asset with name (object's name: \"" << name << "\") already exists!";
+	map.insert(std::make_pair(name, std::move(AssetType(name, size, pos, path))));
+}
+
+template<typename AssetType>
+void AssetManager::loadDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map)
 {
 	QFile file(path);
 	if (!file.open(QIODevice::ReadOnly))
@@ -140,7 +148,7 @@ void AssetManager::loadDefinitions(const QString& path, QHash<QString, AssetType
 		{
 			AssetType asset;
 			dataStream >> asset;
-			map[asset.name] = std::move(asset);
+			map.insert(std::make_pair<QString, AssetType>(QString(asset.name), std::move(asset)));
 		}
 	}
 	catch (QException exception)
@@ -150,7 +158,7 @@ void AssetManager::loadDefinitions(const QString& path, QHash<QString, AssetType
 }
 
 template<typename AssetType>
-void AssetManager::saveDefinitions(const QString& path, QHash<QString, AssetType>& map)
+void AssetManager::saveDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map)
 {
 	QFile file(path);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
@@ -161,8 +169,8 @@ void AssetManager::saveDefinitions(const QString& path, QHash<QString, AssetType
 	try
 	{
 		QDataStream dataStream(&file);
-		for (const AssetType& asset : map)
-			dataStream << asset;
+		//for (const std::pair<const QString, AssetType>& asset : map)
+		//	dataStream << asset.second;
 	}
 	catch (QException& exception)
 	{

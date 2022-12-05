@@ -50,29 +50,29 @@ public:
 
 	QString nextFreeSceneName() const noexcept;
 
-	const QHash<QString, Chapter>* getChapters() const noexcept;
-	void setChapters(const QHash<QString, Chapter>& chapters) noexcept;
+	const std::unordered_map<QString, Chapter>* getChapters() const noexcept;
+	void setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept;
 	const Chapter* getChapter(const QString& chapterName) const noexcept;
 	Chapter* getChapter(const QString& chapterName) noexcept;
 	void setChapter(const QString& chapterName, const Chapter& chapter) noexcept;
 	bool removeChapter(const QString& chapterName) noexcept;
 
-	const QHash<QString, Character>* getCharacterDefaults() const noexcept;
-	void setDefaultCharacters(const QHash<QString, Character>& characters) noexcept;
+	const std::unordered_map<QString, Character>* getCharacterDefaults() const noexcept;
+	void setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept;
 	const Character* getDefaultCharacter(const QString& characterName) const noexcept;
 	Character* getDefaultCharacter(const QString& characterName) noexcept;
 	void setDefaultCharacter(const QString& characterName, const Character& character) noexcept;
 	bool removeDefaultCharacter(const QString& characterName) noexcept;
 
-	const QHash<QString, SceneryObject>* getSceneryObjectDefaults() const noexcept;
-	void setDefaultSceneryObjects(const QHash<QString, SceneryObject>& sceneryObjects) noexcept;
+	const std::unordered_map<QString, SceneryObject>* getSceneryObjectDefaults() const noexcept;
+	void setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
 	const SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) const noexcept;
 	SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) noexcept;
 	void setDefaultSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
 	bool removeDefaultSceneryObject(const QString& sceneryObjectName) noexcept;
 
-	const QHash<QString, Scene>* getScenes() const noexcept;
-	void setScenes(const QHash<QString, Scene>& scenes) noexcept;
+	const std::unordered_map<QString, Scene>* getScenes() const noexcept;
+	void setScenes(const std::unordered_map<QString, Scene>& scenes) noexcept;
 	const Scene* getScene(const QString& chapterName) const noexcept;
 	Scene* getScene(const QString& chapterName) noexcept;
 	/// Also corrects jumps to Scenes that theirs index changed
@@ -80,8 +80,8 @@ public:
 	/// Also corrects jumps to Scenes that theirs index changed
 	bool removeScene(const QString& chapterName) noexcept;
 
-	const QHash<QString, Voice>* getVoices() const noexcept;
-	void setVoices(const QHash<QString, Voice>& voices) noexcept;
+	const std::unordered_map<QString, Voice>* getVoices() const noexcept;
+	void setVoices(const std::unordered_map<QString, Voice>& voices) noexcept;
 	const Voice* getVoice(const QString& voiceName) const noexcept;
 	Voice* getVoice(const QString& voiceName) noexcept;
 	void setVoice(const QString& voiceName, const Voice& voice) noexcept;
@@ -108,11 +108,11 @@ private:
 	/// \todo implement this
 	void loadVoices();
 
-	QHash<QString, Chapter> chapters_;
-	QHash<QString, Character> characterDefaults_;
-	QHash<QString, SceneryObject> sceneryObjectDefaults_;
-	QHash<QString, Scene> scenes_;
-	QHash<QString, Voice> voices_;
+	std::unordered_map<QString, Chapter> chapters_;
+	std::unordered_map<QString, Character> characterDefaults_;
+	std::unordered_map<QString, SceneryObject> sceneryObjectDefaults_;
+	std::unordered_map<QString, Scene> scenes_;
+	std::unordered_map<QString, Voice> voices_;
 
 	/// This one refers to the beginning of the current Scene, as the Novel will always be saved at this point if the User chooses to save
 	/// It is preferred to replay the last Scene, so the User does not lose the context of the Novel upon loading, as this contains Media changes that will not be journalized anywhere else

@@ -8,6 +8,7 @@ public:
 	AnimatorSceneryObjectFade()                                                = delete;
 	AnimatorSceneryObjectFade(SceneryObject* const parentSceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectFade(const AnimatorSceneryObjectFade& obj)            = delete;
+	AnimatorSceneryObjectFade(AnimatorSceneryObjectFade&& obj)                 = default;
 	AnimatorSceneryObjectFade& operator=(const AnimatorSceneryObjectFade& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectFade& obj) const                = delete;
 	bool operator!=(const AnimatorSceneryObjectFade& obj) const                = delete;

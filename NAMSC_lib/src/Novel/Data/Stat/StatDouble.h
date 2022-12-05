@@ -10,6 +10,7 @@ public:
 	StatDouble(const QString& name, const QString& displayName, bool bShow, uint priority, 
 			   const ShowNotification showNotification, double value, double min, double max);
 	StatDouble(const StatDouble& obj)            = default;
+	StatDouble(StatDouble&& obj)                 = default;
 	StatDouble& operator=(StatDouble obj) noexcept;
 	bool operator==(const StatDouble& obj) const = default;
 	bool operator!=(const StatDouble& obj) const = default; //{ return !(*this == obj); }

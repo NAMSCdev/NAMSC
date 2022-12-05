@@ -52,7 +52,7 @@ void AssetAnim<AnimNode>::load()
 	//	return;
 	//}
 	//checkFileExistence();
-	//animNodes_.reset(new QList<AnimNode>);
+	//animNodes_.reset(new std::vector<AnimNode>);
 
 	//QFile file(path_);
 	//if (!file.open(QIODevice::ReadOnly))
@@ -121,7 +121,7 @@ void AssetAnim<AnimNode>::save()
 }
 
 template<typename AnimNode>
-const QList<AnimNode>* AssetAnim<AnimNode>::getAnimNodes() const noexcept 
+const std::vector<AnimNode>* AssetAnim<AnimNode>::getAnimNodes() const noexcept 
 {
 	return &animNodes_; 
 }

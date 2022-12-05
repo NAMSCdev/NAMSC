@@ -77,7 +77,7 @@ bool Event::checkForErrors(bool bComprehensive) const
 uint Event::getIndex() const
 {
 	const std::vector<std::unique_ptr<Event>>* events = parentScene_->getEvents();
-	return std::find(events->cbegin(), events->cend(), *this) - events->cbegin();
+	return std::find_if(events->cbegin(), events->cend(), [&](const std::unique_ptr<Event>& obj) { return this == obj.get(); }) - events->cbegin();
 }
 
 void Event::run()

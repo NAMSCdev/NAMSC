@@ -1,7 +1,7 @@
 #pragma once
 #include "Novel/Data/Asset/Asset.h"
 
-#include <QList>
+#include <vector>
 #include <QString>
 
 #include "Novel/Data/Visual/Animation/AnimNode.h"
@@ -12,6 +12,8 @@ class AssetAnimBase : public Asset
 public:
 	AssetAnimBase() = default;
 	AssetAnimBase(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	AssetAnimBase(const AssetAnimBase& obj) = delete;
+	AssetAnimBase(AssetAnimBase&& obj)      = default;
 };
 
 /// Allows Animation loading and its memory management
@@ -22,7 +24,8 @@ public:
 	AssetAnim()                            = default;
 	/// \exception Error Could not find/open/read the Resource file or one of the AnimNode in `animNodes_` has a duplicate `timeStamp'
 	AssetAnim(const QString& name, uint size, uint pos = 0, const QString& path = "");
-	AssetAnim(const AssetAnim&)            = default;
+	AssetAnim(const AssetAnim& obj)        = delete;
+	AssetAnim(AssetAnim&& obj)             = default;
 	AssetAnim& operator=(const AssetAnim&) = default;
 
 	/// \exception Error 'path' is invalid / some AnimNodes in `animNodes_` have invalid `timeStamp`
@@ -40,14 +43,14 @@ public:
 	/// \todo implement this
 	void save() override;
 
-	const QList<AnimNode>* getAnimNodes() const noexcept;
+	const std::vector<AnimNode>* getAnimNodes() const noexcept;
 
 	/// \exception Error A node with the same `timeStamp` already exists in the `animNodes_` container
 	/// \todo More intelligent inserting, so the sort is not needed
 	void insertAnimNode(const AnimNode& newNode);
 
 private:
-	QList<AnimNode> animNodes_;
+	std::vector<AnimNode> animNodes_;
 };
 
 using AssetAnimColor  = AssetAnim<AnimNodeDouble4D>;

@@ -10,11 +10,9 @@ public:
 	AssetImage()                                 = default;
 	/// \exception Error Could not find/open/read the Resource file or the `assetImage_` couldn't be read as Image file (bad format)
 	AssetImage(const QString& name, uint size, uint pos = 0, const QString& path = "");
-	///\todo define it ASAP
-	AssetImage(const AssetImage& obj) {}
-	///\todo define it ASAP
-	AssetImage& operator=(const AssetImage& obj) {}
-
+	AssetImage(const AssetImage& obj)            = delete;
+	AssetImage(AssetImage&& obj)                 = default;
+	AssetImage& operator=(const AssetImage& obj) = delete;
 
 	/// \exception Error Could not find/open/read the Resource file / invalid `assetImage_`
 	/// \todo implement this

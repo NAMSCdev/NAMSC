@@ -9,6 +9,7 @@ public:
 	AnimatorInterface()                                 = delete;
 	AnimatorInterface(uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorInterface(const AnimatorInterface& obj)     = delete;
+	AnimatorInterface(AnimatorInterface&& obj)          = default;
 	AnimatorInterface& operator=(AnimatorInterface obj) = delete;
 	bool operator<(const AnimatorInterface& obj) const noexcept;
 	bool operator==(const AnimatorInterface& obj) const = delete;

@@ -7,7 +7,7 @@ ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, Scene* cons
 {
 }
 
-ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const QHash<QString, Sound>& sounds)
+ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds)
 	: ActionAudio(parentEvent, parentScene, audioSettings), sounds(sounds)
 {
 	checkForErrors(true);
@@ -36,8 +36,8 @@ bool ActionAudioSetSounds::checkForErrors(bool bComprehensive) const
 {
 	bool bError = ActionAudio::checkForErrors(bComprehensive);
 
-	for (const Sound& sound : sounds)
-		bError |= sound.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Sound>& sound : sounds)
+		bError |= sound.second.checkForErrors(bComprehensive);
 
 	//static auto errorChecker = [&](bool bComprehensive)
 	//{
@@ -51,11 +51,11 @@ bool ActionAudioSetSounds::checkForErrors(bool bComprehensive) const
 
 void ActionAudioSetSounds::ensureResourcesAreLoaded()
 {
-	for (Sound& sound : sounds)
-		sound.load();
+	for (std::pair<const QString, Sound>& sound : sounds)
+		sound.second.load();
 }
 
-void ActionAudioSetSounds::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QHash<QString, Sound>* sound)> onRun) noexcept
+void ActionAudioSetSounds::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
@@ -88,6 +88,6 @@ void ActionAudioSetSounds::serializableSave(QDataStream& dataStream) const
 {
 	ActionAudio::serializableSave(dataStream);
 	dataStream << sounds.size();
-	for (const Sound& sound : sounds)
-		dataStream << sound;
+	for (const std::pair<const QString, Sound>& sound : sounds)
+		dataStream << sound.second;
 }

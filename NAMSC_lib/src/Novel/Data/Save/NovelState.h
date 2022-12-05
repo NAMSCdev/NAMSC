@@ -3,7 +3,8 @@
 #include <QDate>
 #include <QImage>
 #include <QJSEngine>
-#include <QHash>
+#include <qhashfunctions.h>
+#include <unordered_map>
 
 #include "Novel/Data/Stat/Stat.h"
 #include "Novel/Data/Visual/Animation/AnimatorSceneryObjectInterface.h"
@@ -18,7 +19,7 @@ class NovelState final
 public:
     NovelState()                                 = default;
     /// \exception Error 'screenshot` could not be loaded and recognized as an Image or `scenery` contains an Error
-    NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID, const QHash<QString, Stat>& stats);
+    NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID);
     NovelState(const NovelState& obj) noexcept;
     /// \todo reset and copy `jsEngine_` properties
     NovelState& operator=(NovelState obj) noexcept;
@@ -35,7 +36,7 @@ public:
     bool checkForErrors(bool bComprehensive = false) const;
     void update(uint elapsedTime);
 
-    const QHash<QString, std::unique_ptr<Stat>>* getStats() const noexcept;
+    const std::unordered_map<QString, std::unique_ptr<Stat>>* getStats() const noexcept;
     const Stat* getStat(const QString& statName) const noexcept;
     Stat* getStat(const QString& statName) noexcept;
     void  setStat(const QString& statName, Stat* stat) noexcept;
@@ -60,7 +61,7 @@ private:
     /// \todo implement this
     void loadStats();
 
-    QHash<QString, std::unique_ptr<Stat>> stats_;
+    std::unordered_map<QString, std::unique_ptr<Stat>> stats_;
 
     QJSEngine jsEngine_;
 

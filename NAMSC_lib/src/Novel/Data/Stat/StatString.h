@@ -9,6 +9,7 @@ public:
 	StatString(const QString& name, const QString& displayName, bool bShow, uint priority,
 			   const ShowNotification showNotification, const QString& value, uint maxChars);
 	StatString(const StatString& obj)            = default;
+	StatString(StatString&& obj)                 = default;
 	StatString& operator=(StatString obj) noexcept;
 	bool operator==(const StatString& obj) const noexcept;
 	bool operator!=(const StatString& obj) const = default; //{ return !(*this == obj); }

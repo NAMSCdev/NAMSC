@@ -1,7 +1,8 @@
 #pragma once
 
 #include <functional>
-#include <QList>
+#include <QString>
+#include <vector>
 
 #include "Novel/Action/Action.h"
 #include "Novel/Event/Visitor/EventVisitor.h"
@@ -24,7 +25,7 @@ public:
 	Event& operator=(const Event& obj) noexcept;
 	bool operator==(const Event& obj) const noexcept;
 	bool operator!=(const Event& obj) const = default; //{ return !(*this == obj); }
-	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
+	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Event() = default;
 
 	/// Checks if the Event's Actions don't have any Errors, which would halt the Novel execution

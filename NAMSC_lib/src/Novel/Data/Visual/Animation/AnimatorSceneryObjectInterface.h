@@ -13,6 +13,7 @@ public:
 	AnimatorSceneryObjectInterface()                                                     = delete;
 	AnimatorSceneryObjectInterface(SceneryObject* const parentSceneryObject, AssetAnim<AnimNode>* const assetAnim, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectInterface(const AnimatorSceneryObjectInterface<AnimNode>& obj)  = delete;
+	AnimatorSceneryObjectInterface(AnimatorSceneryObjectInterface<AnimNode>&& obj)       = default;
 	AnimatorSceneryObjectInterface& operator=(const AnimatorSceneryObjectInterface& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectInterface& obj)                           = delete;
 	bool operator!=(const AnimatorSceneryObjectInterface& obj)                           = delete;

@@ -7,6 +7,19 @@ SceneryObject::SceneryObject(const QString& name, const QString& assetImageName,
 	SceneryObject::checkForErrors(true);
 }
 
+SceneryObject::SceneryObject(const SceneryObject& obj) noexcept
+	: name(obj.name), 
+	  assetImageName_(obj.assetImageName_), 
+	  pos(obj.pos), 
+	  scale(obj.scale),
+	  rotationDegree(obj.rotationDegree),
+	  colorMultiplier(obj.colorMultiplier), 
+	  alphaMultiplier(obj.alphaMultiplier),
+	  bVisible(obj.bVisible)
+{
+}
+
+
 SceneryObject& SceneryObject::operator=(SceneryObject obj) noexcept
 { 
 	if (this == &obj) return *this;
@@ -44,8 +57,8 @@ bool SceneryObject::checkForErrors(bool bComprehensive) const
 			if (assetImageName_ == "")
 				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
 		}
-
-		bError |= assetImage_->checkForErrors(bComprehensive);
+		else
+			bError |= assetImage_->checkForErrors(bComprehensive);
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
@@ -140,46 +153,46 @@ QString SceneryObject::getAssetImageName() noexcept
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectColor&& animatorColor)
 {
-	animatorsColor_.append(std::move(animatorColor));
-	std::sort(animatorsColor_.begin(), animatorsColor_.end());
+	animatorsColor_.push_back(std::move(animatorColor));
+	//std::sort(animatorsColor_.begin(), animatorsColor_.end());
 	playedAnimatorColorIndex_ = 0;
 }
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectFade&& animatorFade)
 {
-	animatorsFade_.append(std::move(animatorFade));
-	std::sort(animatorsFade_.begin(), animatorsFade_.end());
+	animatorsFade_.push_back(std::move(animatorFade));
+	//std::sort(animatorsFade_.begin(), animatorsFade_.end());
 	playedAnimatorFadeIndex_ = 0;
 }
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectMove&& animatorMove)
 {
-	animatorsMove_.append(std::move(animatorMove));
-	std::sort(animatorsMove_.begin(), animatorsMove_.end());
+	animatorsMove_.push_back(std::move(animatorMove));
+	//std::sort(animatorsMove_.begin(), animatorsMove_.end());
 	playedAnimatorMoveIndex_ = 0;
 }
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectRotate&& animatorRotate)
 {
-	animatorsRotate_.append(std::move(animatorRotate));
-	std::sort(animatorsRotate_.begin(), animatorsRotate_.end());
+	animatorsRotate_.push_back(std::move(animatorRotate));
+	//std::sort(animatorsRotate_.begin(), animatorsRotate_.end());
 	playedAnimatorRotateIndex_ = 0;
 }
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectScale&& animatorScale)
 {
-	animatorsScale_.append(std::move(animatorScale));
-	std::sort(animatorsScale_.begin(), animatorsScale_.end());
+	animatorsScale_.push_back(std::move(animatorScale));
+	//std::sort(animatorsScale_.begin(), animatorsScale_.end());
 	playedAnimatorScaleIndex_ = 0;
 }
 
 void SceneryObject::resetAnimators()
 {
-	//animatorsColor_.clear();
-	//animatorsFade_.clear();
-	//animatorsMove_.clear();
-	//animatorsRotate_.clear();
-	//animatorsScale_.clear();
+	animatorsColor_.clear();
+	animatorsFade_.clear();
+	animatorsMove_.clear();
+	animatorsRotate_.clear();
+	animatorsScale_.clear();
 }
 
 /// \exception Error Couldn't load the `assetImage_`

@@ -7,13 +7,13 @@ EventChoice::EventChoice(Scene* const parentScene) noexcept
 {
 }
 
-EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const QList<Choice>& choices)
+EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices)
 	: Event(parentScene, label), menuText_(menuText), choices(choices)
 {
 	checkForErrors(true);
 }
 
-EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const QList<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
+EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), menuText_(menuText), choices(choices)
 {
 	checkForErrors(true);
@@ -62,7 +62,7 @@ void EventChoice::run()
 {
 }
 
-void EventChoice::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Translation* text, QList<Choice>* choices)> onRun) noexcept
+void EventChoice::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Translation* text, std::vector<Choice>* choices)> onRun) noexcept
 { 
 	onRun_ = onRun; 
 }

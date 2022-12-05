@@ -20,7 +20,7 @@ public:
 	SceneryObject()                                 = default;
 	/// \exception Error Couldn't find/read the AssetImage named `assetImageName`
 	SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible);
-	SceneryObject(const SceneryObject &obj)         = default;
+	SceneryObject(const SceneryObject &obj) noexcept;
 	SceneryObject& operator=(SceneryObject obj) noexcept;
 	bool operator==(const SceneryObject& obj) const noexcept;
 	bool operator!=(const SceneryObject& obj) const = default; //{ return !(*this == obj); }
@@ -67,19 +67,19 @@ protected:
 	QString     assetImageName_ = "";
 	AssetImage* assetImage_     = nullptr;
 
-	QList<AnimatorSceneryObjectColor> animatorsColor_;
+	std::vector<AnimatorSceneryObjectColor> animatorsColor_;
 	int playedAnimatorColorIndex_  = -1;
-	QList<AnimatorSceneryObjectFade> animatorsFade_;
+	std::vector<AnimatorSceneryObjectFade> animatorsFade_;
 	int playedAnimatorFadeIndex_   = -1;
-	QList<AnimatorSceneryObjectMove> animatorsMove_;
+	std::vector<AnimatorSceneryObjectMove> animatorsMove_;
 	int playedAnimatorMoveIndex_   = -1;
-	QList<AnimatorSceneryObjectRotate> animatorsRotate_;
+	std::vector<AnimatorSceneryObjectRotate> animatorsRotate_;
 	int playedAnimatorRotateIndex_ = -1;
-	QList<AnimatorSceneryObjectScale> animatorsScale_;
+	std::vector<AnimatorSceneryObjectScale> animatorsScale_;
 	int playedAnimatorScaleIndex_  = -1;
 
 	//[optional] create this class and it will store AssetImages with custom names for image filtering (useful in Editor)
-	//QList<SceneryObjectPart> parts;
+	//std::vector<SceneryObjectPart> parts;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file

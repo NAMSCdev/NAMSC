@@ -1,13 +1,14 @@
 #pragma once
 
-#include <QHash>
+#include <qhashfunctions.h>
+#include <unordered_map>
 
 #include "Novel/Data/Asset/AssetAnim.h"
 #include "Novel/Data/Asset/AssetImage.h"
 
 /// Loads and unloads Assets - objects that manage Resources
 /// \todo [optional] Create some smart algorithm that will prefetch Assets that might be soon loaded in some asynchronous manner
-class AssetManager
+class AssetManager final
 {
 public:
 	static AssetManager& getInstance() noexcept;
@@ -36,22 +37,22 @@ public:
 
 	/// \exception Error Name is not unique within the `colorAnims` container 
 	/// \return Whether the insertion was successful
-	bool insertAssetAnimColor(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetAnimColor(const QString& name, uint size, uint pos = 0, const QString& path = "");
 	/// \exception Error Name is not unique within the `moveAnims_` container 
 	/// \return Whether the insertion was successful
-	bool insertAssetAnimMove(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetAnimMove(const QString& name, uint size, uint pos = 0, const QString& path = "");
 	/// \exception Error Name is not unique within the `moveAnims_` container 
 	/// \return Whether the insertion was successful
-	bool insertAssetAnimRotate(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetAnimRotate(const QString& name, uint size, uint pos = 0, const QString& path = "");
 	/// \exception Error Name is not unique within the `scaleAnims_` container 
 	/// \return Whether the insertion was successful
-	bool insertAssetAnimScale(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetAnimScale(const QString& name, uint size, uint pos = 0, const QString& path = "");
 	/// \exception Error Name is not unique within the `backgroundImages_` container 
 	/// \return Whether the insertion was successful
-	bool insertSceneryBackgroundAssetImage(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetImageSceneryBackground(const QString& name, uint size, uint pos = 0, const QString& path = "");
 	/// \exception Error Name is not unique within the `objectImages_` container 
 	/// \return Whether the insertion was successful
-	bool insertSceneryObjectAssetImage(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	void insertAssetImageSceneryObject(const QString& name, uint size, uint pos = 0, const QString& path = "");
 
 	/// Saves all Assets' Resource changes
 	/// \exception Error Could not find/open/read the Assets' Resource or Definition files
@@ -65,27 +66,31 @@ public:
 private:
 	/// \return Pointer to the Asset or nullptr if it wasn't found
 	template<typename AssetType>
-	AssetType* getAsset(const QString& name, QHash<QString, AssetType>& map) noexcept;
+	const AssetType* getAsset(const QString& name, const std::unordered_map<QString, AssetType>& map) const noexcept;
+	
+	/// \return Pointer to the Asset or nullptr if it wasn't found
+	template<typename AssetType>
+	AssetType* getAsset(const QString& name, std::unordered_map<QString, AssetType>& map) noexcept;
 
 	/// \exception Error `name` is not unique within the container 
 	template<class AssetType>
-	void insertAsset(const QString& name, uint size, uint pos, const QString& path, QHash<QString, AssetType>& map);
+	void insertAsset(const QString& name, uint size, uint pos, const QString& path, std::unordered_map<QString, AssetType>& map);
 
 	/// Loads a single type of Asset definitions from a single file
 	/// \exception Error `name` is not unique within the container 
 	template<typename AssetType>
-	void loadDefinitions(const QString& path, QHash<QString, AssetType>& map);
+	void loadDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map);
 
 	/// Saves a single type of Asset definitions to a single file
 	/// \exception Error Name is not unique within the container 
 	template<typename AssetType>
-	void saveDefinitions(const QString& path, QHash<QString, AssetType>& map);
+	void saveDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map);
 
-	QHash<QString, AssetAnimColor>  colorAnims_;
-	QHash<QString, AssetAnimMove>   moveAnims_;
-	QHash<QString, AssetAnimRotate> rotateAnims_;
-	QHash<QString, AssetAnimScale>  scaleAnims_;
+	std::unordered_map<QString, AssetAnimColor>  colorAnims_;
+	std::unordered_map<QString, AssetAnimMove>   moveAnims_;
+	std::unordered_map<QString, AssetAnimRotate> rotateAnims_;
+	std::unordered_map<QString, AssetAnimScale>  scaleAnims_;
 
-	QHash<QString, AssetImage>		backgroundImages_;
-	QHash<QString, AssetImage>		objectImages_;
+	std::unordered_map<QString, AssetImage>		backgroundImages_;
+	std::unordered_map<QString, AssetImage>		objectImages_;
 };

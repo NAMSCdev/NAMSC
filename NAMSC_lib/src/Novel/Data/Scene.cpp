@@ -3,8 +3,15 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Event/EventsAll.h"
 
-Scene::Scene(const QString& label, const QString& chapterName, const std::vector<std::unique_ptr<Event>>& events, const Scenery& scenery)
-	: name(name), chapterName_(chapterName), events_(events), scenery(scenery)
+Scene::Scene(const QString& label, const QString& chapterName, const Scenery& scenery)
+    : name(name), chapterName_(chapterName), scenery(scenery)
+{
+    chapter_ = Novel::getInstance().getChapter(chapterName_);
+    checkForErrors(true);
+}
+
+Scene::Scene(const QString& label, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events)
+	: name(name), chapterName_(chapterName), scenery(scenery), events_(std::move(events))
 {
     chapter_ = Novel::getInstance().getChapter(chapterName_);
     checkForErrors(true);
@@ -13,11 +20,10 @@ Scene::Scene(const QString& label, const QString& chapterName, const std::vector
 Scene::Scene(const Scene& obj) noexcept
     : name(obj.name), 
       chapterName_(obj.chapterName_),
-      //chapter_(obj.chapter_),
-      events_(obj.events_), 
+      chapter_(obj.chapter_),
+      //events_(std::move(obj.events_)), 
       scenery(obj.scenery)
 {
-    chapter_ = Novel::getInstance().getChapter(chapterName_);
 }
 
 Scene& Scene::operator=(Scene obj) noexcept
@@ -107,7 +113,7 @@ QString Scene::nextFreeEventName()
     for (uint i = 0; i != events_.size(); ++i)
     {
         QString checked = "Event " + QString::number(i + 1);
-        if (std::find(events_.cbegin(), events_.cend(), [&checked] (std::unique_ptr<Event> &obj) { return obj->label == checked; }) != events_.cend())
+        if (std::find_if(events_.cbegin(), events_.cend(), [&checked] (const std::unique_ptr<Event> &obj) { return obj->label == checked; }) != events_.cend())
             return checked;
     }
     return "Event " + QString::number(events_.size() + 1);

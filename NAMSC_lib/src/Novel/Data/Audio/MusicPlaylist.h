@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "Novel/Data/Audio/AudioSettings.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
@@ -13,7 +15,7 @@ class MusicPlaylist final
 public:
 	MusicPlaylist()                                 = default;
 	/// \exception Error Couldn't find/read the Song files
-	MusicPlaylist(const QList<QPair<QString, QString>>& songFilesPaths, AudioSettings audioSettings, bool bRandomizePlaylist);
+	MusicPlaylist(const std::vector<std::pair<QString, QString>>& songFilesPaths, AudioSettings audioSettings, bool bRandomizePlaylist);
 	MusicPlaylist(const MusicPlaylist& obj) noexcept;
 	MusicPlaylist& operator=(MusicPlaylist obj) noexcept;
 	bool operator==(const MusicPlaylist& obj) const noexcept;
@@ -25,12 +27,12 @@ public:
 	bool checkForErrors(bool bComprehensive = false) const;
 
 	/// \todo QT random replace
-	const QPair<QString, QString> nextSong();
+	const std::pair<QString, QString> nextSong();
 
 	AudioSettings audioSettings;
 
 	/// Contains pairs of `<name, path>`
-	QList<QPair<QString, QString>> songs;
+	std::vector<std::pair<QString, QString>> songs;
 
 	bool bRandomizePlaylist    = false;
 

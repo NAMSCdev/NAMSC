@@ -12,7 +12,7 @@ struct Scenery final
 	friend QDataStream& operator<<(QDataStream&, const Scenery&);
 
 	Scenery()                                 = default;
-	Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const QHash<QString, Character>& displayedCharacters, const QHash<QString, SceneryObject>& displayedSceneryObjects, const QHash<QString, Sound>& sounds);
+	Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::unordered_map<QString, Character>& displayedCharacters, const std::unordered_map<QString, SceneryObject>& displayedSceneryObjects, const std::unordered_map<QString, Sound>& sounds);
 	Scenery(const Scenery& obj)               = default;
 	Scenery& operator=(Scenery obj) noexcept;
 	bool operator==(const Scenery& obj) const = default;
@@ -43,22 +43,22 @@ struct Scenery final
 	QString getBackgroundAssetImageName() const noexcept;
 	void setBackgroundAssetImage(const QString& assetImageName, AssetImage* assetImage = nullptr) noexcept;
 
-	const QHash<QString, Character>* getDisplayedCharacters() const noexcept;
-	void setDisplayedCharacters(const QHash<QString, Character>& sceneryObjects) noexcept;
+	const std::unordered_map<QString, Character>* getDisplayedCharacters() const noexcept;
+	void setDisplayedCharacters(const std::unordered_map<QString, Character>& sceneryObjects) noexcept;
 	const Character* getDisplayedCharacter(const QString& characterName) const noexcept;
 	Character* getDisplayedCharacter(const QString& characterName) noexcept;
 	void setDisplayedCharacter(const QString& characterName, const Character& character) noexcept;
 	bool removeDisplayedCharacter(const QString& characterName) noexcept;
 
-	const QHash<QString, SceneryObject>* getDisplayedSceneryObjects() const noexcept;
-	void setDisplayedSceneryObjects(const QHash<QString, SceneryObject>& sceneryObjects) noexcept;
+	const std::unordered_map<QString, SceneryObject>* getDisplayedSceneryObjects() const noexcept;
+	void setDisplayedSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
 	const SceneryObject* getDisplayedSceneryObject(const QString& sceneryObjectName) const noexcept;
 	SceneryObject* getDisplayedSceneryObject(const QString& sceneryObjectName) noexcept;
 	void setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
 	bool removeDisplayedSceneryObject(const QString& sceneryObjectName) noexcept;
 
-	const QHash<QString, Sound>* getSounds() const noexcept;
-	void setSounds(const QHash<QString, Sound>& sounds) noexcept;
+	const std::unordered_map<QString, Sound>* getSounds() const noexcept;
+	void setSounds(const std::unordered_map<QString, Sound>& sounds) noexcept;
 	const Sound* getSound(const QString& soundName) const noexcept;
 	Sound* getSound(const QString& soundName) noexcept;
 	void setSound(const QString& soundName, const Sound& sound) noexcept;
@@ -70,13 +70,13 @@ private:
 	QString     backgroundAssetImageName_ = "";
 	AssetImage* backgroundAssetImage_     = nullptr;
 
-	QHash<QString, Character>     displayedCharacters_;
+	std::unordered_map<QString, Character>     displayedCharacters_;
 
-	QHash<QString, SceneryObject> displayedSceneryObjects_;
+	std::unordered_map<QString, SceneryObject> displayedSceneryObjects_;
 
 	/// Sounds that haven't been played yet, but they are supossed to be played at some point in time
 	/// `void update()` should remove already played ones
-	QHash<QString, Sound> sounds_;
+	std::unordered_map<QString, Sound> sounds_;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file

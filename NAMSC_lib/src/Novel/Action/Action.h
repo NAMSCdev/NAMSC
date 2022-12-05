@@ -1,6 +1,8 @@
 #pragma once
 #include "Novel/Data/NovelFlowInterface.h"
 
+#include <memory>
+
 #include "Novel/Action/Visitor/ActionVisitor.h"
 #include "Serialization.h"
 

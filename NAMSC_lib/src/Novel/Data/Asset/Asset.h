@@ -14,8 +14,9 @@ public:
 	Asset()                            = default;
 	/// \exception Error Could not find/open/read the Resource file
 	Asset(const QString& name, uint size, uint pos = 0, const QString& path = "");
-	Asset(const Asset& obj)            = default;
-	Asset& operator=(const Asset& obj) = default;
+	Asset(const Asset& obj)            = delete;
+	Asset(Asset&& obj)                 = default;
+	Asset& operator=(const Asset& obj) = delete;
 	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
 	virtual ~Asset()                   = default;
 

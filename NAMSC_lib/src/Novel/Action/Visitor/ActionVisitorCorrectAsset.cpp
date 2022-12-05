@@ -98,16 +98,16 @@ void ActionVisitorCorrectAssetAnimScale::visitActionSceneryObjectAnimScale(Actio
 
 void ActionVisitorCorrectMusicPlaylist::visitActionAudioSetMusic(ActionAudioSetMusic* action)
 {
-	for (QPair<QString, QString>& pair : action->musicPlaylist_.songs)
+	for (std::pair<QString, QString>& pair : action->musicPlaylist_.songs)
 		if (pair.second == oldAssetName_)
 			pair.second = newAssetName_;
 }
 
 void ActionVisitorCorrectSounds::visitActionAudioSetSounds(ActionAudioSetSounds* action) 
 {
-	for (Sound& sound : action->sounds)
-		if (sound.soundFilePath == oldAssetName_)
-			sound.soundFilePath = newAssetName_;
+	for (std::pair <const QString, Sound>& sound : action->sounds)
+		if (sound.second.soundFilePath == oldAssetName_)
+			sound.second.soundFilePath = newAssetName_;
 }
 
 void ActionVisitorCorrectBackgroundAssetImage::visitActionSetBackground(ActionSetBackground* action) 

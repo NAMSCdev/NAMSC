@@ -3,7 +3,7 @@
 #include "Exceptions.h"
 #include "Serialization.h"
 
-Translation::Translation(const QHash<QString, QString>& translations)
+Translation::Translation(const std::unordered_map<QString, QString>& translations)
 	: translations_(translations)
 {
 }
@@ -53,7 +53,7 @@ void Translation::deleteTranslation(const QString& translationLanguage)
 	if (translationLanguage == NovelSettings::getInstance().defaultLanguage)
 		qInfo() << "Tried to remove default language \"" << translationLanguage << "\".The option to do so should not be allowed at all";
 	else
-		translations_.remove(translationLanguage);
+		translations_.erase(translationLanguage);
 }
 
 void Translation::defaultLanguageChangeFix(const QString& oldDefaultLanguage)
@@ -68,9 +68,12 @@ void Translation::defaultLanguageChangeFix(const QString& oldDefaultLanguage)
 const QString Translation::text(const QString language) noexcept
 {
 	if (translations_.contains(language))
-		return translations_.value(language);
+		return translations_.at(language);
 	
-	return translations_.value(NovelSettings::getInstance().defaultLanguage);
+	///todo: add Exception
+	if (!translations_.contains(NovelSettings::getInstance().defaultLanguage));
+		//EXCEPTIONONO
+	return translations_.at(NovelSettings::getInstance().defaultLanguage);
 }
 
 void Translation::serializableLoad(QDataStream& dataStream)
@@ -80,15 +83,15 @@ void Translation::serializableLoad(QDataStream& dataStream)
 
 	for (uint i = 0; i != translationsSize; ++i)
 	{
-		QPair<QString, QString> pair;
-		dataStream >> pair;
-		translations_.insert(pair.first, pair.second);
+		std::pair<QString, QString> translation;
+		dataStream >> translation;
+		translations_.insert(translation);
 	}
 }
 
 void Translation::serializableSave(QDataStream& dataStream) const
 {
 	dataStream << translations_.size();
-	for (auto it = translations_.constKeyValueBegin(); it != translations_.constKeyValueEnd(); ++it)
-		dataStream << *it;
+	for (std::pair<QString, QString> translation : translations_)
+		dataStream << translation;
 }

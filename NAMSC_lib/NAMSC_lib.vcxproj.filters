@@ -269,9 +269,6 @@
     <ClInclude Include="src\Novel\Data\Asset\AssetImage.h">
       <Filter>Header Files\Novel\Data\Asset\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Stat\StatDouble.h">
-      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Data\Stat\StatLongLong.h">
       <Filter>Header Files\Novel\Data\Stat\Type</Filter>
     </ClInclude>
@@ -380,8 +377,8 @@
     <ClInclude Include="src\Novel\Evaluators.h">
       <Filter>Header Files\Novel</Filter>
     </ClInclude>
-    <ClInclude Include="Evaluator.cpp">
-      <Filter>Header Files\Novel</Filter>
+    <ClInclude Include="src\Novel\Data\Stat\StatDouble.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -508,15 +505,6 @@
     <ClCompile Include="src\Novel\Data\Stat\StatString.cpp">
       <Filter>Source Files\Novel\Data\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src2\src\Novel\Data\Audio\AudioSettings.cpp">
-      <Filter>Source Files\Novel\Data\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src2\src\Novel\Data\Audio\MusicPlaylist.cpp">
-      <Filter>Source Files\Novel\Data\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src2\src\Novel\Data\Audio\Sound.cpp">
-      <Filter>Source Files\Novel\Data\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="src\Novel\Data\Chapter.cpp">
       <Filter>Source Files\Novel\Data</Filter>
     </ClCompile>
@@ -571,16 +559,23 @@
     <ClCompile Include="src\Novel\Action\Visual\ActionCharacter.cpp">
       <Filter>Source Files\Novel\Action\Visual</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="Evaluators.cpp">
-      <Filter>Header Files\Novel</Filter>
+    <ClCompile Include="src\Novel\Data\Audio\AudioSettings.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="src\Novel\Action\Action.h">
-      <Filter>Header Files\Novel\Action</Filter>
-    </QtMoc>
-=======
->>>>>>> Stashed changes
+    <ClCompile Include="src\Novel\Data\Audio\MusicPlaylist.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Audio\Sound.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

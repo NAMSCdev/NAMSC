@@ -1,6 +1,7 @@
 #pragma once
 
-#include <QHash>
+#include <qhashfunctions.h>
+#include <unordered_map>
 
 #include "Novel/Data/NovelSettings.h"
 
@@ -15,7 +16,7 @@ class Translation
 	friend class NovelSettings;
 public:
 	Translation()                                 = default;
-	Translation(const QHash<QString, QString>& translations);
+	Translation(const std::unordered_map<QString, QString>& translations);
 	Translation(const Translation& obj)           = default;
 	Translation& operator=(Translation obj) noexcept;
 	bool operator==(const Translation& obj) const = default;
@@ -36,7 +37,7 @@ public:
 	void deleteTranslation(const QString& translationLanguage);
 
 	//[optional] Return word durations
-	//const QList<uint>	durations();
+	//const std::vector<uint>	durations();
 
 private:
 	/// If there is no translation for the new one, it is copied from previous 
@@ -44,12 +45,12 @@ private:
 	void defaultLanguageChangeFix(const QString& newDefaultLanguage);
 
 	/// Store text for different languages
-	QHash<QString, QString> /*textT*/translations_;
+	std::unordered_map<QString, QString> /*textT*/translations_;
 
-	//QHash<QString, QSound*> speechTranslations_;
+	//std::unordered_map<QString, QSound*> speechTranslations_;
 
 	//[optional] Store word durations for [Sentence::WordAppearType::WordByWord] appear type for different languages
-	//QMap<const QString, const QList<uint>>	wordDurations;
+	//std::unordered_map<QString, const std::vector<uint>>	wordDurations;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file

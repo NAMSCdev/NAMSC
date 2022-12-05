@@ -12,17 +12,17 @@ bool Novel::checkForErrors(bool bComprehensive) const
 {
 	bool bError = false;
 
-	for (const Voice& voice : voices_)
-		bError |= voice.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Voice>& voice : voices_)
+		bError |= voice.second.checkForErrors(bComprehensive);
 
-	for (const SceneryObject& defaultSceneryObject : sceneryObjectDefaults_)
-		bError |= defaultSceneryObject.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, SceneryObject>& defaultSceneryObject : sceneryObjectDefaults_)
+		bError |= defaultSceneryObject.second.checkForErrors(bComprehensive);
 
-	for (const Character& defaultCharacter : characterDefaults_)
-		bError |= defaultCharacter.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Character>& defaultCharacter : characterDefaults_)
+		bError |= defaultCharacter.second.checkForErrors(bComprehensive);
 
-	for (const Scene& scene : scenes_)
-		bError |= scene.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Scene>& scene : scenes_)
+		bError |= scene.second.checkForErrors(bComprehensive);
 
 	bError |= stateAtSceneBeginning_.checkForErrors();
 	bError |= state_.checkForErrors();
@@ -74,8 +74,8 @@ void Novel::end()
 		return;
 	}
 
-	for (Scene& scene : scenes_)
-		scene.end();
+	for (std::pair<const QString, Scene>& scene : scenes_)
+		scene.second.end();
 }
 
 void Novel::syncWithSave() noexcept
@@ -86,8 +86,8 @@ void Novel::syncWithSave() noexcept
 		return;
 	}
 
-	for (Scene& scene : scenes_)
-		scene.syncWithSave();
+	for (std::pair<const QString, Scene>& scene : scenes_)
+		scene.second.syncWithSave();
 }
 
 QString Novel::nextFreeChapterName() const noexcept
@@ -112,12 +112,12 @@ QString Novel::nextFreeSceneName() const noexcept
 	return "Scene " + QString::number(scenes_.size() + 1);
 }
 
-const QHash<QString, Voice>* Novel::getVoices() const noexcept
+const std::unordered_map<QString, Voice>* Novel::getVoices() const noexcept
 {
 	return &voices_;
 }
 
-void Novel::setVoices(const QHash<QString, Voice>& voices) noexcept
+void Novel::setVoices(const std::unordered_map<QString, Voice>& voices) noexcept
 {
 	voices_ = voices;
 }
@@ -142,12 +142,12 @@ bool Novel::removeVoice(const QString& voiceName) noexcept
 	return NovelLib::removeFromNamedMap(voices_, voiceName, "Voice");
 }
 
-const QHash<QString, SceneryObject>* Novel::getSceneryObjectDefaults() const noexcept
+const std::unordered_map<QString, SceneryObject>* Novel::getSceneryObjectDefaults() const noexcept
 {
 	return &sceneryObjectDefaults_;
 }
 
-void Novel::setDefaultSceneryObjects(const QHash<QString, SceneryObject>& sceneryObjects) noexcept
+void Novel::setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept
 {
 	sceneryObjectDefaults_ = sceneryObjects;
 }
@@ -172,12 +172,12 @@ bool Novel::removeDefaultSceneryObject(const QString& sceneryObjectName) noexcep
 	return NovelLib::removeFromNamedMap(sceneryObjectDefaults_, sceneryObjectName, "SceneryObject");
 }
 
-const QHash<QString, Character>* Novel::getCharacterDefaults() const noexcept
+const std::unordered_map<QString, Character>* Novel::getCharacterDefaults() const noexcept
 {
 	return &characterDefaults_;
 }
 
-void Novel::setDefaultCharacters(const QHash<QString, Character>& characters) noexcept
+void Novel::setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept
 {
 	characterDefaults_ = characters;
 }
@@ -202,12 +202,12 @@ bool Novel::removeDefaultCharacter(const QString& characterName) noexcept
 	return NovelLib::removeFromNamedMap(characterDefaults_, characterName, "Character");
 }
 
-const QHash<QString, Chapter>* Novel::getChapters() const noexcept
+const std::unordered_map<QString, Chapter>* Novel::getChapters() const noexcept
 {
 	return &chapters_;
 }
 
-void Novel::setChapters(const QHash<QString, Chapter>& chapters) noexcept
+void Novel::setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept
 {
 	chapters_ = chapters;
 }
@@ -232,12 +232,12 @@ bool Novel::removeChapter(const QString& chapterName) noexcept
 	return NovelLib::removeFromNamedMap(chapters_, chapterName, "Chapter");
 }
 
-const QHash<QString, Scene>* Novel::getScenes() const noexcept
+const std::unordered_map<QString, Scene>* Novel::getScenes() const noexcept
 {
 	return &scenes_;
 }
 
-void Novel::setScenes(const QHash<QString, Scene>& scenes) noexcept
+void Novel::setScenes(const std::unordered_map<QString, Scene>& scenes) noexcept
 {
 	scenes_ = scenes;
 }

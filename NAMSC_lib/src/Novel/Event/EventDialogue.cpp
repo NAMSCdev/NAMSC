@@ -7,13 +7,13 @@ EventDialogue::EventDialogue(Scene* const parentScene) noexcept
 {
 }
 
-EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const QList<Sentence>& sentences)
+EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences)
 	: Event(parentScene, label), sentences(sentences)
 {
 	checkForErrors(true);
 }
 
-EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const QList<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions)
+EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), sentences(sentences)
 {
 	checkForErrors(true);
@@ -60,7 +60,7 @@ void EventDialogue::run()
 {
 }
 
-void EventDialogue::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QList<Sentence>* sentences)> onRun) noexcept
+void EventDialogue::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::vector<Sentence>* sentences)> onRun) noexcept
 { 
 	onRun_ = onRun; 
 }

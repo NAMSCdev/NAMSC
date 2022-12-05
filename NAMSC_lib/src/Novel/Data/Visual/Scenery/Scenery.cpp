@@ -9,7 +9,7 @@
 #include "Novel/Data/Visual/Animation/AnimatorSceneryObjectScale.h"
 #include <Helpers.h>
 
-Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const QHash<QString, Character>& displayedCharacters, const QHash<QString, SceneryObject>& displayedSceneryObjects, const QHash<QString, Sound>& sounds)
+Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::unordered_map<QString, Character>& displayedCharacters, const std::unordered_map<QString, SceneryObject>& displayedSceneryObjects, const std::unordered_map<QString, Sound>& sounds)
 	: backgroundAssetImageName_(backgroundAssetImageName),
 	  musicPlaylist(musicPlaylist), 
 	  displayedCharacters_(displayedCharacters), 
@@ -35,14 +35,14 @@ bool Scenery::checkForErrors(bool bComprehensive) const
 
 	bError |= musicPlaylist.checkForErrors(bComprehensive);
 
-	for (const Character& character : displayedCharacters_)
-		bError |= character.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Character>& character : displayedCharacters_)
+		bError |= character.second.checkForErrors(bComprehensive);
 
-	for (const SceneryObject& sceneryObject : displayedSceneryObjects_)
-		bError |= sceneryObject.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		bError |= sceneryObject.second.checkForErrors(bComprehensive);
 	
-	for (const Sound& sound : sounds_)
-		bError |= sound.checkForErrors(bComprehensive);
+	for (const std::pair<const QString, Sound>& sound : sounds_)
+		bError |= sound.second.checkForErrors(bComprehensive);
 	//static auto errorChecker = [&](bool bComprehensive)
 	//{
 	//};
@@ -56,36 +56,36 @@ bool Scenery::checkForErrors(bool bComprehensive) const
 
 void Scenery::run()
 {
-	for (Character& character : displayedCharacters_)
-		character.run();
+	for (std::pair<const QString, Character>& character : displayedCharacters_)
+		character.second.run();
 
-	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.run();
+	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.second.run();
 }
 
 /// \todo Manage Sounds
 
 void Scenery::update(uint elapsedTime)
 {
-	for (Character& character : displayedCharacters_)
-		character.update(elapsedTime);
+	for (std::pair<const QString, Character>& character : displayedCharacters_)
+		character.second.update(elapsedTime);
 
-	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.update(elapsedTime);
+	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.second.update(elapsedTime);
 }
 
 void Scenery::ensureResourcesAreLoaded()
 {
-	for (Character& character : displayedCharacters_)
-		character.ensureResourcesAreLoaded();
+	for (std::pair<const QString, Character>& character : displayedCharacters_)
+		character.second.ensureResourcesAreLoaded();
 
-	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.ensureResourcesAreLoaded();
+	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.second.ensureResourcesAreLoaded();
 
 	//todo: add QSoundEffect from Widget
-	for (Sound& sound : sounds_)
-		if (!sound.isLoaded())
-			sound.load();
+	for (std::pair<const QString, Sound>& sound : sounds_)
+		if (!sound.second.isLoaded())
+			sound.second.load();
 }
 
 void Scenery::addAnimator(AnimatorSceneryObjectColor&& animatorColor)
@@ -115,11 +115,11 @@ void Scenery::addAnimator(AnimatorSceneryObjectScale&& animatorScale)
 
 void Scenery::resetAnimators() noexcept
 {
-	for (Character& character : displayedCharacters_)
-		character.resetAnimators();
+	for (std::pair<const QString, Character>& character : displayedCharacters_)
+		character.second.resetAnimators();
 
-	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.resetAnimators();
+	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.second.resetAnimators();
 }
 
 const AssetImage* Scenery::getBackgroundAssetImage() const noexcept
@@ -159,12 +159,12 @@ void Scenery::setBackgroundAssetImage(const QString& assetImageName, AssetImage*
 	}
 }
 
-const QHash<QString, Character>* Scenery::getDisplayedCharacters() const noexcept
+const std::unordered_map<QString, Character>* Scenery::getDisplayedCharacters() const noexcept
 {
 	return &displayedCharacters_;
 }
 
-void Scenery::setDisplayedCharacters(const QHash<QString, Character>& characters) noexcept
+void Scenery::setDisplayedCharacters(const std::unordered_map<QString, Character>& characters) noexcept
 {
 	displayedCharacters_ = characters;
 }
@@ -189,12 +189,12 @@ bool Scenery::removeDisplayedCharacter(const QString& characterName) noexcept
 	return NovelLib::removeFromNamedMap(displayedCharacters_, characterName, "Character");
 }
 
-const QHash<QString, SceneryObject>* Scenery::getDisplayedSceneryObjects() const noexcept
+const std::unordered_map<QString, SceneryObject>* Scenery::getDisplayedSceneryObjects() const noexcept
 {
 	return &displayedSceneryObjects_;
 }
 
-void Scenery::setDisplayedSceneryObjects(const QHash<QString, SceneryObject>& sceneryObjects) noexcept
+void Scenery::setDisplayedSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept
 {
 	displayedSceneryObjects_ = sceneryObjects;
 }
@@ -219,12 +219,12 @@ bool Scenery::removeDisplayedSceneryObject(const QString& sceneryObjectName) noe
 	return NovelLib::removeFromNamedMap(displayedSceneryObjects_, sceneryObjectName, "SceneryObject");
 }
 
-const QHash<QString, Sound>* Scenery::getSounds() const noexcept
+const std::unordered_map<QString, Sound>* Scenery::getSounds() const noexcept
 {
 	return &sounds_;
 }
 
-void Scenery::setSounds(const QHash<QString, Sound>& sounds) noexcept
+void Scenery::setSounds(const std::unordered_map<QString, Sound>& sounds) noexcept
 {
 	sounds_ = sounds;
 }
@@ -282,10 +282,10 @@ void Scenery::serializableSave(QDataStream& dataStream) const
 {
 	dataStream << backgroundAssetImageName_ << musicPlaylist;
 	dataStream << displayedCharacters_.size() << displayedSceneryObjects_.size() << sounds_.size();
-	for (const Character& character : displayedCharacters_)
-		dataStream << character;
-	for (const SceneryObject& sceneryObject : displayedSceneryObjects_)
-		dataStream << sceneryObject;
-	for (const Sound& sound : sounds_)
-		dataStream << sound;
+	for (const std::pair<const QString, Character>& character : displayedCharacters_)
+		dataStream << character.second;
+	for (const std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
+		dataStream << sceneryObject.second;
+	for (const std::pair <const QString, Sound>& sound : sounds_)
+		dataStream << sound.second;
 }

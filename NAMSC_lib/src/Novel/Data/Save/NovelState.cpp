@@ -8,8 +8,8 @@
 #include "Novel/Data/Stat/StatLongLong.h"
 #include "Novel/Data/Stat/StatString.h"
 
-NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID, const QHash<QString, Stat>& stats)
-    : saveDate(saveDate), screenshot(screenshot), scenery(scenery), saveSlot(saveSlot), sceneName(sceneName), eventID(eventID)//, stats_(stats)
+NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID)
+    : saveDate(saveDate), screenshot(screenshot), scenery(scenery), saveSlot(saveSlot), sceneName(sceneName), eventID(eventID)
 {
     checkForErrors(true);
 }
@@ -20,9 +20,8 @@ NovelState::NovelState(const NovelState& obj) noexcept
       scenery(obj.scenery),
       saveSlot(obj.saveSlot),
       sceneName(obj.sceneName),
-      eventID(obj.eventID),
-      stats_(obj.stats_)//,
-      //jsEngine_(obj.jsEngine_)
+      eventID(obj.eventID)
+    //jsEngine_(obj.jsEngine_)
 {
 }
 
@@ -63,8 +62,8 @@ bool NovelState::checkForErrors(bool bComprehensive) const
 
     bError |= scenery.checkForErrors(bComprehensive);
     
-    for (const std::unique_ptr<Stat>& stat : stats_)
-        bError |= stat->checkForErrors(bComprehensive);
+    for (const std::pair<const QString, std::unique_ptr<Stat>>& stat : stats_)
+        bError |= stat.second->checkForErrors(bComprehensive);
     //bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
     if (bError)
     	qDebug() << "Error occurred in NovelState::checkForErrors in the slot " << saveSlot;
@@ -77,7 +76,7 @@ void NovelState::update(uint elapsedTime)
     scenery.update(elapsedTime);
 }
 
-const QHash<QString, std::unique_ptr<Stat>>* NovelState::getStats() const noexcept
+const std::unordered_map<QString, std::unique_ptr<Stat>>* NovelState::getStats() const noexcept
 {
     return &stats_;
 }
@@ -96,18 +95,24 @@ NovelState NovelState::load(uint saveSlot)
 {
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
     QDataStream dataStream(&save);
+    return NovelState();
 }
 
 NovelState NovelState::reset(uint saveSlot)
 {
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
     QDataStream dataStream(&save);
+    return NovelState();
+}
+
+void NovelState::save()
+{
 }
 
 Stat* NovelState::getStat(const QString& statName) noexcept
 {
     if (stats_.contains(statName))
-        return stats_.find(statName)->get();
+        return stats_.at(statName).get();
     return nullptr;
 }
 
@@ -152,7 +157,7 @@ void NovelState::serializableLoad(QDataStream& dataStream)
             break;
         }
         dataStream >> *stat;
-        //stats_[stat->name] = std::move(std::unique_ptr<Stat>(stat));
+        stats_.emplace(stat->name, std::move(std::unique_ptr<Stat>(stat)));
     }
     checkForErrors();
 }
@@ -161,6 +166,6 @@ void NovelState::serializableSave(QDataStream& dataStream) const
 {
     dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << stats_.size();
 
-    for (const std::unique_ptr<Stat> &stat : stats_)
-        dataStream << *stat;
+    for (const std::pair<const QString, std::unique_ptr<Stat>>& stat : stats_)
+        dataStream << *(stat.second);
 }

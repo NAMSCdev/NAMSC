@@ -8,6 +8,7 @@ public:
 	AnimatorSceneryObjectMove()                                                = delete;
 	AnimatorSceneryObjectMove(SceneryObject* const parentSceneryObject, AssetAnim<AnimNodeDouble2D>* const assetAnim, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectMove(const AnimatorSceneryObjectMove& obj)            = delete;
+	AnimatorSceneryObjectMove(AnimatorSceneryObjectMove&& obj)                 = default;
 	AnimatorSceneryObjectMove& operator=(const AnimatorSceneryObjectMove& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectMove& obj) const                = delete;
 	bool operator!=(const AnimatorSceneryObjectMove& obj) const                = delete;

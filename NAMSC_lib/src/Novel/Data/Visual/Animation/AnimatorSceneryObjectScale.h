@@ -8,6 +8,7 @@ public:
 	AnimatorSceneryObjectScale()                                                 = delete;
 	AnimatorSceneryObjectScale(SceneryObject* const parentSceneryObject, AssetAnimScale* const assetAnim, uint priority, uint startTime, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	AnimatorSceneryObjectScale(const AnimatorSceneryObjectScale& obj)            = delete;
+	AnimatorSceneryObjectScale(AnimatorSceneryObjectScale&& obj)                 = default;
 	AnimatorSceneryObjectScale& operator=(const AnimatorSceneryObjectScale& obj) = delete;
 	bool operator==(const AnimatorSceneryObjectScale& obj) const                 = delete;
 	bool operator!=(const AnimatorSceneryObjectScale& obj) const                 = delete;

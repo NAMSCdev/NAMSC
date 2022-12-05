@@ -193,8 +193,8 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// public:
 /// 	static void *evaulate(std::string expression)	/// todo: here Errors too should be replaced for the ParseErr ones
 /// 	{
-/// 		QList<std::string>	postfix = toPostfix(expression));
-/// 		QList<StatData>		Vars;
+/// 		std::vector<std::string>	postfix = toPostfix(expression));
+/// 		std::vector<StatData>		Vars;
 /// 
 /// 		for (auto it = postfix.begin(), end = postfix.end(); it != end; ++it)
 /// 		{
@@ -307,10 +307,10 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 		return 0;
 /// 	}
 /// 
-/// 	static QList<std::string> toPostfix(std::string &&expr)
+/// 	static std::vector<std::string> toPostfix(std::string &&expr)
 /// 	{
 /// 		std::string name = "";
-/// 		QList<std::string> stack, ret;
+/// 		std::vector<std::string> stack, ret;
 /// 
 /// 		bool bNameProcess = false;
 /// 		for (size_t i = 0, end = expr.size(); ; ++i)

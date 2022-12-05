@@ -19,11 +19,13 @@ class Scene final : public NovelFlowInterface
 public:
 	Scene() = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	Scene(const QString& name, const QString& chapterName, const std::vector<std::unique_ptr<Event>>& events, const Scenery& scenery);
+	Scene(const QString& name, const QString& chapterName, const Scenery& scenery);
+	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
+	Scene(const QString& name, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events);
 	Scene(const Scene& obj) noexcept;
 	Scene& operator=(Scene obj) noexcept;
 	//todo: define
-	//bool operator==(const Scene& obj) const;
+	bool operator==(const Scene& obj) const = delete;
 	bool operator!=(const Scene& obj) const = default;
 
 	/// Checks if the Scene's Events can load Definitions and Resources associated with them and don't have any other Errors, which would halt the Novel execution

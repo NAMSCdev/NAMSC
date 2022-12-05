@@ -1,7 +1,8 @@
 #pragma once
 #include "Novel/Action/Audio/ActionAudio.h"
 
-#include <QHash>
+#include <qhashfunctions.h>
+#include <unordered_map> 
 
 #include "Novel/Data/Audio/Sound.h"
 
@@ -12,7 +13,7 @@ class ActionAudioSetSounds final : public ActionAudio
 public:
 	ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene) noexcept;
 	/// \exception Error Couldn't find/read the SoundEffects' files
-	ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const QHash<QString, Sound>& sounds);
+	ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds);
 	ActionAudioSetSounds(const ActionAudioSetSounds& obj) = delete;
 	ActionAudioSetSounds& operator=(const ActionAudioSetSounds& obj) noexcept;
 	bool operator==(const ActionAudioSetSounds& obj) const noexcept;
@@ -27,11 +28,11 @@ public:
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QHash<QString, Sound>* sound)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
-	QHash<QString, Sound> sounds;
+	std::unordered_map<QString, Sound> sounds;
 
 private:
 	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
@@ -39,7 +40,7 @@ private:
 	NovelLib::SerializationID getType() const noexcept override;
 	
 	/// A function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, QHash<QString, Sound>* sound)> onRun_ = nullptr;
+	std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun_ = nullptr;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
