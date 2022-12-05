@@ -1,10 +1,10 @@
 #include "QVNMenuButton.h"
-#include "qpainter.h"
-#include "qimage.h"
-#include "qstring.h"
-#include "qevent.h"
-#include "qpainterpath.h"
+
 #include <QFontDatabase>
+
+#include "QEvent"
+#include "QImage"
+#include "QString"
 
 QVNMenuButton::QVNMenuButton(QWidget *parent)
 	: QPushButton(parent){
@@ -85,6 +85,14 @@ void QVNMenuButton::loadImage(QString uri) {
 
 QImage& QVNMenuButton::getImage()
 {
+	/// Create solid if image does not exist
+	if (!image)
+	{
+		image = std::make_shared<QImage>(QImage(QSize{200, 100}, QImage::Format_RGBA16FPx4));
+		image->fill(Qt::gray);
+		this->resize(200, 100);
+	}
+
 	return *image;
 };
 
