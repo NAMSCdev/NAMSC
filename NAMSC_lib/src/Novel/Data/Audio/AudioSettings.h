@@ -1,59 +1,43 @@
 #pragma once
+#include <QDataStream>
 
-/// Common properties of Actions that manage Audio
-class AudioSettings
+/// Common properties for Audio playing
+struct AudioSettings final
 {
 	//Friends for serialization
 	friend QDataStream& operator>>(QDataStream&, AudioSettings&);
 	friend QDataStream& operator<<(QDataStream&, const AudioSettings&);
-public:
-	AudioSettings() = default;
+
+	AudioSettings()                                 = default;
 	AudioSettings(double volume, double stereo, int timesPlayed, uint delayBetweenReplays);
-	AudioSettings(const AudioSettings& obj) { *this = obj; }
-	AudioSettings& operator=(const AudioSettings& obj);
+	AudioSettings(const AudioSettings& obj)         = default;
+ 	AudioSettings& operator=(AudioSettings obj) noexcept;
+	bool operator==(const AudioSettings& obj) const = default;
+	bool operator!=(const AudioSettings& obj) const = default; //{ return !(*this == obj); }
 
-	/// Volume of the played Sound
-	double volume = 1.0;
+	/// \return Whether an Error has occurred
+	bool checkForErrors(bool bComprehensive = false) const;
+	
+	double volume            = 1.0;
 
-	/// How the Sound is played in stereo headphones
+	/// How the Sound is played in the stereo headphones
 	/// 0.0 - left only, 0.5 - both, 1.0 - right only
 	/// Accepted values: 0.0 - 1.0
-	/// @todo [optional] Allow more channels
-	/// [ensure todo] implement this
-	double stereo = 0.5;
+	/// \todo [optional] Allow more channels
+	double stereo            = 0.5;
 
-	/// How many times it will be played
 	/// Can be set to -1, so it will be looped infinitely
-	int	timesPlayed = 1;
+	int	timesPlayed          = 1;
 
 	/// How much time in millisecond passes before next repetition of this Audio
 	uint delayBetweenReplays = 0;
 
 private:
 	//---SERIALIZATION---
-	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
-	virtual void serializableLoad(QDataStream& dataStream);
-	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
-	virtual void serializableSave(QDataStream& dataStream) const;
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	void serializableLoad(QDataStream& dataStream);
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const;
 };
-
-
-
-
-
-inline AudioSettings::AudioSettings(double volume, double stereo, int timesPlayed, uint delayBetweenReplays) :
-	volume(volume), stereo(stereo), timesPlayed(timesPlayed), delayBetweenReplays(delayBetweenReplays)
-{
-}
-
-inline AudioSettings& AudioSettings::operator=(const AudioSettings& obj)
-{
-	if (this == &obj) return *this;
-
-	volume              = obj.volume;
-	stereo              = obj.stereo;
-	timesPlayed         = obj.timesPlayed;
-	delayBetweenReplays = obj.delayBetweenReplays;
-
-	return *this;
-}

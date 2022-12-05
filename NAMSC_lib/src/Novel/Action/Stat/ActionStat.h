@@ -1,30 +1,37 @@
 #pragma once
-#include "Global.h"
-
 #include "Novel/Action/Action.h"
+
 #include "Novel/Data/Stat/Stat.h"
 
 /// Contains common properties of Actions that manage Stats
 class ActionStat : public Action
 {
 public:
-	ActionStat() noexcept = default;
-	ActionStat(QString&& statName);
-	ActionStat(const ActionStat& obj) noexcept { *this = obj; }
+	ActionStat(Event* const parentEvent, Scene* const parentScene) noexcept;
+	/// \exception Error Couldn't find the Stat named `statName`
+	ActionStat(Event* const parentEvent, Scene* const parentScene, const QString& statName);
+	ActionStat(const ActionStat& obj) = delete;
 	ActionStat& operator=(const ActionStat& obj) noexcept;
+	bool operator==(const ActionStat& obj) const noexcept;
+	bool operator!=(const ActionStat& obj) const = default; //{ return !(*this == obj); }
 
-	/// Connects Stat pointer to the actual Stat in the NovelState
+	/// \exception Error `stat_` is invalid
+	/// \return Whether an Error has occurred
+	bool checkForErrors(bool bComprehensive = false) const override;
+
+	/// Connects the Stat pointer to the actual Stat in the NovelState
 	/// Must be called after the Save is loaded
-	void syncWithSave();
+	/// \exception Error Couldn't find the Stat named `statName_` in the current NovelState (`Novel::save`)
+	void syncWithSave() noexcept override;
 
-	/// Checks if the ActionStat can find the Stat
-	virtual bool checkForErrors() const noexcept override;
+	const Stat* getStat() const noexcept;
+	Stat* getStat() noexcept;
+	QString getStatName() const noexcept;
+	void setStat(const QString& statName) noexcept;
 
 protected:
-	/// Name of the Stat that is affected by the Action
-	QString	statName;
-	/// Stat that is affected by the Action
-	Stat*   stat;
+	QString statName_ = "";
+	Stat*   stat_     = nullptr;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
@@ -34,22 +41,3 @@ protected:
 	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const override;
 };
-
-
-
-
-inline ActionStat::ActionStat(QString&& statName) :
-	Action(), statName(move(statName))
-{
-}
-
-inline ActionStat& ActionStat::operator=(const ActionStat& obj)
-{
-	if (this == &obj) return *this;
-
-	Action::operator=(obj);
-	statName = obj.statName;
-	stat     = obj.stat;
-
-	return *this;
-}

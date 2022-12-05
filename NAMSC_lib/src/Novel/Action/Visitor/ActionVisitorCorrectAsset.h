@@ -1,144 +1,105 @@
 #pragma once
-#include "Global.h"
+#include "Novel/Action/Visitor/ActionVisitor.h"
 
-#include "Novel/Action/ActionVisitor.h"
 #include "Novel/Action/ActionsAll.h"
 
-/// Updates `assetName` of a changed/deleted Asset
-class ActionVisitorCorrectAsset : public ActionVisitor
+/// Updates `assetName_` of a changed/deleted Asset
+class ActionVisitorCorrectAssetBase : public ActionVisitor
 {
 public:
-	ActionVisitorCorrectAsset(QString&& oldName, QString&& newName) : oldName(move(oldName)), newName(move(newName)) {}
+	ActionVisitorCorrectAssetBase(const QString& oldAssetName, const QString& newAssetName);
 
 protected:
-	/// Every Action containing an Asset with its name equal to 'oldName' will have its name changed to `newName`
+	/// Every Action containing an Asset with its `assetAssetName_` equal to 'oldAssetName_' will have its `assetAssetName_` changed to `newAssetName_`
 	/// Empty QString stands for invalid (it stands for invalid one - deleted)
-	QString oldName,
-			newName;
+	QString oldAssetName_ = "",
+			newAssetName_ = "";
 };
 
-/// [optional] Updates `assetLive2DAnimName` of a changed/deleted AssetLive2DAnim
-class ActionVisitorCorrectAssetLive2DAnim final : public ActionVisitorCorrectAsset
+/// [optional] Updates `assetLive2DassetAnimName_` of a changed/deleted AssetLive2DAnim
+//class ActionVisitorCorrectAssetLive2DAnim final : public ActionVisitorCorrectAsset
+//{
+//public:
+//	ActionVisitorCorrectAssetLive2DAnim(const QString& oldAssetName, const QString& newAssetName);
+//
+//	void visitActionLive2DAnim(ActionLive2DAnim* action) override;
+//};
+
+/// [optional] Updates `assetLive2DModelAssetName_` of a changed/deleted AssetLive2DModel
+//class ActionVisitorCorrectAssetLive2DModel final : public ActionVisitorCorrectAsset
+//{
+//public:
+//	ActionVisitorCorrectAssetLive2DModel(const QString& oldAssetName, const QString& newAssetName);
+//};
+
+/// Updates `assetAnimName_` of a changed/deleted **color** AssetAnim
+class ActionVisitorCorrectAssetAnimColor final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetLive2DAnim(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectAssetAnimColor(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionLive2DAnim(ActionLive2DAnim* action) override 
-	{ 
-		if (action->assetLive2DAnimName == oldName)
-			action->assetLive2DAnimName = newName;
-	}
+	void visitActionSceneryObjectAnimColor(ActionSceneryObjectAnimColor* action) override;
 };
 
-/// [optional] Updates `assetLive2DModelName` of a changed/deleted AssetLive2DModel
-class ActionVisitorCorrectAssetLive2DModel final : public ActionVisitorCorrectAsset
+/// Updates `assetAnimName_` of a changed/deleted **move** AssetAnim
+class ActionVisitorCorrectAssetAnimMove final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetLive2DModel(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectAssetAnimMove(const QString& oldAssetName, const QString& newAssetName);
+
+	void visitActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove* action) override;
 };
 
-/// Updates `assetAnimName` of a changed/deleted **color** AssetAnim
-class ActionVisitorCorrectAssetAnimColor final : public ActionVisitorCorrectAsset
+/// Updates `assetAnimName_` of a changed/deleted **rotate** AssetAnim
+class ActionVisitorCorrectAssetAnimRotate final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetAnimColor(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectAssetAnimRotate(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionSceneryObjectAnimColor(ActionSceneryObjectAnimColor* action) override
-	{
-		if (action->assetAnimName == oldName)
-			action->assetAnimName = newName;
-	}
+	void visitActionSceneryObjectAnimRotate(ActionSceneryObjectAnimRotate* action) override;
 };
 
-/// Updates `assetAnimName` of a changed/deleted **move** AssetAnim
-class ActionVisitorCorrectAssetAnimMove final : public ActionVisitorCorrectAsset
+/// Updates `assetAnimName_` of a changed/deleted **scale** AssetAnim
+class ActionVisitorCorrectAssetAnimScale final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetAnimMove(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectAssetAnimScale(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove* action) override
-	{
-		if (action->assetAnimName == oldName)
-			action->assetAnimName = newName;
-	}
+	void visitActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale* action) override;
 };
 
-/// Updates `assetAnimName` of a changed/deleted **rotate** AssetAnim
-class ActionVisitorCorrectAssetAnimRotate final : public ActionVisitorCorrectAsset
+/// Updates `assetAudioAssetName` of a changed/deleted Music AssetAudio
+class ActionVisitorCorrectMusicPlaylist final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetAnimRotate(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectMusicPlaylist(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionSceneryObjectAnimRotate(ActionSceneryObjectAnimRotate* action) override
-	{
-		if (action->assetAnimName == oldName)
-			action->assetAnimName = newName;
-	}
+	void visitActionAudioSetMusic(ActionAudioSetMusic* action) override;
 };
 
-/// Updates `assetAnimName` of a changed/deleted **scale** AssetAnim
-class ActionVisitorCorrectAssetAnimScale final : public ActionVisitorCorrectAsset
+/// Updates `assetAudioAssetName` of a changed/deleted Sound AssetAudio
+class ActionVisitorCorrectSounds final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectAssetAnimScale(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectSounds(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale* action) override
-	{
-		if (action->assetAnimName == oldName)
-			action->assetAnimName = newName;
-	}
+	void visitActionAudioSetSounds(ActionAudioSetSounds* action) override;
 };
 
-/// Updates `assetAudioName` of a changed/deleted Music AssetAudio
-class ActionVisitorCorrectMusicAssetAudio final : public ActionVisitorCorrectAsset
+/// Updates `assetImageAssetName` of a changed/deleted background AssetImage
+class ActionVisitorCorrectBackgroundAssetImage final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectMusicAssetAudio(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectBackgroundAssetImage(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionChangeMusic(ActionChangeMusic* action) override
-	{
-		for (QString& name : action->assetAudioNames)
-			if (name == oldName)
-				name = newName;
-	}
+	void visitActionSetBackground(ActionSetBackground* action) override;
 };
 
-/// Updates `assetAudioName` of a changed/deleted Sound AssetAudio
-class ActionVisitorCorrectSoundAssetAudio final : public ActionVisitorCorrectAsset
+/// Updates `assetImageAssetName` of a changed/deleted AssetImage
+class ActionVisitorCorrectSceneryObjectAssetImage final : public ActionVisitorCorrectAssetBase
 {
 public:
-	ActionVisitorCorrectSoundAssetAudio(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
+	ActionVisitorCorrectSceneryObjectAssetImage(const QString& oldAssetName, const QString& newAssetName);
 
-	void visitActionPlaySound(ActionPlaySound* action) override
-	{
-		for (QString& name : action->assetAudioNames)
-			if (name == oldName)
-				name = newName;
-	}
-};
-
-/// Updates `assetImageName` of a changed/deleted background AssetImage
-class ActionVisitorCorrectBackgroundAssetImage final : public ActionVisitorCorrectAsset
-{
-public:
-	ActionVisitorCorrectBackgroundAssetImage(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
-
-	void visitActionSetBackground(ActionSetBackground* action) override
-	{
-		if (action->assetImageName == oldName)
-			action->assetImageName = newName;
-	}
-};
-
-/// Updates `assetImageName` of a changed/deleted AssetImage
-class ActionVisitorCorrectSceneryObjectAssetImage final : public ActionVisitorCorrectAsset
-{
-public:
-	ActionVisitorCorrectSceneryObjectAssetImage(QString&& oldName, QString&& newName) : ActionVisitorCorrectAsset(move(oldName), move(newName)) {}
-
-	void visitActionSceneryObjectImageChange(ActionSceneryObjectImageChange* action) override
-	{
-		if (action->assetImageName == oldName)
-			action->assetImageName = newName;
-	}
+	void visitActionSceneryObjectSetImage(ActionSceneryObjectSetImage* action) override;
 };

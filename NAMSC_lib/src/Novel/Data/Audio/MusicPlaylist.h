@@ -1,87 +1,46 @@
 #pragma once
-#include "Global.h"
 
-#include "Novel/Data/Asset/Type/AssetMusic.h"
-
+#include "Novel/Data/Audio/AudioSettings.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
-class MusicPlaylist
+/// List of Songs that can be played in the background
+class MusicPlaylist final
 {
+	friend class ActionVisitorCorrectMusicPlaylist;
 	//Friends for serialization
 	friend QDataStream& operator>>(QDataStream&, MusicPlaylist&);
 	friend QDataStream& operator<<(QDataStream&, const MusicPlaylist&);
 public:
-	MusicPlaylist() = default;
-	MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay);
-	MusicPlaylist(MusicPlaylist& obj) { *this = obj; }
-	MusicPlaylist& operator=(const MusicPlaylist& obj);
+	MusicPlaylist()                                 = default;
+	/// \exception Error Couldn't find/read the Song files
+	MusicPlaylist(const QList<QPair<QString, QString>>& songFilesPaths, AudioSettings audioSettings, bool bRandomizePlaylist);
+	MusicPlaylist(const MusicPlaylist& obj) noexcept;
+	MusicPlaylist& operator=(MusicPlaylist obj) noexcept;
+	bool operator==(const MusicPlaylist& obj) const noexcept;
+	bool operator!=(const MusicPlaylist& obj) const = default; //{ return !(*this == obj); }
 
-	/// Tries to load an AssetSound
-	void load()
-	{
-		for (AssetMusic* assetMusic : musicAssets)
-			if (!assetMusic->isLoaded())
-				assetMusic->load(); 
-		
-		if (!musicAssets.isEmpty())
-			player = musicAssets.at(0)->getMusicPlayer();
-	}
-	/// Returns whether the asset is currently loaded
-	bool isLoaded() 
-	{
-		for (const AssetMusic*& assetMusic : musicAssets)
-			if (!assetMusic->isLoaded()) 
-				return false;
-		return true;
-	}
+	/// \exception Error Paths in `audioFilesPaths` are invalid / some Songs cannot be read (whatever the reason)
+	/// \return Whether an Error has occurred
+	/// \todo check if the format is right
+	bool checkForErrors(bool bComprehensive = false) const;
 
-	/// todo: describe
-	void shufflePlaylist();
+	/// \todo QT random replace
+	const QPair<QString, QString> nextSong();
 
-	/// todo: describe
-	QMediaPlayer* player;
+	AudioSettings audioSettings;
+
+	/// Contains pairs of `<name, path>`
+	QList<QPair<QString, QString>> songs;
+
+	bool bRandomizePlaylist    = false;
 
 private:
-	/// Names of the AssetMusics, so they can be loaded (if needed) and played
-	QVector<QString> musicAssetsNames;
-	/// AssetMusics to be played
-	QVector<AssetMusic*> musicAssets;
-
-	/// [low optional] Whether to randomize Music order
-	bool bRandomize = false;
-
-	/// [low optional] Whether every Music should be played at least once
-	bool bExclusive = false;
-
-	/// Common properties of Actions that manage Audio
-	AudioSettings settings;
-
+	int currentlyPlayedSongID_ = -1;
 	//---SERIALIZATION---
-	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
-	virtual void serializableLoad(QDataStream& dataStream);
-	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
-	virtual void serializableSave(QDataStream& dataStream) const;
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	void serializableLoad(QDataStream& dataStream);
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const;
 };
-
-
-
-
-inline MusicPlaylist::MusicPlaylist(QVector<QString>&& musicAssetsNames, bool bRandomize, bool bExclusive, double volume, double stereo, int timesPlayed, uint delay) : 
-	musicAssetsNames(move(musicAssetsNames)), bRandomize(bRandomize), bExclusive(bExclusive), settings(volume, stereo, timesPlayed, delay)
-{
-	for (const QString& musicAssetName : this->musicAssetsNames)
-		musicAssets.push_back(AssetManager::getInstance().findAssetMusic(musicAssetName));
-}
-
-inline MusicPlaylist& MusicPlaylist::operator=(const MusicPlaylist& obj)
-{
-	if (this == &obj) return *this;
-
-	musicAssetsNames = obj.musicAssetsNames;
-	musicAssets = obj.musicAssets;
-	bRandomize = obj.bRandomize;
-	bExclusive = obj.bExclusive;
-	settings = obj.settings;
-
-	return *this;
-}

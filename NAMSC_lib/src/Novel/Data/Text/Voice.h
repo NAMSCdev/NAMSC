@@ -1,7 +1,9 @@
 #pragma once
-#include "Global.h"
 
-#include "Novel/Data/Asset/Type/AssetFont.h"
+#include <QColor>
+#include <QFont>
+
+#include "Novel/Data/Audio/Sound.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
 /// Tells how the text should be displayed
@@ -12,7 +14,7 @@ class Voice
 	friend QDataStream& operator>>(QDataStream&, Voice&);
 	friend QDataStream& operator<<(QDataStream&, const Voice&);
 public:
-	/// [optional]If a Character is compatible with Live2D, we can animate its lips while they are talking
+	/// [optional] If a Character is compatible with Live2D, we can animate its lips while they are talking
 	enum class LipSyncType
 	{
 		None,		/// No animation
@@ -20,86 +22,64 @@ public:
 		Static		/// Open mouth while talking regardless of the sound volume, but no animation
 	};
 
-	Voice() = default;
-	Voice(QString&& fontAssetName, QString&& insertionAssetSoundName, uint fontSize, bool bold, bool italic,
-		bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None);
-	Voice(const Voice& obj) { *this = obj; }
-	Voice& operator=(const Voice& obj);
+	Voice()                                 = default;
+	Voice(const QString& name, const QString& fontName, uint fontSize, bool bold, bool italic, bool underscore, const QColor color, double cpsMultiplier = 1.0, uint cpsOverwrite = 0, const Qt::AlignmentFlag alignment = Qt::AlignHCenter, const LipSyncType lipSync = LipSyncType::None) noexcept;
+	Voice(const Voice& obj)                 = default;
+	Voice& operator=(Voice obj) noexcept;
+	bool operator==(const Voice& obj) const noexcept;
+	bool operator!=(const Voice& obj) const = default; //{ return !(*this == obj); }
 
-private:
-	/// Name to the Font used to display the text spoken by this Voice
-	QString	fontAssetName;
-	/// Font used to display the text spoken by this Voice
-	AssetFont *fontAsset;
+	/// \exception Error `font_` is invalid
+	/// \return Whether an Error has occurred
+	bool checkForErrors(bool bComprehensive = false) const;
 
-	/// Name to the Font used to display the text spoken by this Voice
-	QString	insertionAssetSoundName;
-	/// Font used to display the text spoken by this Voice
-	AssetSound *insertionAssetSound;
+	const QFont* getFont() const noexcept;
+	QString getFontName() const noexcept;
+	void setFont(const QString& fontName) noexcept;
 
-	/// Font size used to display the text spoken by this Voice
-	uint fontSize;
+	QString name                = "";
 
-	/// Wraps rich text with a <b> tag, bolding it
-	bool bold = false;
+	/// [optional] A short Sound played after a single character insertion
+	/// It is cut short if a new character appears before the Sound finished playing
+	/// Once this is set, the cps should also be set to a customized for best experience
+	Sound insertionSound;
 
-	/// Wraps rich text with a <i> tag, italizing it
-	bool italic	= false;	
+	/// Wraps the rich text with a tag
+	bool bold                   = false,
+		 italic                 = false,
+		 underscore             = false;
 
-	/// Wraps rich text with a <u> tag, underscoring it
-	bool underscore	= false;
+	/// Multiplies `NovelSettings::cps` setting
+	double cpsMultiplier        = 1.0;
 
-	/// Multiplies cps value and rounds it
-	/// Possible values:
-	/// 0.0-1.0
-	double cpsMultiplier = 1.0;
+	/// Overwrites `NovelSettings::cps` setting
+	/// 0 stands for unchanged (changed only by `cpsMultiplier`)
+	/// When `cpsOverwrite` is set, `cpsMultiplier`no longer has any effect on Characters Per Second
+	uint cpsOverwrite           = 0;
 
 	/// Default color in RGBA format used to display the text spoken by this Voice
-	QColor color = { 0, 0, 0, 255 };
+	QColor color                = { 0, 0, 0, 255 };
 
-	/// [optional]Alignment of the text
-	Qt::AlignmentFlag alignment	= Qt::AlignHCenter;
+	/// [optional]
+	Qt::AlignmentFlag alignment = Qt::AlignHCenter;
 
-	/// [optional]If a Character is compatible with Live2D, we can animate its lips while they are talking
+	/// [optional] If a Character is compatible with Live2D, we can animate its lips while they are talking
 	/// Possible values:
 	/// - None
 	/// - Full
 	/// - Static
-	LipSyncType lipSync = LipSyncType::Full;
+	LipSyncType lipSync         = LipSyncType::Full;
+
+private:
+	QString fontName_           = "";
+	QFont   font_;
+	uint    fontSize_           = 12;
 
 	//---SERIALIZATION---
-	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream);
-	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const;
 };
-
-inline Voice::Voice(QString&& fontAssetName, QString&& insertionAssetSoundName, uint fontSize, bool bold, bool italic,
-	bool underscore, QColor color, Qt::AlignmentFlag alignment = Qt::AlignHCenter, LipSyncType lipSync = LipSyncType::None) :
-	fontAssetName(move(fontAssetName)), insertionAssetSoundName(move(insertionAssetSoundName)), fontSize(fontSize), bold(bold), italic(italic),
-	underscore(underscore), alignment(alignment), lipSync(lipSync)
-{
-	this->color = color;
-	fontAsset = AssetManager::getInstance().findAssetFont(this->fontAssetName);
-	insertionAssetSound = AssetManager::getInstance().findAssetSound(this->insertionAssetSoundName);
-}
-
-inline Voice& Voice::operator=(const Voice& obj)
-{
-	if (this == &obj) return *this;
-
-	fontAssetName = obj.fontAssetName;
-	fontAsset = obj.fontAsset;
-	insertionAssetSoundName = obj.insertionAssetSoundName;
-	insertionAssetSound = obj.insertionAssetSound;
-	fontSize = obj.fontSize;
-	bold = obj.bold;
-	italic = obj.italic;
-	underscore = obj.underscore;
-	cpsMultiplier = obj.cpsMultiplier;
-	color = obj.color;
-	alignment = obj.alignment;
-	lipSync = obj.lipSync;
-
-	return *this;
-}

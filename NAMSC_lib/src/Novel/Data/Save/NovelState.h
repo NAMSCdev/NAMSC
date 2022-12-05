@@ -1,87 +1,74 @@
 #pragma once
-#include "Global.h"
+
+#include <QDate>
+#include <QImage>
+#include <QJSEngine>
+#include <QHash>
 
 #include "Novel/Data/Stat/Stat.h"
+#include "Novel/Data/Visual/Animation/AnimatorSceneryObjectInterface.h"
 #include "Novel/Data/Visual/Scenery/Scenery.h"
 
 /// Contains data about the Novel progression and Stats
-class NovelState
+class NovelState final
 {
     //Friends for serialization
     friend QDataStream& operator>>(QDataStream&, NovelState&);
     friend QDataStream& operator<<(QDataStream&, const NovelState&);
 public:
-    NovelState() = default;
-    NovelState(NovelState& obj) { *this = obj; }
-    NovelState& operator=(const NovelState& obj);
+    NovelState()                                 = default;
+    /// \exception Error 'screenshot` could not be loaded and recognized as an Image or `scenery` contains an Error
+    NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID, const QHash<QString, Stat>& stats);
+    NovelState(const NovelState& obj) noexcept;
+    /// \todo reset and copy `jsEngine_` properties
+    NovelState& operator=(NovelState obj) noexcept;
+    bool operator==(const NovelState& obj) const noexcept;
+    bool operator!=(const NovelState& obj) const = default; //{ return !(*this == obj); }
 
-    void createNew(uint slot)
-    {
-        //todo: read from a file and throw exceptions on failure
-        QFile();
-        QDataStream dataStream();
-    };
+    static NovelState* getCurrentlyLoadedState();
+    static NovelState load(uint saveSlot);
+    static NovelState reset(uint saveSlot);
+    void save();
 
-    bool load(uint slot)
-    {
-        //todo: read from a file and throw exceptions on fialure
-        QFile();
-        QDataStream dataStream();
-        return true;
-    };
+    /// \exception Error 'screenshot`/`scenery` is invalid
+    /// \return Whether an Error has occurred
+    bool checkForErrors(bool bComprehensive = false) const;
+    void update(uint elapsedTime);
 
-    /// Find by `name` a Stat
-    /// \param name searched Stat
-    /// \exception CriticalException failure finding the AssetFont
-    /// \return pointer to the found AssetFont
-    Stat* getStat(const QString &name)
-    { 
-        return findInuPtrArray<Stat>(name, stats);
-    }
+    const QHash<QString, std::unique_ptr<Stat>>* getStats() const noexcept;
+    const Stat* getStat(const QString& statName) const noexcept;
+    Stat* getStat(const QString& statName) noexcept;
+    void  setStat(const QString& statName, Stat* stat) noexcept;
+    bool  removeStat(const QString& statName) noexcept;
 
-    /// Time of the save being made
-    QDate date;
+    QDate saveDate    = QDate::currentDate();
 
-    /// A Screenshot of the game just before it was saved
-    QImage image;
+    QImage screenshot;
 
-    /// Currently displayed Media
+    /// Current Media
     Scenery scenery;
 
+    int saveSlot      = -1;
+
+    /// The Scene->Event that the is in, which marks the Player's progression 
+    QString sceneName = "";
+    /// The Scene->Event that the is in, which marks the Player's progression 
+    uint eventID      = 0;
+
 private:
-    /// All the Stats retrievable by the `getStat(const QString &name)`
-    QVector<uPtr<Stat>> stats;
+    /// Loads Stats definitions (meaning they will be reset to the default values) from a single file
+    /// \todo implement this
+    void loadStats();
 
-    /// At which saveslot the NovelState will be saved/loaded
-    uint saveSlot = 0;
+    QHash<QString, std::unique_ptr<Stat>> stats_;
 
-    /// The Chapter->Scene->Event that the NovelState is in
-    uint chapterID = 0,
-         sceneID = 0,
-         eventID = 0;
+    QJSEngine jsEngine_;
 
     //---SERIALIZATION---
-    /// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
+    /// Loading an object from a binary file
+    /// \param dataStream Stream (presumably connected to a QFile) to read from
     void serializableLoad(QDataStream& dataStream);
-    /// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+    /// Saving an object to a binary file
+    /// \param dataStream Stream (presumably connected to a QFile) to save to
     void serializableSave(QDataStream& dataStream) const;
 };
-
-
-
-
-inline NovelState& NovelState::operator=(const NovelState& obj)
-{
-    if (this == &obj) return *this;
-
-    date      = obj.date;
-    image     = obj.image;
-    scenery   = obj.scenery;
-    stats     = obj.stats;
-    saveSlot  = obj.saveSlot;
-    chapterID = obj.chapterID;
-    sceneID   = obj.sceneID;
-    eventID   = obj.eventID;
-
-    return *this;
-}

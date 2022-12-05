@@ -1,78 +1,77 @@
 #pragma once
-#include "Global.h"
 
-#include "Novel/Event/Event.h"
+#include "Novel/Data/Chapter.h"
 #include "Novel/Data/Visual/Scenery/Scenery.h"
+#include "Novel/Event/Event.h"
 
-/// /Forward declaration of a Novel, so we can save it as a parent
-/// /Needed to check other Scenes in the Novel if they don't have the same label as we want to assign a new Scene
-class Novel;
-
-/// /Logical unit of the novel's flow in the [Novel](#Novel]
-/// /The Editor user should be able to create one whenever
-class Scene
+/// The logical unit of the Novel's flow in the [Novel](#Novel]
+/// The Editor user should be able to create one whenever
+class Scene final : public NovelFlowInterface
 {
-	/// Our overlord
+	//Our overlord
 	friend class Novel;
 	//Friends for serialization
 	friend QDataStream& operator>>(QDataStream&, SceneryObject&);
 	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
+	//Other Friends
+	friend class Event;
+	friend class NovelSettings;
 public:
-	Scene() { }
-	Scene(QString&& label, QVector<uPtr<Event>>&& events, Scenery&& scenery) :
-		label(move(label)), events(move(events)), scenery(move(scenery))
+	Scene() = default;
+	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
+	Scene(const QString& name, const QString& chapterName, const std::vector<std::unique_ptr<Event>>& events, const Scenery& scenery);
+	Scene(const Scene& obj) noexcept;
+	Scene& operator=(Scene obj) noexcept;
+	//todo: define
+	//bool operator==(const Scene& obj) const;
+	bool operator!=(const Scene& obj) const = default;
 
-private:
-	/// Executes [Events](#Event) that are stored in the [`events` container](#events)
-	/// @param offset The first [Event](#Event) to be executed from the container
-	/// @todo implement
-	void run(uint offset);
+	/// Checks if the Scene's Events can load Definitions and Resources associated with them and don't have any other Errors, which would halt the Novel execution
+	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
+	/// \return Whether an Error has occurred
+	bool checkForErrors(bool bComprehensive = false) const override;
+	void ensureResourcesAreLoaded() override;
 
-	/// /Removes an [Events](#Event) from the [`events` container](#events)
-	/// /Fixes all the others [Events's executionOrders](#Event#executionOrder) and corrects [Jumps](#Jump) or marks them as invalid
-	/// /@param executionOrder ID of an Event is equivalent with its order in execution. This  one will be deleted
-	/// /@todo add Visitors to fix Events and Jumps
-	void removeEvent(uint executionOrder);
+	QString nextFreeEventName();
 
-	/// /Inserts an [Events](#Event) into [`events` container](#events) at certain point
-	/// /Fixes all the others [Events's executionOrders](#Event#executionOrder) and corrects [Jumps](#Jump)
-	/// /@param executionOrder ID of an Event is equivalent with its order in execution. The even will be inserted past this `executionOrder`
-	/// /@todo add Visitors to fix Events and Jumps
-	void insertEvent(uint executionOrder, Event &&ev);
+	/// \exception Crititcal Tried to run an Event past the `events_` container's size
+	void run() override;
+	/// \exception Crititcal Tried to update an Event past the `events_` container's size
+	void update() override;
+	/// \exception Crititcal Tried to end an Event past the `events_` container's size
+	void end() override;
 
-	/// /An optional name for a Scene, commonly used by the Editor User to quickly distinguish amongst other Scenes
-	/// /Automatically asigned upon creation by `assignLabel()`
-	QString	label;
+	void syncWithSave() noexcept override;
 
-	/// /All the Events to be executed in the Scene
-	QVector<uPtr<Event>> events;
-	
-	/// /Currently displayed media of the Scene
+	const std::vector<std::unique_ptr<Event>>* getEvents() const noexcept;
+	/// \exception Error Tried to get an Event past the `events` container's size
+	const Event* getEvent(uint eventIndex) const;
+	/// \exception Error Tried to get an Event past the `events` container's size
+	Event* getEvent(uint eventIndex);
+	/// \exception Error Tried to insert a new Event past the `events` container's size
+	bool insertEvent(uint eventIndex, std::unique_ptr<Event>&& event);
+	/// \exception Error Tried to remove an Event past the `events` container's size
+	bool removeEvent(uint eventIndex);
+
+	/// Automatically assigned upon creation or changed by the Editor User
+	QString	name                = "";
+
+	/// Currently displayed media of the Scene
 	Scenery	scenery;
 
-	/// TODO: serialization
+private:
+	QString        chapterName_ = "";
+	const Chapter* chapter_     = nullptr;
+
+	std::vector<std::unique_ptr<Event>> events_;
+
 	//---SERIALIZATION---
-	/// /Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
-	virtual void serializableLoad(QDataStream &dataStream)
-	{
+	/// \exception Critical Could not find a Stat's type, so the whole becomes unreadable
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	void serializableLoad(QDataStream& dataStream);
 
-		dataStream >> label;
-		uint size;
-		dataStream >> size; 
-		for (uint i = 0; i != size; ++i)
-		{
-			Event *ev;
-			dataStream >> ;
-			switch();
-
-			events.emplace_back(ev);
-		}
-	}
-	/// /Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
-	virtual void serializableSave(QDataStream& dataStream) const
-	{
-		sizeof(Scene);
-		dataStream << SerializationID::Scene << ;
-	}
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
+	void serializableSave(QDataStream& dataStream) const;
 };
-

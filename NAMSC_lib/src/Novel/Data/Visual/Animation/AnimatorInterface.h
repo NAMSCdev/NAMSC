@@ -1,82 +1,39 @@
 #pragma once
-#include "Global.h"
 
-#include "Novel/Data/NovelFlowInterface.h"
+#include <QtGlobal>
 
-#include "Novel/Data/Visual/Animation/AnimNode.h"
-#include "Novel/Data/Visual/Scenery/SceneryObject.h"
-
-#include "Novel/Data/Asset/AssetManager.h"
-#include "Novel/Data/Asset/Type/AssetAnim.h"
-
-/// More abstract interface that allows to call start() and update() regardless of the template arguments
-class AnimatorInterface : public NovelFlowInterface
+/// More abstract Interface that allows to call `bool update()` (inherited from NovelFlowInterface) regardless of the template arguments
+class AnimatorInterface
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream& dataStream, AnimatorInterface&);
-	friend QDataStream& operator<<(QDataStream& dataStream, const AnimatorInterface&);
 public:
-	AnimatorInterface() = default;
-	AnimatorInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName);
-	AnimatorInterface(const AnimatorInterface& obj) { *this = obj; }
-	AnimatorInterface& operator=(const AnimatorInterface& obj);
-	
-	/// The destructor needs to be virtual, so the proper destructor will always be called when destroying an AnimatorInterface pointer
-	virtual ~AnimatorInterface() = default;
+	AnimatorInterface()                                 = delete;
+	AnimatorInterface(uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
+	AnimatorInterface(const AnimatorInterface& obj)     = delete;
+	AnimatorInterface& operator=(AnimatorInterface obj) = delete;
+	bool operator<(const AnimatorInterface& obj) const noexcept;
+	bool operator==(const AnimatorInterface& obj) const = delete;
+	bool operator!=(const AnimatorInterface& obj) const = delete;
+	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an AnimatorInterface pointer
+	virtual ~AnimatorInterface()                        = default;
 
-	//Starts the Animation
-	virtual void run() override { ensureResourcesAreLoaded(); }
-
-	/// An Animator might need to access the data, that is a part of the Save
-	/// Must be called after the Save is loaded
-	virtual void syncWithSave() override {}
-
-	/// Checks if the Animator doesn't have any errors, which would halt the Novel execution
-	virtual bool checkForErrors() override {}
-
-	/// Cleanup of the Animator
-	virtual void end() override {}
+	virtual void run() = 0;
+	/// \return Whether the Animation has ended
+	virtual bool update(uint elapsedTime) = 0;
 
 protected:
-	/// Ensures that the AnimAsset has its resources loaded
-	virtual void ensureResourcesAreLoaded() = 0;
+	/// Delay in milliseconds before the Animation will be played after the last Animator ended playing
+	uint startDelay = 0;
 
-	/// Beginning of the Animation, so we can calculate the elapsed time
-	QTime startTime;
+	/// Cannot be negative
+	double speed    = 1.0;
 
-	/// How fast the Animation will be played
-	double speed = 1.0;
-
-	/// How many times it will be played
-	/// Can be set to -1, so it will be looped infinitely
+	/// If set to -1, it will be looped infinitely
+	/// \todo Automatically correct when a new Animator is added past this one
 	int	timesPlayed = 1;
 
-	/// Name of the AssetAnim, so they can be loaded when needed
-	QString animAssetName;
+	/// Incompatible with `timesPlayed = -1`, but it is possible to place same Animator in subsequent Events and continue Animation without an interruption
+	/// \todo Do not interrupt the Animation
+	bool bStopAnimationAtEventEnd = true;
 
-	//---SERIALIZATION---
-	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
-	virtual void serializableLoad(QDataStream& dataStream);
-	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
-	virtual void serializableSave(QDataStream& dataStream) const;
+	uint priority      = 0;
 };
-
-
-
-
-inline AnimatorInterface::AnimatorInterface(QTime startTime, double speed, int timesPlayed, QString&& animAssetName) :
-	startTime(startTime), speed(speed), timesPlayed(timesPlayed), animAssetName(move(animAssetName))
-{
-}
-
-inline AnimatorInterface& AnimatorInterface::operator=(const AnimatorInterface& obj)
-{
-	if (this == &obj) return *this;
-
-	startTime     = obj.startTime;
-	speed         = obj.speed;
-	timesPlayed   = obj.timesPlayed;
-	animAssetName = obj.animAssetName;
-
-	return *this;
-}

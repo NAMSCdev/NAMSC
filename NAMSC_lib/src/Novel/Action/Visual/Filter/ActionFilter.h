@@ -25,9 +25,11 @@
 //	double strength = 1.0;
 //
 //	//---SERIALIZATION---
-//	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
+//	/// Loading an object from a binary file
+//  /// \param dataStream Stream (presumably connected to a QFile) to read from
 //	virtual void serializableLoad(QDataStream& dataStream) override;
-//	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+//	/// Saving an object to a binary file
+//  /// \param dataStream Stream (presumably connected to a QFile) to save to
 //	virtual void serializableSave(QDataStream& dataStream) const override;
 //};
 //

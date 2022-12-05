@@ -1,75 +1,64 @@
 #pragma once
-#include "Global.h"
 
+#include <QString>
+
+#include "Exceptions.h"
+
+/// Holds some Resources, which very likely take time to be loaded and allocate significant memory, so they should be loaded only when needed
 class Asset
 {
 	//Friends for serialization
 	friend QDataStream& operator>>(QDataStream&, Asset&);
 	friend QDataStream& operator<<(QDataStream&, const Asset&);
-	//Other friends
-	friend bool operator==(const Asset& lhs, const QString& rhs);
 public:
-	Asset() = default;
-	Asset(QString&& name, uint pos = 0, QString&& location = "");
-	Asset(const Asset& obj)            = delete;
-	Asset& operator=(const Asset& obj) = delete;
+	Asset()                            = default;
+	/// \exception Error Could not find/open/read the Resource file
+	Asset(const QString& name, uint size, uint pos = 0, const QString& path = "");
+	Asset(const Asset& obj)            = default;
+	Asset& operator=(const Asset& obj) = default;
+	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
+	virtual ~Asset()                   = default;
 
-	/// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
-	virtual ~Asset()              = 0;
-
-	/// Tries to load an Asset
-	/// @exception Throws a noncritical Exception on failure
-	/// @todo more intelligent loading when it is a compact file, so it is not opened and closed multiple times (static members in AssetManager that open and close on demand should do the trick)
+	/// \exception Error Could not find/open/read the Resource file
+	/// \todo more intelligent loading when it is a compact file, so it is not opened and closed multiple times (static members in AssetManager that open and close on demand should do the trick)
 	virtual void load()           = 0;
-
-	/// Release resources allocated for this asset
+	virtual bool isLoaded() const = 0;
 	virtual void unload()         = 0;
 
-	/// Returns whether the Asset is currently loaded
-	virtual bool isLoaded() const = 0;
+	/// Saves content changes (the Resource, not the definition)
+	/// \exception Error Could not find/open/write to the file
+	/// \todo implement this
+	virtual void save()           = 0;
 
-	/// Checks whether the file that the Asset refers to is present in the filesystem
-	QPair<bool, QString> checkFileExistence() const;
+	/// \exception Error Couldn't find/open/read the Resource file
+	/// \return Whether an Error has occurred
+	virtual bool checkForErrors(bool bComprehensive = false) const;
+	
+	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read
+	//void setOnSaveListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave) { onSave_ = onSave; }
+
+	QString	name = "";
+
+	QString	path = "";
+
+	/// [optional] If many Assets share the same binary file, it is needed to remember the position of every Asset
+	uint pos     = 0;
+
+	/// In bytes
+	uint size    = 0;
 
 protected:
-	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
-	virtual SerializationID	getType() const	= 0;
+	/// A function pointer that is called (if not nullptr) after the Asset's `void save() const` allowing for data read
+	//std::function<void(Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave_;
 
-	/// Identificator for the Asset
-	QString	name;
-
-	/// Location of the resource
-	QString	location;
-
-	/// [optional]If many Assets share the same binary file, we need to remember position of every Asset
-	uint pos = 0;
+	/// Indicates if there were content changes (the Resource, not the definition)
+	bool bChanged_ = false;
 
 	//---SERIALIZATION---
-	/// Loading an object from a binary file/// \param dataStream Stream (presumably connected to a QFile) to read from
-	virtual void serializableLoad(QDataStream &dataStream);
-	/// Saving an object to a binary file/// \param dataStream Stream (presumably connected to a QFile) to save to
+	/// Loading an object from a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to read from
+	virtual void serializableLoad(QDataStream& dataStream);
+	/// Saving an object to a binary file
+	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const;
 };
-
-
-
-
-inline Asset::~Asset() = default;
-
-inline Asset::Asset(QString&& name, uint pos = 0, QString&& location = "") :
-	name(move(name)), location(move(location)), pos(pos)
-{
-}
-
-inline QPair<bool, QString> Asset::checkFileExistence() const
-{
-	if (location == "") 
-		return { QFile::exists("resource.bin"), "resource.bin" };
-
-	return { QFile::exists(location), location };
-}
-
-inline bool operator==(const Asset& lhs, const QString& rhs)
-{
-	return lhs.name == rhs;
-}

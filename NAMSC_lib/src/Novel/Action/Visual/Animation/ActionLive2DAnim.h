@@ -15,7 +15,7 @@
 //	friend ActionVisitorCorrectAssetLive2DAnim;
 //public:
 //	ActionLive2DAnim() noexcept = default;
-//	ActionLive2DAnim(QString&& characterName, QString&& animAssetName, bool bSyncWithSpeech, int duration);
+//	ActionLive2DAnim(QString&& characterName, QString&& assetAnimName, bool bSyncWithSpeech, int duration);
 //	ActionLive2DAnim(const ActionLive2DAnim& obj) noexcept { *this = obj; }
 //	ActionLive2DAnim& operator=(const ActionLive2DAnim& obj) noexcept;
 //
@@ -33,6 +33,7 @@
 //
 //private:
 //	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
+//  /// \return SerializationID corresponding to the class of a serialized object
 //	SerializationID	getType() const override { return SerializationID::ActionLive2DAnim; }
 //
 //	/// Ensures Assets are loaded and if not - loads it
@@ -70,7 +71,7 @@
 //
 //
 //inline ActionLive2DAnim::ActionLive2DAnim(QString&& characterName, QString&& assetLive2DAnimName, bool bSyncWithSpeech, int duration) :
-//	Action(), characterName(move(characterName)), assetLive2DAnimName(move(assetLive2DAnimName)), bSyncWithSpeech(bSyncWithSpeech), duration(duration)
+//	Action(true), characterName(move(characterName)), assetLive2DAnimName(move(assetLive2DAnimName)), bSyncWithSpeech(bSyncWithSpeech), duration(duration)
 //{
 //	animLive2DAsset = AssetManager::getInstance().findAssetLive2DAnim(assetLive2DAnimName);
 //}

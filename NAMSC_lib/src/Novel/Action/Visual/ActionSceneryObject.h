@@ -1,23 +1,32 @@
-#pragma once
-#include "Global.h"
-
+ #pragma once
 #include "Novel/Action/Action.h"
+
 #include "Novel/Data/Visual/Scenery/SceneryObject.h"
 
 /// Action that affects a SceneryObject
 class ActionSceneryObject : public Action
 {
 public:
-	ActionSceneryObject() noexcept = default;
-	ActionSceneryObject(QString&& sceneryObjectName);
-	ActionSceneryObject(const ActionSceneryObject& obj) noexcept { *this = obj; }
+	ActionSceneryObject(Event* const parentEvent, Scene* const parentScene) noexcept;
+	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName_`
+	ActionSceneryObject(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName);
+	ActionSceneryObject(const ActionSceneryObject& obj) = delete;
 	ActionSceneryObject& operator=(const ActionSceneryObject& obj) noexcept;
+	bool operator==(const ActionSceneryObject& obj) const noexcept;
+	bool operator!=(const ActionSceneryObject& obj) const = default; //{ return !(*this == obj); }
+
+	/// \exception Error `sceneryObject_` is invalid
+	/// \return Whether an Error has occurred
+	virtual bool checkForErrors(bool bComprehensive = false) const override;
+
+	const SceneryObject* getSceneryObject() const noexcept;
+	SceneryObject* getSceneryObject() noexcept;
+	QString getSceneryObjectName() const noexcept;
+	void setSceneryObject(const QString& sceneryObjectName) noexcept;
 
 protected:
-	/// Name of the SceneryObject, so it can be loaded (if needed)
-	QString		   sceneryObjectName;
-	/// SceneryObject that will be affected by the ActionSceneryObject
-	SceneryObject* sceneryObject;
+	QString		   sceneryObjectName_ = "";
+	SceneryObject* sceneryObject_     = nullptr;
 
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
@@ -27,17 +36,3 @@ protected:
 	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	virtual void serializableSave(QDataStream& dataStream) const override;
 };
-
-
-
-
-inline ActionSceneryObject& ActionSceneryObject::operator=(const ActionSceneryObject& obj)
-{
-	if (this == &obj) return *this;
-
-	Action::operator=(obj);
-	sceneryObjectName = obj.sceneryObjectName;
-	sceneryObject     = obj.sceneryObject;
-
-	return *this;
-}

@@ -1,121 +1,126 @@
 #pragma once
-#include "Global.h"
 
-#include "Novel/Data/Save/NovelState.h"
+#include <QElapsedTimer>
 
-class Chapter;
-class Voice;
-class SceneryObject;	
-class Character;
+#include <Novel/Data/NovelSettings.h>
+#include <Novel/Data/Save/NovelState.h>
+#include <Novel/Data/Scene.h>
+#include <Novel/Data/Text/Voice.h>
+#include <Novel/Data/Visual/Scenery/Character.h>
+#include <Novel/Data/Visual/Scenery/Scenery.h>
 
 /// The entire Visual Novel
 /// **Singleton**
-class Novel
+class Novel final : public NovelFlowInterface
 {
+	friend NovelSettings;
+	friend NovelState;
 public:
-	static Novel& getInstance()
-	{
-		static Novel instance;
-		return instance;
-	}
+	static Novel& getInstance();
 
-	Novel() { logFile.open(QIODevice::WriteOnly | QIODevice::Truncate); }
+	Novel()                        = default;
 	Novel(const Novel&)            = delete;
 	Novel& operator=(const Novel&) = delete;
 
-	/// Adds Chapter
-	/// Should be used only in the Editor
-	void addChapter(Chapter&& chapter)		{ chapters.push_back(move(chapter)); }
+	bool checkForErrors(bool bComprehensive = false) const override;
 
-	void removeChapter(Chapter&& chapter)	{ chapters.push_back(move(chapter)); }
+	/// Loads the entire Novel from multiple files in a stage-based fashion to ensure the objects can setup pointers to the data from previous stage:
+	/// 1 - loading NovelSettings
+	/// 2 - loading NovelState (Stats and current Scenery) and Chapters
+	/// 3 - loading Assets Definitions (no Resources loaded)
+	/// 4 - loading Voices
+	/// 5 - loading SceneryObjects and Characters Definitions
+	/// 6 - loading Scenes
+	void loadNovel(uint slot, bool createNew);
 
-	void nextScene();
-
-	/// Creates new Novel State and loads it into the saveslot
-	void newState(uint slot)
-	{
-		save.createNew(slot);
-	}
-
-	/// Loads player's NovelState from a savefile in given saveslot
+	/// Creates a new NovelState (resets the old one, if exists) and loads it into the SaveSlot
+	void newState(uint slot);
+	/// Loads Player's NovelState from a SaveFile in the given SaveSlot
 	bool loadState(uint slot);
-	
-	/// Saves player's NovelState to a savefile in given saveslot
-	void saveState(uint slot);
+	/// Saves Player's NovelState to a SaveFile in the current SaveSlot
+	void saveState();
 
-	/// Loads entire Novel from multiple files
-	void loadNovel(uint slot, bool createNew)
-	{ 
-		NovelSettings::load(); 
-		if (createNew || !save.load(slot))
-			save.createNew(slot);
-		loadAssetsDefs(); 
-		loadVoices(); loadSceneryObjectsDefs(); loadCharacters(); 
-		loadChapterDefs(); 
-	}
-	
-	/// Allows to access a Voice from the Voices array
-	Voice*			findVoice(const QString &voiceName); 
+	void run() override;
+	void update() override;
+	void end() override;
 
-	/// Allows to access a SceneryObject from the SceneryObjects array
-	SceneryObject*	findSceneryObject(const QString &sceneryObjectName); 
+	void syncWithSave() noexcept override;
 
-	/// Allows to access a Character from the Characters array
-	Character*		findCharacter(const QString &characterName) { return findInArray(characterName, characters); }
+	QString nextFreeChapterName() const noexcept;
 
-	/// Allows to access characterName
-	/// @todo: ensure everywhere a reference to Voice is name voiceName, not voiceName
-	Chapter*		findChapter(const QString &chapterName); 
+	QString nextFreeSceneName() const noexcept;
 
-	/// Allows to access Voices
-	NovelState* getCurrentState() { return &save; }
+	const QHash<QString, Chapter>* getChapters() const noexcept;
+	void setChapters(const QHash<QString, Chapter>& chapters) noexcept;
+	const Chapter* getChapter(const QString& chapterName) const noexcept;
+	Chapter* getChapter(const QString& chapterName) noexcept;
+	void setChapter(const QString& chapterName, const Chapter& chapter) noexcept;
+	bool removeChapter(const QString& chapterName) noexcept;
 
-	const NovelState* getCurrentStateAtSceneBegin() { return &saveSceneBegin; }
+	const QHash<QString, Character>* getCharacterDefaults() const noexcept;
+	void setDefaultCharacters(const QHash<QString, Character>& characters) noexcept;
+	const Character* getDefaultCharacter(const QString& characterName) const noexcept;
+	Character* getDefaultCharacter(const QString& characterName) noexcept;
+	void setDefaultCharacter(const QString& characterName, const Character& character) noexcept;
+	bool removeDefaultCharacter(const QString& characterName) noexcept;
 
-	QString			freeNextSceneName();
-	
-	QString			freeNextChapterName();
+	const QHash<QString, SceneryObject>* getSceneryObjectDefaults() const noexcept;
+	void setDefaultSceneryObjects(const QHash<QString, SceneryObject>& sceneryObjects) noexcept;
+	const SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) const noexcept;
+	SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) noexcept;
+	void setDefaultSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
+	bool removeDefaultSceneryObject(const QString& sceneryObjectName) noexcept;
+
+	const QHash<QString, Scene>* getScenes() const noexcept;
+	void setScenes(const QHash<QString, Scene>& scenes) noexcept;
+	const Scene* getScene(const QString& chapterName) const noexcept;
+	Scene* getScene(const QString& chapterName) noexcept;
+	/// Also corrects jumps to Scenes that theirs index changed
+	void setScene(const QString& chapterName, const Scene& sceneryObject) noexcept;
+	/// Also corrects jumps to Scenes that theirs index changed
+	bool removeScene(const QString& chapterName) noexcept;
+
+	const QHash<QString, Voice>* getVoices() const noexcept;
+	void setVoices(const QHash<QString, Voice>& voices) noexcept;
+	const Voice* getVoice(const QString& voiceName) const noexcept;
+	Voice* getVoice(const QString& voiceName) noexcept;
+	void setVoice(const QString& voiceName, const Voice& voice) noexcept;
+	bool removeVoice(const QString& voiceName) noexcept;
+
+	const NovelState* getStateAtSceneBeginning() noexcept;
 
 private:
-	/// Loads Assets definitions (not its resources) from a single file
-	inline void	loadAssetsDefs();
+	//It is supposed to be empty
+	void ensureResourcesAreLoaded() override;
 
-	/// Loads Voices from a single file
-	inline void	loadVoices();
+	/// \todo implement this
+	void loadAssetsDefinitions();
+	//Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
+	/// \todo implement this
+	void loadChapters();
+	/// \todo implement this
+	void loadDefaultCharacterDefinitions();
+	/// \todo implement this
+	void loadDefaultSceneryObjectsDefinitions();
+	/// \todo implement this
+	void loadScenes();
+	//Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
+	/// \todo implement this
+	void loadVoices();
 
-	/// Loads SceneryObject definitions (not its resources) from a single file
-	inline void	loadSceneryObjectsDefs();
+	QHash<QString, Chapter> chapters_;
+	QHash<QString, Character> characterDefaults_;
+	QHash<QString, SceneryObject> sceneryObjectDefaults_;
+	QHash<QString, Scene> scenes_;
+	QHash<QString, Voice> voices_;
 
-	/// Loads Character definitions (not its resources) from a single file
-	inline void	loadCharacters();
+	/// This one refers to the beginning of the current Scene, as the Novel will always be saved at this point if the User chooses to save
+	/// It is preferred to replay the last Scene, so the User does not lose the context of the Novel upon loading, as this contains Media changes that will not be journalized anywhere else
+	NovelState stateAtSceneBeginning_;
 
-	/// Loads Chapters definitions (not its resources) from a single file
-	inline void	loadChapterDefs();
+	/// Contains current the player's progression, including changes made past the beginning of the Scene
+	NovelState state_;
 
-	/// Loads Chapter resources
-	inline void	loadChapterResources(QString chapterName);
-
-	/// TODO: move to NovelState?
-	/// Loads Stats from a single file
-	inline void	loadStats();
-
-	/// Contains all available Voices
-	QVector<Voice> voices;
-
-	/// Contains all available sceneryObjects
-	QVector<SceneryObject> sceneryObjects;
-
-	/// Contains all available Characters
-	QVector<Character> characters;
-
-	/// Contains all available Chapters, which contain all the Scenes in the Novel
-	QVector<Chapter> chapters;
-
-	/// Current NovelState containing the player's progression
-	/// This one refers to the begninning of current Scene, as the game will always be saved at this point if user chooses to save
-	/// It is needed to replay the last Scene, so user does not lose the context of the Novel, as this contains Media changes that will not be journalized anywhere
-	NovelState saveSceneBegin;
-
-	/// Current NovelState containing the player's progression
-	NovelState save;
+	/// Calculates time since the Save was loaded
+	QElapsedTimer novelStartElapsedTimer_;
 };

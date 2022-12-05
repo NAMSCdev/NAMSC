@@ -8,7 +8,7 @@
 //{
 //public:
 //	ActionStatVisibility() noexcept = default;
-//	ActionStatVisibility(QString&& statName, bool visibility);
+//	ActionStatVisibility(QString&& statName, bool visibility) noexcept;
 //	ActionStatVisibility(const ActionStatVisibility& obj) noexcept { *this = obj; }
 //	ActionStatVisibility& operator=(const ActionStatVisibility& obj) noexcept;
 //
@@ -26,6 +26,7 @@
 //	
 //private:
 //	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
+// /// \return SerializationID corresponding to the class of a serialized object
 //	SerializationID	getType() const override { return SerializationID::ActionStatVisibility; }
 //
 //	/// Whether the Stat is set to visible or not

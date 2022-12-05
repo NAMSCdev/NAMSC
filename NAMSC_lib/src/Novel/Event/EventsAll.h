@@ -1,13 +1,10 @@
 #pragma once
-#include "Global.h"
+#include "Novel/Event/EventChoice.h"
+#include "Novel/Event/EventEndIf.h"
+#include "Novel/Event/EventIf.h"
+#include "Novel/Event/EventInput.h"
+#include "Novel/Event/EventJump.h"
+#include "Novel/Event/EventDialogue.h"
+#include "Novel/Event/EventWait.h"
 
-#include "Novel/Event/Type/EventChoice.h"
-#include "Novel/Event/Type/EventEndIf.h"
-#include "Novel/Event/Type/EventIf.h"
-#include "Novel/Event/Type/EventInput.h"
-#include "Novel/Event/Type/EventJump.h"
-#include "Novel/Event/Type/EventNarrate.h"
-#include "Novel/Event/Type/EventSpeak.h"
-#include "Novel/Event/Type/EventWait.h"
-
-#include "Novel/Event/Type/EventRenPyScript.h"
+//#include "Novel/Event/EventRenPyScript.h"

@@ -1,48 +1,38 @@
 #pragma once
-#include "Global.h"
 
+#include <QList>
+
+#include "Novel/Data/Asset/AssetAnim.h"
 #include "Novel/Data/Visual/Animation/AnimatorInterface.h"
 
 /// Controls an Animation output that will be assigned to change something that is being animated
 template<typename AnimNode>
-class AnimatorBase
+class AnimatorBase : public AnimatorInterface
 {
 public:
-	/// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Animator pointer
-	/// Well actually it is already virtual, since it inherits from AnimatorInterface, but this will make this class an abstract one nonetheless
-	virtual ~AnimatorBase() = 0;
-	AnimatorBase<AnimNode>& operator=(const AnimatorBase<AnimNode>& obj);
+	AnimatorBase()                                                 = delete;
+	AnimatorBase(AssetAnim<AnimNode>* const assetAnim) noexcept;
+	AnimatorBase(const AnimatorBase<AnimNode>& obj)                = delete;
+	AnimatorBase<AnimNode>& operator=(AnimatorBase<AnimNode> obj)  = delete;
+	bool operator==(const AnimatorBase<AnimNode>& obj) const       = delete;
+	bool operator!=(const AnimatorBase<AnimNode>& obj) const       = delete;
+	virtual ~AnimatorBase()                                        = default;
 
-	/// Calculates interpolated state in time that passed from `void run()`
-	AnimNode currentAnimState();
+	/// Calculates interpolated state
+	virtual AnimNode currentAnimState(uint elapsedTime)       = 0;
+
+	uint getDuration();
 
 protected:
-	/// Points to the AnimNodes of some AssetAnim, that contain sequential changes
-	QVector<AnimNode>* nodes;
+	/// Points to the list of AnimNodes from an AssetAnim, which contain sequential changes that happen during the Animation
+	/// These nodes are premultiplied by the Animation speed, so we don't need to waste CPU clocks every `AnimNode currentAnimState()`
+	/// The initial state is added as the first Node, unless there is an AnimNode with `startDelay = 0` 
+	/// \todo check if the first Node is necessary to be added
+	QList<AnimNode> adjustedNodes_;
 
-	/// AssetAnim containing all the AnimNodes
-	AssetAnim<AnimNode>* assetAnim;
+	AssetAnim<AnimNode>* const assetAnim_;
 
 	/// Nodes containing current state and next state that we interpolate into
-	QVector<AnimNode>::const_iterator currentNode,
-									  nextNode;
+	QList<AnimNode>::const_iterator currentNode_,
+									nextNode_;
 };
-
-
-
-
-template<typename AnimNode>
-inline AnimatorBase<AnimNode>::~Animator() = default;
-
-template<typename AnimNode>
-inline AnimatorBase<AnimNode>& AnimatorBase<AnimNode>::operator=(const AnimatorBase<AnimNode>& obj)
-{
-	if (this == &obj) return *this;
-
-	nodes         = obj.nodes;
-	animAsset     = obj.animAsset;
-	currentNode   = nodes->cbegin() + (obj.currentNode - obj.nodes->cbegin());
-	nextNode      = currentNode + 1;
-
-	return *this;
-}

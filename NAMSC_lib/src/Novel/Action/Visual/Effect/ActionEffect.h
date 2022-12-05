@@ -22,7 +22,7 @@
 //	/// Determines the shape of the effect: area that will affect an Image
 //	EffectShape effectShape;
 //
-//	/// Specifies where the effect is placed in local position (in relation to the object's origin, not the vieport's, unless the affected object is the viewport itself)
+//	/// Specifies where the effect is placed in local position (in relation to the object's origin, not the vieport's, unless the affected object is the entire Viewport itself)
 //	QPoint pos;
 //
 //	/// Semi-major and semi-minor axes of an Ellipse or size of a Rectangle
