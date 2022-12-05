@@ -1,26 +1,25 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_engine", "NAMSC_engine\NAMSC_engine.vcxproj", "{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_editor", "NAMSC_editor\NAMSC_editor.vcxproj", "{FEA5FE46-9654-43D3-9649-D1CA26065F51}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_lib", "NAMSC_lib\NAMSC_lib.vcxproj", "{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Release|x64 = Release|x64
+		Release|x64 = Release|x64https://github.com/NAMSCdev/NAMSC/pull/3/conflict?name=NAMSC.sln&ancestor_oid=564d3781452922f56f4a780fb5df2a23bd1e68ee&base_oid=b4be1d9b7b0f66a386b8050c8d8651c35ab45760&head_oid=96e292b61a81e6b3acd8368d8e205c6fa13c1d6d
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Debug|x64.ActiveCfg = Debug|x64
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Debug|x64.Build.0 = Debug|x64
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Release|x64.ActiveCfg = Release|x64
 		{ABE63227-AF31-45B6-8F48-D1AAD151AB2E}.Release|x64.Build.0 = Release|x64
-		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.Debug|x64.ActiveCfg = Debug|x64
-		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.Debug|x64.Build.0 = Debug|x64
-		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.Release|x64.ActiveCfg = Release|x64
-		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.Release|x64.Build.0 = Release|x64
+		{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}.Debug|x64.ActiveCfg = Debug|x64
+		{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}.Debug|x64.Build.0 = Debug|x64
+		{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}.Release|x64.ActiveCfg = Release|x64
+		{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

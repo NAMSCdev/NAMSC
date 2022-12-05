@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Novel">
+      <UniqueIdentifier>{36214bc5-53b9-444d-b035-29bb357617d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action">
+      <UniqueIdentifier>{232a5ccd-93a5-49b2-86a5-55152db056ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visual">
+      <UniqueIdentifier>{064f5d1c-5437-4c14-aec2-437eb36fb371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visual\Animation">
+      <UniqueIdentifier>{a4517f1d-91cf-4c3c-a5a2-23ae6c1da9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Audio">
+      <UniqueIdentifier>{0078a5f0-7852-4ed5-9978-fb3ce84182ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visitor">
+      <UniqueIdentifier>{6080db29-3c5b-4829-a44d-54f8d9c0fc28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data">
+      <UniqueIdentifier>{dc403543-3ce4-4dde-80fc-05f2ff10020e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Text">
+      <UniqueIdentifier>{b71c3b2e-8293-4bd4-8ae8-e22e75f3fd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Stat">
+      <UniqueIdentifier>{3af74631-5db9-42a3-801f-2fb6c210054b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Asset">
+      <UniqueIdentifier>{8d3bdb15-520d-4918-aabb-bb898ee8987e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Asset\Type">
+      <UniqueIdentifier>{18415931-debd-44da-9a65-06e9ef6a6e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Save">
+      <UniqueIdentifier>{b989ef28-2f90-4522-a678-8a5967f03c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Audio">
+      <UniqueIdentifier>{73ef85df-b01b-4e5f-861d-65a15492d6ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Event">
+      <UniqueIdentifier>{fc29e866-ac17-4c5d-8af3-b4f17ebe35ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Event\Type">
+      <UniqueIdentifier>{c2fd8545-1fe5-4602-842d-aa8819cdb9a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Event\Visitor">
+      <UniqueIdentifier>{d860a747-2399-4f09-9f0e-912b03e429a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visual\Animation\Type">
+      <UniqueIdentifier>{7e62eb7b-f272-41df-a723-059756853e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Stat\Type">
+      <UniqueIdentifier>{e03a9efd-a006-4de3-a41d-2c98f192eb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visitor\Type">
+      <UniqueIdentifier>{d1bf0d02-1b06-4d9f-ab30-3a349f1abfd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Event\Visitor\Type">
+      <UniqueIdentifier>{f77a6d81-ef23-4744-8aa1-5b1d0e0e4388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual">
+      <UniqueIdentifier>{a74fd9f0-1d66-48ed-b5d2-d30638b4cb0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation">
+      <UniqueIdentifier>{2c065f27-f045-416b-a0d3-fcc8138b925b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation\Type">
+      <UniqueIdentifier>{80695e86-4de5-4d0c-86ea-542e25620983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Scenery">
+      <UniqueIdentifier>{98612309-1dbf-42f9-b238-9742aa78ef07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel">
+      <UniqueIdentifier>{ff6cb1bc-5cda-4a28-8988-868432074d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data">
+      <UniqueIdentifier>{1928e238-bfba-43aa-be57-356ba90942e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Visual">
+      <UniqueIdentifier>{36f259f0-b216-4cd6-a461-f68b00c9141d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action">
+      <UniqueIdentifier>{0f2c439d-84b9-445e-93f6-a8569c9432a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Stat">
+      <UniqueIdentifier>{e67f42d7-f8fb-401f-afe0-12347570a4a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Audio">
+      <UniqueIdentifier>{80383688-ca9b-42ae-88de-0d80f94e47ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Stat">
+      <UniqueIdentifier>{6c4e7303-a0b7-4d41-bff3-a7f7b27f9ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Stat\Type">
+      <UniqueIdentifier>{d3f64570-2786-41d0-9c59-c43a8b9d8a89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Audio\Type">
+      <UniqueIdentifier>{c8b6e6de-2f4c-49b4-86b3-333ce565db00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Action\Visual\Type">
+      <UniqueIdentifier>{89fc13ea-5c37-4173-9a85-a1f2d970bd59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Visual">
+      <UniqueIdentifier>{812d3ee2-d116-451f-95e1-2efdd8ac6e30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Visual\Animation">
+      <UniqueIdentifier>{95a81c29-1c3a-4a18-9123-738307fd6bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Visitor">
+      <UniqueIdentifier>{e0f63b2b-40d0-4ae7-a89e-25894230489f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Audio\Type">
+      <UniqueIdentifier>{3a2312c8-1947-420f-bf5f-fe92b2979328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Stat\Type">
+      <UniqueIdentifier>{81e733d8-d259-4f5d-a0be-d3139fbd357d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Visual\Animation\Type">
+      <UniqueIdentifier>{321629f0-3569-4261-b8a6-2dd0a2142338}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Action\Visual\Type">
+      <UniqueIdentifier>{39da48b0-4435-4b61-9fd8-394a1cc4f2c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Event">
+      <UniqueIdentifier>{b5822ac6-27c4-4647-8ff9-8ce705e88592}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Event\Type">
+      <UniqueIdentifier>{ec489cd1-8a1f-4e42-b8dc-4e5f78e44d06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Visual\Text">
+      <UniqueIdentifier>{81344b66-6850-4dad-91fd-84fc6b74a98f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Asset">
+      <UniqueIdentifier>{16540dc3-8f9c-468d-ab86-5123fce7994f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Asset\Type">
+      <UniqueIdentifier>{c8c640ec-1776-4185-8bf0-4912b882c869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Stats">
+      <UniqueIdentifier>{fab5695c-d562-4ac8-9644-1f774b6d3113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Audio">
+      <UniqueIdentifier>{fa5206ab-443a-43be-aa4b-48aaf3199d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Save">
+      <UniqueIdentifier>{6a215b0a-00af-4336-96f1-b5bd0b9bc9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Visual\Scenery">
+      <UniqueIdentifier>{45635f6e-1646-414c-891d-750f15305a8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Visual\Animator">
+      <UniqueIdentifier>{798a8b38-d1da-46e9-b680-e37d704fed7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Novel\Data\Visual\Animator\Type">
+      <UniqueIdentifier>{ba19da4b-3990-4ee0-8d0b-d03ee7235116}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Serialization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudio.h">
+      <Filter>Header Files\Novel\Action\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Stat\ActionStat.h">
+      <Filter>Header Files\Novel\Action\Stat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\ActionSceneryObject.h">
+      <Filter>Header Files\Novel\Action\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\ActionsAll.h">
+      <Filter>Header Files\Novel\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Audio\Sound.h">
+      <Filter>Header Files\Novel\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Save\NovelState.h">
+      <Filter>Header Files\Novel\Data\Save</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\Stat.h">
+      <Filter>Header Files\Novel\Data\Stat</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Text\Voice.h">
+      <Filter>Header Files\Novel\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Text\Translation.h">
+      <Filter>Header Files\Novel\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Text\Sentence.h">
+      <Filter>Header Files\Novel\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\Scenery.h">
+      <Filter>Header Files\Novel\Data\Visual\Scenery</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\SceneryObject.h">
+      <Filter>Header Files\Novel\Data\Visual\Scenery</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\Character.h">
+      <Filter>Header Files\Novel\Data\Visual\Scenery</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBase.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Novel.h">
+      <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Scene.h">
+      <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\NovelSettings.h">
+      <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\Event.h">
+      <Filter>Header Files\Novel\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventsAll.h">
+      <Filter>Header Files\Novel\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorInterface.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\NovelFlowInterface.h">
+      <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\ActionCharacter.h">
+      <Filter>Header Files\Novel\Action\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\Visitor\EventVisitor.h">
+      <Filter>Header Files\Novel\Event\Visitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNode.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Asset\AssetAnim.h">
+      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Asset\AssetImage.h">
+      <Filter>Header Files\Novel\Data\Asset\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\StatLongLong.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectColor.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectMove.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectRotate.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectScale.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimMove.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimRotate.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimScale.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimFade.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventInput.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventJump.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventDialogue.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventWait.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventChoice.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventEndIf.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Event\EventIf.h">
+      <Filter>Header Files\Novel\Event\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visitor\ActionVisitorCorrectAsset.h">
+      <Filter>Header Files\Novel\Action\Visitor\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Asset\Asset.h">
+      <Filter>Header Files\Novel\Data\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Audio\MusicPlaylist.h">
+      <Filter>Header Files\Novel\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Audio\AudioSettings.h">
+      <Filter>Header Files\Novel\Data\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Action.h">
+      <Filter>Header Files\Novel\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Chapter.h">
+      <Filter>Header Files\Novel\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Asset\AssetManager.h">
+      <Filter>Header Files\Novel\Data\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visitor\ActionVisitor.h">
+      <Filter>Header Files\Novel\Action\Visitor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Stat\ActionStatSetValue.h">
+      <Filter>Header Files\Novel\Action\Stat\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudioSetMusic.h">
+      <Filter>Header Files\Novel\Action\Audio\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudioSetSounds.h">
+      <Filter>Header Files\Novel\Action\Audio\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\ActionCharacterSetVoice.h">
+      <Filter>Header Files\Novel\Action\Visual\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\ActionSceneryObjectSetImage.h">
+      <Filter>Header Files\Novel\Action\Visual\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\ActionSetBackground.h">
+      <Filter>Header Files\Novel\Action\Visual\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.h">
+      <Filter>Header Files\Novel\Data\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimColor.h">
+      <Filter>Header Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Text\Choice.h">
+      <Filter>Header Files\Novel\Data\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\StatString.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Evaluators.h">
+      <Filter>Header Files\Novel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Data\Stat\StatDouble.h">
+      <Filter>Header Files\Novel\Data\Stat\Type</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Novel\Action\ActionAudioRun.cpp">
+      <Filter>Source Files\Novel\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\ActionStatsRun.cpp">
+      <Filter>Source Files\Novel\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\ActionVisualRun.cpp">
+      <Filter>Source Files\Novel\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Novel.cpp">
+      <Filter>Source Files\Novel\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Stat\ActionStat.cpp">
+      <Filter>Source Files\Novel\Action\Stat</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visitor\ActionVisitorCorrectAsset.cpp">
+      <Filter>Source Files\Novel\Action\Visitor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Audio\ActionSetMusic.cpp">
+      <Filter>Source Files\Novel\Action\Audio\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Audio\ActionSetSounds.cpp">
+      <Filter>Source Files\Novel\Action\Audio\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Stat\ActionStatSetValue.cpp">
+      <Filter>Source Files\Novel\Action\Stat\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimColor.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimMove.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimRotate.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimScale.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimFade.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\ActionSceneryObjectSetImage.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\ActionCharacterSetVoice.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\ActionSceneryObject.cpp">
+      <Filter>Source Files\Novel\Action\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.cpp">
+      <Filter>Source Files\Novel\Action\Visual\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Action.cpp">
+      <Filter>Source Files\Novel\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\Event.cpp">
+      <Filter>Source Files\Novel\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventChoice.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventEndIf.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventIf.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventInput.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventJump.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventDialogue.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Event\EventWait.cpp">
+      <Filter>Source Files\Novel\Event\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Text\Choice.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Text\Sentence.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Text\Translation.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Text\Voice.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\ActionSetBackground.cpp">
+      <Filter>Source Files\Novel\Action\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Audio\ActionAudio.cpp">
+      <Filter>Source Files\Novel\Action\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Asset\Asset.cpp">
+      <Filter>Source Files\Novel\Data\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Asset\AssetManager.cpp">
+      <Filter>Source Files\Novel\Data\Asset</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Asset\AssetAnim.cpp">
+      <Filter>Source Files\Novel\Data\Asset\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Asset\AssetImage.cpp">
+      <Filter>Source Files\Novel\Data\Asset\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Stat\Stat.cpp">
+      <Filter>Source Files\Novel\Data\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Stat\StatDouble.cpp">
+      <Filter>Source Files\Novel\Data\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Stat\StatLongLong.cpp">
+      <Filter>Source Files\Novel\Data\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Stat\StatString.cpp">
+      <Filter>Source Files\Novel\Data\Stats</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Chapter.cpp">
+      <Filter>Source Files\Novel\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\NovelSettings.cpp">
+      <Filter>Source Files\Novel\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Scene.cpp">
+      <Filter>Source Files\Novel\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Save\NovelState.cpp">
+      <Filter>Source Files\Novel\Data\Save</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\SceneryObject.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Scenery</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\Character.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Scenery</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\Scenery.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Scenery</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimNode.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorBase.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorInterface.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectColor.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectMove.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectRotate.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectScale.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\AnimatorUpdate.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.cpp">
+      <Filter>Source Files\Novel\Data\Visual\Animator\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Action\Visual\ActionCharacter.cpp">
+      <Filter>Source Files\Novel\Action\Visual</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Audio\AudioSettings.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Audio\MusicPlaylist.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Audio\Sound.cpp">
+      <Filter>Source Files\Novel\Data\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

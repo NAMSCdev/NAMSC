@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2B6FC3B0-7489-46B3-B077-B4F88DDA2D52}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.22621.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.20348.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>6.2.4_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets;multimedia;qml</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeploy>false</QtDeploy>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.2.4_msvc2019_64</QtInstall>
+    <QtModules>core;gui;widgets;multimedia;qml</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+    <VcpkgManifestInstall>false</VcpkgManifestInstall>
+    <VcpkgAutoLink>false</VcpkgAutoLink>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>./src;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>./src;./include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>NAMSC_LIB_LIB;BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>NAMSC_LIB_LIB;BUILD_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Exceptions.h" />
+    <ClInclude Include="src\Helpers.h" />
+    <ClInclude Include="src\Novel\Data\Chapter.h" />
+    <ClInclude Include="src\Novel\Data\Text\Choice.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.h" />
+    <ClInclude Include="src\Serialization.h" />
+    <ClInclude Include="src\Novel\Action\Visitor\ActionVisitorCorrectAsset.h" />
+    <ClInclude Include="src\Novel\Action\Action.h" />
+    <ClInclude Include="src\Novel\Action\ActionsAll.h" />
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudio.h" />
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudioSetMusic.h" />
+    <ClInclude Include="src\Novel\Action\Audio\ActionAudioSetSounds.h" />
+    <ClInclude Include="src\Novel\Action\Stat\ActionStat.h" />
+    <ClInclude Include="src\Novel\Action\Stat\ActionStatSetValue.h" />
+    <ClInclude Include="src\Novel\Action\Visitor\ActionVisitor.h" />
+    <ClInclude Include="src\Novel\Action\Visual\ActionCharacter.h" />
+    <ClInclude Include="src\Novel\Action\Visual\ActionSceneryObject.h" />
+    <ClInclude Include="src\Novel\Action\Visual\ActionSceneryObjectSetImage.h" />
+    <ClInclude Include="src\Novel\Action\Visual\ActionCharacterSetVoice.h" />
+    <ClInclude Include="src\Novel\Action\Visual\ActionSetBackground.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.h" />
+    <ClInclude Include="src\Novel\Data\Asset\Asset.h" />
+    <ClInclude Include="src\Novel\Data\Asset\AssetManager.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimColor.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimMove.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimRotate.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimScale.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimFade.h" />
+    <ClInclude Include="src\Novel\Data\Asset\AssetAnim.h" />
+    <ClInclude Include="src\Novel\Data\Asset\AssetImage.h" />
+    <ClInclude Include="src\Novel\Data\Audio\AudioSettings.h" />
+    <ClInclude Include="src\Novel\Data\Audio\MusicPlaylist.h" />
+    <ClInclude Include="src\Novel\Data\Audio\Sound.h" />
+    <ClInclude Include="src\Novel\Data\Novel.h" />
+    <ClInclude Include="src\Novel\Data\NovelFlowInterface.h" />
+    <ClInclude Include="src\Novel\Data\Save\NovelState.h" />
+    <ClInclude Include="src\Novel\Data\Scene.h" />
+    <ClInclude Include="src\Novel\Data\Stat\Stat.h" />
+    <ClInclude Include="src\Novel\Data\NovelSettings.h" />
+    <ClInclude Include="src\Novel\Data\Stat\StatDouble.h" />
+    <ClInclude Include="src\Novel\Data\Stat\StatLongLong.h" />
+    <ClInclude Include="src\Novel\Data\Stat\StatString.h" />
+    <ClInclude Include="src\Novel\Data\Text\Sentence.h" />
+    <ClInclude Include="src\Novel\Data\Text\Translation.h" />
+    <ClInclude Include="src\Novel\Data\Text\Voice.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBase.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectColor.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorInterface.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectMove.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectRotate.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectScale.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNode.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\Character.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\Scenery.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Scenery\SceneryObject.h" />
+    <ClInclude Include="src\Novel\Evaluators.h" />
+    <ClInclude Include="src\Novel\Event\Event.h" />
+    <ClInclude Include="src\Novel\Event\EventChoice.h" />
+    <ClInclude Include="src\Novel\Event\EventEndIf.h" />
+    <ClInclude Include="src\Novel\Event\EventIf.h" />
+    <ClInclude Include="src\Novel\Event\EventInput.h" />
+    <ClInclude Include="src\Novel\Event\EventJump.h" />
+    <ClInclude Include="src\Novel\Event\EventsAll.h" />
+    <ClInclude Include="src\Novel\Event\EventDialogue.h" />
+    <ClInclude Include="src\Novel\Event\EventWait.h" />
+    <ClInclude Include="src\Novel\Event\Visitor\EventVisitor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Exceptions.cpp" />
+    <ClCompile Include="src\Helpers.cpp" />
+    <ClCompile Include="src\Novel\Action\Action.cpp" />
+    <ClCompile Include="src\Novel\Action\ActionAudioRun.cpp" />
+    <ClCompile Include="src\Novel\Action\ActionStatsRun.cpp" />
+    <ClCompile Include="src\Novel\Action\ActionVisualRun.cpp" />
+    <ClCompile Include="src\Novel\Action\Audio\ActionAudio.cpp" />
+    <ClCompile Include="src\Novel\Action\Audio\ActionSetMusic.cpp" />
+    <ClCompile Include="src\Novel\Action\Audio\ActionSetSounds.cpp" />
+    <ClCompile Include="src\Novel\Action\Stat\ActionStat.cpp" />
+    <ClCompile Include="src\Novel\Action\Stat\ActionStatSetValue.cpp" />
+    <ClCompile Include="src\Novel\Action\Visitor\ActionVisitorCorrectAsset.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\ActionCharacter.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\ActionCharacterSetVoice.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\ActionSceneryObject.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\ActionSceneryObjectSetImage.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\ActionSetBackground.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimColor.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimMove.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimRotate.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimScale.cpp" />
+    <ClCompile Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimFade.cpp" />
+    <ClCompile Include="src\Novel\Data\Asset\Asset.cpp" />
+    <ClCompile Include="src\Novel\Data\Asset\AssetAnim.cpp" />
+    <ClCompile Include="src\Novel\Data\Asset\AssetImage.cpp" />
+    <ClCompile Include="src\Novel\Data\Asset\AssetManager.cpp" />
+    <ClCompile Include="src\Novel\Data\Audio\AudioSettings.cpp" />
+    <ClCompile Include="src\Novel\Data\Audio\MusicPlaylist.cpp" />
+    <ClCompile Include="src\Novel\Data\Audio\Sound.cpp" />
+    <ClCompile Include="src\Novel\Data\Chapter.cpp" />
+    <ClCompile Include="src\Novel\Data\Novel.cpp" />
+    <ClCompile Include="src\Novel\Data\NovelSettings.cpp" />
+    <ClCompile Include="src\Novel\Data\Save\NovelState.cpp" />
+    <ClCompile Include="src\Novel\Data\Scene.cpp" />
+    <ClCompile Include="src\Novel\Data\Stat\Stat.cpp" />
+    <ClCompile Include="src\Novel\Data\Stat\StatDouble.cpp" />
+    <ClCompile Include="src\Novel\Data\Stat\StatLongLong.cpp" />
+    <ClCompile Include="src\Novel\Data\Stat\StatString.cpp" />
+    <ClCompile Include="src\Novel\Data\Text\Choice.cpp" />
+    <ClCompile Include="src\Novel\Data\Text\Sentence.cpp" />
+    <ClCompile Include="src\Novel\Data\Text\Translation.cpp" />
+    <ClCompile Include="src\Novel\Data\Text\Voice.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\AnimatorUpdate.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorBase.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorInterface.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterface.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectColor.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectMove.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectRotate.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectScale.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Animation\AnimNode.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\Character.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\Scenery.cpp" />
+    <ClCompile Include="src\Novel\Data\Visual\Scenery\SceneryObject.cpp" />
+    <ClCompile Include="src\Novel\Event\Event.cpp" />
+    <ClCompile Include="src\Novel\Event\EventChoice.cpp" />
+    <ClCompile Include="src\Novel\Event\EventEndIf.cpp" />
+    <ClCompile Include="src\Novel\Event\EventIf.cpp" />
+    <ClCompile Include="src\Novel\Event\EventInput.cpp" />
+    <ClCompile Include="src\Novel\Event\EventJump.cpp" />
+    <ClCompile Include="src\Novel\Event\EventDialogue.cpp" />
+    <ClCompile Include="src\Novel\Event\EventWait.cpp" />
+    <ClCompile Include="src\Serialization.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
