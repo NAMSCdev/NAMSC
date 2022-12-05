@@ -454,5 +454,5 @@ compile_commands.json
 
 *_qmlcache.qrc
 
-# others
-vcpkg_installed
+# vcpkg packages
+vcpkg_installed/

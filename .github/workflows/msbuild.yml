@@ -1,0 +1,63 @@
+name: MSBuild
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Debug
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: setup vcpkg
+      run: | 
+        git clone https://github.com/microsoft/vcpkg
+        .\vcpkg\bootstrap-vcpkg.bat
+        vcpkg integrate install
+        vcpkg x-update-baseline --add-initial-baseline
+        
+    - name: Cache vcpkg modules
+      id: cache-vcpkg
+      uses: actions/cache@v3
+      env:
+         cache-name: cache-vcpkg
+      with:
+          path: | 
+            C:/vcpkg/installed/
+            C:/Users/runneradmin/AppData/Local/vcpkg/archives
+          key: vcpkg-cache-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            vcpkg-cache-
+            
+    
+    - name: vcpkg install packages
+      run: vcpkg install --triplet=x64-windows --feature-flags="versions"
+      
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
