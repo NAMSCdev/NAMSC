@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LanguageSettingsWidgetClass</class>
+ <widget class="QFrame" name="LanguageSettingsWidgetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>LanguageSettingsWidget</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="languageSettingsLabel">
+     <property name="font">
+      <font>
+       <pointsize>32</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Language</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="languageSettingsComboBox">
+     <property name="currentText">
+      <string/>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

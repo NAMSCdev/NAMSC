@@ -21,6 +21,21 @@
       <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
       <Extensions>ts</Extensions>
     </Filter>
+    <Filter Include="Header Files\Settings">
+      <UniqueIdentifier>{35820690-f7a9-4935-8d78-e1f1c85250fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Settings\Settings widgets">
+      <UniqueIdentifier>{b743d2d5-66e9-424a-b275-0d41102f97d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Settings">
+      <UniqueIdentifier>{17d45445-aa3f-4de9-97e4-3d95b7a954b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Settings\Settings widgets">
+      <UniqueIdentifier>{2fa586f6-d824-4e87-b98e-6f3554fa3347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\Settings widgets">
+      <UniqueIdentifier>{86bddd7a-a751-4cc5-b33c-9d820b5b0690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="mainWindow.qrc">
@@ -55,11 +70,20 @@
     <ClCompile Include="VNButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainSettingsMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VolumeSettingsWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Settings\Settings widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="TextSpeedSettingsWidget.cpp">
+      <Filter>Source Files\Settings\Settings widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="MainSettingsMenu.cpp">
+      <Filter>Source Files\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenModeSettingsWidget.cpp">
+      <Filter>Source Files\Settings\Settings widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="LanguageSettingsWidget.cpp">
+      <Filter>Source Files\Settings\Settings widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,16 +96,34 @@
     <QtMoc Include="VNButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="MainSettingsMenu.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="VolumeSettingsWidget.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Settings\Settings widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="TextSpeedSettingsWidget.h">
+      <Filter>Header Files\Settings\Settings widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="MainSettingsMenu.h">
+      <Filter>Header Files\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="ScreenModeSettingsWidget.h">
+      <Filter>Header Files\Settings\Settings widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="LanguageSettingsWidget.h">
+      <Filter>Header Files\Settings\Settings widgets</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ScreenModeSettingsWidget.ui">
+      <Filter>Form Files\Settings widgets</Filter>
+    </QtUic>
+    <QtUic Include="TextSpeedSettingsWidget.ui">
+      <Filter>Form Files\Settings widgets</Filter>
+    </QtUic>
     <QtUic Include="VolumeSettingsWidget.ui">
-      <Filter>Form Files</Filter>
+      <Filter>Form Files\Settings widgets</Filter>
+    </QtUic>
+    <QtUic Include="LanguageSettingsWidget.ui">
+      <Filter>Form Files\Settings widgets</Filter>
     </QtUic>
   </ItemGroup>
 </Project>

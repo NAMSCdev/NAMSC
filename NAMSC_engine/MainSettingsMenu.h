@@ -3,8 +3,13 @@
 #include <QFrame>
 #include <QGraphicsScene>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include "VolumeSettingsWidget.h"
 #include <QGraphicsProxyWidget>
+
+#include "LanguageSettingsWidget.h"
+#include "ScreenModeSettingsWidget.h"
+#include "TextSpeedSettingsWidget.h"
 
 class MainSettingsMenu  : public QGraphicsScene
 {
@@ -14,12 +19,19 @@ public:
 	MainSettingsMenu(QObject *parent);
 	~MainSettingsMenu();
 
+	void setScreenModeSettingsListener(QObject* receiver, std::function<void(int)> onClicked);
+
 private:
+	QImage* background;
 	QGraphicsProxyWidget* settingsBox;
 	VolumeSettingsWidget* volumeSettingsWidget;
+	TextSpeedSettingsWidget* textSpeedSettingsWidget;
+	ScreenModeSettingsWidget* screenModeSettingsWidget;
+	LanguageSettingsWidget* languageSettingsWidget;
 	QHBoxLayout* settingsLayout;
-	// TODO add vertical layout for each column
-
+	QVBoxLayout* leftColumnLayout;
+	QVBoxLayout* rightColumnLayout;
+	
 	void initializeSettingsBox();
 
 private slots:

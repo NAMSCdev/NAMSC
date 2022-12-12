@@ -103,17 +103,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LanguageSettingsWidget.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainSettingsMenu.cpp" />
     <ClCompile Include="QVNMenuButton.cpp" />
+    <ClCompile Include="ScreenModeSettingsWidget.cpp" />
+    <ClCompile Include="TextSpeedSettingsWidget.cpp" />
     <ClCompile Include="VNButton.cpp" />
     <ClCompile Include="VolumeSettingsWidget.cpp" />
     <QtRcc Include="mainWindow.qrc" />
+    <QtUic Include="LanguageSettingsWidget.ui" />
     <QtUic Include="mainWindow.ui" />
     <QtMoc Include="mainWindow.h" />
     <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_engine.ico" />
+    <QtUic Include="ScreenModeSettingsWidget.ui" />
+    <QtUic Include="TextSpeedSettingsWidget.ui" />
     <QtUic Include="VolumeSettingsWidget.ui" />
     <ResourceCompile Include="NAMSC_engine.rc" />
   </ItemGroup>
@@ -131,6 +137,15 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="VolumeSettingsWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="TextSpeedSettingsWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ScreenModeSettingsWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="LanguageSettingsWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

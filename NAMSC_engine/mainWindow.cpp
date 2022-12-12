@@ -16,9 +16,11 @@ mainWindow::mainWindow(QWidget *parent)
 
     //connect(mainMenu->settingsButton->widget(), SIGNAL(clicked()), this, SLOT(changeSceneToSettings()));
     mainMenu->setOnClickedListener(this, std::bind(&mainWindow::changeSceneToSettings, this));
+    mainSettingsMenu->setScreenModeSettingsListener(this, [&](int isFullscreen) { setWindowState(windowState() ^ Qt::WindowFullScreen); });
 
 	ui.graphicsView->setScene(mainMenu);
     ui.graphicsView->setFrameStyle(0);
+
 }
 
 mainWindow::~mainWindow()

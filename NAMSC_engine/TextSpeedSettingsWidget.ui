@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TextSpeedSettingsWidgetClass</class>
+ <widget class="QFrame" name="TextSpeedSettingsWidgetClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>560</width>
+    <height>175</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TextSpeedSettingsWidget</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="textSpeedLabel">
+     <property name="font">
+      <font>
+       <pointsize>32</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Text speed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSlider" name="textSpeedSlider">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

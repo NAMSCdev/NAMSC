@@ -18,8 +18,8 @@ public:
 	void setOnClickedListener(QObject* receiver, std::function<void()> onClicked);
 
 private:
-	QPixmap background;
-	QPixmap logo;
+	QImage background;
+	QImage logo; // TODO? change to list of graphics/images?
 	QGraphicsProxyWidget* newGameButton;
 	QGraphicsProxyWidget* loadGameSaveButton;
 	QGraphicsProxyWidget* settingsButton;
