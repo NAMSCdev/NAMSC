@@ -5,7 +5,7 @@ class NovelFlowInterface
 {
 public:
 	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an NovelFlowInterface pointer
-	virtual ~NovelFlowInterface() = 0;
+	virtual ~NovelFlowInterface() = default;
 
 	/// Checks if the NovelFlowInterface doesn't have any errors, which would halt the Novel execution
 	/// \param bComprehensive Checks more error-prone code. This is not desired when loading time is a concern

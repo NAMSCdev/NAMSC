@@ -67,6 +67,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.propertiesLayout->addWidget(cbutton);
     ui.propertiesLayout->addWidget(props);
     ui.propertiesLayout->addStretch();
+
+    if (QFile::exists("plik")) {
+        QFile file = { "plik" };
+        QDataStream ds(&file);
+        //ds >> novel;
+    }
 }
 
 NAMSC_editor::~NAMSC_editor()
