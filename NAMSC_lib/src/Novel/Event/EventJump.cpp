@@ -60,6 +60,10 @@ bool EventJump::checkForErrors(bool bComprehensive) const
 	return bError;
 }
 
+void EventJump::run()
+{
+}
+
 void EventJump::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QString jumpToSceneName, QString condition)> onRun) noexcept
 { 
 	onRun_ = onRun; 

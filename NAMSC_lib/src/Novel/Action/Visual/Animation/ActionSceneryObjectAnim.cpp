@@ -2,6 +2,16 @@
 
 #include "Novel/Data/Scene.h"
 
+template class ActionSceneryObjectAnim<AnimNodeDouble1D>;
+template class ActionSceneryObjectAnim<AnimNodeDouble2D>;
+template class ActionSceneryObjectAnim<AnimNodeDouble3D>;
+template class ActionSceneryObjectAnim<AnimNodeDouble4D>;
+
+template class ActionSceneryObjectAnim<AnimNodeLongLong1D>;
+template class ActionSceneryObjectAnim<AnimNodeLongLong2D>;
+template class ActionSceneryObjectAnim<AnimNodeLongLong3D>;
+template class ActionSceneryObjectAnim<AnimNodeLongLong4D>;
+
 template <class AnimNode>
 ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene) noexcept
 	: ActionSceneryObject(parentEvent, parentScene)
@@ -36,7 +46,7 @@ template <class AnimNode>
 bool ActionSceneryObjectAnim<AnimNode>::operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept
 {
 	if (this == &obj)
-		return *this;
+		return true;
 
 	return	ActionSceneryObject::operator==(obj)                    &&
 			assetAnimName_ == obj.assetAnimName_                    &&
@@ -61,8 +71,7 @@ bool ActionSceneryObjectAnim<AnimNode>::checkForErrors(bool bComprehensive) cons
 			if (assetAnimName_ != "")
 				qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "AssetAnim \"" << assetAnimName_ << "\" does not exist or read. Definition file might be corrupted";
 		}
-
-		bError |= assetAnim_->checkForErrors(bComprehensive);
+		else bError |= assetAnim_->checkForErrors(bComprehensive);
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
@@ -75,8 +84,8 @@ bool ActionSceneryObjectAnim<AnimNode>::checkForErrors(bool bComprehensive) cons
 template <class AnimNode>
 void ActionSceneryObjectAnim<AnimNode>::ensureResourcesAreLodaded()
 {
-	if (assetAnim_.isLoaded())
-		assetAnim_.load();
+	if (assetAnim_->isLoaded())
+		assetAnim_->load();
 }
 
 //SetAssetAnim is defined in concrete ActionSceneryObjectAnims

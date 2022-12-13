@@ -38,6 +38,7 @@ private:
 	/// \param expression Contains formula for calculating a new value for the Stat. It could refer to other Stats and perfrom arithmetic operations on them
 	std::function<void(Event* const parentEvent, Scene* const parentScene, Stat* stat, QString expression)> onRun_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

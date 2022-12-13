@@ -2,6 +2,7 @@
 
 #include <QDataStream>
 #include <QVarLengthArray>
+#include "Serialization.h"
 
 enum class AnimNodeType
 {
@@ -22,11 +23,10 @@ struct AnimNodeBase
 	AnimNodeBase() = default;
 	AnimNodeBase(uint timeStamp, AnimInterpolationMethod interpolationMethod);
 
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream& dataStream, AnimNodeBase&);
-	friend QDataStream& operator<<(QDataStream& dataStream, const AnimNodeBase&);
-
-	bool operator<(const AnimNodeBase& rhs);
+	bool operator<(const AnimNodeBase& rhs) const noexcept;
+	bool operator<(uint rhs) const noexcept;
+	bool operator==(const AnimNodeBase& rhs) const noexcept;
+	bool operator==(uint rhs) const noexcept;
 
 	/// Time point (in milliseconds) when the Animation will achieve this Node's state
 	uint timeStamp = 0;
@@ -34,6 +34,8 @@ struct AnimNodeBase
 	AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear;
 
 protected:
+
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
@@ -54,6 +56,8 @@ struct AnimNodeDouble final : public AnimNodeBase
 	QVarLengthArray<double, dimension> state_;
 
 private:
+
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
@@ -73,6 +77,8 @@ struct AnimNodeLongLong final : public AnimNodeBase
 	QVarLengthArray<long long, dimension> state_;
 
 private:
+
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

@@ -42,6 +42,7 @@ private:
 	/// A function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read
 	std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

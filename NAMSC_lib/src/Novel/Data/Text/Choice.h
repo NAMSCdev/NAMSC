@@ -9,9 +9,6 @@
 
 class Choice
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Choice&);
-	friend QDataStream& operator<<(QDataStream&, const Choice&);
 	struct ChoiceDisplayOptions;
 public:
 	Choice()                                 = default;
@@ -46,10 +43,6 @@ public:
 	/// [optional] 
 	struct ChoiceDisplayOptions
 	{
-		//Friends for serialization
-		friend QDataStream& operator>>(QDataStream&, ChoiceDisplayOptions&);
-		friend QDataStream& operator<<(QDataStream&, const ChoiceDisplayOptions&);
-
 		ChoiceDisplayOptions()                                 = default;
 		/// \exception Error The found `font_` might be the wrong one (Qt finds the closest one, not the specific one) or could not be read at all
 		ChoiceDisplayOptions(const QString& fontName, uint fontSize, bool bHideIfConditionNotMet, uint buttonWeight, uint spacerWeight);
@@ -82,6 +75,7 @@ public:
 		/// Custom Image for a button
 		AssetImage* assetImage     = nullptr;
 
+	public:
 		//---SERIALIZATION---
 		/// Loading an object from a binary file
 		/// \param dataStream Stream (presumably connected to a QFile) to read from
@@ -94,6 +88,7 @@ public:
 private:
 	std::function<void(QString name, Translation* text, QString condition, QString jumpToSceneName)> onRun_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

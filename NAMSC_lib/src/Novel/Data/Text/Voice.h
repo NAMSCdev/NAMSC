@@ -12,7 +12,7 @@ class Voice
 {
 	//Friends for serialization
 	friend QDataStream& operator>>(QDataStream&, Voice&);
-	friend QDataStream& operator<<(QDataStream&, const Voice&);
+	//friend QDataStream& operator<<(QDataStream&, const Voice&);
 public:
 	/// [optional] If a Character is compatible with Live2D, we can animate its lips while they are talking
 	enum class LipSyncType
@@ -75,7 +75,7 @@ private:
 	QFont   font_;
 	uint    fontSize_           = 12;
 
-	//---SERIALIZATION---
+public://---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream);

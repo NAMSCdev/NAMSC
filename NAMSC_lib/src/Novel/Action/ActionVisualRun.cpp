@@ -11,8 +11,6 @@ void ActionCharacter::run()
 
 void ActionSceneryObjectAnimColor::run()
 {
-	ActionSceneryObjectAnim<AnimNodeDouble4D>::run();
-
 	NovelState::getCurrentlyLoadedState()->scenery.addAnimator(AnimatorSceneryObjectColor(sceneryObject_, assetAnim_, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd));
 
 	if (onRun_)
@@ -21,8 +19,6 @@ void ActionSceneryObjectAnimColor::run()
 
 void ActionSceneryObjectAnimMove::run()
 {
-	ActionSceneryObjectAnim<AnimNodeDouble2D>::run();
-
 	NovelState::getCurrentlyLoadedState()->scenery.addAnimator(AnimatorSceneryObjectMove(sceneryObject_, assetAnim_, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd));
 
 	if (onRun_)
@@ -31,8 +27,6 @@ void ActionSceneryObjectAnimMove::run()
 
 void ActionSceneryObjectAnimRotate::run()
 {
-	ActionSceneryObjectAnim<AnimNodeDouble1D>::run();
-
 	NovelState::getCurrentlyLoadedState()->scenery.addAnimator(AnimatorSceneryObjectRotate(sceneryObject_, assetAnim_, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd));
 
 	if (onRun_)
@@ -41,8 +35,6 @@ void ActionSceneryObjectAnimRotate::run()
 
 void ActionSceneryObjectAnimScale::run()
 {
-	ActionSceneryObjectAnim<AnimNodeDouble2D>::run();
-
 	NovelState::getCurrentlyLoadedState()->scenery.addAnimator(AnimatorSceneryObjectScale(sceneryObject_, assetAnim_, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd));
 
 	if (onRun_)

@@ -14,9 +14,6 @@ class Event : public NovelFlowInterface
 	friend class Scene;
 	//Good Friends who Visit us (Events) often :>
 	friend class EventVisitorChangeID;
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Event&);
-	friend QDataStream& operator<<(QDataStream&, const Event&);
 public:
 	Event(Scene* const parentScene) noexcept;
 	Event(Scene* const parentScene, const QString label);
@@ -57,6 +54,7 @@ protected:
 
 	Scene* const parentScene_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

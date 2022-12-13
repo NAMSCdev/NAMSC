@@ -10,9 +10,6 @@ class ActionVisitorCorrectSounds;
 struct Sound final
 {
 	friend ActionVisitorCorrectSounds;
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Sound&);
-	friend QDataStream& operator<<(QDataStream&, const Sound&);
 public:
 	Sound()                                 = default;
 	/// \exception Error Couldn't find/read the File under `soundFilePath`
@@ -52,6 +49,7 @@ public:
 private:
 	//std::unique_ptr<QSoundEffect> qSoundEffect_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

@@ -64,12 +64,14 @@ bool ActionSetBackground::checkForErrors(bool bComprehensive) const
 	return bError;
 }
 
-
-/// Sets a function pointer that is called (if not nullptr) after the ActionSetBackground's `void run()` allowing for data read
-
 void ActionSetBackground::acceptVisitor(ActionVisitor* visitor) 
 {
 	visitor->visitActionSetBackground(this); 
+}
+
+void ActionSetBackground::run()
+{
+
 }
 
 void ActionSetBackground::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun) noexcept

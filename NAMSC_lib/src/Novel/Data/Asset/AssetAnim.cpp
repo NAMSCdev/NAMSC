@@ -1,5 +1,15 @@
 #include "Novel/Data/Asset/AssetAnim.h"
 
+template class AssetAnim<AnimNodeDouble1D>;
+template class AssetAnim<AnimNodeDouble2D>;
+template class AssetAnim<AnimNodeDouble3D>;
+template class AssetAnim<AnimNodeDouble4D>;
+
+template class AssetAnim<AnimNodeLongLong1D>;
+template class AssetAnim<AnimNodeLongLong2D>;
+template class AssetAnim<AnimNodeLongLong3D>;
+template class AssetAnim<AnimNodeLongLong4D>;
+
 AssetAnimBase::AssetAnimBase(const QString& name, uint size, uint pos, const QString& path)
 	: Asset(name, size, pos, path)
 {
@@ -33,7 +43,7 @@ bool AssetAnim<AnimNode>::checkForErrors(bool bComprehensive) const
 template<typename AnimNode>
 void AssetAnim<AnimNode>::insertAnimNode(const AnimNode& newNode)
 {
-	if (animNodes_.contains(newNode.timeStamp))
+	if (std::find(animNodes_.cbegin(), animNodes_.cend(), newNode.timeStamp) != animNodes_.cend())
 	{
 		qCritical() << this << "There already exists an AnimNode in the AssetAnim (object's name: \"" << name << "\") with `timeStamp` " << QString::number(newNode.timeStamp);
 		return;
@@ -76,7 +86,7 @@ void AssetAnim<AnimNode>::load()
 }
 
 template<typename AnimNode>
-bool AssetAnim<AnimNode>::isLoaded() const { return !animNodes_.isEmpty(); }
+bool AssetAnim<AnimNode>::isLoaded() const { return !animNodes_.empty(); }
 
 template<typename AnimNode>
 void AssetAnim<AnimNode>::unload() noexcept { animNodes_.clear(); }

@@ -7,10 +7,6 @@
 /// All the media managed by the library
 struct Scenery final
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Scenery&);
-	friend QDataStream& operator<<(QDataStream&, const Scenery&);
-
 	Scenery()                                 = default;
 	Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::unordered_map<QString, Character>& displayedCharacters, const std::unordered_map<QString, SceneryObject>& displayedSceneryObjects, const std::unordered_map<QString, Sound>& sounds);
 	Scenery(const Scenery& obj)               = default;
@@ -78,6 +74,7 @@ private:
 	/// `void update()` should remove already played ones
 	std::unordered_map<QString, Sound> sounds_;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

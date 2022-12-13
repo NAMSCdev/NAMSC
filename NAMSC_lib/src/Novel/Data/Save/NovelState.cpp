@@ -7,6 +7,7 @@
 #include "Novel/Data/Stat/StatDouble.h"
 #include "Novel/Data/Stat/StatLongLong.h"
 #include "Novel/Data/Stat/StatString.h"
+#include "Serialization.h"
 
 NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID)
     : saveDate(saveDate), screenshot(screenshot), scenery(scenery), saveSlot(saveSlot), sceneName(sceneName), eventID(eventID)
@@ -156,8 +157,11 @@ void NovelState::serializableLoad(QDataStream& dataStream)
             qCritical() << this << "Could not find a Stat's type " << static_cast<int>(type) << '!';
             break;
         }
-        dataStream >> *stat;
-        stats_.emplace(stat->name, std::move(std::unique_ptr<Stat>(stat)));
+        if (stat)
+        {
+            dataStream >> *stat;
+            stats_.emplace(stat->name, std::move(std::unique_ptr<Stat>(stat)));
+        }
     }
     checkForErrors();
 }
@@ -167,5 +171,5 @@ void NovelState::serializableSave(QDataStream& dataStream) const
     dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << stats_.size();
 
     for (const std::pair<const QString, std::unique_ptr<Stat>>& stat : stats_)
-        dataStream << *(stat.second);
+        dataStream << *(stat.second.get());
 }

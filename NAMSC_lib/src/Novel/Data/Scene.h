@@ -10,9 +10,6 @@ class Scene final : public NovelFlowInterface
 {
 	//Our overlord
 	friend class Novel;
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, SceneryObject&);
-	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
 	//Other Friends
 	friend class Event;
 	friend class NovelSettings;
@@ -67,6 +64,7 @@ private:
 
 	std::vector<std::unique_ptr<Event>> events_;
 
+public:
 	//---SERIALIZATION---
 	/// \exception Critical Could not find a Stat's type, so the whole becomes unreadable
 	/// Loading an object from a binary file

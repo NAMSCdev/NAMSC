@@ -36,6 +36,7 @@ private:
 	/// A function pointer that is called (if not nullptr) after the EventWait's `void run()` allowing for data read
 	std::function<void(Event* const parentEvent, Scene* const parentScene, uint waitTime)> onRun_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

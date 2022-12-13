@@ -13,9 +13,6 @@
 /// Holds data for a drawable object
 class SceneryObject
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, SceneryObject&);
-	friend QDataStream& operator<<(QDataStream&, const SceneryObject&);
 public:
 	SceneryObject()                                 = default;
 	/// \exception Error Couldn't find/read the AssetImage named `assetImageName`
@@ -81,6 +78,7 @@ protected:
 	//[optional] create this class and it will store AssetImages with custom names for image filtering (useful in Editor)
 	//std::vector<SceneryObjectPart> parts;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

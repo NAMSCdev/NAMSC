@@ -11,7 +11,7 @@ class AnimatorBase : public AnimatorInterface
 {
 public:
 	AnimatorBase()                                                 = delete;
-	AnimatorBase(AssetAnim<AnimNode>* const assetAnim) noexcept;
+	AnimatorBase(AssetAnim<AnimNode>* const assetAnim ,uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd) noexcept;
 	AnimatorBase(const AnimatorBase<AnimNode>& obj)                = delete;
 	AnimatorBase(AnimatorBase<AnimNode>&& obj)                     = default;
 	AnimatorBase<AnimNode>& operator=(AnimatorBase<AnimNode> obj)  = delete;
@@ -35,5 +35,5 @@ protected:
 
 	/// Nodes containing current state and next state that we interpolate into
 	std::vector<AnimNode>::const_iterator currentNode_,
-									nextNode_;
+										  nextNode_;
 };

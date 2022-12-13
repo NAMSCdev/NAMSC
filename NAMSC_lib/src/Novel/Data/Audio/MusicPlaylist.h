@@ -9,9 +9,6 @@
 class MusicPlaylist final
 {
 	friend class ActionVisitorCorrectMusicPlaylist;
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, MusicPlaylist&);
-	friend QDataStream& operator<<(QDataStream&, const MusicPlaylist&);
 public:
 	MusicPlaylist()                                 = default;
 	/// \exception Error Couldn't find/read the Song files
@@ -38,6 +35,8 @@ public:
 
 private:
 	int currentlyPlayedSongID_ = -1;
+
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

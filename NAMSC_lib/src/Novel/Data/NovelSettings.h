@@ -1,15 +1,13 @@
 ﻿#pragma once
 
 #include <QString>
+#include "Serialization.h"
 
 //#include "Novel/Data/Visual/MainMenuTheme.h"
 
 /// Global settings for the Novel
 struct NovelSettings final
 {    
-    //Friends for serialization
-    friend QDataStream& operator>>(QDataStream&, NovelSettings&);
-    friend QDataStream& operator<<(QDataStream&, const NovelSettings&);
 public:
     static NovelSettings& getInstance();
 
@@ -95,6 +93,8 @@ public:
 
 
 private:
+
+public:
     //---SERIALIZATION---
     /// Loading an object from a binary file
     /// \param dataStream Stream (presumably connected to a QFile) to read from

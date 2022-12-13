@@ -1,13 +1,12 @@
 #pragma once
+
 #include <QDataStream>
+
+#include "Serialization.h"
 
 /// Common properties for Audio playing
 struct AudioSettings final
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, AudioSettings&);
-	friend QDataStream& operator<<(QDataStream&, const AudioSettings&);
-
 	AudioSettings()                                 = default;
 	AudioSettings(double volume, double stereo, int timesPlayed, uint delayBetweenReplays);
 	AudioSettings(const AudioSettings& obj)         = default;
@@ -32,7 +31,7 @@ struct AudioSettings final
 	/// How much time in millisecond passes before next repetition of this Audio
 	uint delayBetweenReplays = 0;
 
-private:
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

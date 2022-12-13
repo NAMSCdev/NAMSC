@@ -12,10 +12,6 @@ class Scene;
 /// Action is an additional work added to an Event
 class Action : public NovelFlowInterface
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream& dataStream, Action&);
-	friend QDataStream& operator<<(QDataStream& dataStream, const Action&);
-	//Other friends
 	friend class Event;
 	friend class Scene;
 public:
@@ -50,7 +46,7 @@ protected:
 	Event* const parentEvent_;
 	Scene* const parentScene_;
 
-	//---SERIALIZATION---
+public://---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream);

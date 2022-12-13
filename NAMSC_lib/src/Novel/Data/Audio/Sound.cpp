@@ -19,14 +19,14 @@ Sound::Sound(const QString &name, const QString& soundFilePath, AudioSettings au
 //{
 //}
 
-//Sound& Sound::operator=(Sound obj) noexcept
-//{ 
-//	if (this == &obj) return *this;
-//
-//	std::swap(*this, obj); 
-//	
-//	return *this; 
-//}
+Sound& Sound::operator=(Sound obj) noexcept
+{ 
+	if (this == &obj) return *this;
+
+	std::swap(*this, obj); 
+	
+	return *this; 
+}
 
 bool Sound::operator==(const Sound& obj) const noexcept
 {

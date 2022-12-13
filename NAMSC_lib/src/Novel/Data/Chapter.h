@@ -5,9 +5,6 @@
 /// [optional] The additonal label of a Scene, which allows us to put Scenes into easier managable bins
 struct Chapter
 {
-    //Friends for serialization
-    friend QDataStream& operator>>(QDataStream& dataStream, Chapter&);
-    friend QDataStream& operator<<(QDataStream& dataStream, const Chapter&);
     Chapter() = default;
     Chapter(const QString& name, const QString& parentName);
     Chapter(const Chapter& obj) = default;
@@ -28,6 +25,7 @@ private:
     QString  parentName_ = "";
     Chapter* parent_     = nullptr;
     
+public:
     //---SERIALIZATION---
     /// Loading an object from a binary file
     /// \param dataStream Stream (presumably connected to a QFile) to read from

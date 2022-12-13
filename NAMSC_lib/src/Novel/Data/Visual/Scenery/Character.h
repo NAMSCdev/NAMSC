@@ -8,9 +8,6 @@
 /// Represents a Character in the Novel
 class Character final : public SceneryObject
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Character&);
-	friend QDataStream& operator<<(QDataStream&, const Character&);
 public:
 	Character()                                 = default;
 	/// \exception Error Couldn't find the Voice named `voiceName` or couldn't find/read the AssetImage named `assetImageName`
@@ -38,6 +35,7 @@ private:
 	//QString			currentLive2DAnimName;
 	//AssetLive2DAnim *currentLive2DAnim;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

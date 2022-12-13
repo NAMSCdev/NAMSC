@@ -41,6 +41,7 @@ protected:
 	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimFade's `void run()` allowing for data read
 	std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun_ = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

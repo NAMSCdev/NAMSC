@@ -47,7 +47,7 @@ protected:
 	QString	             assetAnimName_ = "";
 	AssetAnim<AnimNode>* assetAnim_     = nullptr;
 
-	//---SERIALIZATION---
+public://---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream) override;

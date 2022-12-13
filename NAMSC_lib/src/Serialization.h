@@ -57,7 +57,11 @@ concept SerializableLoad = requires(QDataStream& dataStream, T& t)
 };
 
 template<SerializableLoad T>
-QDataStream& operator>>(QDataStream& dataStream, T& t);
+QDataStream& operator>>(QDataStream& dataStream, T& t)
+{
+    t.serializableLoad(dataStream);
+    return dataStream;
+}
 
 /// Serialization saving
 template<typename T>
@@ -67,4 +71,8 @@ concept SerializableSave = requires(QDataStream& dataStream, T& t)
 };
 
 template<SerializableSave T>
-QDataStream& operator<<(QDataStream& dataStream, const T& t);
+QDataStream& operator<<(QDataStream& dataStream, const T& t)
+{
+    t.serializableSave(dataStream);
+    return dataStream;
+}

@@ -3,13 +3,11 @@
 #include <QString>
 
 #include "Exceptions.h"
+#include "Serialization.h"
 
 /// Holds some Resources, which very likely take time to be loaded and allocate significant memory, so they should be loaded only when needed
 class Asset
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Asset&);
-	friend QDataStream& operator<<(QDataStream&, const Asset&);
 public:
 	Asset()                            = default;
 	/// \exception Error Could not find/open/read the Resource file
@@ -55,6 +53,7 @@ protected:
 	/// Indicates if there were content changes (the Resource, not the definition)
 	bool bChanged_ = false;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

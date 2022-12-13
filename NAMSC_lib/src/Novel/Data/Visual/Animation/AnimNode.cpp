@@ -1,13 +1,38 @@
 #include "Novel/Data/Visual/Animation/AnimNode.h"
 
+template struct AnimNodeDouble<1>;
+template struct AnimNodeDouble<2>;
+template struct AnimNodeDouble<3>;
+template struct AnimNodeDouble<4>;
+
+template struct AnimNodeLongLong<1>;
+template struct AnimNodeLongLong<2>;
+template struct AnimNodeLongLong<3>;
+template struct AnimNodeLongLong<4>;
+
 AnimNodeBase::AnimNodeBase(uint timeStamp, AnimInterpolationMethod interpolationMethod)
     : timeStamp(timeStamp), interpolationMethod(interpolationMethod)
 {
 }
 
-bool AnimNodeBase::operator<(const AnimNodeBase& rhs)
+bool AnimNodeBase::operator<(const AnimNodeBase& rhs) const noexcept
 {
 	return timeStamp < rhs.timeStamp;
+}
+
+bool AnimNodeBase::operator<(uint rhs) const noexcept
+{
+    return timeStamp < rhs;
+}
+
+bool AnimNodeBase::operator==(const AnimNodeBase& rhs) const noexcept
+{
+    return timeStamp == rhs.timeStamp;
+}
+
+bool AnimNodeBase::operator==(uint rhs) const noexcept
+{
+    return timeStamp == rhs;
 }
 
 void AnimNodeBase::serializableLoad(QDataStream& dataStream)

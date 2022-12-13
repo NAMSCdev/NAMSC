@@ -9,9 +9,6 @@
 /// [optional] It also contains duration of every word if it's to be voiced/slowed down
 class Translation
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Translation&);
-	friend QDataStream& operator<<(QDataStream&, const Translation&);
 	//Other Friends
 	friend class NovelSettings;
 public:
@@ -52,6 +49,7 @@ private:
 	//[optional] Store word durations for [Sentence::WordAppearType::WordByWord] appear type for different languages
 	//std::unordered_map<QString, const std::vector<uint>>	wordDurations;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

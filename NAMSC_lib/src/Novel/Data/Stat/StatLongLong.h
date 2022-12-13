@@ -35,7 +35,7 @@ private:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 
-	//---SERIALIZATION---
+public://---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;

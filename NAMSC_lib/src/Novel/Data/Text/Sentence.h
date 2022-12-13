@@ -7,9 +7,6 @@
 /// This could be not only one sentence but also a longer text, but this name is kind of intuitional
 class Sentence final
 {
-	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Sentence&);
-	friend QDataStream& operator<<(QDataStream&, const Sentence&);
 public:
 	/// Determines how the text should appear
 	enum class SentenceAppearType
@@ -83,6 +80,7 @@ private:
 	QString	     voiceName_      = "";
 	Voice*       voice_          = nullptr;
 
+public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from

@@ -14,8 +14,8 @@
 class NovelState final
 {
     //Friends for serialization
-    friend QDataStream& operator>>(QDataStream&, NovelState&);
-    friend QDataStream& operator<<(QDataStream&, const NovelState&);
+    //friend QDataStream& operator>>(QDataStream&, NovelState&);
+    ////friend QDataStream& operator<<(QDataStream&, const NovelState&);
 public:
     NovelState()                                 = default;
     /// \exception Error 'screenshot` could not be loaded and recognized as an Image or `scenery` contains an Error
@@ -65,6 +65,7 @@ private:
 
     QJSEngine jsEngine_;
 
+public:
     //---SERIALIZATION---
     /// Loading an object from a binary file
     /// \param dataStream Stream (presumably connected to a QFile) to read from

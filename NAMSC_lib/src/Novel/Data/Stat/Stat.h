@@ -11,8 +11,8 @@
 class Stat
 {
 	//Friends for serialization
-	friend QDataStream& operator>>(QDataStream&, Stat&);
-	friend QDataStream& operator<<(QDataStream&, const Stat&);
+	//friend QDataStream& operator>>(QDataStream&, Stat&);
+	////friend QDataStream& operator<<(QDataStream&, const Stat&);
 	friend class NovelState;
 public:
 	/// [optional] If there should be displayed some sort of notification once this Stat changes
@@ -61,7 +61,8 @@ protected:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	virtual NovelLib::SerializationID getType() const = 0;
 
-	//---SERIALIZATION---
+public:
+public://---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream);
