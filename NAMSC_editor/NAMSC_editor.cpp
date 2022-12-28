@@ -57,15 +57,15 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
 	connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
 
-    auto* cbutton = new CollapseButton(ui.propertiesWidget);
-    auto* props = new BasicNodeProperties(ui.propertiesWidget);
-    props->setScene(scene);
-    connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
-    props->show();
-    cbutton->setText("Basic node options");
-    cbutton->setContent(props);
-    ui.propertiesLayout->addWidget(cbutton);
-    ui.propertiesLayout->addWidget(props);
+    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
+    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
+    //props->setScene(scene);
+    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
+    //cbutton->setText("Basic node options");
+    //cbutton->setContent(props);
+    //ui.propertiesLayout->addWidget(cbutton);
+    //ui.propertiesLayout->addWidget(props);
+    nodePropertiesManager = new NodeGraphPropertiesManager(ui.propertiesLayout, scene);
     ui.propertiesLayout->addStretch();
 
     if (QFile::exists("plik")) {

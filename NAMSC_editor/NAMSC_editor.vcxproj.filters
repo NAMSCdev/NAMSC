@@ -27,6 +27,15 @@
     <Filter Include="Source Files\NodeEditor">
       <UniqueIdentifier>{97ce8424-5d3a-4667-97fb-6ee5ed73d7af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Properties">
+      <UniqueIdentifier>{0efd0cf9-16df-4136-9ad6-caad4c89047a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Properties">
+      <UniqueIdentifier>{6c1bd5f6-82ff-4d41-ac77-80da9e04566f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\Properties">
+      <UniqueIdentifier>{e569f6f4-18fc-4e94-af78-1aee40d431c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NAMSC_editor.qrc">
@@ -74,6 +83,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicNodeProperties.cpp">
+      <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeGraphPropertiesManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -88,7 +100,7 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="BasicNodeProperties.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Properties</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -107,10 +119,13 @@
     <ClInclude Include="NodeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NodeGraphPropertiesManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="BasicNodeProperties.ui">
-      <Filter>Form Files</Filter>
+      <Filter>Form Files\Properties</Filter>
     </QtUic>
   </ItemGroup>
 </Project>
