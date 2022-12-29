@@ -5,6 +5,31 @@
 #include "BasicNodeProperties.h"
 #include "Preview.h"
 
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    QByteArray localMsg = msg.toLocal8Bit();
+    const char *file = context.file ? context.file : "";
+    const char *function = context.function ? context.function : "";
+    switch (type) {
+    case QtDebugMsg:
+        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtInfoMsg:
+        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtWarningMsg:
+        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
+        break;
+    }
+}
+
+
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -49,7 +74,13 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
 
-	QFileSystemModel* model = new QFileSystemModel;
+    prepareAssetsTree();
+
+}
+
+void NAMSC_editor::prepareAssetsTree()
+{
+    QFileSystemModel* model = new QFileSystemModel;
     model->setRootPath(QDir::currentPath());
     ui.assetsTree->setModel(model);
     ui.assetsTree->hideColumn(1);
