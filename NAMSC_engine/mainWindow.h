@@ -1,16 +1,18 @@
 #pragma once
-
 #include <QtWidgets/QMainWindow>
 #include "ui_mainWindow.h"
 
-class mainWindow : public QMainWindow
+#include "Novel/Data/Novel.h"
+
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    mainWindow(QWidget *parent = nullptr);
-    ~mainWindow();
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
 private:
-    Ui::mainWindowClass ui;
+    Ui::mainWindow ui;
+    Novel novel;
 };

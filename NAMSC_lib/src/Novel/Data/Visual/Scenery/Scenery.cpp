@@ -24,8 +24,12 @@ Scenery& Scenery::operator=(Scenery obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
-	
+	std::swap(this->backgroundAssetImageName_, obj.backgroundAssetImageName_);
+	std::swap(this->musicPlaylist,             obj.musicPlaylist);
+	std::swap(this->displayedCharacters_,      obj.displayedCharacters_);
+	std::swap(this->displayedSceneryObjects_,  obj.displayedSceneryObjects_);
+	std::swap(this->sounds_,                   obj.sounds_);
+
 	return *this; 
 }
 

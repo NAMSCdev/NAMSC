@@ -30,7 +30,12 @@ NovelState& NovelState::operator=(NovelState obj) noexcept
 {
     if (this == &obj) return *this;
 
-    std::swap(*this, obj);
+    std::swap(this->saveDate,   obj.saveDate);
+    std::swap(this->screenshot, obj.screenshot);
+    std::swap(this->scenery,    obj.scenery);
+    std::swap(this->saveSlot,   obj.saveSlot);
+    std::swap(this->sceneName,  obj.sceneName);
+    std::swap(this->eventID,    obj.eventID);
 
     //todo: reset and copy jsEngine properties
 

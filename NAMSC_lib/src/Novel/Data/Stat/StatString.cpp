@@ -13,7 +13,13 @@ StatString& StatString::operator=(StatString obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->name,             obj.name);
+	std::swap(this->displayName,      obj.displayName);
+	std::swap(this->bShow,            obj.bShow);
+	std::swap(this->priority,         obj.priority);
+	std::swap(this->showNotification, obj.showNotification);
+	std::swap(this->value,            obj.value);
+	std::swap(this->maxChars,         obj.maxChars);
 
 	return *this;
 }

@@ -43,7 +43,7 @@ void AnimatorSceneryObjectInterface<AnimNode>::adjustNodes(uint offset)
         AnimatorBase<AnimNode>::adjustedNodes_.back().timeStamp = qRound(AnimatorBase<AnimNode>::adjustedNodes_.back().timeStamp * AnimatorInterface::speed) + offset;
     }
     AnimatorBase<AnimNode>::currentNode_ = AnimatorBase<AnimNode>::adjustedNodes_.cbegin();
-    AnimatorBase<AnimNode>::nextNode_ = AnimatorBase<AnimNode>::currentNode_ + 1;
+    AnimatorBase<AnimNode>::nextNode_    = AnimatorBase<AnimNode>::currentNode_ + 1;
 }
 
 template<typename AnimNode>
@@ -66,7 +66,7 @@ AnimNode AnimatorSceneryObjectInterface<AnimNode>::currentAnimState(uint elapsed
             node.timeStamp += AnimatorBase<AnimNode>::getDuration();
 
         AnimatorBase<AnimNode>::currentNode_ = AnimatorBase<AnimNode>::adjustedNodes_.cbegin();
-        AnimatorBase<AnimNode>::nextNode_ = AnimatorBase<AnimNode>::currentNode_ + 1;
+        AnimatorBase<AnimNode>::nextNode_    = AnimatorBase<AnimNode>::currentNode_ + 1;
     }
     AnimNode ret = *AnimatorBase<AnimNode>::currentNode_;
 

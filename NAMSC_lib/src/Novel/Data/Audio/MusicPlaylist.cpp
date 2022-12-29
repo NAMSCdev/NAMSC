@@ -24,7 +24,9 @@ MusicPlaylist& MusicPlaylist::operator=(MusicPlaylist obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->songs,              obj.songs);
+	std::swap(this->audioSettings,      obj.audioSettings);
+	std::swap(this->bRandomizePlaylist, obj.bRandomizePlaylist);
 
 	return *this;
 }
@@ -33,8 +35,8 @@ bool MusicPlaylist::operator==(const MusicPlaylist& obj) const noexcept
 {
 	if (this == &obj) return true;
 
-	return	songs         == obj.songs        &&
-		    audioSettings          == obj.audioSettings         &&
+	return	songs                  == obj.songs              &&
+		    audioSettings          == obj.audioSettings      &&
 			bRandomizePlaylist     == obj.bRandomizePlaylist;     //&&
 			//currentlyPlayedSongID_  == obj.currentlyPlayedSongID_;
 }

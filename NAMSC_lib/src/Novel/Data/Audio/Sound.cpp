@@ -23,8 +23,11 @@ Sound& Sound::operator=(Sound obj) noexcept
 { 
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj); 
-	
+	std::swap(this->soundFilePath,      obj.soundFilePath);
+	std::swap(this->audioSettings,      obj.audioSettings);
+	std::swap(this->startDelay,         obj.startDelay);
+	std::swap(this->bPersistToNewEvent, obj.bPersistToNewEvent);
+
 	return *this; 
 }
 

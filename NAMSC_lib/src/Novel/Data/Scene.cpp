@@ -3,7 +3,7 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Event/EventsAll.h"
 
-Scene::Scene(const QString& label, const QString& chapterName, const Scenery& scenery)
+Scene::Scene(const QString& name, const QString& chapterName, const Scenery& scenery)
     : name(name), chapterName_(chapterName), scenery(scenery)
 {
     chapter_ = Novel::getInstance().getChapter(chapterName_);
@@ -30,7 +30,10 @@ Scene& Scene::operator=(Scene obj) noexcept
 { 
     if (this == &obj) return *this;
 
-    std::swap(*this, obj);
+    std::swap(this->name, obj.name);
+    std::swap(this->chapterName_, obj.chapterName_);
+    std::swap(this->chapter_, obj.chapter_);
+    std::swap(this->scenery, obj.scenery);
 
     return *this; 
 }

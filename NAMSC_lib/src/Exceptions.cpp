@@ -2,7 +2,7 @@
 
 namespace NovelLib
 {
-	bool catchExceptions(std::function<void(bool bComprehensive)> errorChecker, bool bComprehensive)
+	bool catchExceptions(const std::function<void(bool bComprehensive)> &errorChecker, bool bComprehensive)
 	{
 		try
 		{

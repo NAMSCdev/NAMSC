@@ -2,11 +2,18 @@
 
 #include "Novel/Data/Novel.h"
 
+Chapter::Chapter(const QString& name, const QString& parentName) : name(name)
+{
+	setParent(parentName);
+}
+
 Chapter& Chapter::operator=(Chapter obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(obj, *this); 
+	std::swap(this->name,        obj.name);
+	std::swap(this->parentName_, obj.parentName_);
+	std::swap(this->parent_,     obj.parent_);
 
 	return *this; 
 }

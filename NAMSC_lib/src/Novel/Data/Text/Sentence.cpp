@@ -17,19 +17,17 @@ Sentence& Sentence::operator=(Sentence obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
-
-	//text                   = obj.text;
-	//displayedName          = obj.displayedName;
-	//characterName          = obj.characterName;
-	//assetImageName_        = obj.assetImageName_;
-	//assetImage_            = obj.assetImage_;
-	//voiceName_             = obj.voiceName_;
-	//voice_                 = obj.voice_;
-	//cpsMultiplier          = obj.cpsMultiplier;
-	//cpsOverwrite           = obj.cpsOverwrite;
-	//bEndWithInput          = obj.bEndWithInput;
-	//waitBeforeContinueTime = obj.waitBeforeContinueTime;
+	std::swap(this->text,                   obj.text);
+	std::swap(this->displayedName,          obj.displayedName);
+	std::swap(this->characterName,          obj.characterName);
+	std::swap(this->assetImageName_,        obj.assetImageName_);
+	std::swap(this->assetImage_,            obj.assetImage_);
+	std::swap(this->voiceName_,             obj.voiceName_);
+	std::swap(this->voice_,                 obj.voice_);
+	std::swap(this->cpsMultiplier,          obj.cpsMultiplier);
+	std::swap(this->cpsOverwrite,           obj.cpsOverwrite);
+	std::swap(this->bEndWithInput,          obj.bEndWithInput);
+	std::swap(this->waitBeforeContinueTime, obj.waitBeforeContinueTime);
 
 	return *this;
 }

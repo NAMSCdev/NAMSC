@@ -13,7 +13,7 @@ Translation& Translation::operator=(Translation obj) noexcept
 	if (this == &obj)
 		return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->translations_, obj.translations_);
 
 	return *this;
 }

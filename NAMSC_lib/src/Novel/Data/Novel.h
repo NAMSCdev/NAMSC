@@ -73,12 +73,12 @@ public:
 
 	const std::unordered_map<QString, Scene>* getScenes() const noexcept;
 	void setScenes(const std::unordered_map<QString, Scene>& scenes) noexcept;
-	const Scene* getScene(const QString& chapterName) const noexcept;
-	Scene* getScene(const QString& chapterName) noexcept;
+	const Scene* getScene(const QString& sceneName) const noexcept;
+	Scene* getScene(const QString& sceneName) noexcept;
 	/// Also corrects jumps to Scenes that theirs index changed
-	void setScene(const QString& chapterName, const Scene& sceneryObject) noexcept;
+	void setScene(const QString& sceneName, const Scene& scene) noexcept;
 	/// Also corrects jumps to Scenes that theirs index changed
-	bool removeScene(const QString& chapterName) noexcept;
+	bool removeScene(const QString& sceneName) noexcept;
 
 	const std::unordered_map<QString, Voice>* getVoices() const noexcept;
 	void setVoices(const std::unordered_map<QString, Voice>& voices) noexcept;

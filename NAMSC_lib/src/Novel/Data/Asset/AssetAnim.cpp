@@ -17,10 +17,11 @@ AssetAnimBase::AssetAnimBase(const QString& name, uint size, uint pos, const QSt
 }
 
 template<typename AnimNode>
-AssetAnim<AnimNode>::AssetAnim(const QString& name, uint size, uint pos, const QString& path)
+AssetAnim<AnimNode>::AssetAnim(const QString& name, uint size, uint pos, const QString& path, bool bCheckForErrors)
 	: AssetAnimBase(name, size, pos, path)
 {
-	checkForErrors(true);
+	if (bCheckForErrors)
+		checkForErrors(true);
 }
 
 template<typename AnimNode>

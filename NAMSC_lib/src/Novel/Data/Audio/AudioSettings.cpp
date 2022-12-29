@@ -10,8 +10,11 @@ AudioSettings& AudioSettings::operator=(AudioSettings obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
-	
+	std::swap(this->volume,              obj.volume);
+	std::swap(this->stereo,              obj.stereo);
+	std::swap(this->timesPlayed,         obj.timesPlayed);
+	std::swap(this->delayBetweenReplays, obj.delayBetweenReplays);
+
 	return *this;
 }
 

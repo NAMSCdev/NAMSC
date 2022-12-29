@@ -1,9 +1,10 @@
 #include "Novel/Data/Asset/AssetImage.h"
 
-AssetImage::AssetImage(const QString& name, uint size, uint pos, const QString& path)
+AssetImage::AssetImage(const QString& name, uint size, uint pos, const QString& path, bool bCheckForErrors)
 	: Asset(name, size, pos, path)
 {
-	checkForErrors(true);
+	if (bCheckForErrors)
+		checkForErrors(true);
 }
 
 bool AssetImage::checkForErrors(bool bComprehensive) const
@@ -17,7 +18,7 @@ bool AssetImage::checkForErrors(bool bComprehensive) const
 			//todo: check lastError?
 			if (!isLoaded())
 			{
-				AssetImage fake(name, size, pos, path);
+				AssetImage fake(name, size, pos, path, false);
 				fake.load();
 				fake.unload();
 			}

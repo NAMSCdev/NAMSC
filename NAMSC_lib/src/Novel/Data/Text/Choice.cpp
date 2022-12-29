@@ -18,7 +18,11 @@ Choice& Choice::operator=(Choice obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->name,                 obj.name);
+	std::swap(this->text,                 obj.text);
+	std::swap(this->condition,            obj.condition);
+	std::swap(this->jumpToSceneName,      obj.jumpToSceneName);
+	std::swap(this->choiceDisplayOptions, obj.choiceDisplayOptions);
 
 	return *this;
 }
@@ -42,7 +46,11 @@ Choice::ChoiceDisplayOptions& Choice::ChoiceDisplayOptions::operator=(ChoiceDisp
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->fontName_,              obj.fontName_);
+	std::swap(this->fontSize,               obj.fontSize);
+	std::swap(this->bHideIfConditionNotMet, obj.bHideIfConditionNotMet);
+	std::swap(this->buttonWeight,           obj.buttonWeight);
+	std::swap(this->spacerWeight,           obj.spacerWeight);
 
 	return *this;
 }

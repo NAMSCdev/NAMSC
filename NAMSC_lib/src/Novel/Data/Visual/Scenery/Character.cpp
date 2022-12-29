@@ -13,7 +13,17 @@ Character& Character::operator=(Character obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->name,              obj.name);
+	std::swap(this->assetImageName_,   obj.assetImageName_);
+	std::swap(this->assetImage_,       obj.assetImage_);
+	std::swap(this->pos,               obj.pos);
+	std::swap(this->scale,             obj.scale);
+	std::swap(this->rotationDegree,    obj.rotationDegree);
+	std::swap(this->colorMultiplier,   obj.colorMultiplier);
+	std::swap(this->alphaMultiplier,   obj.alphaMultiplier);
+	std::swap(this->bVisible,          obj.bVisible);
+	std::swap(this->defaultVoiceName_, obj.defaultVoiceName_);
+	std::swap(this->defaultVoice_, obj.defaultVoice_);
 
 	return *this;
 }

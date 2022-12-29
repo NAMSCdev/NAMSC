@@ -24,7 +24,7 @@ bool Asset::checkForErrors(bool bComprehensive) const
 			if (dynamic_cast<const AssetImage*>(this))
 				type = NovelLib::ErrorType::AssetImageFileMissing;
 			else if (dynamic_cast<const AssetAnimBase*>(this))
-				type=  NovelLib::ErrorType::AssetAnimFileMissing;
+				type = NovelLib::ErrorType::AssetAnimFileMissing;
 			qCritical() << this << type << "Could not find Resource file \"" << path << '\"' << ((type == NovelLib::ErrorType::Critical) ? ". [CRITICAL] COULD NOT IDENTIFY ANIM TYPE!" : "");
 		}
 	};

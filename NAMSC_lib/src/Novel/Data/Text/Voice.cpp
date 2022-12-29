@@ -12,7 +12,17 @@ Voice& Voice::operator=(Voice obj) noexcept
 {
 	if (this == &obj) return *this;
 
-	std::swap(*this, obj);
+	std::swap(this->name,          obj.name);
+	std::swap(this->fontName_,     obj.fontName_);
+	std::swap(this->fontSize_,     obj.fontSize_);
+	std::swap(this->bold,          obj.bold);
+	std::swap(this->italic,        obj.italic);
+	std::swap(this->underscore,    obj.underscore);
+	std::swap(this->cpsMultiplier, obj.cpsMultiplier);
+	std::swap(this->cpsOverwrite,  obj.cpsOverwrite);
+	std::swap(this->color,         obj.color);
+	std::swap(this->alignment,     obj.alignment);
+	std::swap(this->lipSync,       obj.lipSync);
 
 	return *this;
 }
