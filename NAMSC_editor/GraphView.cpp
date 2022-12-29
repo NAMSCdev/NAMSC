@@ -46,6 +46,17 @@ void GraphView::mouseMoveEvent(QMouseEvent* event)
 
 }
 
+GraphNode GraphView::getNodeByName(const QString& name)
+{
+    for (auto node : scene()->items())
+    {
+        auto castedNodePtr = qgraphicsitem_cast<GraphNode*>(node);
+        if (castedNodePtr->getLabel() == name) return castedNodePtr;
+    }
+
+    return nullptr;
+}
+
 void GraphView::zoomIn()
 {
     scaleView(qreal(1.1));
@@ -54,6 +65,13 @@ void GraphView::zoomIn()
 void GraphView::zoomOut()
 {
     scaleView(1 / qreal(1.1));
+}
+
+void GraphView::passNodeDoubleClick(GraphNode* node)
+{
+    if (node != nullptr) {
+        emit nodeDoubleClicked(node);
+    }
 }
 
 void GraphView::keyPressEvent(QKeyEvent* event) {

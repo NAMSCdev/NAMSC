@@ -136,7 +136,7 @@
     <QtMoc Include="Preview.h" />
     <QtMoc Include="GraphView.h" />
     <QtMoc Include="GraphConnectionPoint.h" />
-    <ClInclude Include="GraphNode.h" />
+    <QtMoc Include="GraphNode.h" />
     <ClInclude Include="GraphNodeBody.h" />
   </ItemGroup>
   <ItemGroup>

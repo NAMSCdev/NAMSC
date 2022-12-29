@@ -1,6 +1,8 @@
 #pragma once
 #include <QGraphicsView>
 
+#include "GraphNode.h"
+
 class GraphView : public QGraphicsView
 {
 	Q_OBJECT
@@ -10,10 +12,15 @@ public:
 
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
+	GraphNode getNodeByName(const QString& name);
 
 public slots:
 	void zoomIn();
 	void zoomOut();
+	void passNodeDoubleClick(GraphNode* node);
+
+	signals:
+	void nodeDoubleClicked(GraphNode* node);
 
 protected:
 	void keyPressEvent(QKeyEvent* event) override;

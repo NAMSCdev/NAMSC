@@ -36,6 +36,9 @@
     <Filter Include="Form Files\Properties">
       <UniqueIdentifier>{e569f6f4-18fc-4e94-af78-1aee40d431c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SceneEditor">
+      <UniqueIdentifier>{2ed91eac-98c3-4b10-84fd-20a500f2aa89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NAMSC_editor.qrc">
@@ -102,11 +105,11 @@
     <QtMoc Include="BasicNodeProperties.h">
       <Filter>Header Files\Properties</Filter>
     </QtMoc>
+    <QtMoc Include="GraphNode.h">
+      <Filter>Header Files\NodeEditor</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphNode.h">
-      <Filter>Header Files\NodeEditor</Filter>
-    </ClInclude>
     <ClInclude Include="GraphNodeBody.h">
       <Filter>Header Files\NodeEditor</Filter>
     </ClInclude>

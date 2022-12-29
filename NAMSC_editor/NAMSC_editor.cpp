@@ -88,6 +88,7 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
 	connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
 
+    // Raw properties add
     //auto* cbutton = new CollapseButton(ui.propertiesWidget);
     //auto* props = new BasicNodeProperties(ui.propertiesWidget);
     //props->setScene(scene);
@@ -104,6 +105,11 @@ void NAMSC_editor::prepareAssetsTree()
         QDataStream ds(&file);
         //ds >> novel;
     }
+
+    connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
+        {
+            qDebug() << node->getLabel() << "has been double clicked!";
+    });
 }
 
 NAMSC_editor::~NAMSC_editor()

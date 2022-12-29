@@ -3,9 +3,12 @@
 #include <QGraphicsObject>
 #include "GraphNodeBody.h"
 #include "GraphConnectionPoint.h"
+#include "Novel/Data/Scene.h"
 
 class GraphNode : public QGraphicsObject
 {
+	Q_OBJECT
+
 public:
 	GraphNode(QGraphicsObject *parent = nullptr);
 	GraphNode(const QPoint& pos, QGraphicsObject* parent = nullptr);
@@ -37,11 +40,14 @@ public:
 public slots:
 	void setLabel(QString label);
 
+	signals:
+		void nodeDoubleClicked(GraphNode* node);
+
 private:
 	QRectF nodeBoundingRect;
 	QPointF lastLeftMousePressPoint;
 	GraphNodeBody nodeBody;
-	// TODO there should be a pointer to the in game scene
+	Scene gameScene;
 	QList<std::shared_ptr<GraphConnectionPoint>> inputConnectionPointList;
 	QList<std::shared_ptr<GraphConnectionPoint>> outputConnectionPointList;
 
