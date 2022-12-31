@@ -8,7 +8,9 @@
 #include "GraphView.h"
 #include "CollapseButton.h"
 #include <Novel/Data/Novel.h>
-#include "NodeGraphPropertiesManager.h"
+#include "GraphNodePropertiesPack.h"
+#include "PropertyConnectionSwitchboard.h"
+#include "PropertyTypes.h"
 
 class NAMSC_editor : public QMainWindow
 {
@@ -19,12 +21,19 @@ public:
     ~NAMSC_editor();
     void prepareAssetsTree();
 
+    void prepareSwitchboard();
+
+public slots:
+    void propertyTabChangeRequested(void* object, PropertyTypes dataType);
+
 private:
     Ui::NAMSC_editorClass ui;
     Novel novel;
 
-    NodeGraphPropertiesManager* nodePropertiesManager;
-    QGraphicsScene* scene;
+    PropertyConnectionSwitchboard switchboard;
+    QGraphicsScene* scene; // todo remove?
     GraphNode* node;
     GraphNode* node2;
+
+    void debugConstructorActions();
 };

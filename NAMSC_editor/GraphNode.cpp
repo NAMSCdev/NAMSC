@@ -2,6 +2,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 
+#include "GraphView.h"
+
 GraphNode::GraphNode(QGraphicsObject* parent)
 	: QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(0, 0, 300, 200)))
 {
@@ -155,10 +157,16 @@ void GraphNode::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 	QGraphicsObject::mouseReleaseEvent(event);
 }
 
-// TODO change widget on stack
 void GraphNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
 	qDebug() << "Double clicked on node:" << nodeBody.label;
+	//emit nodeDoubleClicked(this);
+	for (auto view : scene()->views())
+	{
+		//connect(this, &GraphNode::nodeDoubleClicked, dynamic_cast<GraphView*>(view), &GraphView::nodeDoubleClicked);
+		dynamic_cast<GraphView*>(view)->passNodeDoubleClick(this);
+	}
+
 	QGraphicsObject::mouseDoubleClickEvent(event);
 }
 

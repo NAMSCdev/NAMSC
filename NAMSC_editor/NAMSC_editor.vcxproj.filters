@@ -76,17 +76,26 @@
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NodeManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Preview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BasicNodeProperties.cpp">
       <Filter>Source Files\Properties</Filter>
     </ClCompile>
-    <ClCompile Include="NodeGraphPropertiesManager.cpp">
+    <ClCompile Include="ObjectsTree.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphNodePropertiesPack.cpp">
+      <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyConnectionSwitchboard.cpp">
+      <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeItemBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectProprertyPackBase.cpp">
+      <Filter>Source Files\Properties</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,11 +111,20 @@
     <QtMoc Include="BasicNodeProperties.h">
       <Filter>Header Files\Properties</Filter>
     </QtMoc>
+    <QtMoc Include="GraphNode.h">
+      <Filter>Header Files\NodeEditor</Filter>
+    </QtMoc>
+    <QtMoc Include="ObjectsTree.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyConnectionSwitchboard.h">
+      <Filter>Header Files\Properties</Filter>
+    </QtMoc>
+    <QtMoc Include="ObjectProprertyPackBase.h">
+      <Filter>Header Files\Properties</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GraphNode.h">
-      <Filter>Header Files\NodeEditor</Filter>
-    </ClInclude>
     <ClInclude Include="GraphNodeBody.h">
       <Filter>Header Files\NodeEditor</Filter>
     </ClInclude>
@@ -116,10 +134,16 @@
     <ClInclude Include="CollapseButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeManager.h">
+    <ClInclude Include="GraphNodePropertiesPack.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyTypes.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeWidgetItemTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NodeGraphPropertiesManager.h">
+    <ClInclude Include="TreeItemBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

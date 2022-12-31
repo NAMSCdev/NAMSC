@@ -2,22 +2,23 @@
 
 #include <QGraphicsScene>
 
-BasicNodeProperties::BasicNodeProperties(QGraphicsScene* scene, QWidget *parent)
-	: QFrame(parent), scene(scene)
+BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
+	: QFrame(parent), currentlySelectedNode(node)
 {
 	ui.setupUi(this);
 	ui.collapseButton->setContent(ui.content);
 	ui.collapseButton->setText("Basic node properties");
-	connect(scene, &QGraphicsScene::selectionChanged, this, &BasicNodeProperties::selectedNodeChanged);
+	//connect(scene, &QGraphicsScene::selectionChanged, this, &BasicNodeProperties::selectedNodeChanged);
+	selectedNodeChanged();
 }
 
 BasicNodeProperties::~BasicNodeProperties()
 {}
 
-void BasicNodeProperties::setScene(QGraphicsScene* scene)
-{
-	this->scene = scene;
-}
+//void BasicNodeProperties::setScene(QGraphicsScene* scene)
+//{
+//	this->scene = scene;
+//}
 
 // TODO potentially disconnect signals from on change or upon node change
 void BasicNodeProperties::updateConnections(bool b)
@@ -29,26 +30,28 @@ void BasicNodeProperties::updateConnections(bool b)
 	}
 	else
 	{
-		connect(ui.nodeNameLineEdit, &QLineEdit::textChanged, qgraphicsitem_cast<GraphNode*>(scene->selectedItems().first()), &GraphNode::setLabel);
+		connect(ui.nodeNameLineEdit, &QLineEdit::textChanged, currentlySelectedNode, &GraphNode::setLabel);
 	}
 }
 
 void BasicNodeProperties::selectedNodeChanged()
 {
 	updateConnections(instantTextChangeUpdate);
-	if (scene->selectedItems().isEmpty())
-	{
-		ui.nodeNameLineEdit->setText("");
-	}
-	else {
-		ui.nodeNameLineEdit->setText(qgraphicsitem_cast<GraphNode*>(scene->selectedItems().first())->getLabel());
-	}
+	//if (scene->selectedItems().isEmpty())
+	//{
+	//	ui.nodeNameLineEdit->setText("");
+	//	ui.nodeNameLineEdit->setEnabled(false);
+	//}
+	//else {
+		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel());
+	//}
 }
 
 void BasicNodeProperties::updateLabelInNode()
 {
-	if (not scene->selectedItems().isEmpty())
-	{
-		qgraphicsitem_cast<GraphNode*>(scene->selectedItems().first())->setLabel(ui.nodeNameLineEdit->text());
-	}
+	//if (not scene->selectedItems().isEmpty())
+	//{
+	//	qgraphicsitem_cast<GraphNode*>(scene->selectedItems().first())->setLabel(ui.nodeNameLineEdit->text());
+	//}
+	currentlySelectedNode->setLabel(ui.nodeNameLineEdit->text());
 }

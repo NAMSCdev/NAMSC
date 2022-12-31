@@ -46,7 +46,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="statisticsTab">
         <property name="sizePolicy">
@@ -143,6 +143,18 @@
          <string>Assets</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_12">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QSplitter" name="assetsSplitter">
            <property name="sizePolicy">
@@ -233,6 +245,74 @@
              <enum>QGraphicsView::NoAnchor</enum>
             </property>
            </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="objectsTab">
+        <attribute name="title">
+         <string>Objects</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QSplitter" name="objectsSplitter">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <widget class="ObjectsTree" name="objectsTree">
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
+           <widget class="Preview" name="objectsPreview"/>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="charactersTab">
+        <attribute name="title">
+         <string>Characters</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QSplitter" name="charactersSplitter">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <widget class="QTreeWidget" name="charactersTree">
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
+           <widget class="Preview" name="charactersPreview"/>
           </widget>
          </item>
         </layout>
@@ -444,7 +524,7 @@
              <number>0</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" name="propertiesLayout" stretch="">
+             <layout class="QVBoxLayout" name="propertiesLayout">
               <property name="spacing">
                <number>0</number>
               </property>
@@ -542,6 +622,11 @@
    <class>Preview</class>
    <extends>QGraphicsView</extends>
    <header>Preview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ObjectsTree</class>
+   <extends>QTreeWidget</extends>
+   <header>ObjectsTree.h</header>
   </customwidget>
  </customwidgets>
  <resources>
