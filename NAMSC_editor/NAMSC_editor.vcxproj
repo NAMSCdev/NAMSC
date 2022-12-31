@@ -114,9 +114,12 @@
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
     <ClCompile Include="GraphNodeBody.cpp" />
-    <ClCompile Include="NodeManager.cpp" />
+    <ClCompile Include="ObjectProprertyPackBase.cpp" />
+    <ClCompile Include="ObjectsTree.cpp" />
     <ClCompile Include="Preview.cpp" />
-    <ClCompile Include="NodeGraphPropertiesManager.cpp" />
+    <ClCompile Include="GraphNodePropertiesPack.cpp" />
+    <ClCompile Include="PropertyConnectionSwitchboard.cpp" />
+    <ClCompile Include="TreeItemBase.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="BasicNodeProperties.ui" />
     <QtUic Include="NAMSC_editor.ui" />
@@ -128,11 +131,16 @@
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NodeGraphPropertiesManager.h" />
+    <ClInclude Include="GraphNodePropertiesPack.h" />
+    <ClInclude Include="TreeWidgetItemTypes.h" />
+    <QtMoc Include="PropertyConnectionSwitchboard.h" />
+    <QtMoc Include="ObjectProprertyPackBase.h" />
+    <ClInclude Include="PropertyTypes.h" />
+    <ClInclude Include="TreeItemBase.h" />
+    <QtMoc Include="ObjectsTree.h" />
     <QtMoc Include="BasicNodeProperties.h" />
     <ClInclude Include="CollapseButton.h" />
     <ClInclude Include="GraphArrow.h" />
-    <ClInclude Include="NodeManager.h" />
     <QtMoc Include="Preview.h" />
     <QtMoc Include="GraphView.h" />
     <QtMoc Include="GraphConnectionPoint.h" />

@@ -12,7 +12,7 @@ public:
 
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseMoveEvent(QMouseEvent* event) override;
-	GraphNode getNodeByName(const QString& name);
+	GraphNode* getNodeByName(const QString& name);
 
 public slots:
 	void zoomIn();

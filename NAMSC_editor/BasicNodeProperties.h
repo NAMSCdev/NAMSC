@@ -11,10 +11,10 @@ class BasicNodeProperties : public QFrame
 	Q_OBJECT
 
 public:
-	BasicNodeProperties(QGraphicsScene* scene, QWidget *parent = nullptr);
+	BasicNodeProperties(GraphNode* node, QWidget *parent = nullptr);
 	~BasicNodeProperties();
 
-	void setScene(QGraphicsScene* scene);
+	//void setScene(QGraphicsScene* scene);
 
 	void updateConnections(bool b);
 
@@ -23,9 +23,10 @@ public slots:
 
 private:
 	bool instantTextChangeUpdate = false;
-	QGraphicsScene* scene;
+	GraphNode* currentlySelectedNode;
 
 	Ui::BasicNodePropertiesClass ui;
+
 
 private slots:
 	void updateLabelInNode();

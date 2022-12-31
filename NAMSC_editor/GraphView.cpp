@@ -46,7 +46,7 @@ void GraphView::mouseMoveEvent(QMouseEvent* event)
 
 }
 
-GraphNode GraphView::getNodeByName(const QString& name)
+GraphNode* GraphView::getNodeByName(const QString& name)
 {
     for (auto node : scene()->items())
     {
