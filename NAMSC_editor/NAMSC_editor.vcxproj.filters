@@ -94,6 +94,9 @@
     <ClCompile Include="TreeItemBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomSortFilterProxyModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ObjectProprertyPackBase.cpp">
       <Filter>Source Files\Properties</Filter>
     </ClCompile>
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TreeItemBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomSortFilterProxyModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

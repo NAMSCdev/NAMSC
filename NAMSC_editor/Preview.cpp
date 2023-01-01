@@ -19,22 +19,6 @@ Preview::Preview(QWidget *parent)
 
 	QMimeDatabase db;
 
-	supportedImageFormats.append(db.mimeTypeForName("image/png"));
-	supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
-	supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
-
-
-	supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
-	supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
-	supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
-
-	supportedAudioFormats.append(db.mimeTypeForName("audio/x-wav"));
-	supportedAudioFormats.append(db.mimeTypeForName("audio/wav"));
-	supportedAudioFormats.append(db.mimeTypeForName("audio/wave"));
-	supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
-
-	supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
-
 
 	setScene(new QGraphicsScene(this->parent()));
 	imagePreview = new QLabel();
@@ -43,26 +27,34 @@ Preview::Preview(QWidget *parent)
 	imagePreview->setAlignment(Qt::AlignCenter);
 	imagePreviewPoxy = scene()->addWidget(imagePreview);
 
-	audioFrame = new QFrame();
+	audioFrame = new QFrame(this);
 	scene()->addWidget(audioFrame);
 
 	progress = new QLabel(QString("0:00/0:00"));
 	progress->setAlignment(Qt::AlignBottom | Qt::AlignCenter);
 	progress->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	connect(&player, &QMediaPlayer::positionChanged, this, &Preview::durationChanged);
+	connect(&player, &QMediaPlayer::durationChanged, this, &Preview::durationChanged);
 	audioTitle = new QLabel(QString("Titlle"));
 	audioTitle->setAlignment(Qt::AlignCenter);
 	mediaSlider = new QSlider;
+	mediaSlider->setMinimum(0);
 	mediaSlider->setOrientation(Qt::Horizontal);
 	mediaSlider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	mediaButton = new QPushButton(QString("Pause"));
+	connect(mediaButton, &QPushButton::pressed, this, &Preview::mediaButtonPressed);
+	connect(&player, &QMediaPlayer::playbackStateChanged, this, &Preview::playerStateChanged);
+	mediaSlider->setTracking(false);
+	connect(mediaSlider, &QSlider::sliderMoved, &player, &QMediaPlayer::setPosition);
 	mediaInnerFrame = new QFrame();
 	mediaInnerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-	horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
 	hbox = new QHBoxLayout(mediaInnerFrame);
 	hbox->addWidget(mediaButton);
 	hbox->addItem(horizontalSpacer);
 	hbox->addWidget(progress);
 	vbox = new QVBoxLayout(audioFrame);
+	vbox->setSpacing(0);
 	vbox->addWidget(audioTitle);
 	vbox->addWidget(mediaInnerFrame);
 	vbox->addWidget(mediaSlider);
@@ -70,6 +62,9 @@ Preview::Preview(QWidget *parent)
 
 	player.setLoops(QMediaPlayer::Loops::Once);
 	player.setAudioOutput(new QAudioOutput(this));
+
+	audioFrame->hide();
+	imagePreviewPoxy->hide();
 }
 
 Preview::~Preview()
@@ -88,11 +83,22 @@ void Preview::dropEvent(QDropEvent* event)
 	}
 }
 
+void Preview::setSupportedAudioFormats(QList<QMimeType> audioFormats)
+{
+	supportedAudioFormats.clear();
+	supportedAudioFormats.append(audioFormats);
+}
+
+void Preview::setSupportedImageFormats(QList<QMimeType> imageFormats)
+{
+	supportedImageFormats.clear();
+	supportedImageFormats.append(imageFormats);
+}
+
 void Preview::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-	const QFileSystemModel* model = (QFileSystemModel*)selected.indexes()[0].model();
+	const QAbstractItemModel* model = selected.indexes()[0].model();
 	QModelIndexList::Type index = selected.indexes()[0];
-	qDebug() << "Selected " << model->fileName(index);
 	qDebug() << index;
 	QMimeData* mime = model->mimeData(selected.indexes());
 	qDebug() << "Selection mime " << mime->formats();
@@ -101,17 +107,21 @@ void Preview::selectionChanged(const QItemSelection& selected, const QItemSelect
 		QMimeDatabase db;
 		QUrl fileUrl = mime->urls().at(0);
 		QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
+		qDebug() << "File: " << fileUrl.fileName();
 		qDebug() << "Url mime " << fileMime;
 		qDebug() << "Url mime " << fileMime.name();
 		qDebug() << "isSupportedImageFormat " << isSupportedImageFormat(fileMime);
+		qDebug() << "isSupportedAudioFormat " << isSupportedAudioFormat(fileMime) << "\n";
 		if (isSupportedImageFormat(fileMime))
 		{
 			this->previewImage(fileUrl);
-		}
-		qDebug() << "isSupportedAudioFormat " << isSupportedAudioFormat(fileMime) << "\n";
-		if (isSupportedAudioFormat(fileMime))
+		} else if (isSupportedAudioFormat(fileMime))
 		{
 			this->previewAudio(fileUrl);
+		} else
+		{
+			audioFrame->hide();
+			imagePreview->hide();
 		}
 	}
 }
@@ -146,7 +156,6 @@ void Preview::previewImage(QUrl url)
 
 void Preview::resizeEvent(QResizeEvent* event)
 {
-
 	QGraphicsView::resizeEvent(event);
 
 	scene()->setSceneRect(this->rect());
@@ -170,12 +179,53 @@ void Preview::resizeEvent(QResizeEvent* event)
 	);
 }
 
+std::string Preview::durationFrom(qint64 duration)
+{
+	return std::format("{:02}", duration / 60000) + ":" + 
+		std::format("{:02}", duration / 1000 % 60)+ "." + 
+		std::format("{:01}", duration % 1000 / 100);
+}
+
 void Preview::previewAudio(QUrl url)
 {
-	this->player.setSource(url);
+	player.setSource(url);
 	player.play();
 	audioFrame->show();
 	imagePreviewPoxy->hide();
+	mediaSlider->setMaximum(player.duration());
+	audioTitle->setText(url.fileName());
+}
+
+
+void Preview::playerStateChanged(QMediaPlayer::PlaybackState newState)
+{
+	if (newState == QMediaPlayer::PausedState || newState == QMediaPlayer::StoppedState)
+	{
+		mediaButton->setText("Play");
+	}
+	else
+	{
+		mediaButton->setText("Pause");
+	}
+}
+
+void Preview::durationChanged(qint64 duration)
+{
+	std::string string = durationFrom(player.position()) + "/" + durationFrom(player.duration());
+	progress->setText(QString(string.data()));
+	mediaSlider->setRange(0, player.duration());
+	mediaSlider->setSliderPosition(player.position());
+}
+
+void Preview::mediaButtonPressed()
+{
+	if(player.playbackState() == QMediaPlayer::PausedState || player.playbackState() == QMediaPlayer::StoppedState)
+	{
+		player.play();
+	} else
+	{
+		player.pause();
+	}
 }
 
 

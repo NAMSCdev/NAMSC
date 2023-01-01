@@ -110,6 +110,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicNodeProperties.cpp" />
+    <ClCompile Include="CustomSortFilterProxyModel.cpp" />
     <ClCompile Include="GraphArrow.cpp" />
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="PropertyTypes.h" />
     <ClInclude Include="TreeItemBase.h" />
     <QtMoc Include="ObjectsTree.h" />
+    <ClInclude Include="CustomSortFilterProxyModel.h" />
     <QtMoc Include="BasicNodeProperties.h" />
     <ClInclude Include="CollapseButton.h" />
     <ClInclude Include="GraphArrow.h" />

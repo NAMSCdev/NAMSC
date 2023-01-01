@@ -1,9 +1,11 @@
 ﻿#include "NAMSC_editor.h"
-#include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
 #include <QMimeData>
+#include <QMimeDatabase>
+#include <qsortfilterproxymodel.h>
 
 #include "BasicNodeProperties.h"
+#include "CustomSortFilterProxyModel.h"
 #include "Preview.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -34,6 +36,8 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
+    supportedFormats();
+
     // Prepare ui
     ui.setupUi(this);
 
@@ -58,29 +62,38 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
 void NAMSC_editor::prepareAssetsTree()
 {
-    QFileSystemModel* model = new QFileSystemModel;
-    model->setRootPath(QDir::currentPath());
-    ui.assetsTree->setModel(model);
+    QUrl projectPath = QUrl::fromLocalFile("F:/inzynierka/NAMSC/NAMSC_editor/");
+    model = new QFileSystemModel;
+    QModelIndex rootPath = model->setRootPath(projectPath.toLocalFile());
+    proxyFileFilter = new CustomSortFilterProxyModel(this);
+
+    ui.assetsPreview->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsPreview->setSupportedImageFormats(supportedImageFormats);
+    proxyFileFilter->setSourceModel(model);
+    ui.assetsTree->setModel(proxyFileFilter);
+    ui.assetsTree->setRootIndex(proxyFileFilter->mapFromSource(rootPath));
+    proxyFileFilter->setRecursiveFilteringEnabled(true);
+    proxyFileFilter->setFilter(
+        [&](int sourceRow, const QModelIndex& sourceParent)
+        {
+            QModelIndex index = model->index(sourceRow, 0, sourceParent);
+		    QMimeData* mime = model->mimeData({ index });
+		    if (mime->hasUrls())
+		    {
+		        QUrl fileUrl = mime->urls().at(0);
+		        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
+		    	if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
+		        {
+		            return true;
+		        }
+		    }
+		    return false;
+        }
+    );
     ui.assetsTree->hideColumn(1);
     ui.assetsTree->hideColumn(3);
-    ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
+    connect(ui.assetsTree, &QTreeView::expanded, this, [&]() {ui.assetsTree->resizeColumnToContents(0); });
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
-
-    // Raw properties add
-    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
-    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
-    //props->setScene(scene);
-    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
-    //cbutton->setText("Basic node options");
-    //cbutton->setContent(props);
-    //ui.propertiesLayout->addWidget(cbutton);
-    //ui.propertiesLayout->addWidget(props);
-
-    if (QFile::exists("plik")) {
-        QFile file = { "plik" };
-        QDataStream ds(&file);
-        //ds >> novel;
-    }
 
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
@@ -174,6 +187,25 @@ void NAMSC_editor::debugConstructorActions()
         {
             qDebug() << node->getLabel() << "has been double clicked!";
         });
+}
+
+void NAMSC_editor::supportedFormats()
+{
+    supportedImageFormats.append(db.mimeTypeForName("image/png"));
+    supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
+    supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
+
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/x-wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wave"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
 }
 
 NAMSC_editor::~NAMSC_editor()
