@@ -56,45 +56,16 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     debugConstructorActions();
     prepareAssetsTree();
-
     prepareSwitchboard();
 }
 
 void NAMSC_editor::prepareAssetsTree()
 {
-    QUrl projectPath = QUrl::fromLocalFile("F:/inzynierka/NAMSC/NAMSC_editor/");
-    model = new QFileSystemModel;
-    QModelIndex rootPath = model->setRootPath(projectPath.toLocalFile());
-    proxyFileFilter = new CustomSortFilterProxyModel(this);
-
     ui.assetsPreview->setSupportedAudioFormats(supportedAudioFormats);
     ui.assetsPreview->setSupportedImageFormats(supportedImageFormats);
-    proxyFileFilter->setSourceModel(model);
-    ui.assetsTree->setModel(proxyFileFilter);
-    ui.assetsTree->setRootIndex(proxyFileFilter->mapFromSource(rootPath));
-    proxyFileFilter->setRecursiveFilteringEnabled(true);
-    proxyFileFilter->setFilter(
-        [&](int sourceRow, const QModelIndex& sourceParent)
-        {
-            QModelIndex index = model->index(sourceRow, 0, sourceParent);
-		    QMimeData* mime = model->mimeData({ index });
-		    if (mime->hasUrls())
-		    {
-		        QUrl fileUrl = mime->urls().at(0);
-		        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
-		    	if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
-		        {
-		            return true;
-		        }
-		    }
-		    return false;
-        }
-    );
-    ui.assetsTree->hideColumn(1);
-    ui.assetsTree->hideColumn(3);
-    connect(ui.assetsTree, &QTreeView::expanded, this, [&]() {ui.assetsTree->resizeColumnToContents(0); });
+    ui.assetsTree->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsTree->setSupportedImageFormats(supportedImageFormats);
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
-
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
         {

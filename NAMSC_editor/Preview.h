@@ -20,7 +20,7 @@ private:
 	QMediaPlayer player;
 	QImage image;
 	QLabel* imagePreview;
-	QGraphicsProxyWidget* imagePreviewPoxy;
+	QGraphicsProxyWidget* imagePreviewProxy;
 	QSlider* mediaSlider;
 	QFrame* audioFrame;
 	QVBoxLayout* vbox;
@@ -32,6 +32,8 @@ private:
 	QSpacerItem* horizontalSpacer;
 	void resizeEvent(QResizeEvent* event) override;
 	std::string durationFrom(qint64 duration);
+	bool isSupportedImageFormat(QMimeType mime);
+	bool isSupportedAudioFormat(QMimeType mime);
 public:
 	Preview(QWidget *parent);
 	~Preview();
@@ -43,9 +45,6 @@ public:
 
 public Q_SLOTS:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
-	bool isSupportedImageFormat(QMimeType mime);
-	bool isSupportedAudioFormat(QMimeType mime);
-	void playAudio(QString name);
 	void previewImage(QUrl url);
 	void previewAudio(QUrl url);
 	void mediaButtonPressed();

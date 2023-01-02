@@ -18,14 +18,12 @@ Preview::Preview(QWidget *parent)
 	this->setAcceptDrops(true);
 
 	QMimeDatabase db;
-
-
-	setScene(new QGraphicsScene(this->parent()));
+	setScene(new QGraphicsScene(this));
 	imagePreview = new QLabel();
 	imagePreview->setScaledContents(true);
 	imagePreview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	imagePreview->setAlignment(Qt::AlignCenter);
-	imagePreviewPoxy = scene()->addWidget(imagePreview);
+	imagePreviewProxy = scene()->addWidget(imagePreview);
 
 	audioFrame = new QFrame(this);
 	scene()->addWidget(audioFrame);
@@ -35,9 +33,9 @@ Preview::Preview(QWidget *parent)
 	progress->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 	connect(&player, &QMediaPlayer::positionChanged, this, &Preview::durationChanged);
 	connect(&player, &QMediaPlayer::durationChanged, this, &Preview::durationChanged);
-	audioTitle = new QLabel(QString("Titlle"));
+	audioTitle = new QLabel(QString("Title"));
 	audioTitle->setAlignment(Qt::AlignCenter);
-	mediaSlider = new QSlider;
+	mediaSlider = new QSlider();
 	mediaSlider->setMinimum(0);
 	mediaSlider->setOrientation(Qt::Horizontal);
 	mediaSlider->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -64,11 +62,14 @@ Preview::Preview(QWidget *parent)
 	player.setAudioOutput(new QAudioOutput(this));
 
 	audioFrame->hide();
-	imagePreviewPoxy->hide();
+	imagePreviewProxy->hide();
 }
 
 Preview::~Preview()
-{}
+{
+	delete imagePreview;
+	delete audioFrame;
+}
 
 void Preview::dragEnterEvent(QDragEnterEvent* event)
 {
@@ -120,8 +121,9 @@ void Preview::selectionChanged(const QItemSelection& selected, const QItemSelect
 			this->previewAudio(fileUrl);
 		} else
 		{
+			player.stop();
 			audioFrame->hide();
-			imagePreview->hide();
+			imagePreviewProxy->hide();
 		}
 	}
 }
@@ -148,7 +150,7 @@ void Preview::previewImage(QUrl url)
 {
 	player.stop();
 	audioFrame->hide();
-	imagePreviewPoxy->show();
+	imagePreviewProxy->show();
 	image.load(url.toLocalFile());
 	resizeEvent(new QResizeEvent(this->size(), this->size()));
 	show();
@@ -173,7 +175,7 @@ void Preview::resizeEvent(QResizeEvent* event)
 	}
 	imagePreview->setPixmap(QPixmap::fromImage(image));
 	QPoint center = scene()->sceneRect().center().toPoint();
-	imagePreviewPoxy->setPos(
+	imagePreviewProxy->setPos(
 		center.x() - imagePreview->width() / 2,
 		center.y() - imagePreview->height() / 2
 	);
@@ -191,7 +193,7 @@ void Preview::previewAudio(QUrl url)
 	player.setSource(url);
 	player.play();
 	audioFrame->show();
-	imagePreviewPoxy->hide();
+	imagePreviewProxy->hide();
 	mediaSlider->setMaximum(player.duration());
 	audioTitle->setText(url.fileName());
 }
@@ -226,70 +228,4 @@ void Preview::mediaButtonPressed()
 	{
 		player.pause();
 	}
-}
-
-
-QAudioSink* sink;
-
-QWaveDecoder* decoder;
-QByteArray wholeData;
-QAudioDecoder* audioDecoder;
-QBuffer* buffer;
-QAudioFormat format;
-
-void Preview::playAudio(QString name)
-{
-	QFile* file = new QFile(name);
-	file->open(QIODevice::ReadOnly);
-	QByteArray array = file->readAll();
-	QBuffer buffer(&array);
-	QAudioDevice info = QMediaDevices::defaultAudioOutput();
-
-	format =info.preferredFormat();
-	
-	audioDecoder = new QAudioDecoder(this);
-	audioDecoder->setAudioFormat(format);
-	audioDecoder->setSourceDevice(&buffer);
-	buffer.open(QIODeviceBase::ReadOnly);
-	audioDecoder->setSource(QUrl(name));
-	sink = new QAudioSink(format);
-	wholeData.clear();
-
-	connect(audioDecoder, &QAudioDecoder::bufferReady, this, [&]
-	{
-		QAudioBuffer rawAudio = audioDecoder->read();
-		char* data = rawAudio.data<char>();
-		wholeData.append(QByteArray::fromRawData(data, rawAudio.byteCount()));
-	});
-	connect(audioDecoder, &QAudioDecoder::isDecodingChanged, this, [&](bool isDecoding)
-		{
-			sink = new QAudioSink(format);
-			if (isDecoding)
-			{
-				qDebug() << "Still decoding";
-				return;
-			}
-			qDebug() << "Finished decoding";
-			
-			qDebug() << sink->state();
-			sink->stop();
-			try
-			{
-				QBuffer* buffer = new QBuffer(&wholeData);
-				buffer->open(QIODeviceBase::ReadOnly);
-				sink->start(buffer);
-			}
-			catch (...)
-			{
-				try
-				{
-					qDebug() << sink->error();
-				}
-				catch (...)
-				{
-					std::cout << "git gut";
-				}
-			}
-		});
-	audioDecoder->start();
 }

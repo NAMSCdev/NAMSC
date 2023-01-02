@@ -109,6 +109,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetTreeView.cpp" />
     <ClCompile Include="BasicNodeProperties.cpp" />
     <ClCompile Include="CustomSortFilterProxyModel.cpp" />
     <ClCompile Include="GraphArrow.cpp" />
@@ -132,6 +133,7 @@
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AssetTreeView.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
     <ClInclude Include="TreeWidgetItemTypes.h" />
     <QtMoc Include="PropertyConnectionSwitchboard.h" />
