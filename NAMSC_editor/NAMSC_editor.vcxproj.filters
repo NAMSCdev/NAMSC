@@ -106,8 +106,14 @@
     <ClCompile Include="NewProjectDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomSortFilterProxyModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files\NodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetTreeView.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +137,9 @@
     </QtMoc>
     <QtMoc Include="ObjectProprertyPackBase.h">
       <Filter>Header Files\Properties</Filter>
+    </QtMoc>
+    <QtMoc Include="AssetTreeView.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ImageObjectTreeWidgetItem.h">
       <Filter>Header Files</Filter>
@@ -165,6 +174,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneryObjectVariant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomSortFilterProxyModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

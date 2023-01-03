@@ -1,10 +1,12 @@
 ﻿#include "NAMSC_editor.h"
-#include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
 #include <qinputdialog.h>
 #include <QMimeData>
+#include <QMimeDatabase>
+#include <qsortfilterproxymodel.h>
 
 #include "BasicNodeProperties.h"
+#include "CustomSortFilterProxyModel.h"
 #include "ImageObjectTreeWidgetItem.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
@@ -37,6 +39,8 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
+    supportedFormats();
+
     // Prepare ui
     ui.setupUi(this);
 
@@ -55,7 +59,6 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     debugConstructorActions();
     prepareAssetsTree();
-
     prepareSwitchboard();
 
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
@@ -63,50 +66,22 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
 void NAMSC_editor::prepareAssetsTree()
 {
-    QFileSystemModel* model = new QFileSystemModel;
-    model->setRootPath(QDir::currentPath());
-    ui.assetsTree->setModel(model);
-    ui.assetsTree->hideColumn(1);
-    ui.assetsTree->hideColumn(3);
-    ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
+    ui.assetsPreview->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsPreview->setSupportedImageFormats(supportedImageFormats);
+    ui.assetsTree->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsTree->setSupportedImageFormats(supportedImageFormats);
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
-
-    if (QFile::exists("plik")) {
-        QFile file = { "plik" };
-        QDataStream ds(&file);
-        //ds >> novel;
-    }
-
-    // Add raw context menu to assets tab
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-
     connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
         {
             QAction addToObjectsAction(tr("Add to objects"), ui.assetsTree);
 			// TODO change this to target class
-			 connect(&addToObjectsAction, &QAction::triggered, this, [&]
-				{
-					auto selectedFile = ui.assetsTree->selectionModel()->model()->mimeData({ ui.assetsTree->currentIndex().siblingAtColumn(0) });
-
-			 		bool isOk = false;
-                    QString objectName; // TODO check name, show error if name is invalid
-                    while (!isOk) {
-                        objectName = QInputDialog::getText(this, tr("Create object"),
-                            tr("Enter name for created object:"), QLineEdit::Normal,
-                            selectedFile->urls()[0].fileName(), &isOk);
-                    }
-
-                    SceneryObject newSceneryObject;
-                    newSceneryObject.name = objectName;
-                    Novel::getInstance().setDefaultSceneryObject(objectName, newSceneryObject); // todo object will be deleted -> beware
-
-					// TODO Check file type/extension
-					ImageObjectTreeWidgetItem* newItem = new ImageObjectTreeWidgetItem(ui.objectsTree);
-                    newItem->relativeAssetPath = selectedFile->urls()[0].toString();
-					newItem->setText(0, objectName);
-                    newItem->setIcon(0, QIcon(":/NAMSC_editor/imageIcon"));
-
-    				ui.objectsTree->addTopLevelItem(newItem);
+    connect(&addToObjectsAction, &QAction::triggered, this, [&]
+        {
+            //ui.assetsTree->selectionModel()->model()->mimeData()
+            auto selectedFile = ui.assetsTree->selectionModel()->model()->mimeData({ ui.assetsTree->currentIndex().siblingAtColumn(0) }); //ui.assetsTree->selectionModel()->selectedRows().at(0).model()->mimeData(); //->model()->data(ui.assetsTree->indexAt(pos)).toUrl();
+					qDebug() << selectedFile->urls();
+                    ui.objectsTree->addTopLevelItem(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(selectedFile->urls().at(0).toString())));
 				});
 
             QMenu contextMenu = QMenu(ui.assetsTree);
@@ -202,6 +177,25 @@ void NAMSC_editor::debugConstructorActions()
     //ui.propertiesLayout->addWidget(props);
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+}
+
+void NAMSC_editor::supportedFormats()
+{
+    supportedImageFormats.append(db.mimeTypeForName("image/png"));
+    supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
+    supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
+
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/x-wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wave"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
 }
 
 NAMSC_editor::~NAMSC_editor()
