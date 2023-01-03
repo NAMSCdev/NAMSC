@@ -46,7 +46,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="statisticsTab">
         <property name="sizePolicy">
@@ -187,7 +187,7 @@
            <property name="opaqueResize">
             <bool>true</bool>
            </property>
-           <widget class="QTreeView" name="assetsTree">
+           <widget class="AssetTreeView" name="assetsTree">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -627,6 +627,11 @@
    <class>ObjectsTree</class>
    <extends>QTreeWidget</extends>
    <header>ObjectsTree.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AssetTreeView</class>
+   <extends>QTreeView</extends>
+   <header>AssetTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources>

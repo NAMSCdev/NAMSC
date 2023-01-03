@@ -1,9 +1,11 @@
 ﻿#include "NAMSC_editor.h"
-#include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
 #include <QMimeData>
+#include <QMimeDatabase>
+#include <qsortfilterproxymodel.h>
 
 #include "BasicNodeProperties.h"
+#include "CustomSortFilterProxyModel.h"
 #include "Preview.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -34,6 +36,8 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
+    supportedFormats();
+
     // Prepare ui
     ui.setupUi(this);
 
@@ -52,36 +56,16 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     debugConstructorActions();
     prepareAssetsTree();
-
     prepareSwitchboard();
 }
 
 void NAMSC_editor::prepareAssetsTree()
 {
-    QFileSystemModel* model = new QFileSystemModel;
-    model->setRootPath(QDir::currentPath());
-    ui.assetsTree->setModel(model);
-    ui.assetsTree->hideColumn(1);
-    ui.assetsTree->hideColumn(3);
-    ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
+    ui.assetsPreview->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsPreview->setSupportedImageFormats(supportedImageFormats);
+    ui.assetsTree->setSupportedAudioFormats(supportedAudioFormats);
+    ui.assetsTree->setSupportedImageFormats(supportedImageFormats);
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
-
-    // Raw properties add
-    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
-    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
-    //props->setScene(scene);
-    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
-    //cbutton->setText("Basic node options");
-    //cbutton->setContent(props);
-    //ui.propertiesLayout->addWidget(cbutton);
-    //ui.propertiesLayout->addWidget(props);
-
-    if (QFile::exists("plik")) {
-        QFile file = { "plik" };
-        QDataStream ds(&file);
-        //ds >> novel;
-    }
-
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
         {
@@ -174,6 +158,25 @@ void NAMSC_editor::debugConstructorActions()
         {
             qDebug() << node->getLabel() << "has been double clicked!";
         });
+}
+
+void NAMSC_editor::supportedFormats()
+{
+    supportedImageFormats.append(db.mimeTypeForName("image/png"));
+    supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
+    supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
+
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/x-wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wav"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/wave"));
+    supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
+
+    supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
 }
 
 NAMSC_editor::~NAMSC_editor()

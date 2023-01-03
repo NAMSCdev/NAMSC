@@ -94,8 +94,14 @@
     <ClCompile Include="TreeItemBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomSortFilterProxyModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ObjectProprertyPackBase.cpp">
       <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetTreeView.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +129,9 @@
     <QtMoc Include="ObjectProprertyPackBase.h">
       <Filter>Header Files\Properties</Filter>
     </QtMoc>
+    <QtMoc Include="AssetTreeView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphNodeBody.h">
@@ -144,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TreeItemBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomSortFilterProxyModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
