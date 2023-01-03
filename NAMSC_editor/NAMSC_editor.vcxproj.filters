@@ -36,6 +36,9 @@
     <Filter Include="Form Files\Properties">
       <UniqueIdentifier>{e569f6f4-18fc-4e94-af78-1aee40d431c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MarkedForDeletion">
+      <UniqueIdentifier>{58311dc6-d5c8-411e-b287-a334623e98c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NAMSC_editor.qrc">
@@ -73,9 +76,6 @@
     <ClCompile Include="GraphArrow.cpp">
       <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
-    <ClCompile Include="GraphView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Preview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -91,19 +91,28 @@
     <ClCompile Include="PropertyConnectionSwitchboard.cpp">
       <Filter>Source Files\Properties</Filter>
     </ClCompile>
-    <ClCompile Include="TreeItemBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectProprertyPackBase.cpp">
       <Filter>Source Files\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneryObjectVariant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageObjectTreeWidgetItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectConfiguration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewProjectDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphView.cpp">
+      <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
       <Filter>Header Files\NodeEditor</Filter>
-    </QtMoc>
-    <QtMoc Include="GraphView.h">
-      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Preview.h">
       <Filter>Header Files</Filter>
@@ -122,6 +131,18 @@
     </QtMoc>
     <QtMoc Include="ObjectProprertyPackBase.h">
       <Filter>Header Files\Properties</Filter>
+    </QtMoc>
+    <QtMoc Include="ImageObjectTreeWidgetItem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ProjectConfiguration.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="NewProjectDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GraphView.h">
+      <Filter>Header Files\NodeEditor</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +164,7 @@
     <ClInclude Include="TreeWidgetItemTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TreeItemBase.h">
+    <ClInclude Include="SceneryObjectVariant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -151,5 +172,13 @@
     <QtUic Include="BasicNodeProperties.ui">
       <Filter>Form Files\Properties</Filter>
     </QtUic>
+    <QtUic Include="NewProjectDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\imageIcon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

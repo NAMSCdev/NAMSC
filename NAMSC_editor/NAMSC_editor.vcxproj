@@ -114,12 +114,15 @@
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
     <ClCompile Include="GraphNodeBody.cpp" />
+    <ClCompile Include="ImageObjectTreeWidgetItem.cpp" />
+    <ClCompile Include="NewProjectDialog.cpp" />
     <ClCompile Include="ObjectProprertyPackBase.cpp" />
     <ClCompile Include="ObjectsTree.cpp" />
     <ClCompile Include="Preview.cpp" />
     <ClCompile Include="GraphNodePropertiesPack.cpp" />
+    <ClCompile Include="ProjectConfiguration.cpp" />
     <ClCompile Include="PropertyConnectionSwitchboard.cpp" />
-    <ClCompile Include="TreeItemBase.cpp" />
+    <ClCompile Include="SceneryObjectVariant.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="BasicNodeProperties.ui" />
     <QtUic Include="NAMSC_editor.ui" />
@@ -128,15 +131,19 @@
     <ClCompile Include="NAMSC_editor.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_editor.ico" />
+    <QtUic Include="NewProjectDialog.ui" />
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphNodePropertiesPack.h" />
+    <QtMoc Include="ImageObjectTreeWidgetItem.h" />
+    <QtMoc Include="ProjectConfiguration.h" />
+    <QtMoc Include="NewProjectDialog.h" />
+    <ClInclude Include="SceneryObjectVariant.h" />
     <ClInclude Include="TreeWidgetItemTypes.h" />
     <QtMoc Include="PropertyConnectionSwitchboard.h" />
     <QtMoc Include="ObjectProprertyPackBase.h" />
     <ClInclude Include="PropertyTypes.h" />
-    <ClInclude Include="TreeItemBase.h" />
     <QtMoc Include="ObjectsTree.h" />
     <QtMoc Include="BasicNodeProperties.h" />
     <ClInclude Include="CollapseButton.h" />
@@ -151,6 +158,9 @@
     <ProjectReference Include="..\NAMSC_lib\NAMSC_lib.vcxproj">
       <Project>{2b6fc3b0-7489-46b3-b077-b4f88dda2d52}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\imageIcon.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

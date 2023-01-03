@@ -272,9 +272,21 @@
             <enum>Qt::Vertical</enum>
            </property>
            <widget class="ObjectsTree" name="objectsTree">
+            <property name="autoScroll">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DragOnly</enum>
+            </property>
+            <property name="columnCount">
+             <number>1</number>
+            </property>
+            <attribute name="headerVisible">
+             <bool>true</bool>
+            </attribute>
             <column>
              <property name="text">
-              <string notr="true">1</string>
+              <string>Object</string>
              </property>
             </column>
            </widget>
@@ -308,7 +320,7 @@
            <widget class="QTreeWidget" name="charactersTree">
             <column>
              <property name="text">
-              <string notr="true">1</string>
+              <string notr="true">Character</string>
              </property>
             </column>
            </widget>
@@ -566,6 +578,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_project"/>
+    <addaction name="actionOpen_project"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -608,6 +622,16 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionOpen_project">
+   <property name="text">
+    <string>Open project...</string>
+   </property>
+  </action>
+  <action name="actionNew_project">
+   <property name="text">
+    <string>New project...</string>
    </property>
   </action>
  </widget>

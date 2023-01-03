@@ -1,10 +1,13 @@
 ﻿#include "NAMSC_editor.h"
 #include <QGraphicsWidget>
 #include <qfilesystemmodel.h>
+#include <qinputdialog.h>
 #include <QMimeData>
 
 #include "BasicNodeProperties.h"
+#include "ImageObjectTreeWidgetItem.h"
 #include "Preview.h"
+#include "ProjectConfiguration.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -54,6 +57,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     prepareAssetsTree();
 
     prepareSwitchboard();
+
+    connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -66,36 +71,45 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setRootIndex(model->index(QDir::currentPath()));
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
 
-    // Raw properties add
-    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
-    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
-    //props->setScene(scene);
-    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
-    //cbutton->setText("Basic node options");
-    //cbutton->setContent(props);
-    //ui.propertiesLayout->addWidget(cbutton);
-    //ui.propertiesLayout->addWidget(props);
-
     if (QFile::exists("plik")) {
         QFile file = { "plik" };
         QDataStream ds(&file);
         //ds >> novel;
     }
 
+    // Add raw context menu to assets tab
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+
     connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
         {
             QAction addToObjectsAction(tr("Add to objects"), ui.assetsTree);
 			// TODO change this to target class
-    connect(&addToObjectsAction, &QAction::triggered, this, [&]
-        {
-            //ui.assetsTree->selectionModel()->model()->mimeData()
-            auto selectedFile = ui.assetsTree->selectionModel()->model()->mimeData({ ui.assetsTree->currentIndex().siblingAtColumn(0) }); //ui.assetsTree->selectionModel()->selectedRows().at(0).model()->mimeData(); //->model()->data(ui.assetsTree->indexAt(pos)).toUrl();
-					qDebug() << selectedFile->urls();
-                    ui.objectsTree->addTopLevelItem(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(selectedFile->urls().at(0).toString())));
+			 connect(&addToObjectsAction, &QAction::triggered, this, [&]
+				{
+					auto selectedFile = ui.assetsTree->selectionModel()->model()->mimeData({ ui.assetsTree->currentIndex().siblingAtColumn(0) });
+
+			 		bool isOk = false;
+                    QString objectName; // TODO check name, show error if name is invalid
+                    while (!isOk) {
+                        objectName = QInputDialog::getText(this, tr("Create object"),
+                            tr("Enter name for created object:"), QLineEdit::Normal,
+                            selectedFile->urls()[0].fileName(), &isOk);
+                    }
+
+                    SceneryObject newSceneryObject;
+                    newSceneryObject.name = objectName;
+                    Novel::getInstance().setDefaultSceneryObject(objectName, newSceneryObject); // todo object will be deleted -> beware
+
+					// TODO Check file type/extension
+					ImageObjectTreeWidgetItem* newItem = new ImageObjectTreeWidgetItem(ui.objectsTree);
+                    newItem->relativeAssetPath = selectedFile->urls()[0].toString();
+					newItem->setText(0, objectName);
+                    newItem->setIcon(0, QIcon(":/NAMSC_editor/imageIcon"));
+
+    				ui.objectsTree->addTopLevelItem(newItem);
 				});
 
-			QMenu contextMenu = QMenu(ui.assetsTree);
+            QMenu contextMenu = QMenu(ui.assetsTree);
             contextMenu.addAction(&addToObjectsAction);
             contextMenu.exec(mapToGlobal(pos));
         });
@@ -116,6 +130,8 @@ void NAMSC_editor::prepareSwitchboard()
             }
         });
 
+    // Connect addToScene action from objects tab
+    //connect(ui.objectsTree, &ObjectsTree::addObjectToScene, &switchboard, );
 
     // Connect from switchboard
     connect(&switchboard, &PropertyConnectionSwitchboard::nodeSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
@@ -174,6 +190,18 @@ void NAMSC_editor::debugConstructorActions()
         {
             qDebug() << node->getLabel() << "has been double clicked!";
         });
+
+    // Raw properties add
+    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
+    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
+    //props->setScene(scene);
+    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
+    //cbutton->setText("Basic node options");
+    //cbutton->setContent(props);
+    //ui.propertiesLayout->addWidget(cbutton);
+    //ui.propertiesLayout->addWidget(props);
+
+    ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
 }
 
 NAMSC_editor::~NAMSC_editor()

@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="NAMSC_editor">
+    <qresource prefix="/NAMSC_editor">
+        <file alias="imageIcon">resources/imageIcon.png</file>
     </qresource>
 </RCC>

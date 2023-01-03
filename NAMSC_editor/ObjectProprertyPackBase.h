@@ -2,7 +2,7 @@
 
 #include <QFrame>
 
-class ObjectProprertyPackBase  : public QFrame
+class ObjectProprertyPackBase : public QFrame
 {
 	Q_OBJECT
 
