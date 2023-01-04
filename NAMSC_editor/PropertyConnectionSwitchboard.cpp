@@ -15,5 +15,5 @@ void PropertyConnectionSwitchboard::nodeSelectionChanged(GraphNode* node)
 
 void PropertyConnectionSwitchboard::objectSelectionChanged(QString sceneryObjectName)
 {
-	emit objectSelectionChangedSignal(Novel::getInstance().getDefaultSceneryObject(sceneryObjectName));
+	emit sceneryObjectSelectionChangedSignal(Novel::getInstance().getDefaultSceneryObject(sceneryObjectName));
 }

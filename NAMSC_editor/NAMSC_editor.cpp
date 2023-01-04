@@ -10,6 +10,7 @@
 #include "ObjectTreeWidgetItem.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
+#include "ObjectPropertyPack.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -95,7 +96,7 @@ void NAMSC_editor::prepareSwitchboard()
 
     // Connect from switchboard
     connect(&switchboard, &PropertyConnectionSwitchboard::nodeSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
-    // todo connect(&switchboard, &PropertyConnectionSwitchboard::objectSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
+    connect(&switchboard, &PropertyConnectionSwitchboard::sceneryObjectSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
 }
 
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
@@ -114,12 +115,15 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         {
         case PropertyTypes::Node:
         	ui.propertiesLayout->addWidget(new GraphNodePropertiesPack(static_cast<GraphNode*>(object)));
-        	ui.propertiesLayout->addStretch();
             break;
 
         case PropertyTypes::ObjectTreeItem:
-            qDebug() << "TODO: Add selected ObjectTree item properties to properties tab";
+            // todo currently assuming it's always Image
+        	ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
+            break;
         }
+
+        ui.propertiesLayout->addStretch();
     }
 }
 

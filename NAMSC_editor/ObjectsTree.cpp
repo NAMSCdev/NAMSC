@@ -21,10 +21,10 @@ void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTy
 	if (type == TreeWidgetItemTypes::ImageObject) {
 		SceneryObject tempSceneryObject;
 		tempSceneryObject.name = name;
-		tempSceneryObject.setAssetImage(path); // todo should a path be there
+		tempSceneryObject.setAssetImage(path);
 		Novel::getInstance().setDefaultSceneryObject(name, tempSceneryObject); // todo check if setting scenery objects like that is ok
 
-		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(TreeWidgetItemTypes::ImageObject));
+		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);
 		tempTreeItem->setIcon(0, QIcon(":/NAMSC_editor/imageIcon"));
 	}

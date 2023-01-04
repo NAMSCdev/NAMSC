@@ -118,12 +118,13 @@
     <ClCompile Include="GraphNodeBody.cpp" />
     <ClCompile Include="ObjectTreeWidgetItem.cpp" />
     <ClCompile Include="NewProjectDialog.cpp" />
-    <ClCompile Include="ObjectProprertyPackBase.cpp" />
+    <ClCompile Include="ObjectPropertyPack.cpp" />
     <ClCompile Include="ObjectsTree.cpp" />
     <ClCompile Include="Preview.cpp" />
     <ClCompile Include="GraphNodePropertiesPack.cpp" />
     <ClCompile Include="ProjectConfiguration.cpp" />
     <ClCompile Include="PropertyConnectionSwitchboard.cpp" />
+    <ClCompile Include="SceneryObjectTreeProperties.cpp" />
     <ClCompile Include="SceneryObjectVariant.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="BasicNodeProperties.ui" />
@@ -134,6 +135,7 @@
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_editor.ico" />
     <QtUic Include="NewProjectDialog.ui" />
+    <QtUic Include="SceneryObjectTreeProperties.ui" />
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -142,10 +144,11 @@
     <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />
     <QtMoc Include="NewProjectDialog.h" />
+    <QtMoc Include="SceneryObjectTreeProperties.h" />
     <ClInclude Include="SceneryObjectVariant.h" />
     <ClInclude Include="TreeWidgetItemTypes.h" />
     <QtMoc Include="PropertyConnectionSwitchboard.h" />
-    <QtMoc Include="ObjectProprertyPackBase.h" />
+    <ClInclude Include="ObjectPropertyPack.h" />
     <ClInclude Include="PropertyTypes.h" />
     <QtMoc Include="ObjectsTree.h" />
     <ClInclude Include="CustomSortFilterProxyModel.h" />

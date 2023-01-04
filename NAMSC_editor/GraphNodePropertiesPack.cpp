@@ -15,6 +15,6 @@ GraphNodePropertiesPack::~GraphNodePropertiesPack()
 void GraphNodePropertiesPack::initProperties()
 {
 	basicNodeProperties = new BasicNodeProperties(currentlySelectedNode, layout->parentWidget());
-	layout->addWidget(basicNodeProperties);
 
+	layout->addWidget(basicNodeProperties);
 }

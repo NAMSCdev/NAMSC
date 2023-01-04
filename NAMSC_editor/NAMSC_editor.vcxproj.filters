@@ -39,6 +39,30 @@
     <Filter Include="Header Files\MarkedForDeletion">
       <UniqueIdentifier>{58311dc6-d5c8-411e-b287-a334623e98c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Properties\Objects">
+      <UniqueIdentifier>{4d9888d1-64ba-4d67-8ae0-fd131c7753d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Properties\Nodes">
+      <UniqueIdentifier>{4053e4d8-787b-4de9-a5ff-8edff650563a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Properties\Nodes">
+      <UniqueIdentifier>{372b0318-a7ee-41c1-a78f-051f3aec6ef7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Properties\Objects">
+      <UniqueIdentifier>{d2d33ac0-bb7f-42d6-a6d5-cf6a2e790509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ProjectConfiguation">
+      <UniqueIdentifier>{a817905a-2345-4900-84d6-ee5e4cff091a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\LeftPanelTabs">
+      <UniqueIdentifier>{3fa7f435-2982-467f-b311-fe1280c23344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\LeftPanelTabs">
+      <UniqueIdentifier>{aa70c8f8-54e3-4dc0-a7ad-47866273870d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ProjectConfiguration">
+      <UniqueIdentifier>{081c5c1d-ac9c-4f7a-8795-2557741a7622}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NAMSC_editor.qrc">
@@ -76,82 +100,85 @@
     <ClCompile Include="GraphArrow.cpp">
       <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
-    <ClCompile Include="Preview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BasicNodeProperties.cpp">
-      <Filter>Source Files\Properties</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectsTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphNodePropertiesPack.cpp">
-      <Filter>Source Files\Properties</Filter>
-    </ClCompile>
     <ClCompile Include="PropertyConnectionSwitchboard.cpp">
-      <Filter>Source Files\Properties</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectProprertyPackBase.cpp">
       <Filter>Source Files\Properties</Filter>
     </ClCompile>
     <ClCompile Include="SceneryObjectVariant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectTreeWidgetItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectConfiguration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="NewProjectDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomSortFilterProxyModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GraphView.cpp">
       <Filter>Source Files\NodeEditor</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectPropertyPack.cpp">
+      <Filter>Source Files\Properties\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneryObjectTreeProperties.cpp">
+      <Filter>Source Files\Properties\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicNodeProperties.cpp">
+      <Filter>Source Files\Properties\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphNodePropertiesPack.cpp">
+      <Filter>Source Files\Properties\Nodes</Filter>
+    </ClCompile>
     <ClCompile Include="AssetTreeView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomSortFilterProxyModel.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsTree.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTreeWidgetItem.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Preview.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectConfiguration.cpp">
+      <Filter>Source Files\ProjectConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="NewProjectDialog.cpp">
+      <Filter>Source Files\ProjectConfiguration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
       <Filter>Header Files\NodeEditor</Filter>
     </QtMoc>
-    <QtMoc Include="Preview.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="BasicNodeProperties.h">
-      <Filter>Header Files\Properties</Filter>
-    </QtMoc>
     <QtMoc Include="GraphNode.h">
       <Filter>Header Files\NodeEditor</Filter>
-    </QtMoc>
-    <QtMoc Include="ObjectsTree.h">
-      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="PropertyConnectionSwitchboard.h">
       <Filter>Header Files\Properties</Filter>
     </QtMoc>
-    <QtMoc Include="ObjectProprertyPackBase.h">
-      <Filter>Header Files\Properties</Filter>
-    </QtMoc>
-    <QtMoc Include="AssetTreeView.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ObjectTreeWidgetItem.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ProjectConfiguration.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="NewProjectDialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="GraphView.h">
       <Filter>Header Files\NodeEditor</Filter>
+    </QtMoc>
+    <QtMoc Include="SceneryObjectTreeProperties.h">
+      <Filter>Header Files\Properties\Objects</Filter>
+    </QtMoc>
+    <QtMoc Include="BasicNodeProperties.h">
+      <Filter>Header Files\Properties\Nodes</Filter>
+    </QtMoc>
+    <QtMoc Include="ObjectTreeWidgetItem.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </QtMoc>
+    <QtMoc Include="ObjectsTree.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </QtMoc>
+    <QtMoc Include="AssetTreeView.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </QtMoc>
+    <QtMoc Include="Preview.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </QtMoc>
+    <QtMoc Include="ProjectConfiguration.h">
+      <Filter>Header Files\ProjectConfiguation</Filter>
+    </QtMoc>
+    <QtMoc Include="NewProjectDialog.h">
+      <Filter>Header Files\ProjectConfiguation</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -161,23 +188,26 @@
     <ClInclude Include="GraphArrow.h">
       <Filter>Header Files\NodeEditor</Filter>
     </ClInclude>
-    <ClInclude Include="CollapseButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphNodePropertiesPack.h">
-      <Filter>Header Files\Properties</Filter>
-    </ClInclude>
     <ClInclude Include="PropertyTypes.h">
       <Filter>Header Files\Properties</Filter>
-    </ClInclude>
-    <ClInclude Include="TreeWidgetItemTypes.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneryObjectVariant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectPropertyPack.h">
+      <Filter>Header Files\Properties\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphNodePropertiesPack.h">
+      <Filter>Header Files\Properties\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="CollapseButton.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
     <ClInclude Include="CustomSortFilterProxyModel.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeWidgetItemTypes.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +216,9 @@
     </QtUic>
     <QtUic Include="NewProjectDialog.ui">
       <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SceneryObjectTreeProperties.ui">
+      <Filter>Form Files\Properties</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>

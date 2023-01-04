@@ -19,5 +19,5 @@ public slots:
 
 	signals:
 		void nodeSelectionChangedSignal(void* node, PropertyTypes dataType = PropertyTypes::Node);
-		void objectSelectionChangedSignal(void* object, PropertyTypes dataType = PropertyTypes::ObjectTreeItem);
+		void sceneryObjectSelectionChangedSignal(void* object, PropertyTypes dataType = PropertyTypes::ObjectTreeItem);
 };
