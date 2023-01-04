@@ -116,7 +116,7 @@
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
     <ClCompile Include="GraphNodeBody.cpp" />
-    <ClCompile Include="ImageObjectTreeWidgetItem.cpp" />
+    <ClCompile Include="ObjectTreeWidgetItem.cpp" />
     <ClCompile Include="NewProjectDialog.cpp" />
     <ClCompile Include="ObjectProprertyPackBase.cpp" />
     <ClCompile Include="ObjectsTree.cpp" />
@@ -139,7 +139,7 @@
   <ItemGroup>
     <QtMoc Include="AssetTreeView.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
-    <QtMoc Include="ImageObjectTreeWidgetItem.h" />
+    <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />
     <QtMoc Include="NewProjectDialog.h" />
     <ClInclude Include="SceneryObjectVariant.h" />

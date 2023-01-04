@@ -7,7 +7,7 @@
 
 #include "BasicNodeProperties.h"
 #include "CustomSortFilterProxyModel.h"
-#include "ImageObjectTreeWidgetItem.h"
+#include "ObjectTreeWidgetItem.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 
@@ -62,6 +62,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     prepareSwitchboard();
 
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
+    connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -72,22 +73,6 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setSupportedImageFormats(supportedImageFormats);
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui.assetsTree, &QTreeView::customContextMenuRequested, this, [&](QPoint pos)
-        {
-            QAction addToObjectsAction(tr("Add to objects"), ui.assetsTree);
-			// TODO change this to target class
-    connect(&addToObjectsAction, &QAction::triggered, this, [&]
-        {
-            //ui.assetsTree->selectionModel()->model()->mimeData()
-            auto selectedFile = ui.assetsTree->selectionModel()->model()->mimeData({ ui.assetsTree->currentIndex().siblingAtColumn(0) }); //ui.assetsTree->selectionModel()->selectedRows().at(0).model()->mimeData(); //->model()->data(ui.assetsTree->indexAt(pos)).toUrl();
-					qDebug() << selectedFile->urls();
-                    ui.objectsTree->addTopLevelItem(new QTreeWidgetItem(static_cast<QTreeWidget*>(nullptr), QStringList(selectedFile->urls().at(0).toString())));
-				});
-
-            QMenu contextMenu = QMenu(ui.assetsTree);
-            contextMenu.addAction(&addToObjectsAction);
-            contextMenu.exec(mapToGlobal(pos));
-        });
 }
 
 void NAMSC_editor::prepareSwitchboard()
@@ -104,12 +89,13 @@ void NAMSC_editor::prepareSwitchboard()
                 switchboard.nodeSelectionChanged(qgraphicsitem_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0]));
             }
         });
-
-    // Connect addToScene action from objects tab
-    //connect(ui.objectsTree, &ObjectsTree::addObjectToScene, &switchboard, );
+    
+    // Connect selection from objects tab to switchboard
+    connect(ui.objectsTree, &ObjectsTree::selectedObjectChanged, &switchboard, &PropertyConnectionSwitchboard::objectSelectionChanged);
 
     // Connect from switchboard
     connect(&switchboard, &PropertyConnectionSwitchboard::nodeSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
+    // todo connect(&switchboard, &PropertyConnectionSwitchboard::objectSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
 }
 
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
@@ -123,14 +109,17 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         }
     }
 
-    switch (dataType)
-	{
-		case PropertyTypes::Node:
-			if (object != nullptr) {
-				ui.propertiesLayout->addWidget(new GraphNodePropertiesPack(static_cast<GraphNode*>(object)));
-				ui.propertiesLayout->addStretch();
-			}
-        break;
+    if (object != nullptr) {
+        switch (dataType)
+        {
+        case PropertyTypes::Node:
+        	ui.propertiesLayout->addWidget(new GraphNodePropertiesPack(static_cast<GraphNode*>(object)));
+        	ui.propertiesLayout->addStretch();
+            break;
+
+        case PropertyTypes::ObjectTreeItem:
+            qDebug() << "TODO: Add selected ObjectTree item properties to properties tab";
+        }
     }
 }
 

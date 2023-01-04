@@ -2,7 +2,9 @@
 
 #include <QTreeWidget>
 
+#include "ObjectTreeWidgetItem.h"
 #include "TreeWidgetItemTypes.h"
+#include "Novel/Data/Visual/Scenery/SceneryObject.h"
 
 class ObjectsTree : public QTreeWidget
 {
@@ -15,12 +17,19 @@ public:
 	// void serialize();
 	// void deserialize();
 
+public slots:
+	void addAssetToObjects(QString path, QString name, TreeWidgetItemTypes type);
+
 	signals:
-		void addObjectToScene(QTreeWidgetItem* object, TreeWidgetItemTypes type); // JAKUBIE TUTAJ SIE PODLACZ
+	void addObjectToScene(ObjectTreeWidgetItem* object); // JAKUBIE TUTAJ SIE PODLACZ - chwilowo nie ma wsparcia dla dzwieku -> narazie tylko grafiki
+	// to czy item zawiera wskaznik na dzwiek lub grafike mozna sprawdzic object->type() == "TreeWidgetItemTypes.h" lub po nullptr
+	// chwilowo nie ma pola dla dzwieku wiec sugeruje sprawdzanie po typie
+	void selectedObjectChanged(QString sceneryObjectName);
 
 protected:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected) override;
 	void contextMenuEvent(QContextMenuEvent*) override;
+	void mousePressEvent(QMouseEvent* event) override;
 
 private:
 	Q_DISABLE_COPY(ObjectsTree);

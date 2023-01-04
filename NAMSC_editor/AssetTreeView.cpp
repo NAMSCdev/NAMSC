@@ -1,11 +1,17 @@
 #include "AssetTreeView.h"
 
+#include <QAction>
 #include <QFileSystemModel>
+#include <QMenu>
 #include <QMimeData>
 #include <QMimeType>
 #include <QUrl>
+#include <QContextMenuEvent>
+#include <qinputdialog.h>
+#include <qmessagebox.h>
 
 #include "CustomSortFilterProxyModel.h"
+#include "Novel/Data/Novel.h"
 
 
 AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
@@ -39,6 +45,10 @@ AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
     this->hideColumn(1);
     this->hideColumn(3);
     connect(this, &QTreeView::expanded, this, [&]() {this->resizeColumnToContents(0); });
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    createContextMenu();
+    connect(this, &AssetTreeView::customContextMenuRequested, this, &AssetTreeView::invokeContextMenu);
 }
 
 AssetTreeView::~AssetTreeView()
@@ -54,4 +64,78 @@ void AssetTreeView::setSupportedImageFormats(QList<QMimeType> imageFormats)
 {
     supportedImageFormats.clear();
     supportedImageFormats.append(imageFormats);
+}
+
+void AssetTreeView::invokeContextMenu(const QPoint& pos)
+{
+    if (!selectedIndexes().isEmpty())
+    {
+        QMenu menu(this);
+        menu.addAction(addAssetToObjectsAction);
+        menu.exec(mapToGlobal(pos));
+    }
+}
+
+void AssetTreeView::createContextMenu()
+{
+    addAssetToObjectsAction = new QAction(tr("Add to objects"), this);
+    addAssetToObjectsAction->setStatusTip("Adds selected asset to objects");
+    
+    connect(addAssetToObjectsAction, &QAction::triggered, this, [&]
+        {
+            TreeWidgetItemTypes type;
+			QString objectName;
+            bool isNameOk = false;
+            bool pressedOk = false;
+			QUrl selectedItem = selectionModel()->model()->mimeData({ currentIndex().siblingAtColumn(0) })->urls().at(0);
+            QMimeType selectedItemMimeType = db.mimeTypeForUrl(selectedItem);
+
+    		if (supportedImageFormats.contains(selectedItemMimeType))
+			{
+                type = TreeWidgetItemTypes::ImageObject;
+			}
+            else if (supportedAudioFormats.contains(selectedItemMimeType))
+            {
+                type = TreeWidgetItemTypes::SoundObject;
+            }
+            else
+            {
+	            // todo error
+            }
+
+			do
+			{
+                objectName = QInputDialog::getText(this, tr("Create object"),
+                    tr("Enter name for created object:"), QLineEdit::Normal,
+                    selectedItem.fileName(), &pressedOk);
+
+                // Name input checks
+                if (!pressedOk)
+                {
+                    break;
+                }
+				else if (objectName.isNull() || objectName.isEmpty())
+                {
+                    continue;
+                }
+				else if (Novel::getInstance().getDefaultSceneryObject(objectName) != nullptr)
+                {
+                    QMessageBox(QMessageBox::Critical, tr("Object name incorrect"),tr("Provided object name already exists.\nPlease provide other name."), QMessageBox::Ok).exec();
+                    continue;
+                }
+                else {
+                    isNameOk = true; // todo remove in the future
+                }
+            } while (!isNameOk);
+
+            if (!pressedOk) return;
+			
+			emit addAssetToObjects(selectedItem.path(), objectName, type);
+        });
+}
+
+void AssetTreeView::mousePressEvent(QMouseEvent* event)
+{
+    //clearSelection(); todo implement deselection for preview
+	QTreeView::mousePressEvent(event);
 }

@@ -2,5 +2,6 @@
 
 enum class PropertyTypes
 {
-	Node
+	Node,
+	ObjectTreeItem
 };

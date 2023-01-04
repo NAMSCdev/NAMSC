@@ -15,7 +15,9 @@ public:
 
 public slots:
 	void nodeSelectionChanged(GraphNode* node);
+	void objectSelectionChanged(QString sceneryObjectName);
 
 	signals:
 		void nodeSelectionChangedSignal(void* node, PropertyTypes dataType = PropertyTypes::Node);
+		void objectSelectionChangedSignal(void* object, PropertyTypes dataType = PropertyTypes::ObjectTreeItem);
 };

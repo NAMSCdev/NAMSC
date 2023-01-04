@@ -97,7 +97,7 @@
     <ClCompile Include="SceneryObjectVariant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageObjectTreeWidgetItem.cpp">
+    <ClCompile Include="ObjectTreeWidgetItem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProjectConfiguration.cpp">
@@ -141,7 +141,7 @@
     <QtMoc Include="AssetTreeView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ImageObjectTreeWidgetItem.h">
+    <QtMoc Include="ObjectTreeWidgetItem.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ProjectConfiguration.h">
