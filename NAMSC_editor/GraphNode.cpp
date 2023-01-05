@@ -149,7 +149,7 @@ void GraphNode::mousePressEvent(QGraphicsSceneMouseEvent* event)
 	{
 		lastLeftMousePressPoint = event->scenePos();
 	}
-
+	QGraphicsObject::mousePressEvent(event);
 }
 
 void GraphNode::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
