@@ -7,7 +7,7 @@ class EventIf final : public Event
 public:
 	EventIf(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions contains an Error or the `condition` couldn't be parsed
-	EventIf(Scene* const parentScene, const QString& label, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventIf(Scene* const parentScene, const QString& label, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventIf(const EventIf& obj) noexcept;
 	EventIf& operator=(const EventIf& obj) noexcept;
 	bool operator==(const EventIf& obj) const noexcept;
@@ -18,7 +18,7 @@ public:
 	/// \todo implement this
 	bool checkForErrors(bool bComprehensive = false) const override;
 
-	virtual Event* clone() const override;
+	Event* clone() const override;
 
 	void run() override;
 

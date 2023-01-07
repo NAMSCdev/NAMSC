@@ -7,7 +7,7 @@ class EventEndIf final : public Event
 public:
 	EventEndIf(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions contains an Error or there is no matching EventIf or its index is after this EventEndIf
-	EventEndIf(Scene* const parentScene, const QString& label, Event* const partner, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventEndIf(Scene* const parentScene, const QString& label, Event* const partner, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventEndIf(const EventEndIf& obj) noexcept;
 	EventEndIf& operator=(const EventEndIf& obj) noexcept;
 	bool operator==(const EventEndIf& obj) const noexcept;
@@ -17,7 +17,7 @@ public:
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const override;
 
-	virtual Event* clone() const override;
+	Event* clone() const override;
 
 	void run() override;
 

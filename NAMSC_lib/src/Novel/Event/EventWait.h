@@ -7,7 +7,7 @@ class EventWait final : public Event
 public:
 	EventWait(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions contains an Error
-	EventWait(Scene* const parentScene, const QString& label, uint waitTime, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventWait(Scene* const parentScene, const QString& label, uint waitTime, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventWait(const EventWait& obj) noexcept;
 	EventWait& operator=(const EventWait& obj) noexcept;
 	bool operator==(const EventWait& obj) const noexcept;
@@ -17,7 +17,7 @@ public:
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const;
 
-	virtual Event* clone() const override;
+	Event* clone() const override;
 
 	void run() override;
 

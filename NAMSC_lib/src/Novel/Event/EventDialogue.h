@@ -9,7 +9,7 @@ class EventDialogue final : public Event
 public:
 	EventDialogue(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventDialogue(const EventDialogue& obj) noexcept;
 	EventDialogue& operator=(const EventDialogue& obj) noexcept;
 	bool operator==(const EventDialogue& obj) const noexcept;
@@ -19,7 +19,7 @@ public:
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const;
 
-	virtual Event* clone() const override;
+	Event* clone() const override;
 
 	void run() override;
 

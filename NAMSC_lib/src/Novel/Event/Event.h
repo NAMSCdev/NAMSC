@@ -17,7 +17,7 @@ class Event : public NovelFlowInterface
 	friend class EventVisitorChangeID;
 public:
 	Event(Scene* const parentScene) noexcept;
-	Event(Scene* const parentScene, const QString label, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	Event(Scene* const parentScene, const QString label, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	Event(const Event& obj) = delete;
 	Event& operator=(const Event& obj) noexcept;
 	bool operator==(const Event& obj) const noexcept;

@@ -3,7 +3,7 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Event/EventsAll.h"
 
-Scene::Scene(const QString& label, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events)
+Scene::Scene(const QString& name, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events)
 	: name(name), chapterName_(chapterName), scenery(scenery), events_(std::move(events))
 {
     if (!chapterName_.isEmpty())
@@ -25,7 +25,7 @@ Scene& Scene::operator=(Scene obj)
 {
     if (this == &obj) return *this;
 
-    std::swap(this->name,         obj.name);
+    std::swap(this->name,        obj.name);
     std::swap(this->chapterName_, obj.chapterName_);
     std::swap(this->chapter_,     obj.chapter_);
     std::swap(this->scenery,      obj.scenery);
