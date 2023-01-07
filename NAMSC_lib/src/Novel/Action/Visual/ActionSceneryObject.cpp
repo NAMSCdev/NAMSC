@@ -2,13 +2,13 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionSceneryObject::ActionSceneryObject(Event* const parentEvent) noexcept
+	: Action(parentEvent)
 {
 }
 
-ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName)
-	: Action(parentEvent, parentScene), sceneryObjectName_(sceneryObjectName)
+ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName)
+	: Action(parentEvent), sceneryObjectName_(sceneryObjectName)
 {
 	///checkForErrors(true);
 }
@@ -39,26 +39,26 @@ bool ActionSceneryObject::checkForErrors(bool bComprehensive) const
 
 	static auto errorChecker = [&](bool bComprehensive)
 	{
-		if (parentScene_->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
+		if (parentEvent->parentScene->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::SceneryObjectInvalid << "No valid SceneryObject assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::SceneryObjectInvalid << "No valid SceneryObject assigned. Was it deleted and not replaced?";
 			if (sceneryObjectName_ != "")
-				qCritical() << this << NovelLib::ErrorType::SceneryObjectMissing << "SceneryObject \"" << sceneryObjectName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::SceneryObjectMissing << "SceneryObject \"" + sceneryObjectName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObject::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSceneryObject::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
 void ActionSceneryObject::setSceneryObject(const QString& sceneryObjectName) noexcept
 {
-	if (parentScene_->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
-		qCritical() << this << NovelLib::ErrorType::SceneryObjectMissing << "Scenery Object \"" << sceneryObjectName << "\" does not exist";
+	if (parentEvent->parentScene->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
+		qCritical() << NovelLib::ErrorType::SceneryObjectMissing << "Scenery Object \"" + sceneryObjectName + "\" does not exist";
 	else
 	{
 		sceneryObjectName_ = sceneryObjectName;  

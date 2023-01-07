@@ -22,7 +22,7 @@ struct Scenery final
 	/// \todo Manage Sounds
 	void update(uint elapsedTime);
 
-	/// Ensures Assets amd Sounds are loaded and if not - loads them
+	/// Ensures Assets and Sounds are loaded and if not - loads them
 	void ensureResourcesAreLoaded();
 
 	void addAnimator(AnimatorSceneryObjectColor&& animatorColor);
@@ -43,14 +43,14 @@ struct Scenery final
 	void setDisplayedCharacters(const std::unordered_map<QString, Character>& sceneryObjects) noexcept;
 	const Character* getDisplayedCharacter(const QString& characterName) const noexcept;
 	Character* getDisplayedCharacter(const QString& characterName) noexcept;
-	void setDisplayedCharacter(const QString& characterName, const Character& character) noexcept;
+	Character* setDisplayedCharacter(const QString& characterName, const Character& character) noexcept;
 	bool removeDisplayedCharacter(const QString& characterName) noexcept;
 
 	const std::unordered_map<QString, SceneryObject>* getDisplayedSceneryObjects() const noexcept;
 	void setDisplayedSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
 	const SceneryObject* getDisplayedSceneryObject(const QString& sceneryObjectName) const noexcept;
 	SceneryObject* getDisplayedSceneryObject(const QString& sceneryObjectName) noexcept;
-	void setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
+	SceneryObject* setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
 	bool removeDisplayedSceneryObject(const QString& sceneryObjectName) noexcept;
 
 	const std::unordered_map<QString, Sound>* getSounds() const noexcept;

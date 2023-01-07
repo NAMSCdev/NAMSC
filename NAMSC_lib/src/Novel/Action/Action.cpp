@@ -2,8 +2,8 @@
 
 #include "Novel/Data/Scene.h"
 
-Action::Action(Event* const parentEvent, Scene* const parentScene) noexcept
-	: parentEvent_(parentEvent), parentScene_(parentScene)
+Action::Action(Event* const parentEvent) noexcept
+	: parentEvent(parentEvent)
 {
 }
 
@@ -33,7 +33,7 @@ bool Action::checkForErrors(bool bComprehensive) const
 	
 	//Only leafs should report, but if needed for further debug, uncomment it
 	//if (bError)
-	//	qDebug() << "Error occurred in Action::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	//	qDebug() << "Error occurred in Action::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }

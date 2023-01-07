@@ -9,10 +9,8 @@ class EventDialogue final : public Event
 public:
 	EventDialogue(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentence);
-	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions);
-	EventDialogue(const EventDialogue& obj)         = delete;
+	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventDialogue(const EventDialogue& obj) noexcept;
 	EventDialogue& operator=(const EventDialogue& obj) noexcept;
 	bool operator==(const EventDialogue& obj) const noexcept;
 	bool operator!=(const EventDialogue& obj) const = default; //{ return !(*this == obj); }
@@ -20,6 +18,8 @@ public:
 	/// \exception Error invalid Action in `actions_` / invalid Sentence in `sentences`
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const;
+
+	virtual Event* clone() const override;
 
 	void run() override;
 

@@ -29,8 +29,8 @@ public:
 	/// \todo implement this
 	void save() override;
 
-	const QImage* getAssetImage() const noexcept;
+	const QImage* getImage() const noexcept;
 
 protected:
-	std::unique_ptr<QImage> img_;
+	std::unique_ptr<QImage> img_ = nullptr;
 };

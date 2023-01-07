@@ -9,10 +9,8 @@ class EventJump final : public Event
 public:
 	EventJump(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions contains an Error or the `jumpToSceneName` points to a deleted Scene or the `condition` is not structured properly
-	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition);
-	/// \exception One of the Actions contains an Error or the `jumpToSceneName` points to a deleted Scene or the `condition` is not structured properly
-	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions);
-	EventJump(const EventJump& obj)             = delete;
+	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventJump(const EventJump& obj) noexcept;
 	EventJump& operator=(const EventJump& obj) noexcept;
 	bool operator==(const EventJump& obj) const noexcept;
 	bool operator!=(const EventJump& obj) const = default; //{ return !(*this == obj); }
@@ -21,6 +19,8 @@ public:
 	/// \return Whether an Error has occurred
 	/// \todo implement this
 	bool checkForErrors(bool bComprehensive = false) const override;
+
+	virtual Event* clone() const override;
 
 	void run() override;
 

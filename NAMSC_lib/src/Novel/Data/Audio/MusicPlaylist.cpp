@@ -52,14 +52,14 @@ bool MusicPlaylist::checkForErrors(bool bComprehensive) const
 			if (song.second == "")
 			{
 				bError = true;
-				qCritical() << this << NovelLib::ErrorType::AudioInvalid << "No Song file assigned. Was it deleted and not replaced?";
+				qCritical() << NovelLib::ErrorType::AudioInvalid << "No Song file assigned. Was it deleted and not replaced?";
 			}
 
 			//Check if the File is still there in the User's filesystem
 			if (!QFile::exists(song.second))
 			{
 				bError = true;
-				qCritical() << this << NovelLib::ErrorType::AudioFileMissing << "Could not find a Song file \"" << song.second << "\"";
+				qCritical() << NovelLib::ErrorType::AudioFileMissing << "Could not find a Song file \"" + song.second + '\"';
 			}
 
 			if (bComprehensive)

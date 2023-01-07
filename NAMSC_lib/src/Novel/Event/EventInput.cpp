@@ -8,14 +8,16 @@ EventInput::EventInput(Scene* const parentScene) noexcept
 	checkForErrors(true);
 }
 
-EventInput::EventInput(Scene* const parentScene, const QString& label, uint minCharacters, const QString& regex, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName)
-	: Event(parentScene, label), minCharacters(minCharacters), regex(regex), inputStatName_(inputStatName), bDigitsOnly(bDigitsOnly), digitsOnly_min(digitsOnly_min), digitsOnly_max(digitsOnly_max), bLogicalExpression(bLogicalExpression), logicalExpression(logicalExpression), logicalExpression_tries(logicalExpression_tries), logicalExpression_failureJumpToSceneName(logicalExpression_failureJumpToSceneName)
-{
-}
-
 EventInput::EventInput(Scene* const parentScene, const QString& label, uint minCharacters, const QString& regex, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), minCharacters(minCharacters), regex(regex), inputStatName_(inputStatName), bDigitsOnly(bDigitsOnly), digitsOnly_min(digitsOnly_min), digitsOnly_max(digitsOnly_max), bLogicalExpression(bLogicalExpression), logicalExpression(logicalExpression), logicalExpression_tries(logicalExpression_tries), logicalExpression_failureJumpToSceneName(logicalExpression_failureJumpToSceneName)
 {
+}
+
+EventInput::EventInput(const EventInput& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 EventInput& EventInput::operator=(const EventInput& obj) noexcept
@@ -69,9 +71,15 @@ bool EventInput::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "An Error occurred in EventInput::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventInput::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventInput::clone() const
+{
+	EventInput* clone = new EventInput(*this);
+	return clone;
 }
 
 void EventInput::run()

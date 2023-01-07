@@ -7,16 +7,17 @@ EventDialogue::EventDialogue(Scene* const parentScene) noexcept
 {
 }
 
-EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences)
-	: Event(parentScene, label), sentences(sentences)
-{
-	checkForErrors(true);
-}
-
 EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), sentences(sentences)
 {
 	checkForErrors(true);
+}
+
+EventDialogue::EventDialogue(const EventDialogue& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 EventDialogue& EventDialogue::operator=(const EventDialogue& obj) noexcept
@@ -51,9 +52,15 @@ bool EventDialogue::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	 if (bError)
-		qDebug() << "An Error occurred in EventDialogue::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventDialogue::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventDialogue::clone() const
+{
+	EventDialogue* clone = new EventDialogue(*this);
+	return clone;
 }
 
 void EventDialogue::run()
@@ -83,7 +90,7 @@ void EventDialogue::serializableLoad(QDataStream& dataStream)
 
 	for (unsigned i = 0; i != sentencesSize; ++i)
 	{
-		Sentence sentence(this, parentScene_);
+		Sentence sentence(this, parentScene);
 		dataStream >> sentence;
 		sentences.push_back(std::move(sentence));
 	}

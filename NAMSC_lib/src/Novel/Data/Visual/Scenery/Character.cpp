@@ -2,10 +2,10 @@
 
 #include "Novel/Data/Novel.h"
 
-Character::Character(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName)
+Character::Character(const QString& name, const QString& assetImageName, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName)
 	: SceneryObject(name, assetImageName, pos, scale, rotationDegree, colorMultiplier, alphaMultiplier, bVisible), defaultVoiceName_(defaultVoiceName)
 {
-	defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName);
+	//defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName);
 	checkForErrors(true);
 }
 
@@ -23,7 +23,7 @@ Character& Character::operator=(Character obj) noexcept
 	std::swap(this->alphaMultiplier,   obj.alphaMultiplier);
 	std::swap(this->bVisible,          obj.bVisible);
 	std::swap(this->defaultVoiceName_, obj.defaultVoiceName_);
-	std::swap(this->defaultVoice_, obj.defaultVoice_);
+	std::swap(this->defaultVoice_,     obj.defaultVoice_);
 
 	return *this;
 }
@@ -39,27 +39,27 @@ bool Character::operator==(const Character& obj) const noexcept
 
 bool Character::checkForErrors(bool bComprehensive) const
 {
-	bool bError = false;
+	bool bError = SceneryObject::checkForErrors(bComprehensive);
 
 	static auto errorChecker = [&](bool bComprehensive)
 	{
 		//Check if the name is undefined
-		if (defaultVoiceName_ == "")
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceInvalid << "No Voice assigned. Was it deleted and not replaced?";
-		}
+		//if (defaultVoiceName_ == "")
+		//{
+		//	bError = true;
+		//	qCritical() << NovelLib::ErrorType::VoiceInvalid << "No Voice assigned. Was it deleted and not replaced?";
+		//}
 		//Check if there is a Voice with this name in the Novel's container 
-		else if (Novel::getInstance().getVoice(defaultVoiceName_) == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << defaultVoiceName_ << "\" does not exist. Definition file might be corrupted";
-		}
+		//else if (Novel::getInstance().getVoice(defaultVoiceName_) == nullptr)
+		//{
+		//	bError = true;
+		//	qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + defaultVoiceName_ + "\" does not exist. Definition file might be corrupted";
+		//}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "An Error occurred in Character::checkForErrors (object's name: \"" << name << "\")";
+		qDebug() << "An Error occurred in Character::checkForErrors (object's name: \"" + name + "\")";
 
 	return bError;
 }
@@ -77,7 +77,7 @@ void Character::setDefaultVoice(const QString& defaultVoiceName, Voice* voice) n
 	Voice* newVoice = nullptr;
 	newVoice = Novel::getInstance().getVoice(defaultVoiceName);
 	if (newVoice == nullptr)
-		qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << defaultVoiceName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + defaultVoiceName + "\" does not exist";
 	else
 	{
 		defaultVoiceName_ = defaultVoiceName;

@@ -3,18 +3,25 @@
 #include "Novel/Data/Asset/AssetManager.h"
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObject(parentEvent, parentScene)
+ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(Event* const parentEvent) noexcept
+	: ActionSceneryObject(parentEvent)
 {
 }
 
-ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetImageName) 
-	: ActionSceneryObject(parentEvent, parentScene, sceneryObjectName), assetImageName_(assetImageName)
+ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetImageName) 
+	: ActionSceneryObject(parentEvent, sceneryObjectName), assetImageName_(assetImageName)
 {
 	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
 	//if (assetImage_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj) noexcept
+	: ActionSceneryObject(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSceneryObjectSetImage& ActionSceneryObjectSetImage::operator=(const ActionSceneryObjectSetImage& obj) noexcept
@@ -47,24 +54,30 @@ bool ActionSceneryObjectSetImage::checkForErrors(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
 			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectSetImage::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSceneryObjectSetImage::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
+}
+
+Action* ActionSceneryObjectSetImage::clone() const
+{
+	ActionSceneryObjectSetImage* clone = new ActionSceneryObjectSetImage(*this);
+	return clone;
 }
 
 void ActionSceneryObjectSetImage::run()
 {
 }
 
-void ActionSceneryObjectSetImage::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, QImage* image)> onRun) noexcept
+void ActionSceneryObjectSetImage::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, QImage* image)> onRun) noexcept
 { 
 	onRun_ = onRun;
 }
@@ -74,7 +87,7 @@ void ActionSceneryObjectSetImage::setAssetImage(const QString& assetImageName) n
 	AssetImage* newAssetImage = nullptr;
 	newAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
 	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName + "\" does not exist";
 	else
 	{
 		assetImageName_ = assetImageName;

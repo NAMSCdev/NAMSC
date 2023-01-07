@@ -3,13 +3,13 @@
 #include "Novel/Data/Save/NovelState.h"
 #include "Novel/Data/Scene.h"
 
-ActionCharacter::ActionCharacter(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionCharacter::ActionCharacter(Event* const parentEvent) noexcept
+	: Action(parentEvent)
 {
 }
 
-ActionCharacter::ActionCharacter(Event* const parentEvent, Scene* const parentScene, const QString& characterName)
-	: Action(parentEvent, parentScene), characterName_(characterName)
+ActionCharacter::ActionCharacter(Event* const parentEvent, const QString& characterName)
+	: Action(parentEvent), characterName_(characterName)
 {
 	///checkForErrors(true);
 }
@@ -40,26 +40,26 @@ bool ActionCharacter::checkForErrors(bool bComprehensive) const
 
 	static auto errorChecker = [&](bool bComprehensive)
 	{
-		if (parentScene_->scenery.getDisplayedCharacter(characterName_) == nullptr)
+		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
 			if (characterName_ != "")
-				qCritical() << this << NovelLib::ErrorType::CharacterMissing << "Character \"" << characterName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in ActionCharacter::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionCharacter::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
 void ActionCharacter::setCharacter(const QString& characterName) noexcept
 {
-	if (parentScene_->scenery.getDisplayedCharacter(characterName_) == nullptr)
-		qCritical() << this << NovelLib::ErrorType::CharacterMissing << "Character \"" << characterName << "\" does not exist";
+	if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
+		qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName + "\" does not exist";
 	else
 	{
 		characterName_ = characterName;

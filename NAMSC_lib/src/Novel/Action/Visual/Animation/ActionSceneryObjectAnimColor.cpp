@@ -2,18 +2,25 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObjectAnim(parentEvent, parentScene)
+ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(Event* const parentEvent) noexcept
+	: ActionSceneryObjectAnim(parentEvent)
 {
 }
 
-ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, parentScene, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
 {
 	assetAnim_ = AssetManager::getInstance().getAssetAnimColor(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor& obj) noexcept 
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSceneryObjectAnimColor& ActionSceneryObjectAnimColor::operator=(const ActionSceneryObjectAnimColor& obj) noexcept
@@ -33,9 +40,28 @@ bool ActionSceneryObjectAnimColor::operator==(const ActionSceneryObjectAnimColor
 	return ActionSceneryObjectAnim::operator==(obj);
 }
 
-/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimColor's `void run()` allowing for data read
+bool ActionSceneryObjectAnimColor::checkForErrors(bool bComprehensive) const
+{
+	bool bError = ActionSceneryObjectAnim::checkForErrors(bComprehensive);
 
-void ActionSceneryObjectAnimColor::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* parentSceneryObject, AssetAnimColor* assetAnimColor, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
+	//static auto errorChecker = [&](bool bComprehensive)
+	//{
+	//};
+
+	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
+	if (bError)
+		qDebug() << "Error occurred in ActionSceneryObjectAnimColor::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
+
+	return bError;
+}
+
+Action* ActionSceneryObjectAnimColor::clone() const
+{
+	ActionSceneryObjectAnimColor* clone = new ActionSceneryObjectAnimColor(*this);
+	return clone;
+}
+
+void ActionSceneryObjectAnimColor::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimColor* assetAnimColor, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
 { 
 	onRun_ = onRun;
 }
@@ -45,7 +71,7 @@ void ActionSceneryObjectAnimColor::setAssetAnim(const QString& assetAnimName) no
 	AssetAnimColor* newAssetAnim = nullptr;
 	newAssetAnim = AssetManager::getInstance().getAssetAnimColor(assetAnimName);
 	if (newAssetAnim == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" << assetAnimName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" + assetAnimName + "\" does not exist";
 	else
 	{
 		assetAnimName_ = assetAnimName;
@@ -67,28 +93,13 @@ NovelLib::SerializationID ActionSceneryObjectAnimColor::getType() const noexcept
 	return NovelLib::SerializationID::ActionSceneryObjectAnimColor;
 }
 
-bool ActionSceneryObjectAnimColor::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionSceneryObjectAnim::checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimColor::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
-
-	return bError;
-}
-
 void ActionSceneryObjectAnimColor::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 
 	assetAnim_ = AssetManager::getInstance().getAssetAnimColor(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors();
 }
 

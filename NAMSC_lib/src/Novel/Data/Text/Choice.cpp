@@ -63,7 +63,7 @@ bool Choice::checkForErrors(bool bComprehensive) const
 		if (jumpToSceneName == "")
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::JumpInvalid << "Choice is missing a jumpToSceneName";
+			qCritical() << NovelLib::ErrorType::JumpInvalid << "Choice is missing a jumpToSceneName";
 		}
 
 		//todo: check `condition`
@@ -88,7 +88,7 @@ bool Choice::ChoiceDisplayOptions::checkForErrors(bool bComprehensive) const
 		if (fontName_ == "")
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::General << "No Font set";
+			qCritical() << NovelLib::ErrorType::General << "No Font set";
 		}
 	};
 

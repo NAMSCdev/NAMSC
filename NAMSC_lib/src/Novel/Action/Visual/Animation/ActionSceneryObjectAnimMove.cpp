@@ -2,18 +2,25 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObjectAnim(parentEvent, parentScene)
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent) noexcept
+	: ActionSceneryObjectAnim(parentEvent)
 {
 }
 
-ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, parentScene, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
 {
 	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::AssetAnimMissing << "Move AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSceneryObjectAnimMove& ActionSceneryObjectAnimMove::operator=(const ActionSceneryObjectAnimMove& obj) noexcept
@@ -43,15 +50,18 @@ bool ActionSceneryObjectAnimMove::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimMove::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSceneryObjectAnimMove::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
+Action* ActionSceneryObjectAnimMove::clone() const
+{
+	ActionSceneryObjectAnimMove* clone = new ActionSceneryObjectAnimMove(*this);
+	return clone;
+}
 
-/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimMove's `void run()` allowing for data read
-
-void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* parentSceneryObject, AssetAnimMove* assetAnimMove, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept 
+void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimMove* assetAnimMove, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept 
 { 
 	onRun_ = onRun;
 }
@@ -61,7 +71,7 @@ void ActionSceneryObjectAnimMove::setAssetAnim(const QString& assetAnimName) noe
 	AssetAnimMove* newAssetAnim = nullptr;
 	newAssetAnim = AssetManager::getInstance().getAssetAnimMove(assetAnimName);
 	if (newAssetAnim == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" << assetAnimName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName + "\" does not exist";
 	else
 	{
 		assetAnimName_ = assetAnimName;
@@ -87,11 +97,11 @@ void ActionSceneryObjectAnimMove::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 	//if (assetAnimName_ == "")
-	//	qCritical() << this << NovelLib::AssetAnimInvalid << "Move AssetAnim is not specified";
+	//	qCritical() << NovelLib::AssetAnimInvalid << "Move AssetAnim is not specified";
 
 	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::AssetAnimMissing << "Move AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 
 	checkForErrors();
 }

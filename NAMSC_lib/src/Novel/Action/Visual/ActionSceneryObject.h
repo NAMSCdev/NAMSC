@@ -7,10 +7,9 @@
 class ActionSceneryObject : public Action
 {
 public:
-	ActionSceneryObject(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionSceneryObject(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName_`
-	ActionSceneryObject(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName);
-	ActionSceneryObject(const ActionSceneryObject& obj) = delete;
+	ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName);
 	ActionSceneryObject& operator=(const ActionSceneryObject& obj) noexcept;
 	bool operator==(const ActionSceneryObject& obj) const noexcept;
 	bool operator!=(const ActionSceneryObject& obj) const = default; //{ return !(*this == obj); }

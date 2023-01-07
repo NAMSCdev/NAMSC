@@ -7,22 +7,24 @@
 class ActionCharacterSetVoice final : public ActionCharacter
 {
 public:
-	ActionCharacterSetVoice(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionCharacterSetVoice(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the Character named `characterName` or couldn't find the Voice named `voiceName`
-	ActionCharacterSetVoice(Event* const parentEvent, Scene* const parentScene, const QString& characterName, const QString& voiceName);
-	ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) = delete;
+	ActionCharacterSetVoice(Event* const parentEvent, const QString& characterName, const QString& voiceName);
+	ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept;
 	ActionCharacterSetVoice& operator=(const ActionCharacterSetVoice& obj) noexcept;
 	bool operator==(const ActionCharacterSetVoice& obj) const noexcept;
-	bool operator!=(const ActionCharacterSetVoice& obj) const   = default; //{ return !(*this == obj); }
+	bool operator!=(const ActionCharacterSetVoice& obj) const = default; //{ return !(*this == obj); }
 
 	/// \exception Error 'character_`/`voice_` is invalid
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const override;
 
+	Action* clone() const override;
+
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the ActionCharacterSetVoice's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Character* character, Voice* voice)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, Character* character, Voice* voice)> onRun) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
@@ -37,7 +39,7 @@ private:
 	NovelLib::SerializationID getType() const noexcept override;
 
 	/// A function pointer that is called (if not nullptr) after the ActionCharacterSetVoice's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, Character* character, Voice* voice)> onRun_ = nullptr;
+	std::function<void(Event* const parentEvent, Character* character, Voice* voice)> onRun_ = nullptr;
 
 	QString voiceName_ = "";
 	Voice*  voice_     = nullptr;

@@ -7,15 +7,14 @@
 class ActionAudio : public Action
 {
 public:
-	ActionAudio(Event* const parentEvent, Scene* const parentScene) noexcept;
-	ActionAudio(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings);
-	ActionAudio(const ActionAudio& obj) = delete;
+	ActionAudio(Event* const parentEvent) noexcept;
+	ActionAudio(Event* const parentEvent, const AudioSettings& audioSettings);
 	ActionAudio& operator=(const ActionAudio& obj) noexcept;
 	bool operator==(const ActionAudio& obj) const noexcept;
 	bool operator!=(const ActionAudio& obj) const = default; //{ return !(*this == obj); }
 
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive) const;
+	virtual bool checkForErrors(bool bComprehensive) const override;
 	
 	const AudioSettings& getAudioSettings() const noexcept;
 	AudioSettings& getAudioSettings() noexcept;

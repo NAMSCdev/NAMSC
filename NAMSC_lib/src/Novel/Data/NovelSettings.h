@@ -20,9 +20,6 @@ public:
     NovelSettings(const NovelSettings&)  = delete;
     void operator=(const NovelSettings&) = delete;
 
-    /// Title of the Novel
-    QString novelTitle           = "Пан Тадеуш: реальная история";
-
 	/// Language that the Translation will return text in
 	QString	language             = "En";
 
@@ -30,7 +27,7 @@ public:
 	QString	defaultLanguage      = "En";
 
 	/// Last used SaveSlot
-	uint lastSaveSlot            = 0;
+	uint lastSaveSlot            = 40;
 
     /// Characters Per Second
     uint cps                     = 0;

@@ -50,14 +50,14 @@ bool Voice::checkForErrors(bool bComprehensive) const
 	static auto errorChecker = [&](bool bComprehensive)
 	{
 		if (fontName_ == "")
-			qCritical() << this << NovelLib::ErrorType::General << "No Font set";
+			qCritical() << NovelLib::ErrorType::General << "No Font set";
 
 		return false;
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "An Error occurred in Voice::checkForErrors \"" << name << '\"';
+		qDebug() << "An Error occurred in Voice::checkForErrors \"" + name + '\"';
 
 	return bError;
 }

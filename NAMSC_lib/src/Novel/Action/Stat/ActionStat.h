@@ -7,17 +7,16 @@
 class ActionStat : public Action
 {
 public:
-	ActionStat(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionStat(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the Stat named `statName`
-	ActionStat(Event* const parentEvent, Scene* const parentScene, const QString& statName);
-	ActionStat(const ActionStat& obj) = delete;
+	ActionStat(Event* const parentEvent, const QString& statName);
 	ActionStat& operator=(const ActionStat& obj) noexcept;
 	bool operator==(const ActionStat& obj) const noexcept;
 	bool operator!=(const ActionStat& obj) const = default; //{ return !(*this == obj); }
 
 	/// \exception Error `stat_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
+	virtual bool checkForErrors(bool bComprehensive = false) const override;
 
 	/// Connects the Stat pointer to the actual Stat in the NovelState
 	/// Must be called after the Save is loaded

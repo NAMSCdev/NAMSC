@@ -7,16 +7,17 @@ EventWait::EventWait(Scene* const parentScene) noexcept
 {
 }
 
-EventWait::EventWait(Scene* const parentScene, const QString& label, uint waitTime)
-	: Event(parentScene, label), waitTime(waitTime)
-{
-	checkForErrors(true);
-}
-
 EventWait::EventWait(Scene* const parentScene, const QString& label, uint waitTime, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), waitTime(waitTime)
 {
 	checkForErrors(true);
+}
+
+EventWait::EventWait(const EventWait& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 EventWait& EventWait::operator=(const EventWait& obj) noexcept
@@ -48,9 +49,15 @@ bool EventWait::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	//if (bError)
-	//	qDebug() << "An Error occurred in EventWait::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+	//	qDebug() << "An Error occurred in EventWait::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventWait::clone() const
+{
+	EventWait* clone = new EventWait(*this);
+	return clone;
 }
 
 void EventWait::run()

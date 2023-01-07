@@ -13,14 +13,14 @@ template class ActionSceneryObjectAnim<AnimNodeLongLong3D>;
 template class ActionSceneryObjectAnim<AnimNodeLongLong4D>;
 
 template <class AnimNode>
-ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObject(parentEvent, parentScene)
+ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent) noexcept
+	: ActionSceneryObject(parentEvent)
 {
 }
 
 template <class AnimNode>
-ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObject(parentEvent, parentScene, sceneryObjectName), assetAnimName_(assetAnimName), priority(priority), startDelay(startDelay), speed(speed), timesPlayed(timesPlayed), bStopAnimationAtEventEnd(bStopAnimationAtEventEnd)
+ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
+	: ActionSceneryObject(parentEvent, sceneryObjectName), assetAnimName_(assetAnimName), priority(priority), startDelay(startDelay), speed(speed), timesPlayed(timesPlayed), bStopAnimationAtEventEnd(bStopAnimationAtEventEnd)
 {
 	//checkForErrors(true);
 }
@@ -67,16 +67,16 @@ bool ActionSceneryObjectAnim<AnimNode>::checkForErrors(bool bComprehensive) cons
 		if (assetAnim_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetAnimInvalid << "No valid AnimAsset assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AssetAnimInvalid << "No valid AnimAsset assigned. Was it deleted and not replaced?";
 			if (assetAnimName_ != "")
-				qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "AssetAnim \"" << assetAnimName_ << "\" does not exist or read. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::AssetAnimMissing << "AssetAnim \"" + assetAnimName_ + "\" does not exist or read. Definition file might be corrupted";
 		}
 		else bError |= assetAnim_->checkForErrors(bComprehensive);
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	//if (bError)
-	//	qDebug() << "Error occurred in ActionSceneryObjectAnim::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	//	qDebug() << "Error occurred in ActionSceneryObjectAnim::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }

@@ -10,11 +10,9 @@ class EventChoice final : public Event
 {
 public:
 	EventChoice(Scene* const parentScene) noexcept;
-	// \exception One of the Actions or the Choices or the `text` contains an Error 
-	EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices);
 	/// \exception One of the Actions or the Choices or the `text` contains an Error 
-	EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions);
-	EventChoice(const EventChoice& obj) noexcept  = delete;
+	EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventChoice(const EventChoice& obj) noexcept;
 	EventChoice& operator=(const EventChoice& obj) noexcept;
 	bool operator==(const EventChoice& obj) const noexcept;
 	bool operator!=(const EventChoice& obj) const = default; //{ return !(*this == obj); }
@@ -22,6 +20,8 @@ public:
 	/// \exception Error Invalid Action in `actions_` / invalid Choice in `choices` / invalid `text`
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const override;
+
+	virtual Event* clone() const override;
 
 	void run() override;
 

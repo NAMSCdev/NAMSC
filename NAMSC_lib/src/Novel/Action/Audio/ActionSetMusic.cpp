@@ -2,15 +2,22 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionAudioSetMusic::ActionAudioSetMusic(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionAudio(parentEvent, parentScene)
+ActionAudioSetMusic::ActionAudioSetMusic(Event* const parentEvent) noexcept
+	: ActionAudio(parentEvent)
 {
 }
 
-ActionAudioSetMusic::ActionAudioSetMusic(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const MusicPlaylist& musicPlaylist)
-	: ActionAudio(parentEvent, parentScene, audioSettings), musicPlaylist_(musicPlaylist)
+ActionAudioSetMusic::ActionAudioSetMusic(Event* const parentEvent, const AudioSettings& audioSettings, const MusicPlaylist& musicPlaylist)
+	: ActionAudio(parentEvent, audioSettings), musicPlaylist_(musicPlaylist)
 {
 	checkForErrors(true);
+}
+
+ActionAudioSetMusic::ActionAudioSetMusic(const ActionAudioSetMusic& obj) noexcept
+	: ActionAudio(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionAudioSetMusic& ActionAudioSetMusic::operator=(const ActionAudioSetMusic& obj) noexcept
@@ -45,12 +52,18 @@ bool ActionAudioSetMusic::checkForErrors(bool bComprehensive) const
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 
 	if (bError)
-		qDebug() << "Error occurred in ActionAudioSetMusic::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionAudioSetMusic::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
-void ActionAudioSetMusic::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, MusicPlaylist* musicPlaylist)> onRun) noexcept
+Action* ActionAudioSetMusic::clone() const
+{
+	ActionAudioSetMusic* clone = new ActionAudioSetMusic(*this);
+	return clone;
+}
+
+void ActionAudioSetMusic::setOnRunListener(std::function<void(Event* const parentEvent, MusicPlaylist* musicPlaylist)> onRun) noexcept
 {
 	onRun_ = onRun;
 }

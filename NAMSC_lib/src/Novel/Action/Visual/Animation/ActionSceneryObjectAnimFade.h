@@ -8,22 +8,24 @@
 class ActionSceneryObjectAnimFade : public ActionSceneryObjectAnim<AnimNodeDouble1D>
 {
 public:
-	ActionSceneryObjectAnimFade(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionSceneryObjectAnimFade(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName`
-	ActionSceneryObjectAnimFade(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, uint priority, uint startDelay, bool bStopAnimationAtEventEnd, uint duration, bool bAppear);
-	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) = delete;
+	ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority, uint startDelay, bool bStopAnimationAtEventEnd, uint duration, bool bAppear);
+	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept;
 	ActionSceneryObjectAnimFade& operator=(const ActionSceneryObjectAnimFade& obj) noexcept;
 	bool operator==(const ActionSceneryObjectAnimFade& obj) const noexcept;
-	bool operator!=(const ActionSceneryObjectAnimFade& obj) const       = default; //{ return !(*this == obj); }
+	bool operator!=(const ActionSceneryObjectAnimFade& obj) const = default; //{ return !(*this == obj); }
 
 	/// \exception Error `sceneryObject_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const;
+	bool checkForErrors(bool bComprehensive = false) const override;
+
+	Action* clone() const override;
 
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the AnimatorSceneryObjectVisibility's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
@@ -39,7 +41,7 @@ protected:
 	NovelLib::SerializationID getType() const noexcept override;
 
 	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimFade's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun_ = nullptr;
+	std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

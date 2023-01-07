@@ -72,7 +72,7 @@ bool NovelState::checkForErrors(bool bComprehensive) const
         bError |= stat.second->checkForErrors(bComprehensive);
     //bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
     if (bError)
-    	qDebug() << "Error occurred in NovelState::checkForErrors in the slot " << saveSlot;
+    	qDebug() << "Error occurred in NovelState::checkForErrors in the slot" << saveSlot;
 
     return bError;
 }
@@ -101,18 +101,26 @@ NovelState NovelState::load(uint saveSlot)
 {
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
     QDataStream dataStream(&save);
-    return NovelState();
+    NovelState novelState;
+    dataStream >> novelState;
+    return novelState;
 }
 
 NovelState NovelState::reset(uint saveSlot)
 {
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
     QDataStream dataStream(&save);
-    return NovelState();
+    NovelState novelState;
+    novelState.saveSlot  = saveSlot;
+    novelState.sceneName = Novel::getInstance().defaultScene;
+    return novelState;
 }
 
 void NovelState::save()
 {
+    NovelState &novelState = Novel::getInstance().state_;
+    QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
+    QDataStream dataStream(&save);
 }
 
 Stat* NovelState::getStat(const QString& statName) noexcept
@@ -159,7 +167,7 @@ void NovelState::serializableLoad(QDataStream& dataStream)
             stat = new StatString();
             break;
         default:
-            qCritical() << this << "Could not find a Stat's type " << static_cast<int>(type) << '!';
+            qCritical() << "Could not find a Stat's type" << static_cast<int>(type) << '!';
             break;
         }
         if (stat)

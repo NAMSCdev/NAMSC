@@ -128,7 +128,7 @@ template<typename AssetType>
 void AssetManager::insertAsset(const QString& name, uint size, uint pos, const QString& path, std::unordered_map<QString, AssetType>& map)
 {
 	if (map.contains(name))
-		qCritical() << this << NovelLib::ErrorType::General << "An Asset with name (object's name: \"" << name << "\") already exists!";
+		qCritical() << NovelLib::ErrorType::General << "An Asset with name (object's name: \"" + name + "\") already exists!";
 	map.insert(std::make_pair(name, std::move(AssetType(name, size, pos, path))));
 }
 
@@ -138,7 +138,7 @@ void AssetManager::loadDefinitions(const QString& path, std::unordered_map<QStri
 	QFile file(path);
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not open the File \"" << path << "\": ";
+		qCritical() << NovelLib::ErrorType::General << "Could not open the File \"" + path + "\": ";
 		return;
 	}
 	try
@@ -153,7 +153,7 @@ void AssetManager::loadDefinitions(const QString& path, std::unordered_map<QStri
 	}
 	catch (QException exception)
 	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not read from File \"" << path << "\": " << exception.what();
+		qCritical() << NovelLib::ErrorType::General << "Could not read from File \"" + path + "\":" << exception.what();
 	}
 }
 
@@ -163,7 +163,7 @@ void AssetManager::saveDefinitions(const QString& path, std::unordered_map<QStri
 	QFile file(path);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		qCritical() << this << NovelLib::ErrorType::General << "Couldn't open \"" << path << "\" File";
+		qCritical() << NovelLib::ErrorType::General << "Couldn't open \"" + path + "\" File";
 		return;
 	}
 	try
@@ -174,6 +174,6 @@ void AssetManager::saveDefinitions(const QString& path, std::unordered_map<QStri
 	}
 	catch (QException& exception)
 	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not write to File \"" << path << "\": " << exception.what();
+		qCritical() << NovelLib::ErrorType::General << "Could not write to File \"" + path + "\":" << exception.what();
 	}
 }

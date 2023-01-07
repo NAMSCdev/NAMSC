@@ -10,10 +10,10 @@ class ActionSceneryObjectSetImage final : public ActionSceneryObject
 {
 	friend ActionVisitorCorrectSceneryObjectAssetImage;
 public:
-	ActionSceneryObjectSetImage(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionSceneryObjectSetImage(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName` or couldn't find/read the AssetImage named `assetImageName`
-	ActionSceneryObjectSetImage(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetImageName);
-	ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj) = delete;
+	ActionSceneryObjectSetImage(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetImageName);
+	ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj) noexcept;
 	ActionSceneryObjectSetImage& operator=(const ActionSceneryObjectSetImage& obj) noexcept;
 	bool operator==(const ActionSceneryObjectSetImage& obj) const noexcept;
 	bool operator!=(const ActionSceneryObjectSetImage& obj) const = default; //{ return !(*this == obj); }
@@ -22,10 +22,12 @@ public:
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const override;
 
+	Action* clone() const override;
+
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObject's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, QImage* image)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, QImage* image)> onRun) noexcept;
 
 	const AssetImage* getAssetImage() const noexcept;
 	AssetImage* getAssetImage() noexcept;
@@ -42,7 +44,7 @@ private:
 	void ensureResourcesAreLoaded() override;
 
 	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectSetImage's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* sceneryObject, QImage* image)> onRun_ = nullptr;
+	std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, QImage* image)> onRun_ = nullptr;
 
 	///\todo [optional] Replace single images with an array of them
 	///Names of the Images that will replace SceneryObjectPart's images identified by IDs

@@ -4,7 +4,7 @@
 #include "Novel/Data/Visual/Scenery/Scenery.h"
 #include "Novel/Event/Event.h"
 
-/// The logical unit of the Novel's flow in the [Novel](#Novel]
+/// The logical unit of the Novel's flow in the [Novel](#Novel)
 /// The Editor user should be able to create one whenever
 class Scene final : public NovelFlowInterface
 {
@@ -16,13 +16,10 @@ class Scene final : public NovelFlowInterface
 public:
 	Scene() = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	Scene(const QString& name, const QString& chapterName, const Scenery& scenery);
-	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	Scene(const QString& name, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events);
+	Scene(const QString& name, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events = std::vector<std::unique_ptr<Event>>());
 	Scene(const Scene& obj) noexcept;
-	Scene& operator=(Scene obj) noexcept;
-	//todo: define
-	bool operator==(const Scene& obj) const = delete;
+	Scene& operator=(Scene obj);
+	bool operator==(const Scene& obj) const;
 	bool operator!=(const Scene& obj) const = default;
 
 	/// Checks if the Scene's Events can load Definitions and Resources associated with them and don't have any other Errors, which would halt the Novel execution
@@ -47,8 +44,10 @@ public:
 	const Event* getEvent(uint eventIndex) const;
 	/// \exception Error Tried to get an Event past the `events` container's size
 	Event* getEvent(uint eventIndex);
+	/// Takes ownership of the Event and manages its destruction
+	void addEvent(Event* event);
 	/// \exception Error Tried to insert a new Event past the `events` container's size
-	bool insertEvent(uint eventIndex, std::unique_ptr<Event>&& event);
+	bool insertEvent(uint eventIndex, Event* event);
 	/// \exception Error Tried to remove an Event past the `events` container's size
 	bool removeEvent(uint eventIndex);
 

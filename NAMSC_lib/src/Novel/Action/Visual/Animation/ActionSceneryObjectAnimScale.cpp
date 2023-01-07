@@ -2,18 +2,25 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObjectAnim(parentEvent, parentScene)
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent) noexcept
+	: ActionSceneryObjectAnim(parentEvent)
 {
 }
 
-ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, parentScene, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
 {
 	assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::AssetAnimMissing << "Scale AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSceneryObjectAnimScale& ActionSceneryObjectAnimScale::operator=(const ActionSceneryObjectAnimScale& obj) noexcept
@@ -43,15 +50,18 @@ bool ActionSceneryObjectAnimScale::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimScale::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSceneryObjectAnimScale::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
+Action* ActionSceneryObjectAnimScale::clone() const
+{
+	ActionSceneryObjectAnimScale* clone = new ActionSceneryObjectAnimScale(*this);
+	return clone;
+}
 
-/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimScale's `void run()` allowing for data read
-
-void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* parentSceneryObject, AssetAnimScale* assetAnimScale, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
+void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimScale* assetAnimScale, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
 { 
 	onRun_ = onRun; 
 }
@@ -61,7 +71,7 @@ void ActionSceneryObjectAnimScale::setAssetAnim(const QString& assetAnimName) no
 	AssetAnimScale* newAssetAnim = nullptr;
 	newAssetAnim = AssetManager::getInstance().getAssetAnimScale(assetAnimName);
 	if (newAssetAnim == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" << assetAnimName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName + "\" does not exist";
 	else
 	{
 		assetAnimName_ = assetAnimName;
@@ -89,7 +99,7 @@ void ActionSceneryObjectAnimScale::serializableLoad(QDataStream& dataStream)
 
 	assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors();
 }
 

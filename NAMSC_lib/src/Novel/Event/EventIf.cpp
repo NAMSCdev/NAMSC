@@ -13,6 +13,13 @@ EventIf::EventIf(Scene* const parentScene, const QString& label, const QString& 
 	checkForErrors(true);
 }
 
+EventIf::EventIf(const EventIf& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
+}
+
 EventIf& EventIf::operator=(const EventIf& obj) noexcept
 {
 	if (this == &obj) return *this;
@@ -44,9 +51,15 @@ bool EventIf::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "An Error occurred in EventIf::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventIf::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventIf::clone() const
+{
+	EventIf* clone = new EventIf(*this);
+	return clone;
 }
 
 void EventIf::run()

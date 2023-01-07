@@ -11,7 +11,7 @@ class Character final : public SceneryObject
 public:
 	Character()                                 = default;
 	/// \exception Error Couldn't find the Voice named `voiceName` or couldn't find/read the AssetImage named `assetImageName`
-	Character(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName);
+	Character(const QString& name, const QString& assetImageName, const QPoint pos = { 0, 0 }, const QSizeF scale = { 1.0, 1.0 }, double rotationDegree = 0.0, const QVarLengthArray<double, 4>& colorMultiplier = { 1.0, 1.0, 1.0, 1.0 }, double alphaMultiplier = 1.0, bool bVisible = true, const QString& defaultVoiceName = "");
 	Character(const Character& obj)             = default;
 	Character& operator=(Character obj) noexcept;
 	bool operator==(const Character& obj) const noexcept; 

@@ -5,7 +5,7 @@
 
 void ActionStatSetValue::run()
 {
-	qDebug() << "ActionStatSetValue::run in Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	qDebug() << "ActionStatSetValue::run in Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 	ActionStat::run();	
 	if (stat_ == nullptr)
 		syncWithSave();
@@ -13,5 +13,5 @@ void ActionStatSetValue::run()
 	//todo: evaluator magic here
 	//stat_->setValueFromString(expression);
 
-	onRun_(parentEvent_, parentScene_, stat_, expression);
+	onRun_(parentEvent, stat_, expression);
 }

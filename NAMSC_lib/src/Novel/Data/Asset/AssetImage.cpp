@@ -30,7 +30,7 @@ bool AssetImage::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in AssetImage::checkForErrors \"" << name << '\"';
+		qDebug() << "Error occurred in AssetImage::checkForErrors \"" + name + '\"';
 
 	return bError;
 }
@@ -44,7 +44,8 @@ void AssetImage::load()
 	//	return;
 	//}	
 	//TODO: add some way to edit Images (even using external editors) in the Editor, then allow for compression to happen
-	//img_ = new QImage(path_);
+	img_ = std::unique_ptr<QImage>(new QImage());
+	img_->load(path);
 	//img = std::unique_ptr<QImage>();
 	//QFile file(path);
 	//if (!file.open(QIODevice::ReadOnly))
@@ -81,7 +82,7 @@ void AssetImage::save()
 {
 }
 
-const QImage* AssetImage::getAssetImage() const noexcept
+const QImage* AssetImage::getImage() const noexcept
 {
 	return img_.get();
 }

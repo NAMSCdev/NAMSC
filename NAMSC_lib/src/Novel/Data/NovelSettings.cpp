@@ -34,10 +34,10 @@ void NovelSettings::defaultLanguageChange(const QString& newDefaultLanguage)
 
 void NovelSettings::serializableLoad(QDataStream& dataStream)
 {
-    dataStream >> novelTitle >> language >> defaultLanguage >> lastSaveSlot >> cps >> volumeMusicMultiplier >> volumeSoundMultiplier >> volumeVoiceMultiplier >> nextButton >> mouseClick >> animationUpdateInterval >> bStatsVisible >> bStatsNotification >> bLazyFileLoad >> version >> resolution;
+    dataStream >> language >> defaultLanguage >> lastSaveSlot >> cps >> volumeMusicMultiplier >> volumeSoundMultiplier >> volumeVoiceMultiplier >> nextButton >> mouseClick >> animationUpdateInterval >> bStatsVisible >> bStatsNotification >> bLazyFileLoad >> version >> resolution;
 }
 
 void NovelSettings::serializableSave(QDataStream& dataStream) const
 {
-    dataStream << novelTitle << language << defaultLanguage << lastSaveSlot << cps << volumeMusicMultiplier << volumeSoundMultiplier << volumeVoiceMultiplier << nextButton << mouseClick << animationUpdateInterval << bStatsVisible << bStatsNotification << bLazyFileLoad << version << resolution;
+    dataStream << language << defaultLanguage << lastSaveSlot << cps << volumeMusicMultiplier << volumeSoundMultiplier << volumeVoiceMultiplier << nextButton << mouseClick << animationUpdateInterval << bStatsVisible << bStatsNotification << bLazyFileLoad << version << resolution;
 }

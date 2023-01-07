@@ -38,7 +38,7 @@ bool AudioSettings::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	//if (bError)
-	//	qDebug() << "An Error occurred in Action::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	//	qDebug() << "An Error occurred in Action::checkForErrors of Scene \"" + parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return false;
 }

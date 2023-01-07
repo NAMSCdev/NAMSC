@@ -1,6 +1,6 @@
 #include "Novel/Data/Asset/Asset.h"
 
-#include <QFile>
+#include <QFileInfo>
 
 #include "Novel/Data/Asset/AssetImage.h"
 #include "Novel/Data/Asset/AssetAnim.h"
@@ -17,7 +17,7 @@ bool Asset::checkForErrors(bool bComprehensive) const
 	bool bError = false;
 	static auto errorChecker = [&](bool bComprehensive)
 	{
-		if (!QFile::exists(path));
+		if (path.isEmpty() && QFileInfo::exists(path))
 		{
 			bError = true;
 			NovelLib::ErrorType type = NovelLib::ErrorType::Critical;
@@ -25,13 +25,13 @@ bool Asset::checkForErrors(bool bComprehensive) const
 				type = NovelLib::ErrorType::AssetImageFileMissing;
 			else if (dynamic_cast<const AssetAnimBase*>(this))
 				type = NovelLib::ErrorType::AssetAnimFileMissing;
-			qCritical() << this << type << "Could not find Resource file \"" << path << '\"' << ((type == NovelLib::ErrorType::Critical) ? ". [CRITICAL] COULD NOT IDENTIFY ANIM TYPE!" : "");
+			qCritical() << type << "Could not find Resource file" << path << ((type == NovelLib::ErrorType::Critical) ? "[CRITICAL] COULD NOT IDENTIFY ANIM TYPE!" : "");
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in Asset::checkForErrors \"" << name << '\"';
+		qDebug() << "Error occurred in Asset::checkForErrors \"" + name + '\"';
 
 	return bError;
 }

@@ -2,15 +2,22 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionAudio(parentEvent, parentScene)
+ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent) noexcept
+	: ActionAudio(parentEvent)
 {
 }
 
-ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds)
-	: ActionAudio(parentEvent, parentScene, audioSettings), sounds(sounds)
+ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds)
+	: ActionAudio(parentEvent, audioSettings), sounds(sounds)
 {
 	checkForErrors(true);
+}
+
+ActionAudioSetSounds::ActionAudioSetSounds(const ActionAudioSetSounds& obj) noexcept
+	: ActionAudio(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionAudioSetSounds& ActionAudioSetSounds::operator=(const ActionAudioSetSounds& obj) noexcept
@@ -44,9 +51,15 @@ bool ActionAudioSetSounds::checkForErrors(bool bComprehensive) const
 	//};
 
 	if (bError)
-		qDebug() << "An Error occurred in ActionAudioSetSounds::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "An Error occurred in ActionAudioSetSounds::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
+}
+
+Action* ActionAudioSetSounds::clone() const
+{
+	ActionAudioSetSounds* clone = new ActionAudioSetSounds(*this);
+	return clone;
 }
 
 void ActionAudioSetSounds::ensureResourcesAreLoaded()
@@ -55,7 +68,7 @@ void ActionAudioSetSounds::ensureResourcesAreLoaded()
 		sound.second.load();
 }
 
-void ActionAudioSetSounds::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun) noexcept
+void ActionAudioSetSounds::setOnRunListener(std::function<void(Event* const parentEvent, std::unordered_map<QString, Sound>* sound)> onRun) noexcept
 {
 	onRun_ = onRun;
 }

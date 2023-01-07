@@ -154,7 +154,7 @@ void Scenery::setBackgroundAssetImage(const QString& assetImageName, AssetImage*
 	AssetImage* newAssetImage = nullptr;
 	newAssetImage = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName);
 	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "AssetImage \"" << assetImageName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "AssetImage \"" + assetImageName + "\" does not exist";
 	else
 	{
 		backgroundAssetImageName_ = assetImageName;
@@ -183,9 +183,9 @@ Character* Scenery::getDisplayedCharacter(const QString& characterName) noexcept
 	return NovelLib::getFromNamedMap(displayedCharacters_, characterName, "Character");
 }
 
-void Scenery::setDisplayedCharacter(const QString& characterName, const Character& character) noexcept
+Character* Scenery::setDisplayedCharacter(const QString& characterName, const Character& character) noexcept
 {
-	displayedCharacters_[characterName] = character;
+	return &(displayedCharacters_[characterName] = character);
 }
 
 bool Scenery::removeDisplayedCharacter(const QString& characterName) noexcept
@@ -213,9 +213,9 @@ SceneryObject* Scenery::getDisplayedSceneryObject(const QString& sceneryObjectNa
 	return NovelLib::getFromNamedMap(displayedSceneryObjects_, sceneryObjectName, "SceneryObject");
 }
 
-void Scenery::setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept
+SceneryObject* Scenery::setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept
 {
-	displayedSceneryObjects_[sceneryObjectName] = sceneryObject;
+	return &(displayedSceneryObjects_[sceneryObjectName] = sceneryObject);
 }
 
 bool Scenery::removeDisplayedSceneryObject(const QString& sceneryObjectName) noexcept

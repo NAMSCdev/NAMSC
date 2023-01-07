@@ -25,4 +25,30 @@ namespace NovelLib
 		}
 		return false;
 	}
+
+	NovelException::NovelException(QString msg) 
+		: msg(msg) 
+	{
+	}
+
+	void NovelException::raise() const 
+	{ 
+		throw *this;
+	}
+	
+	NovelException* NovelException::clone() const 
+	{
+		return new NovelException(*this); 
+	}
+
+	const char* NovelException::what() const
+	{
+		return msg.toLocal8Bit();
+	}
+}
+
+QDebug operator<<(QDebug d, const NovelLib::ErrorType& errorType)
+{
+	d << NovelLib::ErrorTypeStr[static_cast<int>(errorType)];
+	return d;
 }

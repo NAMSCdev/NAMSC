@@ -1,6 +1,7 @@
-#include "Novel/Data/Novel.h"
+﻿#include "Novel/Data/Novel.h"
 
 #include "Helpers.h"
+#include <QDirIterator>
 
 Novel& Novel::getInstance()
 {
@@ -37,18 +38,20 @@ bool Novel::checkForErrors(bool bComprehensive) const
 
 void Novel::loadNovel(uint slot, bool createNew)
 {
-	NovelSettings::load();
-	loadChapters(); if (createNew || !loadState(slot)) newState(slot);
+	loadNovelEssentials();
+	//NovelSettings::load();
+	/*loadChapters();*/ if (createNew || !loadState(slot)) newState(slot);
 	loadAssetsDefinitions();
-	loadVoices(); 
+	//loadVoices();
 	loadDefaultSceneryObjectsDefinitions(); loadDefaultCharacterDefinitions();
+	loadScenes();
 }
 
 void Novel::run()
 {
 	if (!scenes_.contains(state_.sceneName))
 	{
-		qCritical() << this << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to run a Scene \"" << state_.sceneName << "\" that does not exist!";
+		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to run a Scene \"" + state_.sceneName + "\" that does not exist!";
 		return;
 	}
 
@@ -59,7 +62,7 @@ void Novel::update()
 {
 	if (!scenes_.contains(state_.sceneName))
 	{
-		qCritical() << this << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to update a Scene \"" << state_.sceneName << "\" that does not exist!";
+		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to update a Scene \"" + state_.sceneName + "\" that does not exist!";
 		return;
 	}
 
@@ -70,7 +73,7 @@ void Novel::end()
 {
 	if (!scenes_.contains(state_.sceneName))
 	{
-		qCritical() << this << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to end a Scene \"" << state_.sceneName << "\" that does not exist!";
+		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to end a Scene \"" + state_.sceneName + "\" that does not exist!";
 		return;
 	}
 
@@ -82,7 +85,7 @@ void Novel::syncWithSave() noexcept
 {
 	if (!scenes_.contains(state_.sceneName))
 	{
-		qCritical() << this << NovelLib::ErrorType::SaveCritical << "The save is corrupted. Tried to synchronize the Novel with the Save in the slot " << state_.saveSlot;
+		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. Tried to synchronize the Novel with the Save in the slot" << state_.saveSlot;
 		return;
 	}
 
@@ -137,9 +140,19 @@ void Novel::setVoice(const QString& voiceName, const Voice& voice) noexcept
 	voices_[voiceName] = voice;
 }
 
-bool Novel::removeVoice(const QString& voiceName) noexcept
+bool Novel::removeVoice(const QString& voiceName)
 {
 	return NovelLib::removeFromNamedMap(voices_, voiceName, "Voice");
+}
+
+void Novel::clearVoices()
+{
+	voices_.clear();
+}
+
+SceneWidget* Novel::getSceneWidget()
+{
+	return &sceneWidget_;
 }
 
 const std::unordered_map<QString, SceneryObject>* Novel::getSceneryObjectDefaults() const noexcept
@@ -167,9 +180,14 @@ void Novel::setDefaultSceneryObject(const QString& sceneryObjectName, const Scen
 	sceneryObjectDefaults_[sceneryObjectName] = sceneryObject;
 }
 
-bool Novel::removeDefaultSceneryObject(const QString& sceneryObjectName) noexcept
+bool Novel::removeDefaultSceneryObject(const QString& sceneryObjectName)
 {
 	return NovelLib::removeFromNamedMap(sceneryObjectDefaults_, sceneryObjectName, "SceneryObject");
+}
+
+void Novel::clearDefaultSceneryObject()
+{
+	sceneryObjectDefaults_.clear();
 }
 
 const std::unordered_map<QString, Character>* Novel::getCharacterDefaults() const noexcept
@@ -197,9 +215,14 @@ void Novel::setDefaultCharacter(const QString& characterName, const Character& c
 	characterDefaults_[characterName] = character;
 }
 
-bool Novel::removeDefaultCharacter(const QString& characterName) noexcept
+bool Novel::removeDefaultCharacter(const QString& characterName)
 {
 	return NovelLib::removeFromNamedMap(characterDefaults_, characterName, "Character");
+}
+
+void Novel::clearDefaultCharacters() noexcept
+{
+	characterDefaults_.clear();
 }
 
 const std::unordered_map<QString, Chapter>* Novel::getChapters() const noexcept
@@ -227,9 +250,14 @@ void Novel::setChapter(const QString& chapterName, const Chapter& chapter) noexc
 	chapters_[chapterName] = chapter;
 }
 
-bool Novel::removeChapter(const QString& chapterName) noexcept
+bool Novel::removeChapter(const QString& chapterName)
 {
 	return NovelLib::removeFromNamedMap(chapters_, chapterName, "Chapter");
+}
+
+void Novel::clearChapters() noexcept
+{
+	chapters_.clear();
 }
 
 const std::unordered_map<QString, Scene>* Novel::getScenes() const noexcept
@@ -252,14 +280,19 @@ Scene* Novel::getScene(const QString& sceneName) noexcept
 	return NovelLib::getFromNamedMap(scenes_, sceneName, "Scene");
 }
 
-void Novel::setScene(const QString& sceneName, const Scene& scene) noexcept
+void Novel::addScene(const QString& sceneName, Scene&& scene) noexcept
 {
-	scenes_[sceneName] = scene;
+	scenes_.emplace(sceneName, std::move(scene));
 }
 
-bool Novel::removeScene(const QString& sceneName) noexcept
+bool Novel::removeScene(const QString& sceneName)
 {
 	return NovelLib::removeFromNamedMap(scenes_, sceneName, "Scene");
+}
+
+void Novel::clearScene()
+{
+	scenes_.clear();
 }
 
 const NovelState* Novel::getStateAtSceneBeginning() noexcept
@@ -273,9 +306,21 @@ void Novel::ensureResourcesAreLoaded()
 
 void Novel::loadAssetsDefinitions()
 {
+	QDirIterator it("Assets", QStringList() << "*.png", QDir::Files, QDirIterator::Subdirectories);
+	while (it.hasNext())
+		qDebug() << it.next();
+}
+
+void Novel::saveAssetsDefinitions()
+{
+
 }
 
 void Novel::loadChapters()
+{
+}
+
+void Novel::saveChapters()
 {
 }
 
@@ -283,15 +328,46 @@ void Novel::loadDefaultCharacterDefinitions()
 {
 }
 
+void Novel::saveDefaultCharacterDefinitions()
+{
+}
+
 void Novel::loadDefaultSceneryObjectsDefinitions()
 {
+}
+
+void Novel::saveDefaultSceneryObjectsDefinitions()
+{
+}
+
+void Novel::loadNovelEssentials()
+{
+	QString novelTitle = "Пан Тадеуш: реальная история";
+
+	QString defaultScene = "start";
+	QDataStream dataStream("Novel\\novelMeta.bin");
+	//dataStream << ;
+}
+
+void Novel::saveNovelEssentials()
+{
+	QDataStream dataStream("Novel\\novelMeta.bin");
+	//dataStream >> ;
 }
 
 void Novel::loadScenes()
 {
 }
 
+void Novel::saveScenes()
+{
+}
+
 void Novel::loadVoices()
+{
+}
+
+void Novel::saveVoices()
 {
 }
 

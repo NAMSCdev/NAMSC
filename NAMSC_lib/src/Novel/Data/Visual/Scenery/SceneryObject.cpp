@@ -1,6 +1,6 @@
 #include "Novel/Data/Visual/Scenery/SceneryObject.h"
 
-SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible)
+SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible)
 	: name(name), assetImageName_(assetImageName), pos(pos), scale(scale), rotationDegree(rotationDegree), colorMultiplier(colorMultiplier), alphaMultiplier(alphaMultiplier), bVisible(bVisible)
 {
 	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
@@ -18,7 +18,6 @@ SceneryObject::SceneryObject(const SceneryObject& obj) noexcept
 	  bVisible(obj.bVisible)
 {
 }
-
 
 SceneryObject& SceneryObject::operator=(SceneryObject obj) noexcept
 { 
@@ -61,9 +60,9 @@ bool SceneryObject::checkForErrors(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
 			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 		else
 			bError |= assetImage_->checkForErrors(bComprehensive);
@@ -71,7 +70,7 @@ bool SceneryObject::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in SceneryObject::checkForErrors (object's name: \"" << name << ")\"";
+		qDebug() << "Error occurred in SceneryObject::checkForErrors (object's name: \"" + name << ")\"";
 
 	return bError;
 }
@@ -135,7 +134,7 @@ void SceneryObject::setAssetImage(const QString& assetImageName, AssetImage* ass
 	AssetImage* newAssetImage = nullptr;
 	newAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
 	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "AssetImage \"" << assetImageName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "AssetImage \"" + assetImageName + "\" does not exist";
 	else
 	{
 		assetImageName_ = assetImageName;

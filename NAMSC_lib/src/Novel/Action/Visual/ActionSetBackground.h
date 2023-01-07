@@ -18,10 +18,10 @@ public:
 		SweepRight	//[optional]
 	};
 
-	ActionSetBackground(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionSetBackground(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the AssetImage named `assetImageName`
-	ActionSetBackground(Event* const parentEvent, Scene* const parentScene, const QString& assetImageName, const TransitionType transitionType, double transitionTime);
-	ActionSetBackground(const ActionSetBackground& obj)   = delete;
+	ActionSetBackground(Event* const parentEvent, const QString& assetImageName, const TransitionType transitionType, double transitionTime);
+	ActionSetBackground(const ActionSetBackground& obj) noexcept;
 	ActionSetBackground& operator=(const ActionSetBackground& obj) noexcept;
 	bool operator==(const ActionSetBackground& obj) const noexcept;
 	bool operator!=(const ActionSetBackground& obj) const = default; //{ return !(*this == obj); }
@@ -30,12 +30,14 @@ public:
 	/// \return Whether an Error has occurred
 	bool checkForErrors(bool bComprehensive = false) const override;
 
+	Action* clone() const override;
+
 	void run() override;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the ActionSetBackground's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun) noexcept;
+	void setOnRunListener(std::function<void(Event* const parentEvent, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun) noexcept;
 
 	const AssetImage* getAssetImage() const noexcept;
 	AssetImage* getAssetImage() noexcept;
@@ -52,7 +54,7 @@ private:
 	NovelLib::SerializationID getType() const noexcept override;
 
 	/// A function pointer that is called (if not nullptr) after the ActionSetBackground's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun_;
+	std::function<void(Event* const parentEvent, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun_;
 
 	QString     assetImageName_    = "";
 	AssetImage* assetImage_        = nullptr;

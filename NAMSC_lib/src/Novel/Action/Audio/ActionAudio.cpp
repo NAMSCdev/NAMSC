@@ -2,13 +2,13 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionAudio::ActionAudio(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionAudio::ActionAudio(Event* const parentEvent) noexcept
+	: Action(parentEvent)
 {
 }
 
-ActionAudio::ActionAudio(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings)
-	: Action(parentEvent, parentScene), audioSettings_(audioSettings)
+ActionAudio::ActionAudio(Event* const parentEvent, const AudioSettings& audioSettings)
+	: Action(parentEvent), audioSettings_(audioSettings)
 {
 	//checkForErrors(true);
 }
@@ -42,7 +42,7 @@ bool ActionAudio::checkForErrors(bool bComprehensive) const
 	//Only leafs should report, but if needed for further debug, uncomment it
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive))
 	//if (bError)
-	//	qDebug() << "Error occurred in ActionAudio::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	//	qDebug() << "Error occurred in ActionAudio::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 	return bError;
 }
 

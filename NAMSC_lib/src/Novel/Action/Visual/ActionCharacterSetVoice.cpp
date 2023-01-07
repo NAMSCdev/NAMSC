@@ -3,18 +3,25 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Data/Scene.h"
 
-ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionCharacter(parentEvent, parentScene)
+ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent) noexcept
+	: ActionCharacter(parentEvent)
 {
 }
 
-ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, Scene* const parentScene, const QString& characterName, const QString& voiceName)
-	: ActionCharacter(parentEvent, parentScene, characterName), voiceName_(voiceName)
+ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, const QString& characterName, const QString& voiceName)
+	: ActionCharacter(parentEvent, characterName), voiceName_(voiceName)
 {
 	voice_ = Novel::getInstance().getVoice(voiceName_);
 	//if (voice_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionCharacterSetVoice::ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept
+	: ActionCharacter(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionCharacterSetVoice& ActionCharacterSetVoice::operator=(const ActionCharacterSetVoice& obj) noexcept
@@ -47,17 +54,23 @@ bool ActionCharacterSetVoice::checkForErrors(bool bComprehensive) const
 		if (voice_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
 			if (voiceName_ != "")
-				qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in ActionCharacterSetVoice::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionCharacterSetVoice::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 	
 	return bError;
+}
+
+Action* ActionCharacterSetVoice::clone() const
+{
+	ActionCharacterSetVoice* clone = new ActionCharacterSetVoice(*this);
+	return clone;
 }
 
 void ActionCharacterSetVoice::run()
@@ -67,10 +80,10 @@ void ActionCharacterSetVoice::run()
 	character_->setDefaultVoice(voiceName_);
 
 	if (onRun_)
-		onRun_(parentEvent_, parentScene_, character_, voice_);
+		onRun_(parentEvent, character_, voice_);
 }
 
-void ActionCharacterSetVoice::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Character* character, Voice* voice)> onRun) noexcept
+void ActionCharacterSetVoice::setOnRunListener(std::function<void(Event* const parentEvent, Character* character, Voice* voice)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
@@ -100,7 +113,7 @@ void ActionCharacterSetVoice::setVoice(const QString& voiceName) noexcept
 	Voice* newVoice = nullptr;
 	newVoice = Novel::getInstance().getVoice(voiceName);
 	if (newVoice == nullptr)
-		qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName + "\" does not exist";
 	else
 	{
 		voiceName_ = voiceName;
@@ -121,7 +134,7 @@ void ActionCharacterSetVoice::serializableLoad(QDataStream& dataStream)
 
 	voice_ = Novel::getInstance().getVoice(voiceName_);
 	//if (voice_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors();
 }
 

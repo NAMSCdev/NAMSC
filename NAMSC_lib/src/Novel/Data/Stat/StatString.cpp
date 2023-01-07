@@ -44,7 +44,7 @@ bool StatString::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in StatString::checkForErrors \"" << name << '\"';
+		qDebug() << "Error occurred in StatString::checkForErrors \"" + name + '\"';
 
 	return bError;
 }

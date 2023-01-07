@@ -15,8 +15,8 @@ class Action : public NovelFlowInterface
 	friend class Event;
 	friend class Scene;
 public:
-	Action(Event* const parentEvent, Scene* const parentScene) noexcept;
-	Action(const Action& obj)                = delete;
+	Action(Event* const parentEvent) noexcept;
+	Action(const Action& obj) = delete;
 	Action& operator=(const Action& obj) noexcept;
 	bool operator==(const Action& obj) const noexcept;
 	bool operator!=(const Action& obj) const = default; //{ return !(*this == obj); }
@@ -25,6 +25,8 @@ public:
 
 	/// \return Whether an Error has occurred
 	virtual bool checkForErrors(bool bComprehensive = false) const override;
+
+	virtual Action* clone() const = 0;
 
 	virtual void run() override;
 	/// Some Actions are designed to update things and should be called frequently until the end of the Event
@@ -37,16 +39,16 @@ public:
 
 	virtual void acceptVisitor(ActionVisitor* visitor) = 0;
 
+	Event* const parentEvent;
+
 protected:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	virtual NovelLib::SerializationID getType() const  = 0;
 
 	virtual void ensureResourcesAreLoaded() override {}
 
-	Event* const parentEvent_;
-	Scene* const parentScene_;
-
-public://---SERIALIZATION---
+public:
+	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	virtual void serializableLoad(QDataStream& dataStream);

@@ -3,13 +3,13 @@
 #include "Novel/Data/Save/NovelState.h"
 #include "Novel/Data/Scene.h"
 
-ActionStat::ActionStat(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionStat::ActionStat(Event* const parentEvent) noexcept
+	: Action(parentEvent)
 {
 }
 
-ActionStat::ActionStat(Event* const parentEvent, Scene* const parentScene, const QString& statName)
-	: Action(parentEvent, parentScene), statName_(statName)
+ActionStat::ActionStat(Event* const parentEvent, const QString& statName)
+	: Action(parentEvent), statName_(statName)
 {
 	checkForErrors(true);
 }
@@ -43,15 +43,15 @@ bool ActionStat::checkForErrors(bool bComprehensive) const
 		if (NovelState::getCurrentlyLoadedState()->getStat(statName_) == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::StatInvalid << "No valid Stat assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::StatInvalid << "No valid Stat assigned. Was it deleted and not replaced?";
 			if (statName_ != "")
-				qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	//if (bError)
-	//	qDebug() << "Error occurred in ActionStat::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+	//	qDebug() << "Error occurred in ActionStat::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 	return bError;
 }
 
@@ -59,7 +59,7 @@ void ActionStat::syncWithSave() noexcept
 {
 	stat_ = NovelState::getCurrentlyLoadedState()->getStat(statName_);
 	if (stat_ == nullptr)
-		qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName_ + "\" does not exist";
 }
 
 const Stat* ActionStat::getStat() const noexcept
@@ -82,7 +82,7 @@ void ActionStat::setStat(const QString& statName) noexcept
 	Stat* newStat = nullptr;
 	newStat = NovelState::getCurrentlyLoadedState()->getStat(statName);
 	if (newStat == nullptr)
-		qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName + "\" does not exist";
 	else
 	{
 		statName_ = statName;
@@ -98,7 +98,7 @@ void ActionStat::serializableLoad(QDataStream& dataStream)
 
 	//stat_ = NovelState::getCurrentlyLoadedState()->getStat(statName_);
 	//if (stat_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName_ + "\" does not exist. Definition file might be corrupted";
 	//checkForErrors();
 }
 

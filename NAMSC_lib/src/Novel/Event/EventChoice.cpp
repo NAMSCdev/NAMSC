@@ -7,16 +7,17 @@ EventChoice::EventChoice(Scene* const parentScene) noexcept
 {
 }
 
-EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices)
-	: Event(parentScene, label), menuText_(menuText), choices(choices)
-{
-	checkForErrors(true);
-}
-
 EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), menuText_(menuText), choices(choices)
 {
 	checkForErrors(true);
+}
+
+EventChoice::EventChoice(const EventChoice& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 EventChoice& EventChoice::operator=(const EventChoice& obj) noexcept
@@ -53,9 +54,15 @@ bool EventChoice::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "An Error occurred in EventChoice::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventChoice::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventChoice::clone() const
+{
+	EventChoice* clone = new EventChoice(*this);
+	return clone;
 }
 
 void EventChoice::run()

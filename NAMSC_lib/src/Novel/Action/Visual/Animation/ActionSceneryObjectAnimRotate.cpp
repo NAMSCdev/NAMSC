@@ -2,18 +2,25 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObjectAnim<AnimNodeDouble1D>(parentEvent, parentScene)
+ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(Event* const parentEvent) noexcept
+	: ActionSceneryObjectAnim<AnimNodeDouble1D>(parentEvent)
 {
 }
 
-ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, parentScene, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
 {
 	assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::AssetAnimMissing << "Rotate AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::AssetAnimMissing << "Rotate AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(const ActionSceneryObjectAnimRotate& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSceneryObjectAnimRotate& ActionSceneryObjectAnimRotate::operator=(const ActionSceneryObjectAnimRotate& obj) noexcept
@@ -43,12 +50,18 @@ bool ActionSceneryObjectAnimRotate::checkForErrors(bool bComprehensive) const
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimRotate::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSceneryObjectAnimRotate::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
-void ActionSceneryObjectAnimRotate::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, SceneryObject* parentSceneryObject, AssetAnimRotate* assetAnimRotate, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
+Action* ActionSceneryObjectAnimRotate::clone() const
+{
+	ActionSceneryObjectAnimRotate* clone = new ActionSceneryObjectAnimRotate(*this);
+	return clone;
+}
+
+void ActionSceneryObjectAnimRotate::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimRotate* assetAnimRotate, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
 { 
 	onRun_ = onRun;
 }
@@ -58,7 +71,7 @@ void ActionSceneryObjectAnimRotate::setAssetAnim(const QString& assetAnimName) n
 	AssetAnimRotate* newAssetAnim = nullptr;
 	newAssetAnim = AssetManager::getInstance().getAssetAnimRotate(assetAnimName);
 	if (newAssetAnim == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" << assetAnimName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" + assetAnimName + "\" does not exist";
 	else
 	{
 		assetAnimName_ = assetAnimName;
@@ -86,7 +99,7 @@ void ActionSceneryObjectAnimRotate::serializableLoad(QDataStream& dataStream)
 
 	assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
 	//if (assetAnim_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" << assetAnimName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors();
 }
 

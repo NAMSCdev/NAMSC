@@ -63,14 +63,14 @@ bool Sound::checkForErrors(bool bComprehensive) const
 		//Check if the name is undefined
 		if (soundFilePath == "")
 		{
-			qCritical() << this << NovelLib::ErrorType::AudioInvalid << "No Sound file assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AudioInvalid << "No Sound file assigned. Was it deleted and not replaced?";
 			bError = true;
 		}
 
 		//Check if the File is still there in the User's filesystem
 		if (!QFile::exists(soundFilePath))
 		{
-			qCritical() << this << NovelLib::ErrorType::AudioFileMissing << "Could not find a Sound file \"" << soundFilePath << "\"";
+			qCritical() << NovelLib::ErrorType::AudioFileMissing << "Could not find a Sound file \"" + soundFilePath + '\"';
 			bError = true;
 		}
 

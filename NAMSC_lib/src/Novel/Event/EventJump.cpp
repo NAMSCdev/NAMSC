@@ -7,16 +7,17 @@ EventJump::EventJump(Scene* const parentScene) noexcept
 {
 }
 
-EventJump::EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)
-	: Event(parentScene, label), jumpToSceneName(jumpToSceneName), condition(condition)
-{
-	checkForErrors(true);
-}
-
 EventJump::EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions)
 	: Event(parentScene, label, std::move(actions)), jumpToSceneName(jumpToSceneName), condition(condition)
 {
 	checkForErrors(true);
+}
+
+EventJump::EventJump(const EventJump& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 EventJump& EventJump::operator=(const EventJump& obj) noexcept
@@ -49,15 +50,21 @@ bool EventJump::checkForErrors(bool bComprehensive) const
 		if (jumpToSceneName == "")
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::JumpInvalid << "EventJump is missing a jumpToSceneName";
+			qCritical() << NovelLib::ErrorType::JumpInvalid << "EventJump is missing a jumpToSceneName";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "An Error occurred in EventJump::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventJump::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventJump::clone() const
+{
+	EventJump* clone = new EventJump(*this);
+	return clone;
 }
 
 void EventJump::run()

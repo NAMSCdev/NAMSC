@@ -13,6 +13,13 @@ EventEndIf::EventEndIf(Scene* const parentScene, const QString& label, Event* co
 	checkForErrors(true);
 }
 
+EventEndIf::EventEndIf(const EventEndIf& obj) noexcept
+	: Event(parentScene)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
+}
+
 EventEndIf& EventEndIf::operator=(const EventEndIf& obj) noexcept
 {
 	if (this == &obj) return *this;
@@ -41,15 +48,21 @@ bool EventEndIf::checkForErrors(bool bComprehensive) const
 		if (getIndex() <= partner_->getIndex())
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::General << "EventEndIf (" << getIndex() << ") has not a greater index that its partner EventIf (" << partner_->getIndex() << ')';
+			qCritical() << NovelLib::ErrorType::General << "EventEndIf (" << getIndex() << ") has not a greater index that its partner EventIf (" << partner_->getIndex() << ')';
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "An Error occurred in EventEndIf::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << getIndex();
+		qDebug() << "An Error occurred in EventEndIf::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
 
 	return bError;
+}
+
+Event* EventEndIf::clone() const
+{
+	EventEndIf* clone = new EventEndIf(*this);
+	return clone;
 }
 
 void EventEndIf::run()
@@ -76,7 +89,7 @@ void EventEndIf::serializableLoad(QDataStream& dataStream)
 	Event::serializableLoad(dataStream);
 	uint index;
 	dataStream >> index;
-	partner_ = parentScene_->getEvent(index);
+	partner_ = parentScene->getEvent(index);
 	checkForErrors();
 }
 

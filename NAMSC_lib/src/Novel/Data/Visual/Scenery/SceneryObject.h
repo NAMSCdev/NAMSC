@@ -16,7 +16,7 @@ class SceneryObject
 public:
 	SceneryObject()                                 = default;
 	/// \exception Error Couldn't find/read the AssetImage named `assetImageName`
-	SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible);
+	SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos = { 0, 0 }, const QSizeF scale = { 1.0, 1.0 }, double rotationDegree = 0.0, const QVarLengthArray<double, 4>& colorMultiplier = { 1.0, 1.0, 1.0, 1.0 }, double alphaMultiplier = 1.0, bool bVisible = true);
 	SceneryObject(const SceneryObject &obj) noexcept;
 	SceneryObject& operator=(SceneryObject obj) noexcept;
 	bool operator==(const SceneryObject& obj) const noexcept;
@@ -48,7 +48,7 @@ public:
 	QString name                = "";
 
 	/// \todo [optional] allow for setting position in Z-dimension and do proper maths about it
-	QPointF pos                 = { 0.0, 0.0/*, 0.0*/ };
+	QPoint pos                  = { 0.0, 0.0/*, 0.0*/ };
 
 	QSizeF scale                = { 1.0, 1.0 };
 	

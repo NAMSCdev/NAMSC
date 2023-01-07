@@ -11,10 +11,8 @@ class EventInput final : public Event
 public:
 	EventInput(Scene* const parentScene) noexcept;
 	/// \exception One of the Actions contains an Error or the regex is not properly formatted or the Stat couldn't be found or logicalExpression is not properly formatted
-	EventInput(Scene* const parentScene, const QString& label, uint minCharacters, const QString& regex, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName);
-	/// \exception One of the Actions contains an Error or the regex is not properly formatted or the Stat couldn't be found or logicalExpression is not properly formatted
-	EventInput(Scene* const parentScene, const QString& label, uint minCharacters, const QString& regex, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName, std::vector<std::unique_ptr<Action>>&& actions);
-	EventInput(const EventInput& obj)            = delete;
+	EventInput(Scene* const parentScene, const QString& label, uint minCharacters, const QString& regex, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName, std::vector<std::unique_ptr<Action>>&& actions = std::vector<std::unique_ptr<Action>>());
+	EventInput(const EventInput& obj) noexcept;
 	EventInput& operator=(const EventInput& obj) noexcept;
 	bool operator==(const EventInput& obj) const noexcept;
 	bool operator!=(const EventInput& obj) const = default; //{ return !(*this == obj); }
@@ -23,6 +21,8 @@ public:
 	/// \return Whether an Error has occurred
 	/// \todo implement this
 	bool checkForErrors(bool bComprehensive = false) const override;
+
+	virtual Event* clone() const override;
 
 	void run() override;
 

@@ -2,19 +2,26 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSetBackground::ActionSetBackground(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionSetBackground::ActionSetBackground(Event* const parentEvent) noexcept
+	: Action(parentEvent)
 {
 }
 
-ActionSetBackground::ActionSetBackground(Event* const parentEvent, Scene* const parentScene, const QString& assetImageName, const  TransitionType transitionType, double transitionTime)
-	: Action(parentEvent, parentScene), assetImageName_(assetImageName), transitionType(transitionType), transitionTime(transitionTime)
+ActionSetBackground::ActionSetBackground(Event* const parentEvent, const QString& assetImageName, const  TransitionType transitionType, double transitionTime)
+	: Action(parentEvent), assetImageName_(assetImageName), transitionType(transitionType), transitionTime(transitionTime)
 {
 	assetImage_ = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName_);
 
 	//if (assetImage_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors(true);
+}
+
+ActionSetBackground::ActionSetBackground(const ActionSetBackground& obj) noexcept
+	: Action(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionSetBackground& ActionSetBackground::operator=(const ActionSetBackground& obj) noexcept
@@ -51,17 +58,23 @@ bool ActionSetBackground::checkForErrors(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Background AssetImage assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Background AssetImage assigned. Was it deleted and not replaced?";
 			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in ActionSetBackground::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionSetBackground::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
+}
+
+Action* ActionSetBackground::clone() const
+{
+	ActionSetBackground* clone = new ActionSetBackground(*this);
+	return clone;
 }
 
 void ActionSetBackground::acceptVisitor(ActionVisitor* visitor) 
@@ -74,7 +87,7 @@ void ActionSetBackground::run()
 
 }
 
-void ActionSetBackground::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun) noexcept
+void ActionSetBackground::setOnRunListener(std::function<void(Event* const parentEvent, QImage* background, ActionSetBackground::TransitionType transitionType, double transitionTime)> onRun) noexcept
 { 
 	onRun_ = onRun;
 }
@@ -84,7 +97,7 @@ void ActionSetBackground::setAssetImage(const QString& assetImageName) noexcept
 	AssetImage* newAssetImage = nullptr;
 	newAssetImage = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName);
 	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" << assetImageName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + assetImageName + "\" does not exist";
 	else
 	{
 		assetImageName_ = assetImageName;
@@ -120,7 +133,7 @@ void ActionSetBackground::serializableLoad(QDataStream& dataStream)
 
 	assetImage_ = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName_);
 	//if (assetImage_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+	//	qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 	checkForErrors();
 }
 

@@ -69,8 +69,8 @@ public:
 	uint waitBeforeContinueTime  = 1000;
 
 private:
-	Event* const parentEvent_;
-	Scene* const parentScene_;
+	Event* const parentEvent;
+	Scene* const parentScene;
 
 	/// A temporary Image to show some facial expresions or anything else
 	/// Empty means no change

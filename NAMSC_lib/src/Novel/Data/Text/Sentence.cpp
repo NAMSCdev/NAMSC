@@ -4,12 +4,12 @@
 #include "Novel/Data/Scene.h"
 
 Sentence::Sentence(Event* const parentEvent, Scene* const parentScene) noexcept
-	: parentEvent_(parentEvent), parentScene_(parentScene)
+	: parentEvent(parentEvent), parentScene(parentScene)
 {
 }
 
 Sentence::Sentence(Event* const parentEvent, Scene* const parentScene, const Translation& text, const QString& displayedName, const QString& characterName, const QString& voiceName, const QString& assetImageName, double cpsMultiplier, uint cpsOverwrite, bool bEndWithInput, uint waitBeforeContinueTime)
-	: parentEvent_(parentEvent), parentScene_(parentScene), text(text), displayedName(displayedName), characterName(characterName), voiceName_(voiceName), assetImageName_(assetImageName), cpsMultiplier(cpsMultiplier), cpsOverwrite(cpsOverwrite), bEndWithInput(bEndWithInput), waitBeforeContinueTime(waitBeforeContinueTime)
+	: parentEvent(parentEvent), parentScene(parentScene), text(text), displayedName(displayedName), characterName(characterName), voiceName_(voiceName), assetImageName_(assetImageName), cpsMultiplier(cpsMultiplier), cpsOverwrite(cpsOverwrite), bEndWithInput(bEndWithInput), waitBeforeContinueTime(waitBeforeContinueTime)
 {
 }
 
@@ -55,28 +55,28 @@ bool Sentence::checkForErrors(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
 			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
-		if (parentScene_->scenery.getDisplayedCharacter(characterName) == nullptr)
+		if (parentScene->scenery.getDisplayedCharacter(characterName) == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
 			if (characterName != "")
-				qCritical() << this << NovelLib::ErrorType::CharacterMissing << "Character \"" << characterName << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName + "\" does not exist. Definition file might be corrupted";
 		}
 		if (voice_ == nullptr)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
+			qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
 			if (voiceName_ != "")
-				qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName_ << "\" does not exist. Definition file might be corrupted";
+				qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
 
 	if (NovelLib::catchExceptions(errorChecker, bComprehensive) || text.checkForErrors(bComprehensive))
-		qDebug() << "An Error occurred in Sentence::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "An Error occurred in Sentence::checkForErrors of Scene \"" + parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
@@ -86,7 +86,7 @@ void Sentence::setAssetImage(const QString& assetImageName) noexcept
 	AssetImage* newAssetImage = nullptr;
 	newAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
 	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName + "\" does not exist";
 	else
 	{
 		assetImageName_ = assetImageName;
@@ -115,7 +115,7 @@ void Sentence::setVoice(const QString& voiceName) noexcept
 	Voice* newVoice = nullptr;
 	newVoice = Novel::getInstance().getVoice(voiceName);
 	if (newVoice == nullptr)
-		qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName + "\" does not exist";
 	else
 	{
 		voiceName_ = voiceName;

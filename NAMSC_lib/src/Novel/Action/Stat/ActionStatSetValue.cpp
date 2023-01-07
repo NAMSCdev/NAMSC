@@ -2,15 +2,22 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionStat(parentEvent, parentScene)
+ActionStatSetValue::ActionStatSetValue(Event* const parentEvent) noexcept
+	: ActionStat(parentEvent)
 {
 }
 
-ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, Scene* const parentScene, const QString& statName, const QString& expression)
-	: ActionStat(parentEvent, parentScene, statName), expression(expression)
+ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, const QString& statName, const QString& expression)
+	: ActionStat(parentEvent, statName), expression(expression)
 {
 	checkForErrors(true);
+}
+
+ActionStatSetValue::ActionStatSetValue(const ActionStatSetValue& obj) noexcept
+	: ActionStat(obj.parentEvent)
+{
+	//TODO: change to swap trick for more efficency
+	*this = obj;
 }
 
 ActionStatSetValue& ActionStatSetValue::operator=(const ActionStatSetValue& obj) noexcept
@@ -43,12 +50,18 @@ bool ActionStatSetValue::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in ActionStatSetValue::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
+		qDebug() << "Error occurred in ActionStatSetValue::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;
 }
 
-void ActionStatSetValue::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Stat* stat, QString expression)> onRun) noexcept
+Action* ActionStatSetValue::clone() const
+{
+	ActionStatSetValue* clone = new ActionStatSetValue(*this);
+	return clone;
+}
+
+void ActionStatSetValue::setOnRunListener(std::function<void(Event* const parentEvent, Stat* stat, QString expression)> onRun) noexcept
 {
 	onRun_ = onRun;
 }

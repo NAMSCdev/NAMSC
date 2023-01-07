@@ -8,7 +8,7 @@ namespace NovelLib
 	const T* getFromNamedMap(const std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept {
 		if (!map.contains(name))
 		{
-			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
+			qDebug() << "Tried to get an non-existent" << type + "\"" + name + '\"';
 			return nullptr;
 		}
 
@@ -19,7 +19,7 @@ namespace NovelLib
 	T* getFromNamedMap(std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept {
 		if (!map.contains(name))
 		{
-			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
+			qDebug() << "Tried to get an non-existent" << type + "\"" + name + '\"';
 			return nullptr;
 		}
 
@@ -30,7 +30,7 @@ namespace NovelLib
 	bool removeFromNamedMap(std::unordered_map<QString, T>& map, const QString& name, const QString& type) noexcept {
 		if (!map.contains(name))
 		{
-			qDebug() << "Tried to remove a non-existent " << type << " \"" << name << "\"";
+			qDebug() << "Tried to remove a non-existent" << type + "\"" + name + '\"';
 			return false;
 		}
 

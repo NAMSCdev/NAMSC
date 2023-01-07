@@ -7,7 +7,7 @@
 //	{
 //		if (!map.contains(name))
 //		{
-//			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
+//			qDebug() << "Tried to get an non-existent" << type + "\"" + name + '\"';
 //			return nullptr;
 //		}
 //
@@ -19,7 +19,7 @@
 //	{
 //		if (!map.contains(name))
 //		{
-//			qDebug() << "Tried to get an non-existent " << type << " \"" << name << "\"";
+//			qDebug() << "Tried to get an non-existent" << type + "\"" + name + '\"';
 //			return nullptr;
 //		}
 //
@@ -31,7 +31,7 @@
 //	{
 //		if (!map.contains(name))
 //		{
-//			qDebug() << "Tried to remove a non-existent " << type << " \"" << name << "\"";
+//			qDebug() << "Tried to remove a non-existent" << type + "\"" + name + '\"';
 //			return false;
 //		}
 //

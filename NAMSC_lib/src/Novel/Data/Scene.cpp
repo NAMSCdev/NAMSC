@@ -3,17 +3,11 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Event/EventsAll.h"
 
-Scene::Scene(const QString& name, const QString& chapterName, const Scenery& scenery)
-    : name(name), chapterName_(chapterName), scenery(scenery)
-{
-    chapter_ = Novel::getInstance().getChapter(chapterName_);
-    checkForErrors(true);
-}
-
 Scene::Scene(const QString& label, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events)
 	: name(name), chapterName_(chapterName), scenery(scenery), events_(std::move(events))
 {
-    chapter_ = Novel::getInstance().getChapter(chapterName_);
+    if (!chapterName_.isEmpty())
+        chapter_ = Novel::getInstance().getChapter(chapterName_);
     checkForErrors(true);
 }
 
@@ -21,21 +15,28 @@ Scene::Scene(const Scene& obj) noexcept
     : name(obj.name), 
       chapterName_(obj.chapterName_),
       chapter_(obj.chapter_),
-      //events_(std::move(obj.events_)), 
       scenery(obj.scenery)
 {
+    for (const std::unique_ptr<Event>& event : obj.events_)
+        events_.emplace_back(event.get()->clone());
 }
 
-Scene& Scene::operator=(Scene obj) noexcept
-{ 
+Scene& Scene::operator=(Scene obj)
+{
     if (this == &obj) return *this;
 
-    std::swap(this->name, obj.name);
+    std::swap(this->name,         obj.name);
     std::swap(this->chapterName_, obj.chapterName_);
-    std::swap(this->chapter_, obj.chapter_);
-    std::swap(this->scenery, obj.scenery);
+    std::swap(this->chapter_,     obj.chapter_);
+    std::swap(this->scenery,      obj.scenery);
+    std::swap(this->events_,      obj.events_);
 
-    return *this; 
+    return *this;
+}
+
+bool Scene::operator==(const Scene& obj) const
+{
+    return false;
 }
 
 void Scene::run()
@@ -45,7 +46,7 @@ void Scene::run()
 
     if (eventID >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::SaveCritical << " Tried to run an Event past the `events_` container's size (" << eventID << " >= " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to run an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
         return;
     }
 
@@ -59,7 +60,7 @@ void Scene::update()
 
     if (eventID >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::SaveCritical << " Tried to update an Event past the `events_` container's size (" << eventID << " >= " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to update an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
         return;
     }
 
@@ -73,7 +74,7 @@ void Scene::end()
 
     if (eventID >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::SaveCritical << " Tried to end an Event past the `events_` container's size (" << eventID << " >= " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
         return;
     }
 
@@ -92,7 +93,7 @@ bool Scene::checkForErrors(bool bComprehensive) const
 
     //bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
     //if (bError)
-    //    qDebug() << "An Error occurred in Scene::checkForErrors (object's name: \"" << name << "\")";
+    //    qDebug() << "An Error occurred in Scene::checkForErrors (object's name: \"" + name + "\")";
 
     return bError;
 }
@@ -100,11 +101,11 @@ bool Scene::checkForErrors(bool bComprehensive) const
 void Scene::ensureResourcesAreLoaded()
 {
     const NovelState* currentState = NovelState::getCurrentlyLoadedState();
-    uint eventID             = currentState->eventID;
+    uint              eventID      = currentState->eventID;
 
     if (eventID >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::SaveCritical << " Tried to end an Event past the `events_` container's size (" << eventID << " >= " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
         return;
     }
 
@@ -129,7 +130,7 @@ void Scene::syncWithSave() noexcept
 
     if (eventID >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::SaveCritical << " Tried to synchronize an Event past the `events_` container's size (" << eventID << " >= " << events_.size() << ") with the Save in the slot " << currentState->saveSlot << " in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to synchronize an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") with the Save in the slot" << currentState->saveSlot << "in a Scene \"" + name + '\"';
         return;
     }
 
@@ -146,7 +147,7 @@ const Event* Scene::getEvent(uint eventIndex) const
 #define getEventBody                   \
     if (eventIndex >= events_.size())  \
     {                                  \
-        qCritical() << this << NovelLib::ErrorType::General << "Tried to get an Event past the `events_` container's size (" << eventIndex << " >= " << events_.size() << ") in a Scene \"" << name << "\""; \
+        qCritical() << NovelLib::ErrorType::General << "Tried to get an Event past the `events_` container's size (" << eventIndex << ">=" << events_.size() << ") in a Scene \"" + name + '\"'; \
         return nullptr;                \
     }                                  \
                                        \
@@ -160,15 +161,20 @@ Event* Scene::getEvent(uint eventIndex)
 #undef getEventBody
 }
 
-bool Scene::insertEvent(uint eventIndex, std::unique_ptr<Event>&& event)
+void Scene::addEvent(Event* event)
+{
+    events_.emplace_back(event);
+}
+
+bool Scene::insertEvent(uint eventIndex, Event* event)
 {
     if (eventIndex > events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::General << "Tried to insert a new Event past the `events_` container's size (" << eventIndex << " > " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::General << "Tried to insert a new Event past the `events_` container's size (" << eventIndex << ">" << events_.size() << ") in a Scene \"" + name + '\"';
         return false;
     }
 
-    events_.insert(events_.begin() + eventIndex, std::move(event));
+    events_.emplace(events_.begin() + eventIndex, event);
     
     return true;
 }
@@ -177,7 +183,7 @@ bool Scene::removeEvent(uint eventIndex)
 {
     if (eventIndex >= events_.size())
     {
-        qCritical() << this << NovelLib::ErrorType::General << "Tried to remove an Event past the `events_` container's size (" << eventIndex << " >= " << events_.size() << ") in a Scene \"" << name << "\"";
+        qCritical() << NovelLib::ErrorType::General << "Tried to remove an Event past the `events_` container's size (" << eventIndex << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
         return false;
     }
 
@@ -220,7 +226,7 @@ void Scene::serializableLoad(QDataStream& dataStream)
             ev = new EventWait(this);
             break;
         default:
-            qCritical() << this << NovelLib::ErrorType::Critical << "Could not find a Stat's type: " << static_cast<int>(type) << '!';
+            qCritical() << NovelLib::ErrorType::Critical << "Could not find a Stat's type:" << static_cast<int>(type) << '!';
             break;
         }
         dataStream >> *ev;

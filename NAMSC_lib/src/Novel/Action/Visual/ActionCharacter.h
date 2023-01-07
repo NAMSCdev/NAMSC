@@ -7,10 +7,9 @@
 class ActionCharacter : public Action
 {
 public:
-	ActionCharacter(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionCharacter(Event* const parentEvent) noexcept;
 	/// \exception Couldn't find the Character named `characterName_`
-	ActionCharacter(Event* const parentEvent, Scene* const parentScene, const QString& characterName);
-	ActionCharacter(const ActionCharacter& obj) = delete;
+	ActionCharacter(Event* const parentEvent, const QString& characterName);
 	ActionCharacter& operator=(const ActionCharacter& obj) noexcept;
 	bool operator==(const ActionCharacter& obj) const noexcept;
 	bool operator!=(const ActionCharacter& obj) const = default; //{ return !(*this == obj); }

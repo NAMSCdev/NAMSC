@@ -26,7 +26,7 @@ bool Translation::checkForErrors(bool bComprehensive) const
 		if (!translations_.contains(NovelSettings::getInstance().defaultLanguage))
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::General << "Translation doesn't have default language set";
+			qCritical() << NovelLib::ErrorType::General << "Translation doesn't have default language set";
 		}
 	};
 
@@ -51,7 +51,7 @@ void Translation::setTranslation(const QString& language, const QString& newText
 void Translation::deleteTranslation(const QString& translationLanguage)
 {
 	if (translationLanguage == NovelSettings::getInstance().defaultLanguage)
-		qInfo() << "Tried to remove default language \"" << translationLanguage << "\".The option to do so should not be allowed at all";
+		qInfo() << "Tried to remove default language \"" + translationLanguage + "\".The option to do so should not be allowed at all";
 	else
 		translations_.erase(translationLanguage);
 }

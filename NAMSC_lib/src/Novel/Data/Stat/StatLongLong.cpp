@@ -42,18 +42,18 @@ bool StatLongLong::checkForErrors(bool bComprehensive) const
 		if (min > max)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::StatMinMax << "StatLongLong (object's name: \"" << name << "\") has its min value higher than its max value";
+			qCritical() << NovelLib::ErrorType::StatMinMax << "StatLongLong (object's name: \"" + name + "\") has its min value higher than its max value";
 		}
 		else if (value > max || value < min)
 		{
 			bError = true;
-			qCritical() << this << NovelLib::ErrorType::StatValue << "StatLongLong (object's name: \"" << name << "\") has its value in invalid range (not in <min, max>)";
+			qCritical() << NovelLib::ErrorType::StatValue << "StatLongLong (object's name: \"" + name + "\") has its value in invalid range (not in <min, max>)";
 		}
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
 	if (bError)
-		qDebug() << "Error occurred in StatLongLong::checkForErrors \"" << name << '\"';
+		qDebug() << "Error occurred in StatLongLong::checkForErrors \"" + name + '\"';
 
 	return bError;
 }
@@ -67,7 +67,7 @@ void StatLongLong::setValueFromString(const QString& str)
 	{
 		double doubleValue = str.toDouble(&ok);
 		if (!ok)
-			qCritical() << this << "Could not parse a value from " << str << " for a StatLongLong \"" << name << '\"';
+			qCritical() << "Could not parse a value from" << str << "for a StatLongLong \"" + name + '\"';
 		if (doubleValue > 0)
 			doubleValue -= 0.5;
 		else doubleValue += 0.5;

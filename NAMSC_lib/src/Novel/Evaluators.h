@@ -214,7 +214,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 		continue;
 /// 			}
 /// 			if (!saveData.getStat(*it, stat))
-/// 		throw Err("Couldn't recognize '" + *it + "' while trying to evaluate following logic expression \"" << expression + "\". It is not a Stat nor a value", __func__, __FILE__, __LINE__);
+/// 		throw Err("Couldn't recognize '" + *it + "' while trying to evaluate following logic expression \"" + expression + "\". It is not a Stat nor a value", __func__, __FILE__, __LINE__);
 /// 			std::string value = stat->logicValue();
 /// 			if (value[0] == '"')
 /// 		Vars.emplace_back(value);
@@ -226,7 +226,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 			{
 /// 		StatData result(0);
 /// 		if (Vars.empty())
-/// 			throw Err("There are not enough variables in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Err("There are not enough variables in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 		StatData *data = &Vars.back();
 /// 		StatData *data2;
 /// 		if (Vars.size() > 1) data2 = &*(Vars.end() - 2);
@@ -238,7 +238,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 			}
 /// 		}
 /// 		if (Vars.size() > 1)
-/// 			throw Warn("There are redundant variables in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Warn("There are redundant variables in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 
 /// 		switch (Vars.back().type)
 /// 		{
@@ -318,7 +318,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 			if (i == end)
 /// 			{
 /// 		if (bNameProcess)
-/// 			throw Err("A lone '\"' found while trying to evaluate following expression \"" << expr + '\"', __func__, __FILE__, __LINE__);
+/// 			throw Err("A lone '\"' found while trying to evaluate following expression \"" + expr + '\"', __func__, __FILE__, __LINE__);
 /// 		
 /// 		if (!name.empty())
 /// 		{
@@ -364,7 +364,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 		while (true)
 /// 		{
 /// 			if (stack.empty())
-/// 		throw Err("A lone ')' found while trying to evaluate following expression \"" << expr + '\"', __func__, __FILE__, __LINE__);
+/// 		throw Err("A lone ')' found while trying to evaluate following expression \"" + expr + '\"', __func__, __FILE__, __LINE__);
 /// 			std::string elem = stack.back();
 /// 			if (elem == "(")
 /// 			{
@@ -380,7 +380,7 @@ class Evaluator		/// There is no Error finding at "parsing the scenario" stage
 /// 		const char cNext = ((i + 1) != end) ? expr[i + 1] : '\0';
 /// 		uint operation = strToOp(c, cNext, &i);
 /// 		if (!operation)
-/// 			throw Err("Couldn't recognize \"" << std::string(c + ((cNext == '\0') ? "" : std::string({ cNext }))) << "\" while trying to evaluate following expression \"" << expr + "\". It is not a Stat nor a value", __func__, __FILE__, __LINE__);
+/// 			throw Err("Couldn't recognize \"" + std::string(c + ((cNext == '\0') ? "" : std::string({ cNext }))) + "\" while trying to evaluate following expression \"" + expr + "\". It is not a Stat nor a value", __func__, __FILE__, __LINE__);
 /// 
 /// 		while (!stack.empty())
 /// 		{
@@ -514,7 +514,7 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 			switch (data->type)
 /// 			{
 /// 			case StatData::Type::STR:
-/// 		throw Err("Tried to perform logical \"NOT\" on a string \"" << data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
+/// 		throw Err("Tried to perform logical \"NOT\" on a string \"" + data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 			default:
 /// 		result.intVal = !data->intVal;
 /// 		break;
@@ -523,10 +523,10 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		}
 /// 
 /// 		if (data == data2)
-/// 			throw Err("Tried to perform a binary logical operation, but passed only one argument in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Err("Tried to perform a binary logical operation, but passed only one argument in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 
 /// 		if (data->type != data2->type)
-/// 			throw Err("Tried to compare different types in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Err("Tried to compare different types in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 		switch (data->type)
 /// 		{
 /// 		case StatData::Type::STR:
@@ -548,16 +548,16 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		result.intVal = data2->strVal <= data->strVal;
 /// 		break;
 /// 			case Operation::And:
-/// 		throw Err("Tried to perform logical \"AND\" on a string \"" << data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
+/// 		throw Err("Tried to perform logical \"AND\" on a string \"" + data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 		break;
 /// 			case Operation::Or:
-/// 		throw Err("Tried to perform logical \"OR\" on a string \"" << data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
+/// 		throw Err("Tried to perform logical \"OR\" on a string \"" + data->strVal + "\"! It occured in the following expression\"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 		break;
 /// 			case Operation::Equal:
 /// 		result.intVal = data2->strVal == data->strVal;
 /// 		break;
 /// 			default:
-/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" << expression + '"', __func__, __FILE__, __LINE__);
+/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" + expression + '"', __func__, __FILE__, __LINE__);
 /// 			}
 /// 			break;
 /// 		case StatData::Type::INT:
@@ -588,7 +588,7 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		result.intVal = data2->intVal == data->intVal;
 /// 		break;
 /// 			default:
-/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" << expression + '"', __func__, __FILE__, __LINE__);
+/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" + expression + '"', __func__, __FILE__, __LINE__);
 /// 			}
 /// 		}
 /// 		return true;
@@ -679,10 +679,10 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		Operation operation = static_cast<Operation>(Evaluator::strToOp(operationName));
 /// 
 /// 		if (data == data2)
-/// 			throw Err("Tried to perform a binary arithmetics operation, but passed only one argument in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Err("Tried to perform a binary arithmetics operation, but passed only one argument in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 
 /// 		if (data->type != data2->type)
-/// 			throw Err("Tried to compare different types in \"" << expression + "\"", __func__, __FILE__, __LINE__);
+/// 			throw Err("Tried to compare different types in \"" + expression + "\"", __func__, __FILE__, __LINE__);
 /// 
 /// 		switch (data->type)
 /// 		{
@@ -694,7 +694,7 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		result.strVal = data2->strVal + data->strVal;
 /// 		break;
 /// 			default:
-/// 		throw Err("Couldn't recognize or cannot perform operation '" + operationName + "' while trying to evaluate following arithmetics expression \"" << expression + '"', __func__, __FILE__, __LINE__);
+/// 		throw Err("Couldn't recognize or cannot perform operation '" + operationName + "' while trying to evaluate following arithmetics expression \"" + expression + '"', __func__, __FILE__, __LINE__);
 /// 			}
 /// 			break;
 /// 		case StatData::Type::INT:
@@ -716,7 +716,7 @@ class LogicEvaluator final : public Evaluator		/// There is no Error finding at 
 /// 		result.intVal = data2->intVal % data->intVal;
 /// 		break;
 /// 			default:
-/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" << expression + '"', __func__, __FILE__, __LINE__);
+/// 		throw Err("Couldn't recognize operation '" + operationName + "' while trying to evaluate following logic expression \"" + expression + '"', __func__, __FILE__, __LINE__);
 /// 			}
 /// 		}
 /// 		return true;

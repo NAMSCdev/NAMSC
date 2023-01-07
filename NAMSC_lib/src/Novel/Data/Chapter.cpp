@@ -40,7 +40,7 @@ void Chapter::setParent(const QString& parentName, Chapter* parent) noexcept
 	Chapter* newParent = nullptr;
 	newParent = Novel::getInstance().getChapter(parentName);
 	if (newParent == nullptr)
-		qCritical() << this << NovelLib::ErrorType::ChapterMissing << "Chapter \"" << parentName << "\" does not exist";
+		qCritical() << NovelLib::ErrorType::ChapterMissing << "Chapter \"" + parentName + "\" does not exist";
 	else
 	{
 		parentName_ = parentName;

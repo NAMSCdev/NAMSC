@@ -36,7 +36,7 @@ bool AssetAnim<AnimNode>::checkForErrors(bool bComprehensive) const
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
 	if (bError)
-		qDebug() << "Error occurred in AssetAnim::checkForErrors \"" << name << '\"';
+		qDebug() << "Error occurred in AssetAnim::checkForErrors \"" + name + '\"';
 
 	return bError;
 }
@@ -46,7 +46,7 @@ void AssetAnim<AnimNode>::insertAnimNode(const AnimNode& newNode)
 {
 	if (std::find(animNodes_.cbegin(), animNodes_.cend(), newNode.timeStamp) != animNodes_.cend())
 	{
-		qCritical() << this << "There already exists an AnimNode in the AssetAnim (object's name: \"" << name << "\") with `timeStamp` " << QString::number(newNode.timeStamp);
+		qCritical() << "There already exists an AnimNode in the AssetAnim (object's name: \"" + name + "\") with `timeStamp`" << QString::number(newNode.timeStamp);
 		return;
 	}
 	animNodes_.push_back(newNode);

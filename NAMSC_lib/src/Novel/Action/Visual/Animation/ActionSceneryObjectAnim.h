@@ -9,17 +9,16 @@ template<typename AnimNode>
 class ActionSceneryObjectAnim : public ActionSceneryObject
 {
 public:
-	ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene) noexcept;
+	ActionSceneryObjectAnim(Event* const parentEvent) noexcept;
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName`
-	ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
-	ActionSceneryObjectAnim(const ActionSceneryObjectAnim& obj) = delete;
+	ActionSceneryObjectAnim(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
 	ActionSceneryObjectAnim<AnimNode>& operator=(const ActionSceneryObjectAnim<AnimNode>& obj) noexcept;
 	bool operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept;
-	bool operator!=(const ActionSceneryObjectAnim<AnimNode>& obj) const = delete;
+	bool operator!=(const ActionSceneryObjectAnim<AnimNode>& obj) const = default;
 
 	/// \exception Error `sceneryObject_`/`assetAnim_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const;
+	virtual bool checkForErrors(bool bComprehensive = false) const override;
 
 	virtual void run() override = 0;
 
