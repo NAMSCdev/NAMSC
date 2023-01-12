@@ -111,6 +111,9 @@
   <ItemGroup>
     <ClCompile Include="AssetTreeView.cpp" />
     <ClCompile Include="BasicNodeProperties.cpp" />
+    <ClCompile Include="ChoiceEventDialog.cpp" />
+    <ClCompile Include="ChoiceEventProperties.cpp" />
+    <ClCompile Include="ChoiceItemModel.cpp" />
     <ClCompile Include="CustomSortFilterProxyModel.cpp" />
     <ClCompile Include="GraphArrow.cpp" />
     <ClCompile Include="GraphConnectionPoint.cpp" />
@@ -128,6 +131,8 @@
     <ClCompile Include="SceneryObjectVariant.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
     <QtUic Include="BasicNodeProperties.ui" />
+    <QtUic Include="ChoiceEventDialog.ui" />
+    <QtUic Include="ChoiceEventProperties.ui" />
     <QtUic Include="NAMSC_editor.ui" />
     <QtMoc Include="NAMSC_editor.h" />
     <ClCompile Include="GraphView.cpp" />
@@ -140,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="AssetTreeView.h" />
+    <QtMoc Include="ChoiceEventProperties.h" />
+    <QtMoc Include="ChoiceEventDialog.h" />
+    <QtMoc Include="ChoiceItemModel.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
     <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />

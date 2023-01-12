@@ -6,7 +6,7 @@ SceneryObjectTreeProperties::SceneryObjectTreeProperties(SceneryObject* sceneryO
 	ui.setupUi(this);
 	ui.sceneryObjectTreeItemContent->setGeometry({ {0, 0}, ui.sceneryObjectCollapseButtonContent->totalSizeHint() });
 	ui.sceneryObjectCollapseButton->setContent(ui.sceneryObjectTreeItemContent);
-	//qDebug() << "size hint: " << ui.sceneryObjectCollapseButtonContent->totalSizeHint();
+
 	ui.sceneryObjectCollapseButton->setText("Object properties");
 
 	prepareDataInUi();

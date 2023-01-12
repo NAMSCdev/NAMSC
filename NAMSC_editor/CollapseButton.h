@@ -34,7 +34,7 @@ public:
         animation_->setStartValue(0);
         animation_->setEasingCurve(QEasingCurve::InOutQuad);
         animation_->setDuration(300);
-        qDebug() << "Geometry: " << content->geometry().height();
+        //qDebug() << "Geometry: " << content->geometry().height();
         animation_->setEndValue(content->geometry().height() + 10);
         animator_.addAnimation(animation_);
         if (!isChecked()) {

@@ -26,6 +26,13 @@ public:
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 	
 	void connectArrow(std::shared_ptr<GraphArrow> arrow);
+	const QString getSourceNodeName() const;
+	const QString getDestinationNodeName() const;
+
+	void setSourceNodeName(const QString& name);
+	void setDestinationNodeName(const QString& name);
+
+	bool isConnected() const;
 
 private:
 	QRectF pointBoundingRect;

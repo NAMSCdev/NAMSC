@@ -46,3 +46,28 @@ void GraphConnectionPoint::connectArrow(std::shared_ptr<GraphArrow> arrow)
 {
 	this->arrow = arrow;
 }
+
+const QString GraphConnectionPoint::getSourceNodeName() const
+{
+	return arrow.get()->sourceNodeName;
+}
+
+const QString GraphConnectionPoint::getDestinationNodeName() const
+{
+	return arrow.get()->destinationNodeName;
+}
+
+void GraphConnectionPoint::setSourceNodeName(const QString& name)
+{
+	arrow.get()->sourceNodeName = name;
+}
+
+void GraphConnectionPoint::setDestinationNodeName(const QString& name)
+{
+	arrow.get()->destinationNodeName = name;
+}
+
+bool GraphConnectionPoint::isConnected() const
+{
+	return arrow.get() != nullptr;
+}

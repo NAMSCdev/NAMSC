@@ -36,7 +36,19 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 
 void GraphNode::setLabel(QString label)
 {
-	nodeBody.label = std::move(label);
+	nodeBody.label = label;
+
+	// Update input names for arrows
+	for (auto& elem : inputConnectionPointList)
+	{
+		elem.get()->setDestinationNodeName(label);
+	}
+
+	// Update output labels for arrows
+	for (auto& elem : outputConnectionPointList)
+	{
+		elem.get()->setSourceNodeName(label);
+	}
 }
 
 void GraphNode::appendConnectionPoint(GraphConnectionType type)
@@ -110,6 +122,24 @@ void GraphNode::removeConnectionPoint(GraphConnectionType type, size_t index)
 		// TODO error?
 		break;
 	}
+}
+
+// todo test
+bool GraphNode::removeConnectionPointByName(QString nodeName, GraphConnectionType type)
+{
+	auto& connectionPointList = type == GraphConnectionType::In ? inputConnectionPointList : outputConnectionPointList;
+
+	for (auto& elem : connectionPointList)
+	{
+		// If input then we are the destination, else we are the source
+		if ((type == GraphConnectionType::In && elem->getSourceNodeName() == nodeName) || (type == GraphConnectionType::Out && elem->getDestinationNodeName() == nodeName))
+		{
+			connectionPointList.removeOne(elem);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void GraphNode::connectPointTo(size_t index, GraphConnectionPoint* destination)
@@ -207,6 +237,50 @@ QVariant GraphNode::itemChange(GraphicsItemChange change, const QVariant& value)
 QString GraphNode::getLabel() const
 {
 	return nodeBody.label;
+}
+
+// todo test
+bool GraphNode::connectToNode(QString nodeName)
+{
+	for(auto elem : scene()->items())
+	{
+		auto node = dynamic_cast<GraphNode*>(elem);
+		if (node != nullptr && node->getLabel() == nodeName)
+		{
+			appendConnectionPoint(GraphConnectionType::Out);
+			node->appendConnectionPoint(GraphConnectionType::In);
+			connectPointTo(outputConnectionPointList.size() - 1, node->inputConnectionPointList.last().get());
+			outputConnectionPointList.last()->setSourceNodeName(getLabel());
+			outputConnectionPointList.last()->setDestinationNodeName(nodeName);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool GraphNode::disconnectFrom(QString nodeName)
+{
+	// Find if connection to that node exists
+	for (auto& connectionPoint : outputConnectionPointList)
+	{
+		 if (connectionPoint->isConnected() && connectionPoint->getDestinationNodeName() == nodeName)
+		 {
+			// Find the node
+			 for (auto elemNode : scene()->items())
+			 {
+				 auto node = dynamic_cast<GraphNode*>(elemNode);
+				 if (node != nullptr)
+				 {
+					 node->removeConnectionPointByName(getLabel(), GraphConnectionType::In);
+					 outputConnectionPointList.removeOne(connectionPoint);
+					 return true;
+				 }
+			 }
+		 }
+	}
+
+	return false;
 }
 
 void GraphNode::setFlags()

@@ -14,13 +14,14 @@ public:
 	GraphNode(const QPoint& pos, QGraphicsObject* parent = nullptr);
 	~GraphNode();
 
-	// Inherited via QGraphicsItem
+	// Inherited via QGraphicsObject
 	QRectF boundingRect() const override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 	void appendConnectionPoint(GraphConnectionType type);
 	void insertConnectionPoint(GraphConnectionType type, size_t index);
 	void removeConnectionPoint(GraphConnectionType type, size_t index);
+	bool removeConnectionPointByName(QString nodeName, GraphConnectionType type);
 
 	void connectPointTo(size_t index, GraphConnectionPoint* destination);
 	void disconnectPoint(GraphConnectionType type, size_t index);
@@ -36,6 +37,10 @@ public:
 	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
 	QString getLabel() const;
+	// Assuming names are unique, otherwise will connect to first found
+	bool connectToNode(QString nodeName);
+	// Disconnects only from output nodes
+	bool disconnectFrom(QString nodeName);
 
 public slots:
 	void setLabel(QString label);
@@ -47,7 +52,6 @@ private:
 	QRectF nodeBoundingRect;
 	QPointF lastLeftMousePressPoint;
 	GraphNodeBody nodeBody;
-	Scene gameScene;
 	QList<std::shared_ptr<GraphConnectionPoint>> inputConnectionPointList;
 	QList<std::shared_ptr<GraphConnectionPoint>> outputConnectionPointList;
 

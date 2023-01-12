@@ -131,34 +131,36 @@ void NAMSC_editor::debugConstructorActions()
 {
     node = new GraphNode;
     node->setLabel("To nie jest tak, że dobrze albo, że niedobrze, po prostu NAMSC nam idzie okropnie i to będzie cud jak się wyrobimy");
-    node->appendConnectionPoint(GraphConnectionType::In);
-    node->appendConnectionPoint(GraphConnectionType::In);
-    node->appendConnectionPoint(GraphConnectionType::In);
-    node->appendConnectionPoint(GraphConnectionType::In);
-    node->appendConnectionPoint(GraphConnectionType::In);
+    //node->appendConnectionPoint(GraphConnectionType::In);
+    //node->appendConnectionPoint(GraphConnectionType::In);
+    //node->appendConnectionPoint(GraphConnectionType::In);
+    //node->appendConnectionPoint(GraphConnectionType::In);
+    //node->appendConnectionPoint(GraphConnectionType::In);
 
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
-    node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
+    //node->appendConnectionPoint(GraphConnectionType::Out);
     scene->addItem(node);
 
     node2 = new GraphNode;
     node2->setLabel("BigD");
-    node2->appendConnectionPoint(GraphConnectionType::In);
+    //node2->appendConnectionPoint(GraphConnectionType::In);
 
     scene->addItem(node2);
 
-    node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
+    //node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
 
     connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
         {
             qDebug() << node->getLabel() << "has been double clicked!";
         });
 
+    node->connectToNode(node2->getLabel());
+    node->disconnectFrom(node2->getLabel());
     // Raw properties add
     //auto* cbutton = new CollapseButton(ui.propertiesWidget);
     //auto* props = new BasicNodeProperties(ui.propertiesWidget);

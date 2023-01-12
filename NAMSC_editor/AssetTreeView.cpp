@@ -52,7 +52,7 @@ AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
 }
 
 AssetTreeView::~AssetTreeView()
-{}
+{ }
 
 void AssetTreeView::setSupportedAudioFormats(QList<QMimeType> audioFormats)
 {

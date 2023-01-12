@@ -3,5 +3,6 @@
 enum class PropertyTypes
 {
 	Node,
-	ObjectTreeItem
+	ObjectTreeItem,
+	ChoiceEventItem,
 };

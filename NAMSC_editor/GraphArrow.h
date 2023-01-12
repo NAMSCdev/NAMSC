@@ -16,7 +16,9 @@ public:
 
 	void adjust();
 
-	// Inherited via QGraphicsItem
+	QString sourceNodeName;
+	QString destinationNodeName;
+
 	QRectF boundingRect() const override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
