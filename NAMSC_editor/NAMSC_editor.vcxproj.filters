@@ -169,6 +169,12 @@
     <ClCompile Include="JumpEventProperties.cpp">
       <Filter>Source Files\Properties\Events</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterTree.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterTreeWidgetItem.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
@@ -227,6 +233,12 @@
     </QtMoc>
     <QtMoc Include="JumpEventProperties.h">
       <Filter>Header Files\Properties\Events</Filter>
+    </QtMoc>
+    <QtMoc Include="CharacterTree.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
+    </QtMoc>
+    <QtMoc Include="CharacterTreeWidgetItem.h">
+      <Filter>Header Files\LeftPanelTabs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -46,7 +46,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="statisticsTab">
         <property name="sizePolicy">
@@ -317,7 +317,7 @@
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
-           <widget class="QTreeWidget" name="charactersTree">
+           <widget class="CharacterTree" name="charactersTree">
             <column>
              <property name="text">
               <string notr="true">Character</string>
@@ -656,6 +656,11 @@
    <class>AssetTreeView</class>
    <extends>QTreeView</extends>
    <header>AssetTreeView.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CharacterTree</class>
+   <extends>QTreeWidget</extends>
+   <header>CharacterTree.h</header>
   </customwidget>
  </customwidgets>
  <resources>

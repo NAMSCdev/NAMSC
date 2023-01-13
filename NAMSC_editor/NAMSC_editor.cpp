@@ -64,6 +64,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
+    connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -94,9 +95,13 @@ void NAMSC_editor::prepareSwitchboard()
     // Connect selection from objects tab to switchboard
     connect(ui.objectsTree, &ObjectsTree::selectedObjectChanged, &switchboard, &PropertyConnectionSwitchboard::objectSelectionChanged);
 
+    // Connect selection from characters tab to switchboard
+    connect(ui.charactersTree, &CharacterTree::selectedCharacterChanged, &switchboard, &PropertyConnectionSwitchboard::characterSelectionChanged);
+
     // Connect from switchboard
     connect(&switchboard, &PropertyConnectionSwitchboard::nodeSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
     connect(&switchboard, &PropertyConnectionSwitchboard::sceneryObjectSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
+    connect(&switchboard, &PropertyConnectionSwitchboard::characterSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
 }
 
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
@@ -120,6 +125,9 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         case PropertyTypes::ObjectTreeItem:
             // todo currently assuming it's always Image
         	ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
+            break;
+        case PropertyTypes::CharacterTreeItem:
+            ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
             break;
         }
 

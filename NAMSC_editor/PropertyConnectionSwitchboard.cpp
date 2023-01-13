@@ -17,3 +17,8 @@ void PropertyConnectionSwitchboard::objectSelectionChanged(QString sceneryObject
 {
 	emit sceneryObjectSelectionChangedSignal(Novel::getInstance().getDefaultSceneryObject(sceneryObjectName));
 }
+
+void PropertyConnectionSwitchboard::characterSelectionChanged(QString characterName)
+{
+	emit characterSelectionChangedSignal(Novel::getInstance().getDefaultCharacter(characterName));
+}

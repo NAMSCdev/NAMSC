@@ -69,10 +69,10 @@ void ObjectsTree::mousePressEvent(QMouseEvent* event)
 void ObjectsTree::createContextMenu()
 {
 	addObjectToSceneAction = new QAction(tr("Add object to scene"), this);
-	addObjectToSceneAction->setStatusTip("Object will be added to the currently edited scene");
+	addObjectToSceneAction->setStatusTip(tr("Object will be added to the currently edited scene"));
 	
 	connect(addObjectToSceneAction, &QAction::triggered, this, [&]
 		{
-			emit addObjectToScene(static_cast<ObjectTreeWidgetItem*>(this->currentItem()));
+			emit addObjectToScene(dynamic_cast<ObjectTreeWidgetItem*>(this->currentItem()));
 		});
 }

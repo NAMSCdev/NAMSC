@@ -19,6 +19,7 @@ public:
 
     signals:
         void addAssetToObjects(QString path, QString name, TreeWidgetItemTypes type);
+        void addAssetToCharacters(QString path, QString name, TreeWidgetItemTypes type);
 
 private:
     QMimeDatabase db;
@@ -28,7 +29,7 @@ private:
     CustomSortFilterProxyModel* proxyFileFilter;
 
     QAction* addAssetToObjectsAction;
-    QAction* addAssetToCharactersAction; // todo
+    QAction* addAssetToCharactersAction;
 
     void invokeContextMenu(const QPoint& pos);
     void createContextMenu();

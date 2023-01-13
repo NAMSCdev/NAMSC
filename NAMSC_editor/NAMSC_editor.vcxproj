@@ -111,6 +111,8 @@
   <ItemGroup>
     <ClCompile Include="AssetTreeView.cpp" />
     <ClCompile Include="BasicNodeProperties.cpp" />
+    <ClCompile Include="CharacterTree.cpp" />
+    <ClCompile Include="CharacterTreeWidgetItem.cpp" />
     <ClCompile Include="ChoiceEventDialog.cpp" />
     <ClCompile Include="ChoiceEventProperties.cpp" />
     <ClCompile Include="ChoiceItemModel.cpp" />
@@ -156,6 +158,8 @@
     <QtMoc Include="ChoiceItemModel.h" />
     <QtMoc Include="DialogEventProperties.h" />
     <QtMoc Include="DialogItemModel.h" />
+    <QtMoc Include="CharacterTree.h" />
+    <QtMoc Include="CharacterTreeWidgetItem.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
     <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />

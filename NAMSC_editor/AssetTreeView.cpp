@@ -72,6 +72,7 @@ void AssetTreeView::invokeContextMenu(const QPoint& pos)
     {
         QMenu menu(this);
         menu.addAction(addAssetToObjectsAction);
+        menu.addAction(addAssetToCharactersAction);
         menu.exec(mapToGlobal(pos));
     }
 }
@@ -80,7 +81,10 @@ void AssetTreeView::createContextMenu()
 {
     addAssetToObjectsAction = new QAction(tr("Add to objects"), this);
     addAssetToObjectsAction->setStatusTip("Adds selected asset to objects");
-    
+
+    addAssetToCharactersAction = new QAction(tr("Add to characters"), this);
+    addAssetToCharactersAction->setStatusTip("Adds selected asset to characters");
+
     connect(addAssetToObjectsAction, &QAction::triggered, this, [&]
         {
             TreeWidgetItemTypes type;
@@ -132,6 +136,58 @@ void AssetTreeView::createContextMenu()
 			
 			emit addAssetToObjects(selectedItem.path(), objectName, type);
         });
+
+        connect(addAssetToCharactersAction, &QAction::triggered, this, [&]
+            {
+                TreeWidgetItemTypes type;
+        QString objectName;
+        bool isNameOk = false;
+        bool pressedOk = false;
+        QUrl selectedItem = selectionModel()->model()->mimeData({ currentIndex().siblingAtColumn(0) })->urls().at(0);
+        QMimeType selectedItemMimeType = db.mimeTypeForUrl(selectedItem);
+
+        if (supportedImageFormats.contains(selectedItemMimeType))
+        {
+            type = TreeWidgetItemTypes::ImageObject;
+        }
+        else if (supportedAudioFormats.contains(selectedItemMimeType))
+        {
+            type = TreeWidgetItemTypes::SoundObject;
+        }
+        else
+        {
+            // todo error
+        }
+
+        do
+        {
+            objectName = QInputDialog::getText(this, tr("Create character"),
+                tr("Enter name for created character:"), QLineEdit::Normal,
+                selectedItem.fileName(), &pressedOk);
+
+            // Name input checks
+            if (!pressedOk)
+            {
+                break;
+            }
+            else if (objectName.isNull() || objectName.isEmpty())
+            {
+                continue;
+            }
+            else if (Novel::getInstance().getDefaultCharacter(objectName) != nullptr)
+            {
+                QMessageBox(QMessageBox::Critical, tr("Character name incorrect"), tr("Provided character name already exists.\nPlease provide other name."), QMessageBox::Ok).exec();
+                continue;
+            }
+            else {
+                isNameOk = true; // todo remove in the future
+            }
+        } while (!isNameOk);
+
+        if (!pressedOk) return;
+
+        emit addAssetToCharacters(selectedItem.path(), objectName, type);
+            });
 }
 
 void AssetTreeView::mousePressEvent(QMouseEvent* event)
