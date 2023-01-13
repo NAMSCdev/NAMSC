@@ -11,7 +11,6 @@
 #include <Novel/Data/Novel.h>
 
 #include "CustomSortFilterProxyModel.h"
-#include "GraphNodePropertiesPack.h"
 #include "PropertyConnectionSwitchboard.h"
 #include "PropertyTypes.h"
 
@@ -39,6 +38,7 @@ private:
     QList<QMimeType> supportedImageFormats;
     QList<QMimeType> supportedAudioFormats;
     void prepareAssetsTree();
+    void prepareEventsTree();
     void supportedFormats();
     QFileSystemModel* model;
     CustomSortFilterProxyModel* proxyFileFilter;

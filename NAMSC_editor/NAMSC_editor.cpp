@@ -7,10 +7,13 @@
 
 #include "BasicNodeProperties.h"
 #include "CustomSortFilterProxyModel.h"
+#include "EventTreeItemModel.h"
+#include "GraphNodePropertiesPack.h"
 #include "ObjectTreeWidgetItem.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
+#include "Novel/Event/EventDialogue.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -60,6 +63,9 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     debugConstructorActions();
     prepareAssetsTree();
+    prepareEventsTree();
+
+    //needs to be after preparing other widgets
     prepareSwitchboard();
 
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
@@ -75,6 +81,13 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setSupportedImageFormats(supportedImageFormats);
     connect(ui.assetsTree->selectionModel(), &QItemSelectionModel::selectionChanged, ui.assetsPreview, &Preview::selectionChanged);
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+}
+
+void NAMSC_editor::prepareEventsTree()
+{
+    EventTreeItemModel* model = new EventTreeItemModel("test", nullptr);
+    ui.eventsTree->setModel(model);
+    ui.eventsTree->setItemsExpandable(true);
 }
 
 void NAMSC_editor::prepareSwitchboard()
@@ -106,6 +119,7 @@ void NAMSC_editor::prepareSwitchboard()
 
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
 {
+    qDebug() << "test";
     while (ui.propertiesLayout->count() != 0)
     {
         auto childItem = ui.propertiesLayout->takeAt(0);
@@ -120,6 +134,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         {
         case PropertyTypes::Node:
         	ui.propertiesLayout->addWidget(new GraphNodePropertiesPack(static_cast<GraphNode*>(object)));
+            static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
             break;
 
         case PropertyTypes::ObjectTreeItem:
@@ -188,7 +203,7 @@ void NAMSC_editor::supportedFormats()
     supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
     supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
 
-
+    /*
     supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
     supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
     supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
@@ -199,6 +214,7 @@ void NAMSC_editor::supportedFormats()
     supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
 
     supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
+    */
 }
 
 NAMSC_editor::~NAMSC_editor()
