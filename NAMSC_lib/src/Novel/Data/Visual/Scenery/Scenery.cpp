@@ -187,7 +187,7 @@ void Scenery::setBackgroundAssetImage(const QString& backgroundAssetImageName, A
 			return;
 		}
 	}
-	else backgroundAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(backgroundAssetImageName);
+	else backgroundAssetImage = AssetManager::getInstance().getAssetImageSceneryBackground(backgroundAssetImageName);
 
 	if (!backgroundAssetImage)
 	{

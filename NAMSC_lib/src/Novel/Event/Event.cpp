@@ -19,7 +19,6 @@ void swap(Event& first, Event& second) noexcept
 Event::Event(Scene* const parentScene, const QString& label, std::vector<std::unique_ptr<Action>>&& actions)
 	: parentScene(parentScene), 
 	label(label), 
-	scenery(scenery),
 	actions_(std::move(actions))
 {
 }
