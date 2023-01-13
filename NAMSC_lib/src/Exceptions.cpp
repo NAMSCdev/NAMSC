@@ -8,6 +8,11 @@ namespace NovelLib
 		{
 			errorChecker(bComprehensive);
 		}
+		catch (NovelException& ex)
+		{
+			qCritical() << ex.what();;
+			return true;
+		}
 		catch (QException& ex)
 		{
 			qCritical() << NovelLib::ErrorType::Critical << "[CRITICAL] UNINDENTIFIED `QException` HAS OCCURED OUTSIDE \"qCritical()\" MESSAGE HANDLER:\n" << ex.what(); //todo: check if '\n' is legal here

@@ -7,90 +7,43 @@ ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEv
 {
 }
 
-ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionSceneryObjectAnimScale& first, ActionSceneryObjectAnimScale& second) noexcept
 {
-	assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
-	//if (assetAnim_ == nullptr)
-	//	qCritical() << NovelLib::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<ActionSceneryObjectAnim<AnimNodeDouble2D>&>(first), static_cast<ActionSceneryObjectAnim<AnimNodeDouble2D>&>(second));
+	swap(first.onRun_, second.onRun_);
 }
 
-ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept
-	: ActionSceneryObjectAnim(obj.parentEvent)
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bFinishAnimationAtEventEnd, SceneryObject* sceneryObject, AssetAnim<AnimNodeDouble2D>* assetAnim)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bFinishAnimationAtEventEnd, sceneryObject, assetAnim)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	if (!assetAnim_)
+		assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
+	errorCheck(true);
 }
 
-ActionSceneryObjectAnimScale& ActionSceneryObjectAnimScale::operator=(const ActionSceneryObjectAnimScale& obj) noexcept
+//deleted
+//ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept
+//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
+//	onRun_(obj.onRun_)
+//{
+//}
+
+//deleted
+//bool ActionSceneryObjectAnimScale::operator==(const ActionSceneryObjectAnimScale& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return ActionSceneryObjectAnim::operator==(obj);
+//}
+
+void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimScale* const assetAnimScale, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
-	if (this == &obj) return *this;
-
-	ActionSceneryObjectAnim::operator=(obj);
-	//onRun_ = obj.onRun_;
-
-	return *this;
-}
-
-bool ActionSceneryObjectAnimScale::operator==(const ActionSceneryObjectAnimScale& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return ActionSceneryObjectAnim::operator==(obj);
-}
-
-bool ActionSceneryObjectAnimScale::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionSceneryObjectAnim::checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimScale::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-
-	return bError;
-}
-
-Action* ActionSceneryObjectAnimScale::clone() const
-{
-	ActionSceneryObjectAnimScale* clone = new ActionSceneryObjectAnimScale(*this);
-	return clone;
-}
-
-void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimScale* assetAnimScale, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept
-{ 
-	onRun_ = onRun; 
-}
-
-void ActionSceneryObjectAnimScale::setAssetAnim(const QString& assetAnimName) noexcept
-{
-	AssetAnimScale* newAssetAnim = nullptr;
-	newAssetAnim = AssetManager::getInstance().getAssetAnimScale(assetAnimName);
-	if (newAssetAnim == nullptr)
-		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName + "\" does not exist";
-	else
-	{
-		assetAnimName_ = assetAnimName;
-		assetAnim_     = newAssetAnim;
-		checkForErrors(true);
-	}
-}
-
-void ActionSceneryObjectAnimScale::acceptVisitor(ActionVisitor* visitor)
-{ 
-	visitor->visitActionSceneryObjectAnimScale(this); 
-}
-
-/// Needed for Serialization, to know the class of an object about to be Serialization loaded
-/// \return NovelLib::SerializationID corresponding to the class of a serialized object
-
-NovelLib::SerializationID ActionSceneryObjectAnimScale::getType() const noexcept
-{ 
-	return NovelLib::SerializationID::ActionSceneryObjectAnimScale; 
+	onRun_ = onRun;
 }
 
 void ActionSceneryObjectAnimScale::serializableLoad(QDataStream& dataStream)
@@ -98,12 +51,60 @@ void ActionSceneryObjectAnimScale::serializableLoad(QDataStream& dataStream)
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 
 	assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
-	//if (assetAnim_ == nullptr)
-	//	qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
-	checkForErrors();
+	errorCheck();
 }
 
 void ActionSceneryObjectAnimScale::serializableSave(QDataStream& dataStream) const
 {
 	ActionSceneryObjectAnim::serializableSave(dataStream);
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale&& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+//deleted
+//ActionSceneryObjectAnimScale& ActionSceneryObjectAnimScale::operator=(ActionSceneryObjectAnimScale obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+void ActionSceneryObjectAnimScale::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble2D>* assetAnim) noexcept
+{
+	if (assetAnim)
+	{
+		if (assetAnim->name != assetAnimName)
+		{
+			qCritical() << NovelLib::ErrorType::AssetAnimInvalid << "AssetAnim's name missmatch (assetAnimName=\"" + assetAnimName + "\", assetAnim->name=\"" + assetAnim->name + "\")";
+			return;
+		}
+	}
+	else assetAnim = AssetManager::getInstance().getAssetAnimScale(assetAnimName);
+
+	if (assetAnim == nullptr)
+	{
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + assetAnimName + "\" does not exist";
+		return;
+	}
+	assetAnimName_ = assetAnimName;
+	assetAnim_     = assetAnim;
+	errorCheck(true);
+}
+
+void ActionSceneryObjectAnimScale::acceptVisitor(ActionVisitor* visitor)
+{ 
+	visitor->visitActionSceneryObjectAnimScale(this); 
+}
+
+NovelLib::SerializationID ActionSceneryObjectAnimScale::getType() const noexcept
+{ 
+	return NovelLib::SerializationID::ActionSceneryObjectAnimScale; 
 }

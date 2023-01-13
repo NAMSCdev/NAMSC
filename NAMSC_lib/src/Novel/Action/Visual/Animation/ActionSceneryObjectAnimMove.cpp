@@ -7,77 +7,96 @@ ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEven
 {
 }
 
-ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionSceneryObjectAnimMove& first, ActionSceneryObjectAnimMove& second) noexcept
 {
-	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
-	//if (assetAnim_ == nullptr)
-	//	qCritical() << NovelLib::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<ActionSceneryObjectAnim<AnimNodeDouble2D>&>(first), static_cast<ActionSceneryObjectAnim<AnimNodeDouble2D>&>(second));
+	swap(first.onRun_, second.onRun_);
 }
 
-ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj) noexcept
-	: ActionSceneryObjectAnim(obj.parentEvent)
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bFinishAnimationAtEventEnd, SceneryObject* sceneryObject, AssetAnim<AnimNodeDouble2D>* assetAnim)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, assetAnimName, priority, startDelay, speed, timesPlayed, bFinishAnimationAtEventEnd, sceneryObject, assetAnim)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	if (!assetAnim_)
+		assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
+	errorCheck(true);
 }
 
-ActionSceneryObjectAnimMove& ActionSceneryObjectAnimMove::operator=(const ActionSceneryObjectAnimMove& obj) noexcept
+//deleted
+//ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj) noexcept
+//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
+//	onRun_(obj.onRun_)
+//{
+//}
+
+//deleted
+//bool ActionSceneryObjectAnimMove::operator==(const ActionSceneryObjectAnimMove& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return ActionSceneryObjectAnim::operator==(obj);
+//}
+
+void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimMove* const assetAnimMove, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
-	if (this == &obj) return *this;
-
-	ActionSceneryObjectAnim::operator=(obj);
-	//onRun_ = obj.onRun_;
-
-	return *this;
-}
-
-bool ActionSceneryObjectAnimMove::operator==(const ActionSceneryObjectAnimMove& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return ActionSceneryObjectAnim::operator==(obj);
-}
-
-bool ActionSceneryObjectAnimMove::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionSceneryObjectAnim::checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimMove::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-
-	return bError;
-}
-
-Action* ActionSceneryObjectAnimMove::clone() const
-{
-	ActionSceneryObjectAnimMove* clone = new ActionSceneryObjectAnimMove(*this);
-	return clone;
-}
-
-void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimMove* assetAnimMove, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept 
-{ 
 	onRun_ = onRun;
 }
 
-void ActionSceneryObjectAnimMove::setAssetAnim(const QString& assetAnimName) noexcept
+void ActionSceneryObjectAnimMove::serializableLoad(QDataStream& dataStream)
 {
-	AssetAnimMove* newAssetAnim = nullptr;
-	newAssetAnim = AssetManager::getInstance().getAssetAnimMove(assetAnimName);
-	if (newAssetAnim == nullptr)
-		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName + "\" does not exist";
-	else
+	ActionSceneryObjectAnim::serializableLoad(dataStream);
+
+	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
+	errorCheck();
+}
+
+void ActionSceneryObjectAnimMove::serializableSave(QDataStream& dataStream) const
+{
+	ActionSceneryObjectAnim::serializableSave(dataStream);
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove&& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+//deleted
+//ActionSceneryObjectAnimMove& ActionSceneryObjectAnimMove::operator=(ActionSceneryObjectAnimMove obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+void ActionSceneryObjectAnimMove::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble2D>* assetAnim) noexcept
+{
+	if (assetAnim)
 	{
-		assetAnimName_ = assetAnimName;
-		assetAnim_     = newAssetAnim;
-		checkForErrors(true);
+		if (assetAnim->name != assetAnimName)
+		{
+			qCritical() << NovelLib::ErrorType::AssetAnimInvalid << "AssetAnim's name missmatch (assetAnimName=\"" + assetAnimName + "\", assetAnim->name=\"" + assetAnim->name + "\")";
+			return;
+		}
 	}
+	else assetAnim = AssetManager::getInstance().getAssetAnimMove(assetAnimName);
+
+	if (!assetAnim)
+	{
+		qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName + "\" does not exist";
+		return;
+	}
+	assetAnimName_ = assetAnimName;
+	assetAnim_     = assetAnim;
+	errorCheck(true);
 }
 
 void ActionSceneryObjectAnimMove::acceptVisitor(ActionVisitor* visitor) 
@@ -85,28 +104,7 @@ void ActionSceneryObjectAnimMove::acceptVisitor(ActionVisitor* visitor)
 	visitor->visitActionSceneryObjectAnimMove(this); 
 }
 
-/// Needed for Serialization, to know the class of an object about to be Serialization loaded
-/// \return NovelLib::SerializationID corresponding to the class of a serialized object
-
 NovelLib::SerializationID ActionSceneryObjectAnimMove::getType() const noexcept 
 { 
 	return NovelLib::SerializationID::ActionSceneryObjectAnimMove;
-}
-
-void ActionSceneryObjectAnimMove::serializableLoad(QDataStream& dataStream)
-{
-	ActionSceneryObjectAnim::serializableLoad(dataStream);
-	//if (assetAnimName_ == "")
-	//	qCritical() << NovelLib::AssetAnimInvalid << "Move AssetAnim is not specified";
-
-	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
-	//if (assetAnim_ == nullptr)
-	//	qCritical() << NovelLib::AssetAnimMissing << "Move AssetAnim \"" + assetAnimName_ + "\" does not exist. Definition file might be corrupted";
-
-	checkForErrors();
-}
-
-void ActionSceneryObjectAnimMove::serializableSave(QDataStream& dataStream) const
-{
-	ActionSceneryObjectAnim::serializableSave(dataStream);
 }

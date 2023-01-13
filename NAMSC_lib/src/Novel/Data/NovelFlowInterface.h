@@ -9,7 +9,7 @@ public:
 
 	/// Checks if the NovelFlowInterface doesn't have any errors, which would halt the Novel execution
 	/// \param bComprehensive Checks more error-prone code. This is not desired when loading time is a concern
-	virtual bool checkForErrors(bool bComprehensive = false) const = 0;
+	virtual bool errorCheck(bool bComprehensive = false) const = 0;
 	
 	virtual void run()    = 0;
 	virtual void update() = 0;

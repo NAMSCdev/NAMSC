@@ -2,49 +2,47 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionAudio::ActionAudio(Event* const parentEvent) noexcept
-	: Action(parentEvent)
+ActionAudio::~ActionAudio() = default;
+
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionAudio& first, ActionAudio& second) noexcept
 {
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<Action&>(first), static_cast<Action&>(second));
+	swap(first.audioSettings_, second.audioSettings_);
 }
 
 ActionAudio::ActionAudio(Event* const parentEvent, const AudioSettings& audioSettings)
-	: Action(parentEvent), audioSettings_(audioSettings)
+	: Action(parentEvent), 
+	audioSettings_(audioSettings)
 {
-	//checkForErrors(true);
 }
 
-ActionAudio& ActionAudio::operator=(const ActionAudio& obj) noexcept
+//deleted
+//bool ActionAudio::operator==(const ActionAudio& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return Action::operator==(obj)             &&
+//		   audioSettings_ == obj.audioSettings_;
+//}
+
+void ActionAudio::serializableLoad(QDataStream& dataStream)
 {
-	if (this == &obj) return *this;
-
-	Action::operator=(obj);
-	audioSettings_ = obj.audioSettings_;
-
-	return *this;
+	Action::serializableLoad(dataStream);
+	dataStream >> audioSettings_;
 }
 
-bool ActionAudio::operator==(const ActionAudio& obj) const noexcept
+void ActionAudio::serializableSave(QDataStream& dataStream) const
 {
-	if (this == &obj) return true;
-
-	return	Action::operator==(obj)             &&
-			audioSettings_ == obj.audioSettings_;
+	Action::serializableSave(dataStream);
+	dataStream << audioSettings_;
 }
 
-bool ActionAudio::checkForErrors(bool bComprehensive) const
-{
-	bool bError = Action::checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//Only leafs should report, but if needed for further debug, uncomment it
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive))
-	//if (bError)
-	//	qDebug() << "Error occurred in ActionAudio::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-	return bError;
-}
+//  MEMBER_FIELD_SECTION_CHANGE END
 
 const AudioSettings& ActionAudio::getAudioSettings() const noexcept
 {
@@ -59,19 +57,5 @@ AudioSettings& ActionAudio::getAudioSettings() noexcept
 void ActionAudio::setAudioSettings(const AudioSettings& audioSettings) noexcept
 {
 	audioSettings_ = audioSettings;
-	checkForErrors(true);
-}
-
-void ActionAudio::serializableLoad(QDataStream& dataStream)
-{
-	Action::serializableLoad(dataStream);
-	dataStream >> audioSettings_;
-
-	//checkForErrors();
-}
-
-void ActionAudio::serializableSave(QDataStream& dataStream) const
-{
-	Action::serializableSave(dataStream);
-	dataStream << audioSettings_;
+	errorCheck(true);
 }

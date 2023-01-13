@@ -7,76 +7,67 @@ EventChoice::EventChoice(Scene* const parentScene) noexcept
 {
 }
 
-EventChoice::EventChoice(Scene* const parentScene, const QString label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)), menuText_(menuText), choices(choices)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(EventChoice& first, EventChoice& second) noexcept
 {
-	checkForErrors(true);
+	using std::swap;
+	swap(static_cast<Event&>(first), static_cast<Event&>(second));
+	swap(first.menuText_, second.menuText_);
+	swap(first.choices,   second.choices);
+	swap(first.onRun_,    second.onRun_);
 }
 
-EventChoice::EventChoice(const EventChoice& obj) noexcept
-	: Event(parentScene)
+EventChoice::EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
+	: Event(parentScene, label, std::move(actions)),
+	menuText_(menuText),
+	choices(choices)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	errorCheck(true);
 }
 
-EventChoice& EventChoice::operator=(const EventChoice& obj) noexcept
+void EventChoice::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const Translation* const text, const std::vector<Choice>* const choices)> onRun) noexcept
 {
-	if (this == &obj) return *this;
-
-	Event::operator=(obj);
-	//onRun_    = obj.onRun_;
-	menuText_ = obj.menuText_;
-	choices   = obj.choices;
-
-	return *this;
+	onRun_ = onRun;
 }
 
-bool EventChoice::operator==(const EventChoice& obj) const noexcept
+void EventChoice::serializableLoad(QDataStream& dataStream)
 {
-	if (this == &obj) return true;
+	Event::serializableLoad(dataStream);
+	uint choicesSize = 0;
+	dataStream >> choicesSize;
 
-	return 	Event::operator==(obj)     &&
-			menuText_ == obj.menuText_ &&
-			choices   == obj.choices;
+	for (unsigned i = 0; i != choicesSize; ++i)
+	{
+		Choice choice(this);
+		dataStream >> choice;
+		choices.push_back(std::move(choice));
+	}
+
+	errorCheck();
 }
 
-bool EventChoice::checkForErrors(bool bComprehensive) const
+void EventChoice::serializableSave(QDataStream& dataStream) const
 {
-	bool bError = Event::checkForErrors(bComprehensive);
+	Event::serializableSave(dataStream);
+	dataStream << choices.size();
 
 	for (const Choice& choice : choices)
-		bError |= choice.checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "An Error occurred in EventChoice::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
-
-	return bError;
+		dataStream << choice;
 }
 
-Event* EventChoice::clone() const
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+EventChoice::EventChoice(EventChoice&& obj) noexcept
+	: EventChoice(obj.parentScene)
 {
-	EventChoice* clone = new EventChoice(*this);
-	return clone;
+	swap(*this, obj);
 }
 
-void EventChoice::run()
+const Translation* EventChoice::getMenuText() const noexcept
 {
-}
-
-void EventChoice::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, Translation* text, std::vector<Choice>* choices)> onRun) noexcept
-{ 
-	onRun_ = onRun; 
-}
-
-void EventChoice::setMenuText(const Translation& menuText) noexcept
-{ 
-	menuText_ = menuText; 
+	return &menuText_;
 }
 
 Translation* EventChoice::getMenuText() noexcept
@@ -84,9 +75,9 @@ Translation* EventChoice::getMenuText() noexcept
 	return &menuText_;
 }
 
-const Translation* EventChoice::getMenuText() const noexcept
-{ 
-	return &menuText_; 
+void EventChoice::setMenuText(const Translation& menuText) noexcept
+{
+	menuText_ = menuText;
 }
 
 void EventChoice::acceptVisitor(EventVisitor* visitor)
@@ -97,30 +88,4 @@ void EventChoice::acceptVisitor(EventVisitor* visitor)
 NovelLib::SerializationID EventChoice::getType() const noexcept 
 { 
 	return NovelLib::SerializationID::EventChoice; 
-}
-
-void EventChoice::serializableLoad(QDataStream& dataStream)
-{
-	Event::serializableLoad(dataStream);
-
-	dataStream >> menuText_;
-
-	uint choicesSize;
-	dataStream >> choicesSize;
-	for (uint i = 0u; i != choicesSize; ++i)
-	{
-		Choice choice;
-		dataStream >> choice;
-		choices.push_back(std::move(choice));
-	}
-	checkForErrors();
-}
-
-void EventChoice::serializableSave(QDataStream& dataStream) const
-{
-	Event::serializableSave(dataStream);
-
-	dataStream << menuText_ << choices.size();
-	for (const Choice& choice : choices)
-		dataStream << choice;
 }

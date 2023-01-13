@@ -12,21 +12,22 @@ class Scene;
 /// Action is an additional work added to an Event
 class Action : public NovelFlowInterface
 {
-	friend class Event;
-	friend class Scene;
+	friend Event;
+	friend Scene;
+	/// Swap trick
+	friend void swap(Action& first, Action& second) noexcept;
 public:
-	Action(Event* const parentEvent) noexcept;
-	Action(const Action& obj) = delete;
-	Action& operator=(const Action& obj) noexcept;
-	bool operator==(const Action& obj) const noexcept;
-	bool operator!=(const Action& obj) const = default; //{ return !(*this == obj); }
+	explicit Action(Event* const parentEvent) noexcept;
+	Action(const Action& obj)                 noexcept = delete;
+	Action(Action&& obj)                      noexcept;
+	Action& operator=(const Action& obj)      noexcept = delete;	
+	bool operator==(const Action& obj) const  noexcept = delete;
+	bool operator!=(const Action& obj) const  noexcept = delete;
 	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Action() = 0;
 
 	/// \return Whether an Error has occurred
-	virtual bool checkForErrors(bool bComprehensive = false) const override;
-
-	virtual Action* clone() const = 0;
+	virtual bool errorCheck(bool bComprehensive = false) const override;
 
 	virtual void run() override;
 	/// Some Actions are designed to update things and should be called frequently until the end of the Event
@@ -45,7 +46,7 @@ protected:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	virtual NovelLib::SerializationID getType() const  = 0;
 
-	virtual void ensureResourcesAreLoaded() override {}
+	virtual void ensureResourcesAreLoaded() override;
 
 public:
 	//---SERIALIZATION---

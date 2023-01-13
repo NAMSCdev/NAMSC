@@ -4,19 +4,30 @@
 #include "Novel/Event/EventDialogue.h"
 #include "Serialization.h"
 
-void NovelSettings::load()
-{
-}
-
 NovelSettings& NovelSettings::getInstance()
 {
     static NovelSettings instance;
     return instance;
 }
 
-NovelSettings::NovelSettings(const QString& novelTitle, const QString& language, const QString& defaultLanguage, uint lastSaveSlot, uint cps, double volumeMusicMultiplier, double volumeSoundMultiplier, double volumeVoiceMultiplier, const Qt::Key nextButton, bool mouseClick, uint animationFramerate, bool bLazyFileLoad, uint version, const AvailableResolutions resoultion)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+NovelSettings::NovelSettings(const QString& language, const QString& defaultLanguage, uint lastSaveSlot, uint cps, double volumeMusicMultiplier, double volumeSoundMultiplier, double volumeVoiceMultiplier, const Qt::Key nextButton, bool mouseClick, bool bStatsVisible, bool bStatsNotification, bool bLazyFileLoad, const AvailableResolutions resoultion)
 {
 }
+
+void NovelSettings::serializableLoad(QDataStream& dataStream)
+{
+    dataStream >> language >> defaultLanguage >> lastSaveSlot >> cps >> volumeMusicMultiplier >> volumeSoundMultiplier >> volumeVoiceMultiplier >> nextButton >> mouseClick >> bStatsVisible >> bStatsNotification >> bLazyFileLoad >> resolution;
+}
+
+void NovelSettings::serializableSave(QDataStream& dataStream) const
+{
+    dataStream << language << defaultLanguage << lastSaveSlot << cps << volumeMusicMultiplier << volumeSoundMultiplier << volumeVoiceMultiplier << nextButton << mouseClick << bStatsVisible << bStatsNotification << bLazyFileLoad << resolution;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
 
 void NovelSettings::defaultLanguageChange(const QString& newDefaultLanguage)
 {
@@ -30,14 +41,4 @@ void NovelSettings::defaultLanguageChange(const QString& newDefaultLanguage)
                 for (Sentence& sentence : eventDialog->sentences)
                     sentence.text.defaultLanguageChangeFix(oldDefaultLanguage);
         }
-}
-
-void NovelSettings::serializableLoad(QDataStream& dataStream)
-{
-    dataStream >> language >> defaultLanguage >> lastSaveSlot >> cps >> volumeMusicMultiplier >> volumeSoundMultiplier >> volumeVoiceMultiplier >> nextButton >> mouseClick >> animationUpdateInterval >> bStatsVisible >> bStatsNotification >> bLazyFileLoad >> version >> resolution;
-}
-
-void NovelSettings::serializableSave(QDataStream& dataStream) const
-{
-    dataStream << language << defaultLanguage << lastSaveSlot << cps << volumeMusicMultiplier << volumeSoundMultiplier << volumeVoiceMultiplier << nextButton << mouseClick << animationUpdateInterval << bStatsVisible << bStatsNotification << bLazyFileLoad << version << resolution;
 }

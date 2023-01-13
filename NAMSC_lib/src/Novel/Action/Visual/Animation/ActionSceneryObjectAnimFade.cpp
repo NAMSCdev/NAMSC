@@ -7,84 +7,92 @@ ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(Event* const parentEven
 {
 }
 
-ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority, uint startDelay, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)
-	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, "", priority, startDelay, 1.0, 1, bStopAnimationAtEventEnd), duration(duration), bAppear(bAppear)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionSceneryObjectAnimFade& first, ActionSceneryObjectAnimFade& second) noexcept
 {
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<ActionSceneryObjectAnim<AnimNodeDouble1D>&>(first), static_cast<ActionSceneryObjectAnim<AnimNodeDouble1D>&>(second));
+	swap(first.duration, second.duration);
+	swap(first.bAppear,  second.bAppear);
+	swap(first.onRun_,   second.onRun_);
 }
 
-ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept
-	: ActionSceneryObjectAnim(obj.parentEvent)
+ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority, uint startDelay, bool bFinishAnimationAtEventEnd, uint duration, bool bAppear, SceneryObject* sceneryObject, AssetAnim<AnimNodeDouble1D>* assetAnim)
+	: ActionSceneryObjectAnim(parentEvent, sceneryObjectName, "", priority, startDelay, 1.0, 1, bFinishAnimationAtEventEnd, sceneryObject, assetAnim),
+	duration(duration), 
+	bAppear(bAppear)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	errorCheck(true);
 }
 
-ActionSceneryObjectAnimFade& ActionSceneryObjectAnimFade::operator=(const ActionSceneryObjectAnimFade& obj) noexcept
-{
-	if (this == &obj) return *this;
+//deleted
+//ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept
+//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, "", obj.priority, obj.startDelay, 1.0, 1, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
+//	duration(obj.duration), 
+//	bAppear(obj.bAppear),
+//	onRun_(obj.onRun_)
+//{
+//}
 
-	ActionSceneryObjectAnim::operator=(obj);
-	//onRun_             = obj.onRun_;
-	duration           = obj.duration;
-	bAppear            = obj.bAppear;
+//deleted
+//bool ActionSceneryObjectAnimFade::operator==(const ActionSceneryObjectAnimFade& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return ActionSceneryObjectAnim::operator==(obj) &&
+//		   duration != obj.duration                 &&
+//		   bAppear  != obj.bAppear;           
+//}
 
-	return *this;
-}
-
-bool ActionSceneryObjectAnimFade::operator==(const ActionSceneryObjectAnimFade& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return	ActionSceneryObjectAnim::operator==(obj) &&
-			duration != obj.duration                 &&
-			bAppear  != obj.bAppear;           
-}
-
-bool ActionSceneryObjectAnimFade::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionSceneryObjectAnim::checkForErrors(bComprehensive);
-
-	//static auto errorChecker = [&](bool bComprehensive)
-	//{
-	//};
-
-	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObjectAnimFade::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-
-	return bError;
-}
-
-Action* ActionSceneryObjectAnimFade::clone() const
-{
-	ActionSceneryObjectAnimFade* clone = new ActionSceneryObjectAnimFade(*this);
-	return clone;
-}
-
-void ActionSceneryObjectAnimFade::run()
-{
-}
-
-void ActionSceneryObjectAnimFade::setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept
+void ActionSceneryObjectAnimFade::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const sceneryObject, const uint& priority, const uint& startDelay, const bool& bFinishAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept
 {
 	onRun_ = onRun;
-}
-
-NovelLib::SerializationID ActionSceneryObjectAnimFade::getType() const noexcept
-{
-	return NovelLib::SerializationID::ActionSceneryObjectAnimFade; 
 }
 
 void ActionSceneryObjectAnimFade::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 	dataStream >> duration >> bAppear;
-	checkForErrors();
+	errorCheck();
 }
 
 void ActionSceneryObjectAnimFade::serializableSave(QDataStream& dataStream) const
 {
 	ActionSceneryObjectAnim::serializableSave(dataStream);
 	dataStream << duration << bAppear;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade&& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+//deleted
+//ActionSceneryObjectAnimFade& ActionSceneryObjectAnimFade::operator=(ActionSceneryObjectAnimFade obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+void ActionSceneryObjectAnimFade::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble1D>* assetAnim) noexcept
+{
+}
+
+void ActionSceneryObjectAnimFade::acceptVisitor(ActionVisitor* visitor)
+{
+	visitor->visitActionSceneryObjectAnimFade(this);
+}
+
+NovelLib::SerializationID ActionSceneryObjectAnimFade::getType() const noexcept
+{
+	return NovelLib::SerializationID::ActionSceneryObjectAnimFade; 
 }

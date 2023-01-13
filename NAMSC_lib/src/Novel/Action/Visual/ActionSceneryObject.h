@@ -6,22 +6,30 @@
 /// Action that affects a SceneryObject
 class ActionSceneryObject : public Action
 {
+	/// Swap trick
+	friend void swap(ActionSceneryObject& first, ActionSceneryObject& second) noexcept;
 public:
-	ActionSceneryObject(Event* const parentEvent) noexcept;
+	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName_`
-	ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName);
-	ActionSceneryObject& operator=(const ActionSceneryObject& obj) noexcept;
-	bool operator==(const ActionSceneryObject& obj) const noexcept;
-	bool operator!=(const ActionSceneryObject& obj) const = default; //{ return !(*this == obj); }
+	explicit ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName = "", SceneryObject* sceneryObject = nullptr);
+	ActionSceneryObject(const ActionSceneryObject& obj)            noexcept = delete;
+	ActionSceneryObject(ActionSceneryObject&& obj)                 noexcept = delete;
+	ActionSceneryObject& operator=(const ActionSceneryObject& obj) noexcept = delete;
+	bool operator==(const ActionSceneryObject& obj) const          noexcept = delete;
+	bool operator!=(const ActionSceneryObject& obj) const          noexcept = delete;
+	//Makes it abstract
+	virtual ~ActionSceneryObject() = 0;
+
+	virtual void run() override;
 
 	/// \exception Error `sceneryObject_` is invalid
 	/// \return Whether an Error has occurred
-	virtual bool checkForErrors(bool bComprehensive = false) const override;
+	virtual bool errorCheck(bool bComprehensive = false) const override;
 
+	QString getSceneryObjectName()          const noexcept;
 	const SceneryObject* getSceneryObject() const noexcept;
-	SceneryObject* getSceneryObject() noexcept;
-	QString getSceneryObjectName() const noexcept;
-	void setSceneryObject(const QString& sceneryObjectName) noexcept;
+	SceneryObject*       getSceneryObject()       noexcept;
+	void setSceneryObject(const QString& sceneryObjectName, SceneryObject* sceneryObject = nullptr) noexcept;
 
 protected:
 	QString		   sceneryObjectName_ = "";

@@ -6,5 +6,3 @@
 #include "Novel/Event/EventJump.h"
 #include "Novel/Event/EventDialogue.h"
 #include "Novel/Event/EventWait.h"
-
-//#include "Novel/Event/EventRenPyScript.h"

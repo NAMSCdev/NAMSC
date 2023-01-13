@@ -7,74 +7,51 @@ EventJump::EventJump(Scene* const parentScene) noexcept
 {
 }
 
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(EventJump& first, EventJump& second) noexcept
+{
+	using std::swap;
+	swap(static_cast<Event&>(first), static_cast<Event&>(second));
+	swap(first.jumpToSceneName, second.jumpToSceneName);
+	swap(first.condition,       second.condition);
+	swap(first.onRun_,          second.onRun_);
+}
+
 EventJump::EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)), jumpToSceneName(jumpToSceneName), condition(condition)
+	: Event(parentScene, label, std::move(actions)),
+	jumpToSceneName(jumpToSceneName),
+	condition(condition)
 {
-	checkForErrors(true);
+	errorCheck(true);
 }
 
-EventJump::EventJump(const EventJump& obj) noexcept
-	: Event(parentScene)
+EventJump::EventJump(EventJump&& obj) noexcept
+	: Event(obj.parentScene)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	swap(*this, obj);
 }
 
-EventJump& EventJump::operator=(const EventJump& obj) noexcept
-{
-	if (this == &obj) return *this;
-
-	Event::operator=(obj);
-	//onRun_          = obj.onRun_;
-	jumpToSceneName = obj.jumpToSceneName;
-	condition       = obj.condition;
-
-	return *this;
-}
-
-bool EventJump::operator==(const EventJump& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return 	Event::operator==(obj)         &&
-			jumpToSceneName == obj.jumpToSceneName &&
-			condition   == obj.condition;
-}
-
-bool EventJump::checkForErrors(bool bComprehensive) const
-{
-	bool bError = Event::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (jumpToSceneName == "")
-		{
-			bError = true;
-			qCritical() << NovelLib::ErrorType::JumpInvalid << "EventJump is missing a jumpToSceneName";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "An Error occurred in EventJump::checkForErrors of Scene \"" + parentScene->name + "\" Event" << getIndex();
-
-	return bError;
-}
-
-Event* EventJump::clone() const
-{
-	EventJump* clone = new EventJump(*this);
-	return clone;
-}
-
-void EventJump::run()
-{
-}
-
-void EventJump::setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QString jumpToSceneName, QString condition)> onRun) noexcept
+void EventJump::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)> onRun) noexcept
 { 
 	onRun_ = onRun; 
 }
+
+void EventJump::serializableLoad(QDataStream& dataStream)
+{
+	Event::serializableLoad(dataStream);
+	dataStream >> jumpToSceneName >> condition;
+	errorCheck();
+}
+
+void EventJump::serializableSave(QDataStream& dataStream) const
+{
+	Event::serializableSave(dataStream);
+	dataStream << jumpToSceneName << condition;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
 
 void EventJump::acceptVisitor(EventVisitor* visitor) 
 {
@@ -84,17 +61,4 @@ void EventJump::acceptVisitor(EventVisitor* visitor)
 NovelLib::SerializationID EventJump::getType() const noexcept 
 { 
 	return NovelLib::SerializationID::EventJump; 
-}
-
-void EventJump::serializableLoad(QDataStream& dataStream)
-{
-	Event::serializableLoad(dataStream);
-	dataStream >> jumpToSceneName >> condition;
-	checkForErrors();
-}
-
-void EventJump::serializableSave(QDataStream& dataStream) const
-{
-	Event::serializableSave(dataStream);
-	dataStream << jumpToSceneName << condition;
 }

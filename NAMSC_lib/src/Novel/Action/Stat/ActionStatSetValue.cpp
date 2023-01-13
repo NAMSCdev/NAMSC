@@ -7,64 +7,77 @@ ActionStatSetValue::ActionStatSetValue(Event* const parentEvent) noexcept
 {
 }
 
-ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, const QString& statName, const QString& expression)
-	: ActionStat(parentEvent, statName), expression(expression)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionStatSetValue& first, ActionStatSetValue& second) noexcept
 {
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(dynamic_cast<ActionStat&>(first), dynamic_cast<ActionStat&>(second));
+	swap(first.expression, second.expression);
+	swap(first.onRun_,     second.onRun_);
 }
 
-ActionStatSetValue::ActionStatSetValue(const ActionStatSetValue& obj) noexcept
-	: ActionStat(obj.parentEvent)
+ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, const QString& statName, const QString& expression, Stat* stat)
+	: ActionStat(parentEvent, statName, stat), 
+	expression(expression)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	errorCheck(true);
 }
 
-ActionStatSetValue& ActionStatSetValue::operator=(const ActionStatSetValue& obj) noexcept
-{
-	if (this == &obj) return *this;
+//deleted
+//ActionStatSetValue::ActionStatSetValue(const ActionStatSetValue& obj) noexcept
+//	: ActionStat(obj.parentEvent, obj.statName_, obj.stat_), 
+//	expression(obj.expression), 
+//	onRun_(obj.onRun_)
+//{
+//}
 
-	ActionStat::operator=(obj);
-	//onRun_     = obj.onRun_;
-	expression = obj.expression;
+//deleted
+//bool ActionStatSetValue::operator==(const ActionStatSetValue& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return ActionStat::operator==(obj)  &&
+//		   expression == obj.expression;
+//}
 
-	return *this;
-}
-
-bool ActionStatSetValue::operator==(const ActionStatSetValue& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return	ActionStat::operator==(obj) &&
-			expression == obj.expression;
-}
-
-bool ActionStatSetValue::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionStat::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		//TODO: check `expression` by trying to parse it with an evaluator
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "Error occurred in ActionStatSetValue::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-
-	return bError;
-}
-
-Action* ActionStatSetValue::clone() const
-{
-	ActionStatSetValue* clone = new ActionStatSetValue(*this);
-	return clone;
-}
-
-void ActionStatSetValue::setOnRunListener(std::function<void(Event* const parentEvent, Stat* stat, QString expression)> onRun) noexcept
+void ActionStatSetValue::setOnRunListener(std::function<void(const Event* const parentEvent, const Stat* const stat, const QString& expression)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
+
+void ActionStatSetValue::serializableLoad(QDataStream& dataStream)
+{
+	ActionStat::serializableLoad(dataStream);
+	dataStream >> expression;
+	errorCheck();
+}
+
+void ActionStatSetValue::serializableSave(QDataStream& dataStream) const
+{
+	ActionStat::serializableSave(dataStream);
+	dataStream << expression;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+ActionStatSetValue::ActionStatSetValue(ActionStatSetValue&& obj) noexcept
+	: ActionStat(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+//deleted
+//ActionStatSetValue& ActionStatSetValue::operator=(ActionStatSetValue obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
 
 void ActionStatSetValue::acceptVisitor(ActionVisitor* visitor)
 {
@@ -74,17 +87,4 @@ void ActionStatSetValue::acceptVisitor(ActionVisitor* visitor)
 NovelLib::SerializationID ActionStatSetValue::getType() const noexcept
 {
 	return NovelLib::SerializationID::ActionStatSetValue;
-}
-
-void ActionStatSetValue::serializableLoad(QDataStream& dataStream)
-{
-	ActionStat::serializableLoad(dataStream);
-	dataStream >> expression;
-	checkForErrors();
-}
-
-void ActionStatSetValue::serializableSave(QDataStream& dataStream) const
-{
-	ActionStat::serializableSave(dataStream);
-	dataStream << expression;
 }

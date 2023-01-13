@@ -6,26 +6,28 @@ class Scene;
 /// Redirects the flow to an another Scene
 class EventJump final : public Event
 {
+	/// Swap trick
+	friend void swap(EventJump& first, EventJump& second) noexcept;
 public:
-	EventJump(Scene* const parentScene) noexcept;
+	explicit EventJump(Scene* const parentScene) noexcept;
+	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or the `jumpToSceneName` points to a deleted Scene or the `condition` is not structured properly
-	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
-	EventJump(const EventJump& obj) noexcept;
-	EventJump& operator=(const EventJump& obj) noexcept;
-	bool operator==(const EventJump& obj) const noexcept;
-	bool operator!=(const EventJump& obj) const = default; //{ return !(*this == obj); }
+	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName = "", const QString& condition = "", std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventJump(const EventJump& obj)             noexcept = delete;
+	EventJump(EventJump&& obj)                  noexcept;
+	EventJump& operator=(const EventJump& obj)  noexcept = delete;
+	bool operator==(const EventJump& obj) const noexcept = delete;
+	bool operator!=(const EventJump& obj) const noexcept = delete;
 
 	/// \exception Error invalid Action in `actions_` / invalid `regex` / invalid `Stat` / invalid `logicalExpression`
 	/// \return Whether an Error has occurred
 	/// \todo implement this
-	bool checkForErrors(bool bComprehensive = false) const override;
-
-	Event* clone() const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	void run() override;
 
-	/// Sets a function pointer that is called (if not nullptr) after the EventJump's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QString jumpToSceneName, QString condition)> onRun) noexcept;
+	/// Sets a function pointer that is called (if not nullptr) after the EventJump's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	void setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)> onRun) noexcept;
 
 	void acceptVisitor(EventVisitor* visitor) override;
 
@@ -38,8 +40,8 @@ private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;
 
-	/// A function pointer that is called (if not nullptr) after the EventJump's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, QString jumpToSceneName, QString condition)> onRun_ = nullptr;
+	/// A function pointer that is called (if not nullptr) after the EventJump's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	std::function<void(const Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

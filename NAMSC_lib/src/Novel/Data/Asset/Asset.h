@@ -9,14 +9,15 @@
 class Asset
 {
 public:
-	Asset()                            = default;
 	/// \exception Error Could not find/open/read the Resource file
-	Asset(const QString& name, uint size, uint pos = 0, const QString& path = "");
-	Asset(const Asset& obj)            = delete;
-	Asset(Asset&& obj)                 = default;
-	Asset& operator=(const Asset& obj) = delete;
+	Asset(const QString& name = "", uint size = 0, uint pos = 0, const QString& path = "");
+	Asset(const Asset& obj)                 noexcept = delete;
+	Asset(Asset&& obj)                      noexcept = default;
+	Asset& operator=(const Asset& obj)      noexcept = delete;
+	bool operator==(const Asset& obj) const noexcept = delete;
+	bool operator!=(const Asset& obj) const noexcept = delete;
 	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Asset pointer
-	virtual ~Asset()                   = default;
+	virtual ~Asset()                   = 0;
 
 	/// \exception Error Could not find/open/read the Resource file
 	/// \todo more intelligent loading when it is a compact file, so it is not opened and closed multiple times (static members in AssetManager that open and close on demand should do the trick)
@@ -31,10 +32,10 @@ public:
 
 	/// \exception Error Couldn't find/open/read the Resource file
 	/// \return Whether an Error has occurred
-	virtual bool checkForErrors(bool bComprehensive = false) const;
+	virtual bool errorCheck(bool bComprehensive = false) const;
 	
-	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read
-	//void setOnSaveListener(std::function<void(Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave) { onSave_ = onSave; }
+	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	//void setOnSaveListener(std::function<void(const Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave) { onSave_ = onSave; }
 
 	QString	name = "";
 
@@ -47,8 +48,8 @@ public:
 	uint size    = 0;
 
 protected:
-	/// A function pointer that is called (if not nullptr) after the Asset's `void save() const` allowing for data read
-	//std::function<void(Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave_;
+	/// A function pointer that is called (if not nullptr) after the Asset's `void save() const` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	//std::function<void(const Event* const parentEvent, Scene* const parentScene, QString name, uint oldSize, uint size, uint pos, QString path)> onSave_;
 
 	/// Indicates if there were content changes (the Resource, not the definition)
 	bool bChanged_ = false;

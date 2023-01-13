@@ -9,27 +9,36 @@ class ActionVisitorCorrectAssetAnimScale;
 class ActionSceneryObjectAnimScale final : public ActionSceneryObjectAnim<AnimNodeDouble2D>
 {
 	friend ActionVisitorCorrectAssetAnimScale;
+	/// Swap trick
+	friend void swap(ActionSceneryObjectAnimScale& first, ActionSceneryObjectAnimScale& second) noexcept;
 public:
-	ActionSceneryObjectAnimScale(Event* const parentEvent) noexcept;
+	explicit ActionSceneryObjectAnimScale(Event* const parentEvent)                  noexcept;
+	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
+	/// \param assetAnim Copies the AssetAnim pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
+	/// \param priority Animations can be queued, this is the priority in the queue (lower number equals higher priority)
+	/// \param startDelay In milliseconds
+	/// \param speed Animation speed multiplier
+	/// \param Remember to copy the description to the constructor parameter description as well, if it changes
+	/// \param timesPlayed `-1` means infinite times
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName` or couldn't find the **scale** AssetAnim named `assetAnimName`
-	ActionSceneryObjectAnimScale(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd);
-	ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept;
-	ActionSceneryObjectAnimScale& operator=(const ActionSceneryObjectAnimScale&) noexcept;
-	bool operator==(const ActionSceneryObjectAnimScale& obj) const noexcept;
-	bool operator!=(const ActionSceneryObjectAnimScale& obj) const = default; //{ return !(*this == obj); }
+	ActionSceneryObjectAnimScale(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName = "", uint priority = 0, uint startDelay = 0, double speed = 1.0, int timesPlayed = 1, bool bFinishAnimationAtEventEnd = false, SceneryObject* sceneryObject = nullptr, AssetAnim<AnimNodeDouble2D>* assetAnim = nullptr);
+	ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj)            noexcept = delete;
+	ActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale&& obj)                 noexcept;
+	ActionSceneryObjectAnimScale& operator=(const ActionSceneryObjectAnimScale& obj) noexcept = delete;
+	//ActionSceneryObjectAnimScale& operator=(ActionSceneryObjectAnimScale obj)        noexcept;
+	bool operator==(const ActionSceneryObjectAnimScale& obj) const                   noexcept = delete;
+	bool operator!=(const ActionSceneryObjectAnimScale& obj) const                   noexcept = delete;
 
 	/// \exception Error `sceneryObject_`/`assetAnim_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
-
-	Action* clone() const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	void run() override;
 
-	/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimScale's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimScale* assetAnimScale, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun) noexcept;
+	/// Sets a function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimScale's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	void setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimScale* const assetAnimScale, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept;
 
-	void setAssetAnim(const QString& assetAnimName) noexcept;
+	void setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble2D>* assetAnim = nullptr) noexcept override;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
@@ -38,8 +47,8 @@ private:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 
-	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimScale's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, SceneryObject* parentSceneryObject, AssetAnimScale* assetAnimScale, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)> onRun_ = nullptr;
+	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimScale's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimScale* const assetAnimScale, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

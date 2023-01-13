@@ -7,42 +7,43 @@
 class ActionAudioSetMusic final : public ActionAudio
 {
 	friend class ActionVisitorCorrectMusicPlaylist;
+	/// Swap trick
+	friend void swap(ActionAudioSetMusic& first, ActionAudioSetMusic& second) noexcept;
 public:
-	ActionAudioSetMusic(Event* const parentEvent) noexcept;
+	explicit ActionAudioSetMusic(Event* const parentEvent)         noexcept;
 	/// \exception Error Files in `musicPlaylist_.audioFilesPaths_` couldn't be found/read
-	ActionAudioSetMusic(Event* const parentEvent, const AudioSettings& audioSettings, const MusicPlaylist& playlist);
-	ActionAudioSetMusic(const ActionAudioSetMusic& obj) noexcept;
-	ActionAudioSetMusic& operator=(const ActionAudioSetMusic& obj) noexcept;
-	bool operator==(const ActionAudioSetMusic& obj) const noexcept;
-	bool operator!=(const ActionAudioSetMusic& obj) const = default; //{ return !(*this == obj); }
+	ActionAudioSetMusic(Event* const parentEvent, const AudioSettings& audioSettings, const MusicPlaylist& playlist = MusicPlaylist());
+	ActionAudioSetMusic(const ActionAudioSetMusic& obj)            noexcept = delete;
+	ActionAudioSetMusic(ActionAudioSetMusic&& obj)                 noexcept;
+	ActionAudioSetMusic& operator=(const ActionAudioSetMusic& obj) noexcept = delete;
+	//ActionAudioSetMusic& operator=(ActionAudioSetMusic obj)        noexcept;
+	bool operator==(const ActionAudioSetMusic& obj) const          noexcept = delete;
+	bool operator!=(const ActionAudioSetMusic& obj) const          noexcept = delete;
 
 	/// \exception Error Paths in `musicPlaylist_.audioFilesPaths_` are invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
-
-	Action* clone() const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	void run() override;
 
-	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, MusicPlaylist* musicPlaylist)> onRun) noexcept;
+	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	void setOnRunListener(std::function<void(const Event* const parentEvent, const MusicPlaylist* const musicPlaylist)> onRun) noexcept;
 
-	const MusicPlaylist* getMusicPlaylist() const noexcept;
-	MusicPlaylist* getMusicPlaylist() noexcept;
+	const MusicPlaylist* getMusicPlaylist() const             noexcept;
+	MusicPlaylist*       getMusicPlaylist()                   noexcept;
 	void setMusicPlaylist(const MusicPlaylist& musicPlaylist) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
 private:
-
 	MusicPlaylist musicPlaylist_;
 
 	/// Needed for Serialization, to know the class of an object about to be Serialization loaded
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 
-	/// A function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, MusicPlaylist* musicPlaylist)> onRun_ = nullptr;
+	/// A function pointer that is called (if not nullptr) after the ActionAudioSetMusic's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	std::function<void(const Event* const parentEvent, const MusicPlaylist* const musicPlaylist)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

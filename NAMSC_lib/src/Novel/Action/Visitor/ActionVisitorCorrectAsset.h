@@ -1,7 +1,7 @@
 #pragma once
 #include "Novel/Action/Visitor/ActionVisitor.h"
 
-#include "Novel/Action/ActionsAll.h"
+#include "Novel/Action/ActionAll.h"
 
 /// Updates `assetName_` of a changed/deleted Asset
 class ActionVisitorCorrectAssetBase : public ActionVisitor

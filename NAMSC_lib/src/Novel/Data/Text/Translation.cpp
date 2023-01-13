@@ -3,45 +3,65 @@
 #include "Exceptions.h"
 #include "Serialization.h"
 
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(Translation& first, Translation& second) noexcept
+{
+	using std::swap;
+	swap(first.translations_, second.translations_);
+}
+
 Translation::Translation(const std::unordered_map<QString, QString>& translations)
 	: translations_(translations)
 {
 }
 
-Translation& Translation::operator=(Translation obj) noexcept
+//defaulted
+//Translation::Translation(const Translation& obj) noexcept
+//	: translations_(obj.translations_)
+//{
+//}
+
+//defaulted
+//Translation& Translation::operator=(const Translation& obj) noexcept
+//{
+//	if (this == &obj)
+//		return *this;
+//
+//	translations_ = obj.translations_;
+//
+//	return *this;
+//}
+
+void Translation::serializableLoad(QDataStream& dataStream)
 {
-	if (this == &obj)
-		return *this;
+	uint translationsSize;
+	dataStream >> translationsSize;
 
-	std::swap(this->translations_, obj.translations_);
-
-	return *this;
-}
-
-bool Translation::checkForErrors(bool bComprehensive) const
-{
-	bool bError = false;
-	static auto errorChecker = [&](bool bComprehensive)
+	for (uint i = 0; i != translationsSize; ++i)
 	{
-		if (!translations_.contains(NovelSettings::getInstance().defaultLanguage))
-		{
-			bError = true;
-			qCritical() << NovelLib::ErrorType::General << "Translation doesn't have default language set";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	
-	if (bError)
-		qDebug() << "Error occurred in Translation::checkForErrors";
-
-	return bError;
+		std::pair<QString, QString> translation;
+		dataStream >> translation;
+		translations_.insert(translation);
+	}
 }
 
+void Translation::serializableSave(QDataStream& dataStream) const
+{
+	dataStream << translations_.size();
+	for (std::pair<QString, QString> translation : translations_)
+		dataStream << translation;
+}
 
-/// Adds or replaces a Translation to the `translations` map
-/// \param language The language of the text to add/overwrite
-/// \param newText The text to add/overwrite
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//Translation::Translation(Translation&& obj) noexcept
+//	: Translation()
+//{
+//	swap(*this, obj);
+//}
 
 void Translation::setTranslation(const QString& language, const QString& newText)
 { 
@@ -70,28 +90,11 @@ const QString Translation::text(const QString language) noexcept
 	if (translations_.contains(language))
 		return translations_.at(language);
 	
-	///todo: add Exception
-	if (!translations_.contains(NovelSettings::getInstance().defaultLanguage));
-		//EXCEPTIONONO
-	return translations_.at(NovelSettings::getInstance().defaultLanguage);
-}
-
-void Translation::serializableLoad(QDataStream& dataStream)
-{
-	uint translationsSize;
-	dataStream >> translationsSize;
-
-	for (uint i = 0; i != translationsSize; ++i)
+	if (!translations_.contains(NovelSettings::getInstance().defaultLanguage))
 	{
-		std::pair<QString, QString> translation;
-		dataStream >> translation;
-		translations_.insert(translation);
+		///todo: add Exception
+		return QString();
 	}
-}
 
-void Translation::serializableSave(QDataStream& dataStream) const
-{
-	dataStream << translations_.size();
-	for (std::pair<QString, QString> translation : translations_)
-		dataStream << translation;
+	return translations_.at(NovelSettings::getInstance().defaultLanguage);
 }

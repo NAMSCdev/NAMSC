@@ -1,151 +1,70 @@
 #include "Novel/Data/Novel.h"
 
-#include <QFile>
-#include <QStandardPaths>
-
 #include "Helpers.h"
 #include "Novel/Data/Stat/StatDouble.h"
 #include "Novel/Data/Stat/StatLongLong.h"
 #include "Novel/Data/Stat/StatString.h"
 #include "Serialization.h"
 
-NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, const Scenery& scenery, uint saveSlot, const QString& sceneName, uint eventID)
-    : saveDate(saveDate), screenshot(screenshot), scenery(scenery), saveSlot(saveSlot), sceneName(sceneName), eventID(eventID)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(NovelState& first, NovelState& second) noexcept
 {
-    checkForErrors(true);
+    using std::swap;
+    swap(first.saveDate,   second.saveDate);
+    swap(first.screenshot, second.screenshot);
+    swap(first.scenery,    second.scenery);
+    swap(first.saveSlot,   second.saveSlot);
+    swap(first.sceneName,  second.sceneName);
+    swap(first.eventID,    second.eventID);
+    swap(first.sentenceID, second.sentenceID);
+    swap(first.stats_,     second.stats_);
 }
 
-NovelState::NovelState(const NovelState& obj) noexcept
-    : saveDate(obj.saveDate),
-      screenshot(obj.screenshot),
-      scenery(obj.scenery),
-      saveSlot(obj.saveSlot),
-      sceneName(obj.sceneName),
-      eventID(obj.eventID)
-    //jsEngine_(obj.jsEngine_)
+NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, uint saveSlot, const QString& sceneName, uint eventID, uint sentenceID)
+    : saveDate(saveDate), 
+    screenshot(screenshot), 
+    scenery(scenery), 
+    saveSlot(saveSlot), 
+    sceneName(sceneName), 
+    eventID(eventID),
+    sentenceID(sentenceID)
 {
+    errorCheck(true);
 }
 
-NovelState& NovelState::operator=(NovelState obj) noexcept
-{
-    if (this == &obj) return *this;
+//defaulted
+//NovelState::NovelState(const NovelState& obj) noexcept
+//        : saveDate(obj.saveDate
+//      screenshot(obj.screenshot),
+//      scenery(obj.scenery),
+//      saveSlot(obj.saveSlot),
+//      sceneName(obj.sceneName),
+//      eventID(obj.eventID),
+//      sentenceID(obj.sentenceID),
+//      stats_(obj.stats_)
+//{
+//}
 
-    std::swap(this->saveDate,   obj.saveDate);
-    std::swap(this->screenshot, obj.screenshot);
-    std::swap(this->scenery,    obj.scenery);
-    std::swap(this->saveSlot,   obj.saveSlot);
-    std::swap(this->sceneName,  obj.sceneName);
-    std::swap(this->eventID,    obj.eventID);
-
-    //todo: reset and copy jsEngine properties
-
-    return *this;
-}
-
-bool NovelState::operator==(const NovelState& obj) const noexcept
-{
-    if (this == &obj) return true;
-
-    return  saveDate   == obj.saveDate   &&
-            screenshot == obj.screenshot &&
-            scenery    == obj.scenery    &&
-            saveSlot   == obj.saveSlot   &&
-            sceneName  == obj.sceneName  &&
-            eventID    == obj.eventID    &&
-            stats_     == obj.stats_;
-
-    //todo: Should we check for jsEngine properties match as well? I doesn't quite make sense, since we check the stats for equality, from which properties are created
-    //todo: but maybe I have overlooked something, so this todo remains as a reminder to write tests for it
-}
-
-bool NovelState::checkForErrors(bool bComprehensive) const
-{
-    bool bError = false;
-
-    //static auto errorChecker = [&](bool bComprehensive)
-    //{
-    //};
-
-    bError |= scenery.checkForErrors(bComprehensive);
-    
-    for (const std::pair<const QString, std::unique_ptr<Stat>>& stat : stats_)
-        bError |= stat.second->checkForErrors(bComprehensive);
-    //bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-    if (bError)
-    	qDebug() << "Error occurred in NovelState::checkForErrors in the slot" << saveSlot;
-
-    return bError;
-}
-
-void NovelState::update(uint elapsedTime)
-{
-    scenery.update(elapsedTime);
-}
-
-const std::unordered_map<QString, std::unique_ptr<Stat>>* NovelState::getStats() const noexcept
-{
-    return &stats_;
-}
-
-const Stat* NovelState::getStat(const QString& statName) const noexcept
-{
-    return NovelLib::getFromNamedMap(stats_, statName, "Stat")->get();
-}
-
-NovelState* NovelState::getCurrentlyLoadedState()
-{
-    return &(Novel::getInstance().state_);
-}
-
-NovelState NovelState::load(uint saveSlot)
-{
-    QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
-    QDataStream dataStream(&save);
-    NovelState novelState;
-    dataStream >> novelState;
-    return novelState;
-}
-
-NovelState NovelState::reset(uint saveSlot)
-{
-    QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
-    QDataStream dataStream(&save);
-    NovelState novelState;
-    novelState.saveSlot  = saveSlot;
-    novelState.sceneName = Novel::getInstance().defaultScene;
-    return novelState;
-}
-
-void NovelState::save()
-{
-    NovelState &novelState = Novel::getInstance().state_;
-    QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
-    QDataStream dataStream(&save);
-}
-
-Stat* NovelState::getStat(const QString& statName) noexcept
-{
-    if (stats_.contains(statName))
-        return stats_.at(statName).get();
-    return nullptr;
-}
-
-void NovelState::setStat(const QString& statName, Stat* stat) noexcept
-{
-}
-
-bool NovelState::removeStat(const QString& statName) noexcept
-{
-    return false;
-}
-
-void NovelState::loadStats()
-{
-}
+//defaulted
+//bool NovelState::operator==(const NovelState& obj) const noexcept
+//{
+//    if (this == &obj) return true;
+//
+//    return saveDate   == obj.saveDate   &&
+//           screenshot == obj.screenshot &&
+//           scenery    == obj.scenery    &&
+//           saveSlot   == obj.saveSlot   &&
+//           sceneName  == obj.sceneName  &&
+//           eventID    == obj.eventID    &&
+//           sentenceID == obj.sentenceID &&
+//           stats_     == obj.stats_;
+//}
 
 void NovelState::serializableLoad(QDataStream& dataStream)
 {
-    dataStream >> saveDate >> screenshot >> scenery >> saveSlot >> sceneName >> eventID;
+    dataStream >> saveDate >> screenshot >> scenery >> saveSlot >> sceneName >> eventID >> sentenceID;
 
     uint statsSize = 0;
     dataStream >> statsSize;
@@ -173,16 +92,75 @@ void NovelState::serializableLoad(QDataStream& dataStream)
         if (stat)
         {
             dataStream >> *stat;
-            stats_.emplace(stat->name, std::move(std::unique_ptr<Stat>(stat)));
+            stats_.emplace(stat->name, std::move(std::shared_ptr<Stat>(stat)));
         }
     }
-    checkForErrors();
+    errorCheck();
 }
 
 void NovelState::serializableSave(QDataStream& dataStream) const
 {
-    dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << stats_.size();
+    dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << sentenceID << stats_.size();
 
-    for (const std::pair<const QString, std::unique_ptr<Stat>>& stat : stats_)
+    for (const std::pair<const QString, std::shared_ptr<Stat>>& stat : stats_)
         dataStream << *(stat.second.get());
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//NovelState::NovelState(NovelState&& obj) noexcept
+//    : NovelState()
+//{
+//    swap(*this, obj);
+//}
+
+//defaulted
+//NovelState& NovelState::operator=(NovelState obj) noexcept
+//{
+//    if (this == &obj) return *this;
+//
+//    swap(*this, obj);
+//
+//    return *this;
+//}
+
+NovelState* NovelState::getCurrentlyLoadedState()
+{
+    return &(Novel::getInstance().state_);
+}
+
+const std::unordered_map<QString, std::shared_ptr<Stat>>* NovelState::getStats() const noexcept
+{
+    return &stats_;
+}
+
+const Stat* NovelState::getStat(const QString& statName) const
+{
+    return NovelLib::getFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+}
+
+Stat* NovelState::getStat(const QString& statName)
+{
+    return NovelLib::getFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+}
+
+Stat* NovelState::addStat(const QString& statName, Stat*&& stat)
+{
+    return NovelLib::addToNamedMap(stats_, statName, std::move(std::shared_ptr<Stat>(stat)), "Stat", NovelLib::ErrorType::StatInvalid)->get();
+}
+
+Stat* NovelState::renameStat(const QString& oldName, const QString& newName)
+{
+    return NovelLib::renameSharedInNamedMap<std::shared_ptr<Stat>, Stat*>(stats_, oldName, newName, "Stat", NovelLib::ErrorType::StatMissing, NovelLib::ErrorType::StatInvalid);
+}
+
+bool NovelState::removeStat(const QString& statName)
+{
+    return NovelLib::removeFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing);
+}
+
+void NovelState::clearStats() noexcept
+{
+    stats_.clear();
 }

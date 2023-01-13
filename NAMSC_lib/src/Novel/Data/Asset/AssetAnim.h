@@ -23,14 +23,14 @@ class AssetAnim final : public AssetAnimBase
 public:
 	AssetAnim()                            = default;
 	/// \exception Error Could not find/open/read the Resource file or one of the AnimNode in `animNodes_` has a duplicate `timeStamp'
-	AssetAnim(const QString& name, uint size, uint pos = 0, const QString& path = "", bool bCheckForErrors = true);
+	AssetAnim(const QString& name, uint size, uint pos = 0, const QString& path = "", bool bErrorCheck = true);
 	AssetAnim(const AssetAnim& obj)        = delete;
 	AssetAnim(AssetAnim&& obj)             = default;
 	AssetAnim& operator=(const AssetAnim&) = default;
 
 	/// \exception Error 'path' is invalid / some AnimNodes in `animNodes_` have invalid `timeStamp`
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const;
+	bool errorCheck(bool bComprehensive = false) const;
 
 	/// \exception Error Could not find/open/read the Resource file
 	/// \todo implement this

@@ -8,89 +8,94 @@ ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent) noexc
 {
 }
 
-ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, const QString& characterName, const QString& voiceName)
-	: ActionCharacter(parentEvent, characterName), voiceName_(voiceName)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionCharacterSetVoice& first, ActionCharacterSetVoice& second) noexcept
 {
-	voice_ = Novel::getInstance().getVoice(voiceName_);
-	//if (voice_ == nullptr)
-	//	qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<ActionCharacter&>(first), static_cast<ActionCharacter&>(second));
+	swap(first.voiceName_, second.voiceName_);
+	swap(first.voice_,     second.voice_);
+	swap(first.onRun_,     second.onRun_);
 }
 
-ActionCharacterSetVoice::ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept
-	: ActionCharacter(obj.parentEvent)
+ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, const QString& characterName, const QString& voiceName, Character* character, Voice* voice)
+	: ActionCharacter(parentEvent, characterName, character), 
+	voiceName_(voiceName), 
+	voice_(voice)
 {
-	//TODO: change to swap trick for more efficency
-	*this = obj;
+	if (!voice_)
+		voice_ = Novel::getInstance().getVoice(voiceName_);
+	errorCheck(true);
 }
 
-ActionCharacterSetVoice& ActionCharacterSetVoice::operator=(const ActionCharacterSetVoice& obj) noexcept
-{
-	if (this == &obj) return *this;
+//deleted
+//ActionCharacterSetVoice::ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept
+//	: ActionCharacter(obj.parentEvent, obj.characterName_, obj.character_),
+//	voiceName_(obj.voiceName_),
+//	voice_(obj.voice_), 
+//	onRun_(obj.onRun_)
+//{
+//}
 
-	ActionCharacter::operator=(obj);
-	//onRun_     = obj.onRun_;
-	voiceName_ = obj.voiceName_;
-	voice_     = obj.voice_;
+//deleted
+//bool ActionCharacterSetVoice::operator==(const ActionCharacterSetVoice& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return ActionCharacter::operator==(obj) &&
+//		   voiceName_ == obj.voiceName_;//     &&
+//		   //voice_     == obj.voice_;
+//}
 
-	return *this;
-}
-
-bool ActionCharacterSetVoice::operator==(const ActionCharacterSetVoice& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return	ActionCharacter::operator==(obj) &&
-			voiceName_ == obj.voiceName_;//     &&
-			//voice_     == obj.voice_;
-}
-
-bool ActionCharacterSetVoice::checkForErrors(bool bComprehensive) const
-{
-	bool bError = ActionCharacter::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (voice_ == nullptr)
-		{
-			bError = true;
-			qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
-			if (voiceName_ != "")
-				qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "Error occurred in ActionCharacterSetVoice::checkForErrors of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
-	
-	return bError;
-}
-
-Action* ActionCharacterSetVoice::clone() const
-{
-	ActionCharacterSetVoice* clone = new ActionCharacterSetVoice(*this);
-	return clone;
-}
-
-void ActionCharacterSetVoice::run()
-{
-	ActionCharacter::run();
-
-	character_->setDefaultVoice(voiceName_);
-
-	if (onRun_)
-		onRun_(parentEvent, character_, voice_);
-}
-
-void ActionCharacterSetVoice::setOnRunListener(std::function<void(Event* const parentEvent, Character* character, Voice* voice)> onRun) noexcept
+void ActionCharacterSetVoice::setOnRunListener(std::function<void(const Event* const parentEvent, const Character* const character, const Voice* const voice)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
 
+void ActionCharacterSetVoice::serializableLoad(QDataStream& dataStream)
+{
+	ActionCharacter::serializableLoad(dataStream);
+	dataStream >> voiceName_;
+
+	voice_ = Novel::getInstance().getVoice(voiceName_);
+	errorCheck();
+}
+
+void ActionCharacterSetVoice::serializableSave(QDataStream& dataStream) const
+{
+	ActionCharacter::serializableSave(dataStream);
+	dataStream << voiceName_;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+ActionCharacterSetVoice::ActionCharacterSetVoice(ActionCharacterSetVoice&& obj) noexcept
+	: ActionCharacter(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+//deleted
+//ActionCharacterSetVoice& ActionCharacterSetVoice::operator=(ActionCharacterSetVoice obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
 void ActionCharacterSetVoice::acceptVisitor(ActionVisitor* visitor)
 {
 	visitor->visitActionCharacterSetVoice(this);
+}
+
+QString ActionCharacterSetVoice::getVoiceName() const noexcept
+{
+	return voiceName_;
 }
 
 const Voice* ActionCharacterSetVoice::getVoice() const noexcept
@@ -103,43 +108,29 @@ Voice* ActionCharacterSetVoice::getVoice() noexcept
 	return voice_; 
 }
 
-QString ActionCharacterSetVoice::getVoiceName() const noexcept 
+void ActionCharacterSetVoice::setVoice(const QString& voiceName, Voice* voice) noexcept
 {
-	return voiceName_;
-}
-
-void ActionCharacterSetVoice::setVoice(const QString& voiceName) noexcept
-{
-	Voice* newVoice = nullptr;
-	newVoice = Novel::getInstance().getVoice(voiceName);
-	if (newVoice == nullptr)
-		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName + "\" does not exist";
-	else
+	if (voice)
 	{
-		voiceName_ = voiceName;
-		voice_ = newVoice;
-		checkForErrors(true);
+		if (voice->name != voiceName)
+		{
+			qCritical() << NovelLib::ErrorType::VoiceInvalid << "Voice's name missmatch (voiceName=\"" + voiceName + "\", voice->name=\"" + voice->name + "\")";
+			return;
+		}
 	}
+	else voice = Novel::getInstance().getVoice(voiceName);
+	
+	if (!voice)
+	{
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName + "\" does not exist";
+		return;
+	}
+	voiceName_ = voiceName;
+	voice_     = voice;
+	errorCheck(true);
 }
 
 NovelLib::SerializationID ActionCharacterSetVoice::getType() const noexcept 
 { 
 	return NovelLib::SerializationID::ActionSetBackground; 
-}
-
-void ActionCharacterSetVoice::serializableLoad(QDataStream& dataStream)
-{
-	ActionCharacter::serializableLoad(dataStream);
-	dataStream >> voiceName_;
-
-	voice_ = Novel::getInstance().getVoice(voiceName_);
-	//if (voice_ == nullptr)
-	//	qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
-	checkForErrors();
-}
-
-void ActionCharacterSetVoice::serializableSave(QDataStream& dataStream) const
-{
-	ActionCharacter::serializableSave(dataStream);
-	dataStream << voiceName_;
 }

@@ -7,31 +7,47 @@
 /// \todo create special Animator for it 
 class ActionSceneryObjectAnimFade : public ActionSceneryObjectAnim<AnimNodeDouble1D>
 {
+	/// Swap trick
+	friend void swap(ActionSceneryObjectAnimFade& first, ActionSceneryObjectAnimFade& second) noexcept;
 public:
-	ActionSceneryObjectAnimFade(Event* const parentEvent) noexcept;
+	explicit ActionSceneryObjectAnimFade(Event* const parentEvent)                 noexcept;
+	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
+	/// \param assetAnim Copies the AssetAnim pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
+	/// \param priority Animations can be queued, this is the priority in the queue (lower number equals higher priority)
+	/// \param startDelay In milliseconds
+	/// \param speed Animation speed multiplier
+	/// \param Remember to copy the description to the constructor parameter description as well, if it changes
+	/// \param timesPlayed `-1` means infinite times
+	/// \param duration In milliseconds
+	/// \param bAppear Whether to appear or disappear
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName`
-	ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority, uint startDelay, bool bStopAnimationAtEventEnd, uint duration, bool bAppear);
-	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept;
-	ActionSceneryObjectAnimFade& operator=(const ActionSceneryObjectAnimFade& obj) noexcept;
-	bool operator==(const ActionSceneryObjectAnimFade& obj) const noexcept;
-	bool operator!=(const ActionSceneryObjectAnimFade& obj) const = default; //{ return !(*this == obj); }
+	ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority = 0, uint startDelay = 0, bool bFinishAnimationAtEventEnd = false, uint duration = 100, bool bAppear = true, SceneryObject* sceneryObject = nullptr, AssetAnim<AnimNodeDouble1D>* assetAnim = nullptr);
+	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj)            noexcept = delete;
+	ActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade&& obj)                 noexcept;
+	ActionSceneryObjectAnimFade& operator=(const ActionSceneryObjectAnimFade& obj) noexcept = delete;
+	//ActionSceneryObjectAnimFade& operator=(ActionSceneryObjectAnimFade obj)        noexcept;
+	bool operator==(const ActionSceneryObjectAnimFade& obj) const                  noexcept = delete;
+	bool operator!=(const ActionSceneryObjectAnimFade& obj) const                  noexcept = delete;
 
 	/// \exception Error `sceneryObject_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
-
-	Action* clone() const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	void run() override;
 
-	/// Sets a function pointer that is called (if not nullptr) after the AnimatorSceneryObjectVisibility's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept;
+	/// Sets a function pointer that is called (if not nullptr) after the AnimatorSceneryObjectVisibility's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	void setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const sceneryObject, const uint& priority, const uint& startDelay, const bool& bFinishAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
+	/// Inherited via ActionSceneryObjectAnim, but not needed at all, as this type of Animation is special and does not need any AssetAnim
+	void setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble1D>* assetAnim = nullptr) noexcept override;
+
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// In milliseconds
 	uint duration = 100;
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Whether to appear or disappear
 	bool bAppear  = true;
 
@@ -40,8 +56,8 @@ protected:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 
-	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimFade's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, SceneryObject* sceneryObject, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd, uint duration, bool bAppear)> onRun_ = nullptr;
+	/// A function pointer that is called (if not nullptr) after the ActionSceneryObjectAnimFade's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	std::function<void(const Event* const parentEvent, const SceneryObject* const sceneryObject, const uint& priority, const uint& startDelay, const bool& bFinishAnimationAtEventEnd, uint duration, bool bAppear)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

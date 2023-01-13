@@ -12,18 +12,19 @@
 
 /// The entire Visual Novel
 /// **Singleton**
-class Novel final : public NovelFlowInterface
+class Novel final : public QObject, public NovelFlowInterface
 {
+	Q_OBJECT
 	friend NovelSettings;
 	friend NovelState;
 public:
 	static Novel& getInstance();
 
-	Novel()                        = default;
-	Novel(const Novel&)            = delete;
-	Novel& operator=(const Novel&) = delete;
+	Novel(const Novel&)            noexcept = delete;
+	Novel(Novel&&)                 noexcept = delete;
+	Novel& operator=(const Novel&) noexcept = delete;
 
-	bool checkForErrors(bool bComprehensive = false) const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	/// Loads the entire Novel from multiple files in a stage-based fashion to ensure the objects can setup pointers to the data from previous stage:
 	/// 1 - loading NovelSettings and NovelEssentials
@@ -41,62 +42,65 @@ public:
 	/// Saves Player's NovelState to a SaveFile in the current SaveSlot
 	void saveState();
 
-	void run() override;
+	void run()    override;
 	void update() override;
-	void end() override;
+	void end()    override;
 
 	void syncWithSave() noexcept override;
 
 	QString nextFreeChapterName() const noexcept;
-	QString nextFreeSceneName() const noexcept;
+	QString nextFreeSceneName()   const noexcept;
 
 	const std::unordered_map<QString, Chapter>* getChapters() const noexcept;
+	const Chapter* getChapter(const QString& chapterName)     const;
+	Chapter*       getChapter(const QString& chapterName);
 	void setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept;
-	const Chapter* getChapter(const QString& chapterName) const noexcept;
-	Chapter* getChapter(const QString& chapterName) noexcept;
-	void setChapter(const QString& chapterName, const Chapter& chapter) noexcept;
-	//TODO: add exceptions
+	Chapter* setChapter(const QString& chapterName, const Chapter& chapter);
+	Chapter* renameChapter(const QString& oldName, const QString& newName);
 	bool removeChapter(const QString& chapterName);
 	void clearChapters() noexcept;
 
 	const std::unordered_map<QString, Character>* getCharacterDefaults() const noexcept;
+	const Character* getDefaultCharacter(const QString& characterName)   const;
+	Character*       getDefaultCharacter(const QString& characterName);
 	void setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept;
-	const Character* getDefaultCharacter(const QString& characterName) const noexcept;
-	Character* getDefaultCharacter(const QString& characterName) noexcept;
-	void setDefaultCharacter(const QString& characterName, const Character& character) noexcept;
-	//TODO: add exceptions
+	Character* setDefaultCharacter(const QString& characterName, const Character& character);
+	Character* renameDefaultCharacter(const QString& oldName, const QString& newName);
 	bool removeDefaultCharacter(const QString& characterName);
 	void clearDefaultCharacters() noexcept;
 
-	const std::unordered_map<QString, SceneryObject>* getSceneryObjectDefaults() const noexcept;
+	const std::unordered_map<QString, SceneryObject>* getSceneryObjectDefaults()   const noexcept;
+	const SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) const;
+	SceneryObject*       getDefaultSceneryObject(const QString& sceneryObjectName);
 	void setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
-	const SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) const noexcept;
-	SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) noexcept;
-	void setDefaultSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject) noexcept;
-	//TODO: add exceptions
+	SceneryObject* setDefaultSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject);
+	SceneryObject* renameDefaultSceneryObject(const QString& oldName, const QString& newName);
 	bool removeDefaultSceneryObject(const QString& sceneryObjectName);
-	void clearDefaultSceneryObject();
+	void clearDefaultSceneryObject() noexcept;
 
 	const std::unordered_map<QString, Scene>* getScenes() const noexcept;
-	void setScenes(const std::unordered_map<QString, Scene>& scenes) noexcept;
-	const Scene* getScene(const QString& sceneName) const noexcept;
-	Scene* getScene(const QString& sceneName) noexcept;
+	const Scene* getScene(const QString& sceneName)       const;
+	Scene*       getScene(const QString& sceneName);
+	/// Takes ownership of the Scene
 	/// Also corrects jumps to Scenes that theirs index changed
-	void addScene(const QString& sceneName, Scene&& scene) noexcept;
+	Scene* addScene(const QString& sceneName, Scene&& scene);
+	Scene* renameScene(const QString& oldName, const QString& newName);
 	/// Also corrects jumps to Scenes that theirs index changed
-	//TODO: add exceptions
 	bool removeScene(const QString& sceneName);
-	void clearScene();
+	void clearScene() noexcept;
 
 	const std::unordered_map<QString, Voice>* getVoices() const noexcept;
+	const Voice* getVoice(const QString& voiceName)       const;
+	Voice*       getVoice(const QString& voiceName);
 	void setVoices(const std::unordered_map<QString, Voice>& voices) noexcept;
-	const Voice* getVoice(const QString& voiceName) const noexcept;
-	Voice* getVoice(const QString& voiceName) noexcept;
-	void setVoice(const QString& voiceName, const Voice& voice) noexcept;
-	//TODO: add exceptions
+	Voice* setVoice(const QString& voiceName, const Voice& voice);
+	Voice* renameVoice(const QString& oldName, const QString& newName);
 	bool removeVoice(const QString& voiceName);
-	void clearVoices();
+	void clearVoices() noexcept;
 
+	/// Needs to be created after QApplication 
+	/// It should be deleted by the QWidget it will be assigned to, instead of manually
+	SceneWidget* createSceneWidget();
 	SceneWidget* getSceneWidget();
 
 	const NovelState* getStateAtSceneBeginning() noexcept;
@@ -105,7 +109,13 @@ public:
 
 	QString defaultScene = "start";
 
+signals:
+	void pendChangeBackground(const QImage* img);
+
 private:
+	//Nothing can create the Novel, but its methods
+	Novel() = default;
+
 	//It is supposed to be empty
 	void ensureResourcesAreLoaded() override;
 
@@ -134,11 +144,11 @@ private:
 	void loadVoices();
 	void saveVoices();
 
-	std::unordered_map<QString, Chapter> chapters_;
-	std::unordered_map<QString, Character> characterDefaults_;
+	std::unordered_map<QString, Chapter>       chapters_;
+	std::unordered_map<QString, Character>     characterDefaults_;
 	std::unordered_map<QString, SceneryObject> sceneryObjectDefaults_;
-	std::unordered_map<QString, Scene> scenes_;
-	std::unordered_map<QString, Voice> voices_;
+	std::unordered_map<QString, Scene>         scenes_;
+	std::unordered_map<QString, Voice>         voices_;
 
 	/// This one refers to the beginning of the current Scene, as the Novel will always be saved at this point if the User chooses to save
 	/// It is preferred to replay the last Scene, so the User does not lose the context of the Novel upon loading, as this contains Media changes that will not be journalized anywhere else
@@ -151,5 +161,5 @@ private:
 	QElapsedTimer novelStartElapsedTimer_;
 
 	/// Renders the Scene (its Scenery)
-	SceneWidget sceneWidget_;
+	SceneWidget* sceneWidget_;
 };
