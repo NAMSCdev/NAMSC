@@ -39,7 +39,13 @@ void ChoiceEventProperties::prepareConnections()
 
 void ChoiceEventProperties::prepareDataInUi()
 {
-	ui.choiceEventTableView->setModel(new ChoiceItemModel(&choices->choices));
+	ui.choiceEventTableView->setModel(new ChoiceItemModel(&choices->choices, ui.choiceEventTableView));
+
+	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Name, &lineEditDelegate);
+	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Condition, &lineEditDelegate);
+	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::JumpToScene, &lineEditDelegate);
+	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Text, &lineEditDelegate);
+	ui.choiceEventTableView->setItemDelegate(&lineEditDelegate);
 }
 
 void ChoiceEventProperties::createContextMenu()
@@ -67,16 +73,16 @@ void ChoiceEventProperties::createContextMenu()
 					QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
 					continue;
 				}
-				else isNameOk = true; 
+				else isNameOk = true;
 			} while (!isNameOk);
 
 		if (pressedOk)
 		{
 			// push_back, potentially want to insert
-			choices->choices.push_back(Choice(name, Translation(), "", "", Choice::ChoiceDisplayOptions()));
+			//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
+			static_cast<ChoiceItemModel*>(ui.choiceEventTableView->model())->insertRows(ui.choiceEventTableView->model()->rowCount(), 1);
 		}
-		
-		ui.choiceEventTableView->update(); // todo check if this works
+
 		});
 }
 

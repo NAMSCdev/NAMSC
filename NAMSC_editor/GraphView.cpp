@@ -1,9 +1,13 @@
 #include "GraphView.h"
+
+#include <qinputdialog.h>
 #include <QKeyEvent>
 #include <QMenu>
+#include <qmessagebox.h>
 #include <ranges>
 #include <QPointF>
 #include "GraphNode.h"
+#include "Novel/Data/Novel.h"
 
 GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -170,5 +174,35 @@ void GraphView::createNode()
 {
     int step = 100;
     QPoint roundedPos = QPoint{ static_cast<int>(std::round(contextMenuPosition.x() / step)) * step, static_cast<int>(std::round(contextMenuPosition.y() / step)) * step };
-    scene()->addItem(new GraphNode(roundedPos));
+
+    QString name;
+    bool pressedOk = false;
+    bool isNameOk = false;
+    do {
+        name = QInputDialog::getText(this, tr("Add new scene"), tr("Provide unique scene name:"), QLineEdit::Normal, "", &pressedOk);
+
+        if (!pressedOk) break;
+        else if (name.isNull() || name.isEmpty())
+        {
+            continue;
+        }
+        else if (Novel::getInstance().getScene(name) != nullptr)
+        {
+            QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+            continue;
+        }
+        else isNameOk = true;
+    } while (!isNameOk);
+
+    // Name is ok or pressed cancel
+    if (pressedOk)
+    {
+        Scene s;
+        s.name = name;
+        Novel::getInstance().setScene(name, s);
+
+        GraphNode* node = new GraphNode(roundedPos);
+        node->setLabel(name);
+        scene()->addItem(node);
+    }
 }

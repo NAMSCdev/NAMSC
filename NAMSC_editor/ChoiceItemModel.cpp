@@ -3,9 +3,9 @@
 #include "Novel/Data/Novel.h"
 
 ChoiceItemModel::ChoiceItemModel(std::vector<Choice>* choices, QObject *parent)
-	: QAbstractTableModel(parent)
+	: QAbstractTableModel(parent), choices_(choices)
 {
-	
+	setHeaderData(Name, Qt::Horizontal, tr("Name"));
 }
 
 ChoiceItemModel::~ChoiceItemModel()
@@ -28,50 +28,90 @@ int ChoiceItemModel::columnCount(const QModelIndex& parent) const
 
 QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 {
-	QVariant retVal;
+	if (!index.isValid()) return QVariant();
+	if (index.row() >= choices_->size() || index.row() < 0) return QVariant();
 
-	switch(index.column())
-	{
-	case Name:
-		retVal = choices_->at(index.row()).name;
-		break;
-	case Text:
-		retVal = choices_->at(index.row()).text.text();
-		break;
-	case JumpToScene:
-		retVal = choices_->at(index.row()).jumpToSceneName;
-		break;
-	case Condition:
-		retVal = choices_->at(index.row()).condition;
-		break;
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
+		switch (index.column())
+		{
+		case Name:
+			return choices_->at(index.row()).name;
+		case Text:
+			return choices_->at(index.row()).text.text();
+		case JumpToScene:
+			return choices_->at(index.row()).jumpToSceneName;
+		case Condition:
+			return choices_->at(index.row()).condition;
+		}
 	}
 
-	return retVal;
+	return QVariant();
 }
 
 bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-	Choice& affectedRow = choices_->at(index.row());
+	if (role == Qt::DisplayRole || role == Qt::EditRole) {
+		Choice& affectedRow = choices_->at(index.row());
 
-	switch(index.column())
-	{
-	case Name:
-		affectedRow.name = value.toString();
-		break;
-	case Text:
-		affectedRow.text.setTranslation(NovelSettings::getInstance().language, value.toString());
-		break;
-	case JumpToScene:
-		affectedRow.jumpToSceneName = value.toString();
-		break;
-	case Condition:
-		affectedRow.condition = value.toString();
-		break;
-	default:
-		return false;
+		switch (index.column())
+		{
+		case Name:
+			affectedRow.name = value.toString();
+			break;
+		case Text:
+			affectedRow.text.setTranslation(NovelSettings::getInstance().language, value.toString());
+			break;
+		case JumpToScene:
+			affectedRow.jumpToSceneName = value.toString();
+			break;
+		case Condition:
+			affectedRow.condition = value.toString();
+			break;
+		default:
+			return false;
+		}
+
+		emit dataChanged(index, index, { Qt::DisplayRole | Qt::EditRole });
+		return true;
 	}
 
-	emit dataChanged(index, index);
+	return false;
+}
+
+QVariant ChoiceItemModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+	{
+		switch (section)
+		{
+		case Name:
+			return tr("Name");
+		case Text:
+			return tr("Text");
+		case JumpToScene:
+			return tr("Jump to scene");
+		case Condition:
+			return tr("Condition");
+		}
+	}
+
+	return QVariant();
+}
+
+bool ChoiceItemModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+	Q_UNUSED(parent);
+
+	beginInsertRows(QModelIndex(), row, row + count - 1);
+
+	for (int rowNum = 0; rowNum < count; ++rowNum)
+	{
+		Translation translation;
+		translation.setTranslation(NovelSettings::getInstance().language, "");
+		choices_->emplace(choices_->cbegin() + row + rowNum, "hello", std::move(translation), "", "", Choice::ChoiceDisplayOptions());
+	}
+
+	endInsertRows();
 	return true;
 }
 

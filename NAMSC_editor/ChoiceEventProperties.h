@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QFrame>
+
+#include "LineEditDelegate.h"
 #include "ui_ChoiceEventProperties.h"
 #include "Novel/Event/EventChoice.h"
 
@@ -20,6 +22,8 @@ private:
 
 	QAction* addChoiceAction;
 	QAction* removeChoiceAction;
+
+	LineEditDelegate lineEditDelegate;
 
 	Ui::ChoiceEventPropertiesClass ui;
 

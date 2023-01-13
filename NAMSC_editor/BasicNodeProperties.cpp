@@ -1,6 +1,9 @@
 #include "BasicNodeProperties.h"
 
 #include <QGraphicsScene>
+#include <qmessagebox.h>
+
+#include "Novel/Data/Novel.h"
 
 BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
 	: QFrame(parent), currentlySelectedNode(node)
@@ -20,7 +23,6 @@ BasicNodeProperties::~BasicNodeProperties()
 //	this->scene = scene;
 //}
 
-// TODO potentially disconnect signals from on change or upon node change
 void BasicNodeProperties::updateConnections(bool b)
 {
 	instantTextChangeUpdate = b;
@@ -49,9 +51,16 @@ void BasicNodeProperties::selectedNodeChanged()
 
 void BasicNodeProperties::updateLabelInNode()
 {
-	//if (not scene->selectedItems().isEmpty())
-	//{
-	//	qgraphicsitem_cast<GraphNode*>(scene->selectedItems().first())->setLabel(ui.nodeNameLineEdit->text());
-	//}
-	currentlySelectedNode->setLabel(ui.nodeNameLineEdit->text());
+	QString lineEditText = ui.nodeNameLineEdit->text();
+
+	if (Novel::getInstance().getScene(lineEditText) != nullptr)
+	{
+		QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
+		return;
+	}
+
+	Novel::getInstance().getScene(currentlySelectedNode->getLabel())->name = lineEditText; // todo remember to change key
+	currentlySelectedNode->setLabel(lineEditText);
+	currentlySelectedNode->update();
 }
