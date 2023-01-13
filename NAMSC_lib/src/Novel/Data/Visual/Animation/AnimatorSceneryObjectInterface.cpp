@@ -1,34 +1,36 @@
 #include "Novel/Data/Visual/Animation/AnimatorSceneryObjectInterface.h"
 
-template class AnimatorSceneryObjectInterface<AnimNodeDouble1D>;
-template class AnimatorSceneryObjectInterface<AnimNodeDouble2D>;
-template class AnimatorSceneryObjectInterface<AnimNodeDouble3D>;
-template class AnimatorSceneryObjectInterface<AnimNodeDouble4D>;
+template<typename AnimNode>
+AnimatorSceneryObjectInterface<AnimNode>::~AnimatorSceneryObjectInterface() = default;
 
-template class AnimatorSceneryObjectInterface<AnimNodeLongLong1D>;
-template class AnimatorSceneryObjectInterface<AnimNodeLongLong2D>;
-template class AnimatorSceneryObjectInterface<AnimNodeLongLong3D>;
-template class AnimatorSceneryObjectInterface<AnimNodeLongLong4D>;
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
 
 template<typename AnimNode>
-AnimatorSceneryObjectInterface<AnimNode>::AnimatorSceneryObjectInterface(SceneryObject* const parentSceneryObject, AssetAnim<AnimNode>* const assetAnim, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: AnimatorBase<AnimNode>(assetAnim, priority, startDelay, speed, timesPlayed, bStopAnimationAtEventEnd), parentSceneryObject_(parentSceneryObject)
+void swap(AnimatorSceneryObjectInterface<AnimNode>& first, AnimatorSceneryObjectInterface<AnimNode>& second) noexcept
+{
+    using std::swap;
+    swap(static_cast<AnimatorBase<AnimNode>&>(first), static_cast<AnimatorBase<AnimNode>&>(second));
+}
+
+template<typename AnimNode>
+AnimatorSceneryObjectInterface<AnimNode>::AnimatorSceneryObjectInterface(SceneryObject* const parentSceneryObject, AssetAnim<AnimNode>* const assetAnim, uint priority, uint startDelay, double speed, int timesPlayed, bool bFinishAnimationAtEventEnd)
+	: AnimatorBase<AnimNode>(assetAnim, priority, startDelay, speed, timesPlayed, bFinishAnimationAtEventEnd), 
+    parentSceneryObject_(parentSceneryObject)
 {
 }
 
-//template<typename AnimNode>
-//AnimatorSceneryObjectInterface<AnimNode>& AnimatorSceneryObjectInterface<AnimNode>::operator=(const AnimatorSceneryObjectInterface<AnimNode> &obj)
-//{
-//	if (this == &obj) return *this;
-//
-//	assetAnim                = obj.assetAnim_;
-//	startDelay               = obj.startDelay;
-//	speed                    = obj.speed;
-//	timesPlayed              = obj.timesPlayed;
-//	bStopAnimationAtEventEnd = obj.bStopAnimationAtEventEnd;
-//
-//	return *this;
-//}
+template<typename AnimNode>
+bool AnimatorSceneryObjectInterface<AnimNode>::operator==(const AnimatorSceneryObjectInterface& obj) const noexcept
+{
+    if (this == &obj)
+        return true;
+
+    return AnimatorBase<AnimNode>::operator==(obj)      &&
+           parentSceneryObject_ == parentSceneryObject_;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
 
 template<typename AnimNode>
 void AnimatorSceneryObjectInterface<AnimNode>::adjustNodes(uint offset)
@@ -43,45 +45,7 @@ void AnimatorSceneryObjectInterface<AnimNode>::adjustNodes(uint offset)
         AnimatorBase<AnimNode>::adjustedNodes_.back().timeStamp = qRound(AnimatorBase<AnimNode>::adjustedNodes_.back().timeStamp * AnimatorInterface::speed) + offset;
     }
     AnimatorBase<AnimNode>::currentNode_ = AnimatorBase<AnimNode>::adjustedNodes_.cbegin();
-    AnimatorBase<AnimNode>::nextNode_    = AnimatorBase<AnimNode>::currentNode_ + 1;
+    AnimatorBase<AnimNode>::nextNode_ = AnimatorBase<AnimNode>::currentNode_ + 1;
 }
 
-template<typename AnimNode>
-AnimNode AnimatorSceneryObjectInterface<AnimNode>::currentAnimState(uint elapsedTime)
-{
-    if (AnimatorBase<AnimNode>::adjustedNodes_.size() == 0)
-        return AnimNode();
-
-    if (AnimatorInterface::timesPlayed == 0)
-        return AnimatorBase<AnimNode>::adjustedNodes_.back();
-
-    if (elapsedTime > AnimatorBase<AnimNode>::adjustedNodes_.back().timeStamp)
-    {
-        //Return the final state, if we are not asked to play the Animation again
-        if (--AnimatorInterface::timesPlayed == 0)
-            return AnimatorBase<AnimNode>::adjustedNodes_.back();
-
-        //Reset the animation
-        for (AnimNode& node : AnimatorBase<AnimNode>::adjustedNodes_)
-            node.timeStamp += AnimatorBase<AnimNode>::getDuration();
-
-        AnimatorBase<AnimNode>::currentNode_ = AnimatorBase<AnimNode>::adjustedNodes_.cbegin();
-        AnimatorBase<AnimNode>::nextNode_    = AnimatorBase<AnimNode>::currentNode_ + 1;
-    }
-    AnimNode ret = *AnimatorBase<AnimNode>::currentNode_;
-
-    if (AnimatorBase<AnimNode>::nextNode_ == AnimatorBase<AnimNode>::adjustedNodes_.cend())
-        return ret;
-
-    double	deltaTime = elapsedTime - AnimatorBase<AnimNode>::currentNode_->timeStamp,
-        duration = AnimatorBase<AnimNode>::nextNode_->timeStamp - AnimatorBase<AnimNode>::currentNode_->timeStamp;
-    switch (AnimatorBase<AnimNode>::nextNode_->interpolationMethod)
-    {
-    case AnimNode::AnimInterpolationMethod::Linear:
-    default:
-        for (uint i = 0; i != (sizeof(ret.state_) / sizeof(ret.state_[0])); ++i)
-            ret.state_[i] += (AnimatorBase<AnimNode>::nextNode_->state_[i] - ret.state_[i]) * (deltaTime / duration);
-        break;
-    }
-    return ret;
-}
+#include "Novel/Data/Visual/Animation/AnimatorSceneryObjectInterfaceInstances.h"

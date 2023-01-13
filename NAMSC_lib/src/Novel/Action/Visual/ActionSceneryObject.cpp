@@ -2,73 +2,54 @@
 
 #include "Novel/Data/Scene.h"
 
-ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionSceneryObject::~ActionSceneryObject() = default;
+
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionSceneryObject& first, ActionSceneryObject& second) noexcept
+{
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<Action&>(first), static_cast<Action&>(second));
+	swap(first.sceneryObjectName_, second.sceneryObjectName_);
+	swap(first.sceneryObject_,     second.sceneryObject_);
+}
+
+ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName, SceneryObject* sceneryObject)
+	: Action(parentEvent),
+	sceneryObjectName_(sceneryObjectName), 
+	sceneryObject_(sceneryObject)
 {
 }
 
-ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName)
-	: Action(parentEvent, parentScene), sceneryObjectName_(sceneryObjectName)
+//deleted
+//bool ActionSceneryObject::operator==(const ActionSceneryObject& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return Action::operator==(obj)                      &&
+//		   sceneryObjectName_ == obj.sceneryObjectName_;// &&
+//	       //sceneryObject_     == obj.sceneryObject_;
+//}
+
+void ActionSceneryObject::serializableLoad(QDataStream& dataStream)
 {
-	///checkForErrors(true);
+	Action::serializableLoad(dataStream);
+	dataStream >> sceneryObjectName_;
 }
 
-ActionSceneryObject& ActionSceneryObject::operator=(const ActionSceneryObject& obj) noexcept
+void ActionSceneryObject::serializableSave(QDataStream& dataStream) const
 {
-	if (this == &obj) return *this;
-
-	Action::operator=(obj);
-	sceneryObjectName_ = obj.sceneryObjectName_;
-	sceneryObject_     = obj.sceneryObject_;
-
-	return *this;
+	Action::serializableSave(dataStream);
+	dataStream << sceneryObjectName_;
 }
 
-bool ActionSceneryObject::operator==(const ActionSceneryObject& obj) const noexcept
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+QString ActionSceneryObject::getSceneryObjectName() const noexcept
 {
-	if (this == &obj) return true;
-
-	return	Action::operator==(obj)                      &&
-			sceneryObjectName_ == obj.sceneryObjectName_;// &&
-			//sceneryObject_     == obj.sceneryObject_;
-}
-
-bool ActionSceneryObject::checkForErrors(bool bComprehensive) const
-{
-	bool bError = Action::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (parentScene_->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::SceneryObjectInvalid << "No valid SceneryObject assigned. Was it deleted and not replaced?";
-			if (sceneryObjectName_ != "")
-				qCritical() << this << NovelLib::ErrorType::SceneryObjectMissing << "SceneryObject \"" << sceneryObjectName_ << "\" does not exist. Definition file might be corrupted";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "Error occurred in ActionSceneryObject::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
-
-	return bError;
-}
-
-void ActionSceneryObject::setSceneryObject(const QString& sceneryObjectName) noexcept
-{
-	if (parentScene_->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
-		qCritical() << this << NovelLib::ErrorType::SceneryObjectMissing << "Scenery Object \"" << sceneryObjectName << "\" does not exist";
-	else
-	{
-		sceneryObjectName_ = sceneryObjectName;  
-		checkForErrors(true);
-	}
-}
-
-SceneryObject* ActionSceneryObject::getSceneryObject() noexcept 
-{ 
-	return sceneryObject_;
+	return sceneryObjectName_;
 }
 
 const SceneryObject* ActionSceneryObject::getSceneryObject() const noexcept 
@@ -76,20 +57,28 @@ const SceneryObject* ActionSceneryObject::getSceneryObject() const noexcept
 	return sceneryObject_; 
 }
 
-QString ActionSceneryObject::getSceneryObjectName() const noexcept
+SceneryObject* ActionSceneryObject::getSceneryObject() noexcept
 {
-	return sceneryObjectName_; 
+	return sceneryObject_;
 }
 
-void ActionSceneryObject::serializableLoad(QDataStream& dataStream)
+void ActionSceneryObject::setSceneryObject(const QString& sceneryObjectName, SceneryObject* sceneryObject) noexcept
 {
-	Action::serializableLoad(dataStream);
-	dataStream >> sceneryObjectName_;
-	///checkForErrors();
-}
+	if (sceneryObject)
+	{
+		if (sceneryObject->name != sceneryObjectName)
+		{
+			qCritical() << NovelLib::ErrorType::SceneryObjectInvalid << "SceneryObject's name missmatch (sceneryObjectName=\"" + sceneryObjectName + "\", sceneryObject->name=\"" + sceneryObject->name + "\")";
+			return;
+		}
+	}
 
-void ActionSceneryObject::serializableSave(QDataStream& dataStream) const
-{
-	Action::serializableSave(dataStream);
-	dataStream << sceneryObjectName_;
+	if (parentEvent->parentScene->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
+	{
+		qCritical() << NovelLib::ErrorType::SceneryObjectMissing << "Scenery Object \"" + sceneryObjectName + "\" does not exist";
+		return;
+	}
+
+	sceneryObjectName_ = sceneryObjectName;
+	errorCheck(true);
 }

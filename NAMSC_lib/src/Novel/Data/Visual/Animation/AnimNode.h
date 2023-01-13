@@ -20,14 +20,16 @@ struct AnimNodeBase
 		Exponential,	//[optional]
 		Hyperbolic		//[optional]
 	};
-	AnimNodeBase() = default;
-	AnimNodeBase(uint timeStamp, AnimInterpolationMethod interpolationMethod);
+	/// \param timeStamp Time point (in milliseconds) when the Animation will achieve this Node's state
+	AnimNodeBase(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear);
+	virtual ~AnimNodeBase() = 0;
 
-	bool operator<(const AnimNodeBase& rhs) const noexcept;
-	bool operator<(uint rhs) const noexcept;
+	bool operator<(const AnimNodeBase& rhs)  const noexcept;
+	bool operator<(uint rhs)                 const noexcept;
 	bool operator==(const AnimNodeBase& rhs) const noexcept;
-	bool operator==(uint rhs) const noexcept;
+	bool operator==(uint rhs)                const noexcept;
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Time point (in milliseconds) when the Animation will achieve this Node's state
 	uint timeStamp = 0;
 
@@ -49,9 +51,11 @@ public:
 template<uint dimension>
 struct AnimNodeDouble final : public AnimNodeBase
 {
-	AnimNodeDouble() = default;
-	AnimNodeDouble(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<double, dimension>& state);
+	/// \param timeStamp Time point (in milliseconds) when the Animation will achieve this Node's state
+	/// \param state This state will be reached exactly at `timeStamp` time point
+	AnimNodeDouble(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<double, dimension>& state = QVarLengthArray<double, dimension>());
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// This state will be reached exactly at `timeStamp` time point
 	QVarLengthArray<double, dimension> state_;
 
@@ -71,8 +75,11 @@ public:
 template<uint dimension>
 struct AnimNodeLongLong final : public AnimNodeBase
 {
-	AnimNodeLongLong() = default;
-	AnimNodeLongLong(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<long long, dimension>& state);
+	/// \param timeStamp Time point (in milliseconds) when the Animation will achieve this Node's state
+	/// \param state This state will be reached exactly at `timeStamp` time point
+	AnimNodeLongLong(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<long long, dimension>& state = QVarLengthArray<long long, dimension>());
+
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// This state will be reached exactly at `timeStamp` time point
 	QVarLengthArray<long long, dimension> state_;
 
@@ -88,10 +95,10 @@ public:
 	void serializableSave(QDataStream& dataStream) const override;
 };
 
-using AnimNodeDouble1D = AnimNodeDouble<1>;
-using AnimNodeDouble2D = AnimNodeDouble<2>;
-using AnimNodeDouble3D = AnimNodeDouble<3>;
-using AnimNodeDouble4D = AnimNodeDouble<4>;
+using AnimNodeDouble1D   = AnimNodeDouble<1>;
+using AnimNodeDouble2D   = AnimNodeDouble<2>;
+using AnimNodeDouble3D   = AnimNodeDouble<3>;
+using AnimNodeDouble4D   = AnimNodeDouble<4>;
 
 using AnimNodeLongLong1D = AnimNodeLongLong<1>;
 using AnimNodeLongLong2D = AnimNodeLongLong<2>;

@@ -2,31 +2,35 @@
 
 #include "Novel/Data/Novel.h"
 
-Character::Character(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName)
-	: SceneryObject(name, assetImageName, pos, scale, rotationDegree, colorMultiplier, alphaMultiplier, bVisible), defaultVoiceName_(defaultVoiceName)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(Character& first, Character& second) noexcept
 {
-	defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName);
-	checkForErrors(true);
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<SceneryObject&>(first), static_cast<SceneryObject&>(second));
+	swap(first.defaultVoiceName_, second.defaultVoiceName_);
+	swap(first.defaultVoice_,     second.defaultVoice_);
 }
 
-Character& Character::operator=(Character obj) noexcept
+Character::Character(const QString& name, const QString& assetImageName, bool bMirrored, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName, AssetImage* assetImage, Voice* defaultVoice)
+	: SceneryObject(name, assetImageName, bMirrored, pos, scale, rotationDegree, colorMultiplier, alphaMultiplier, bVisible, assetImage),
+	defaultVoiceName_(defaultVoiceName),
+	defaultVoice_(defaultVoice)
 {
-	if (this == &obj) return *this;
-
-	std::swap(this->name,              obj.name);
-	std::swap(this->assetImageName_,   obj.assetImageName_);
-	std::swap(this->assetImage_,       obj.assetImage_);
-	std::swap(this->pos,               obj.pos);
-	std::swap(this->scale,             obj.scale);
-	std::swap(this->rotationDegree,    obj.rotationDegree);
-	std::swap(this->colorMultiplier,   obj.colorMultiplier);
-	std::swap(this->alphaMultiplier,   obj.alphaMultiplier);
-	std::swap(this->bVisible,          obj.bVisible);
-	std::swap(this->defaultVoiceName_, obj.defaultVoiceName_);
-	std::swap(this->defaultVoice_, obj.defaultVoice_);
-
-	return *this;
+	//if (!defaultVoiceName_.isEmpty())
+	//defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName);
+	errorCheck(true);
 }
+
+//defaulted
+//Character::Character(const Character& obj) noexcept
+//	: SceneryObject(obj.name, obj.assetImageName_, obj.bMirrored, obj.pos, obj.scale, obj.rotationDegree, obj.colorMultiplier, obj.alphaMultiplier, obj.bVisible, obj.assetImage_),
+//	defaultVoiceName_(obj.defaultVoiceName_),
+//	defaultVoice_(obj.defaultVoice_)
+//{
+//}
 
 bool Character::operator==(const Character& obj) const noexcept
 {
@@ -35,70 +39,6 @@ bool Character::operator==(const Character& obj) const noexcept
 	return	SceneryObject::operator==(obj)             &&
 			defaultVoiceName_ == obj.defaultVoiceName_; //&&
 			//defaultVoice_     == defaultVoice_;
-}
-
-bool Character::checkForErrors(bool bComprehensive) const
-{
-	bool bError = false;
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		//Check if the name is undefined
-		if (defaultVoiceName_ == "")
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceInvalid << "No Voice assigned. Was it deleted and not replaced?";
-		}
-		//Check if there is a Voice with this name in the Novel's container 
-		else if (Novel::getInstance().getVoice(defaultVoiceName_) == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << defaultVoiceName_ << "\" does not exist. Definition file might be corrupted";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "An Error occurred in Character::checkForErrors (object's name: \"" << name << "\")";
-
-	return bError;
-}
-
-void Character::setDefaultVoice(const QString& defaultVoiceName, Voice* voice) noexcept
-{
-	if (voice != nullptr)
-	{
-		defaultVoiceName_ = defaultVoiceName;
-		defaultVoice_     = voice;
-		checkForErrors(true);
-		return;
-	}
-
-	Voice* newVoice = nullptr;
-	newVoice = Novel::getInstance().getVoice(defaultVoiceName);
-	if (newVoice == nullptr)
-		qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << defaultVoiceName << "\" does not exist";
-	else
-	{
-		defaultVoiceName_ = defaultVoiceName;
-		defaultVoice_     = newVoice;
-		checkForErrors(true);
-	}
-}
-
-Voice* Character::getDefaultVoice() noexcept
-{
-	return defaultVoice_; 
-}
-
-const Voice* Character::getDefaultVoice() const noexcept
-{ 
-	return defaultVoice_; 
-}
-
-QString Character::getDefaultVoiceName() const noexcept
-{ 
-	return defaultVoiceName_; 
 }
 
 void Character::serializableSave(QDataStream& dataStream) const
@@ -113,5 +53,61 @@ void Character::serializableLoad(QDataStream& dataStream)
 	dataStream >> defaultVoiceName_;
 	defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName_);
 
-	checkForErrors();
+	errorCheck();
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//Character::Character(Character&& obj) noexcept
+//	: Character()
+//{
+//	swap(*this, obj);
+//}
+
+//defaulted
+//Character& Character::operator=(Character obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+QString Character::getDefaultVoiceName() const noexcept
+{
+	return defaultVoiceName_;
+}
+
+const Voice* Character::getDefaultVoice() const noexcept
+{
+	return defaultVoice_;
+}
+
+Voice* Character::getDefaultVoice() noexcept
+{
+	return defaultVoice_; 
+}
+
+void Character::setDefaultVoice(const QString& defaultVoiceName, Voice* defaultVoice) noexcept
+{
+	if (defaultVoice)
+	{
+		if (defaultVoice->name != defaultVoiceName)
+		{
+			qCritical() << NovelLib::ErrorType::VoiceInvalid << "Voice's name missmatch (defaultVoiceName=\"" + defaultVoiceName + "\", defaultVoice->name=\"" + defaultVoice->name + "\")";
+			return;
+		}
+	}
+	else defaultVoice = Novel::getInstance().getVoice(defaultVoiceName);
+
+	if (!defaultVoice)
+	{
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + defaultVoiceName + "\" does not exist";
+		return;
+	}
+	defaultVoiceName_ = defaultVoiceName;
+	defaultVoice_     = defaultVoice;
+	errorCheck(true);
 }

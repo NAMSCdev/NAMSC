@@ -4,32 +4,38 @@
 /// A Stat with a floating-point value
 class StatDouble final : public Stat
 {
+	/// Swap trick
+	friend void swap(StatDouble& first, StatDouble& second) noexcept;
 public:
-	StatDouble()                                 = default;
+	StatDouble()                                 noexcept = default;
+	/// \param name The Stat is identified by this unique name
+	/// \param displayName The name shown in a Stat Screen
+	/// \param bShow Whether this Stat is shown in Stat Screen
+	/// \param priority Priority is used to order Stats when they are being displayed
+	/// \param showNotification If there should be displayed some sort of notification once this Stat changes
 	/// \exception Error `min` is higher than `max` or the `value` is out of bounds
-	StatDouble(const QString& name, const QString& displayName, bool bShow, uint priority, 
-			   const ShowNotification showNotification, double value, double min, double max);
-	StatDouble(const StatDouble& obj)            = default;
-	StatDouble(StatDouble&& obj)                 = default;
-	StatDouble& operator=(StatDouble obj) noexcept;
-	bool operator==(const StatDouble& obj) const = default;
-	bool operator!=(const StatDouble& obj) const = default; //{ return !(*this == obj); }
+	explicit StatDouble(const QString& name, const QString& displayName = "", bool bShow = true, uint priority = 0, const ShowNotification showNotification = ShowNotification::Default, double value = 0.0, double min = std::numeric_limits<double>::min(), double max = std::numeric_limits<double>::max());
+	StatDouble(const StatDouble& obj)            noexcept = default;
+	StatDouble(StatDouble&& obj)                 noexcept = default;
+	StatDouble& operator=(const StatDouble& obj) noexcept = default;
+	//StatDouble& operator=(StatDouble obj)        noexcept;
+	bool operator==(const StatDouble& obj) const noexcept = default;
+	bool operator!=(const StatDouble& obj) const noexcept = default;
 
 	/// \exception Error `min`/`max`/`value` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const;
+	bool errorCheck(bool bComprehensive = false) const;
 
 	/// Makes Assigment from EventInput and Evaluators very easy
 	/// \exception Error Could not perform conversation to the desired Stat's type
 	void setValueFromString(const QString& str) override;
 
-	/// Every Stat has `value` field, but not all must have `max` and/or `min`
-	/// This one does
-	double	value = 0.0, 
-			min   = std::numeric_limits<double>::min(),
-			max   = std::numeric_limits<double>::max();
+	double value = 0.0, 
+		   min   = std::numeric_limits<double>::min(),
+		   max   = std::numeric_limits<double>::max();
 
-	///[optional] Label for the opposite Stat, used for a nicer display
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
+	///Label for the opposite Stat, used for a nicer display
 	//QString oppositeStatLabel;
 
 private:
@@ -37,7 +43,8 @@ private:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 
-public://---SERIALIZATION---
+public:
+	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
 	void serializableLoad(QDataStream& dataStream) override;

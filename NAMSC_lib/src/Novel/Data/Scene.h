@@ -4,31 +4,30 @@
 #include "Novel/Data/Visual/Scenery/Scenery.h"
 #include "Novel/Event/Event.h"
 
-/// The logical unit of the Novel's flow in the [Novel](#Novel]
+/// The logical unit of the Novel's flow in the [Novel](#Novel)
 /// The Editor user should be able to create one whenever
 class Scene final : public NovelFlowInterface
 {
-	//Our overlord
+	/// Our overlord
 	friend class Novel;
 	//Other Friends
-	friend class Event;
+	friend Event;
 	friend class NovelSettings;
+	/// Swap trick
+	friend void swap(Scene& first, Scene& second) noexcept;
 public:
-	Scene() = default;
+	Scene()                                  noexcept = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	Scene(const QString& name, const QString& chapterName, const Scenery& scenery);
-	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	Scene(const QString& name, const QString& chapterName, const Scenery& scenery, std::vector<std::unique_ptr<Event>>&& events);
-	Scene(const Scene& obj) noexcept;
-	Scene& operator=(Scene obj) noexcept;
-	//todo: define
-	bool operator==(const Scene& obj) const = delete;
-	bool operator!=(const Scene& obj) const = default;
+	explicit Scene(const QString& name, const QString& chapterName = "", std::vector<std::unique_ptr<Event>>&& events = std::move(std::vector<std::unique_ptr<Event>>()));
+	Scene(Scene&& obj)                       noexcept;
+	Scene& operator=(const Scene &obj)       noexcept = delete;
+	bool operator==(const Scene& obj) const  noexcept = delete;
+	bool operator!=(const Scene& obj) const  noexcept = delete;
 
 	/// Checks if the Scene's Events can load Definitions and Resources associated with them and don't have any other Errors, which would halt the Novel execution
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
+	bool errorCheck(bool bComprehensive = false) const override;
 	void ensureResourcesAreLoaded() override;
 
 	QString nextFreeEventName();
@@ -46,11 +45,15 @@ public:
 	/// \exception Error Tried to get an Event past the `events` container's size
 	const Event* getEvent(uint eventIndex) const;
 	/// \exception Error Tried to get an Event past the `events` container's size
-	Event* getEvent(uint eventIndex);
+	Event*       getEvent(uint eventIndex);
+	/// Takes ownership of the Event and manages its destruction
+	void addEvent(Event* event);
+	/// Takes ownership of the Event and manages its destruction
 	/// \exception Error Tried to insert a new Event past the `events` container's size
-	bool insertEvent(uint eventIndex, std::unique_ptr<Event>&& event);
+	bool insertEvent(uint eventIndex, Event* event);
 	/// \exception Error Tried to remove an Event past the `events` container's size
 	bool removeEvent(uint eventIndex);
+	void clearEvents() noexcept;
 
 	/// Automatically assigned upon creation or changed by the Editor User
 	QString	name                = "";

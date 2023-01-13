@@ -1,102 +1,76 @@
 #include "Novel/Data/Audio/Sound.h"
 
-#include <QFile>
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
 
-#include "Exceptions.h"
-
-Sound::Sound(const QString &name, const QString& soundFilePath, AudioSettings audioSettings, uint startDelay, bool bPersistToNewEvent)
-	: name(name), soundFilePath(soundFilePath), audioSettings(audioSettings), startDelay(startDelay), bPersistToNewEvent(bPersistToNewEvent)
+void swap(Sound& first, Sound& second) noexcept
 {
-	checkForErrors(true);
+	using std::swap;
+
+	swap(first.name,               second.name);
+	swap(first.soundFilePath,      second.soundFilePath);
+	swap(first.audioSettings,      second.audioSettings);
+	swap(first.startDelay,         second.startDelay);
+	swap(first.bPersistToNewEvent, second.bPersistToNewEvent);
 }
 
+Sound::Sound(const QString &name, const QString& soundFilePath, AudioSettings audioSettings, uint startDelay, bool bPersistToNewEvent)
+	: name(name),
+	soundFilePath(soundFilePath), 
+	audioSettings(audioSettings), 
+	startDelay(startDelay),
+	bPersistToNewEvent(bPersistToNewEvent)
+{
+	errorCheck(true);
+}
+
+//defaulted
 //Sound::Sound(const Sound& obj) noexcept
-//	: soundFilePath(obj.soundFilePath), 
-//	  audioSettings(obj.audioSettings), 
-//	  startDelay(obj.startDelay), 
-//	  bPersistToNewEvent(obj.bPersistToNewEvent)
-//	  //qSoundEffect_(qSoundEffect)
+//	: name(obj.name),
+//	soundFilePath(obj.soundFilePath), 
+//	audioSettings(obj.audioSettings), 
+//	startDelay(obj.startDelay), 
+//	bPersistToNewEvent(obj.bPersistToNewEvent)
 //{
 //}
 
-Sound& Sound::operator=(Sound obj) noexcept
-{ 
-	if (this == &obj) return *this;
-
-	std::swap(this->soundFilePath,      obj.soundFilePath);
-	std::swap(this->audioSettings,      obj.audioSettings);
-	std::swap(this->startDelay,         obj.startDelay);
-	std::swap(this->bPersistToNewEvent, obj.bPersistToNewEvent);
-
-	return *this; 
-}
-
-bool Sound::operator==(const Sound& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return	soundFilePath      == obj.soundFilePath      &&
-			audioSettings      == obj.audioSettings		 &&
-			startDelay         == obj.startDelay		 &&
-			bPersistToNewEvent == obj.bPersistToNewEvent; //&&
-			//qSoundEffect_      == obj.qSoundEffect_;
-}
-
-void Sound::load() 
-{
-}
-
-bool Sound::isLoaded() const 
-{
-	return true;
-}
-
-void Sound::unload() 
-{
-}
-
-bool Sound::checkForErrors(bool bComprehensive) const
-{
-	bool bError = false;
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		//Check if the name is undefined
-		if (soundFilePath == "")
-		{
-			qCritical() << this << NovelLib::ErrorType::AudioInvalid << "No Sound file assigned. Was it deleted and not replaced?";
-			bError = true;
-		}
-
-		//Check if the File is still there in the User's filesystem
-		if (!QFile::exists(soundFilePath))
-		{
-			qCritical() << this << NovelLib::ErrorType::AudioFileMissing << "Could not find a Sound file \"" << soundFilePath << "\"";
-			bError = true;
-		}
-
-		if (bComprehensive)
-		{
-			//todo: do checking in our new class
-			//QSoundEffect effect;
-			//TODO: check if this will ensure the format is right
-			//effect.setSource(soundFilePath);
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "An Error occurred in Sound::checkForErrors";
-
-	return bError;
-}
+//defaulted
+//bool Sound::operator==(const Sound& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return name               == obj.name               &&
+//	       soundFilePath      == obj.soundFilePath      &&
+//		   audioSettings      == obj.audioSettings		&&
+//		   startDelay         == obj.startDelay		    &&
+//		   bPersistToNewEvent == obj.bPersistToNewEvent;
+//}
 
 void Sound::serializableLoad(QDataStream& dataStream)
 {
-	dataStream >> soundFilePath >> audioSettings >> startDelay >> bPersistToNewEvent;
-	//checkForErrors();
+	dataStream >> name >> soundFilePath >> audioSettings >> startDelay >> bPersistToNewEvent;
 }
 
 void Sound::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << soundFilePath << audioSettings << startDelay << bPersistToNewEvent;
+	dataStream << name << soundFilePath << audioSettings << startDelay << bPersistToNewEvent;
 }
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//Sound::Sound(Sound&& obj) noexcept
+//	: Sound()
+//{
+//	swap(*this, obj);
+//}
+
+//defaulted
+//Sound& Sound::operator=(Sound obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}

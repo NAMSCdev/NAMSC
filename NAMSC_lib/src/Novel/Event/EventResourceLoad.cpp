@@ -1,0 +1,10 @@
+#include "Novel/Event/EventAll.h"
+#include "Novel/Data/Novel.h"
+
+void Event::ensureResourcesAreLoaded()
+{
+	for (std::unique_ptr<Action>& action : actions_)
+		action->ensureResourcesAreLoaded();
+
+	scenery.ensureResourcesAreLoaded();
+}

@@ -6,19 +6,23 @@
 /// Contains common properties of Actions that manage Audio
 class ActionAudio : public Action
 {
+	/// Swap trick
+	friend void swap(ActionAudio& first, ActionAudio& second) noexcept;
 public:
-	ActionAudio(Event* const parentEvent, Scene* const parentScene) noexcept;
-	ActionAudio(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings);
-	ActionAudio(const ActionAudio& obj) = delete;
-	ActionAudio& operator=(const ActionAudio& obj) noexcept;
-	bool operator==(const ActionAudio& obj) const noexcept;
-	bool operator!=(const ActionAudio& obj) const = default; //{ return !(*this == obj); }
+	explicit ActionAudio(Event* const parentEvent, const AudioSettings& audioSettings = AudioSettings());
+	ActionAudio(const ActionAudio& obj)            noexcept = delete;
+	ActionAudio(ActionAudio&& obj)                 noexcept = delete;
+	ActionAudio& operator=(const ActionAudio& obj) noexcept = delete;
+	bool operator==(const ActionAudio& obj) const  noexcept = delete;
+	bool operator!=(const ActionAudio& obj) const  noexcept = delete;
+	//Makes it abstract
+	virtual ~ActionAudio() = 0;
 
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive) const;
+	virtual bool errorCheck(bool bComprehensive = false) const override;
 	
-	const AudioSettings& getAudioSettings() const noexcept;
-	AudioSettings& getAudioSettings() noexcept;
+	const AudioSettings& getAudioSettings() const             noexcept;
+	AudioSettings&       getAudioSettings()                   noexcept;
 	void setAudioSettings(const AudioSettings& audioSettings) noexcept;
 
 protected:
