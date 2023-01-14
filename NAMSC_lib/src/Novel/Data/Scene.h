@@ -6,7 +6,7 @@
 
 /// The logical unit of the Novel's flow in the [Novel](#Novel)
 /// The Editor user should be able to create one whenever
-class Scene final : public NovelFlowInterface
+class Scene final : public NovelFlowInterface, public SceneComponent
 {
 	/// Our overlord
 	friend class Novel;
@@ -60,6 +60,13 @@ public:
 
 	/// Currently displayed media of the Scene
 	Scenery	scenery;
+
+    // SceneComponent for EventsTree
+    virtual QString getTypeName() { return "Scene"; }
+    virtual QString getSubTypeName() { return "Scene"; }
+    virtual SceneComponentType getType() { return SCENE; }
+    virtual EventSubType getEventType() { return EventSubType::NOT_EVENT; }
+    virtual QString getName() { return name; }
 
 private:
 	QString        chapterName_ = "";

@@ -8,6 +8,7 @@
 #include "BasicNodeProperties.h"
 #include "CustomSortFilterProxyModel.h"
 #include "EventTreeItemModel.h"
+#include "EventTreeItem.h"
 #include "GraphNodePropertiesPack.h"
 #include "ObjectTreeWidgetItem.h"
 #include "Preview.h"

@@ -31,6 +31,10 @@ public:
 
 	QString condition = "";
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "If"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_IF; }
+
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

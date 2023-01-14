@@ -4,6 +4,7 @@
 #include "ObjectTreeWidgetItem.h"
 #include "QVariant"
 #include "Novel/Event/Event.h"
+#include "Novel/SceneComponent.h"
 
 class EventTreeItem
 {

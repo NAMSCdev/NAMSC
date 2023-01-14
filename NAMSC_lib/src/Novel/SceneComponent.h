@@ -15,7 +15,11 @@ enum class EventSubType
 	NOT_EVENT,
 	EVENT_DIALOG,
 	EVENT_CHOICE,
-	EVENT_JUMP
+	EVENT_JUMP,
+    EVENT_IF,
+    EVENT_END_IF,
+    EVENT_INPUT,
+    EVENT_WAIT
 };
 class SceneComponent
 {
