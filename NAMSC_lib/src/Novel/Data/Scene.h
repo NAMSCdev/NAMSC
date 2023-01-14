@@ -18,7 +18,7 @@ class Scene final : public NovelFlowInterface
 public:
 	Scene()                                  noexcept = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	explicit Scene(const QString& name, const QString& chapterName = "", std::vector<std::unique_ptr<Event>>&& events = std::move(std::vector<std::unique_ptr<Event>>()));
+	explicit Scene(const QString& name, const QString& chapterName = "", /*const Scenery& scenery = Scenery(),*/ std::vector<std::unique_ptr<Event>> && events = std::move(std::vector<std::unique_ptr<Event>>()));
 	Scene(Scene&& obj)                       noexcept;
 	Scene& operator=(const Scene &obj)       noexcept = delete;
 	bool operator==(const Scene& obj) const  noexcept = delete;

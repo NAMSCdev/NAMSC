@@ -16,10 +16,10 @@ void swap(Scene& first, Scene& second) noexcept
     swap(first.events_,      second.events_);
 }
 
-Scene::Scene(const QString& name, const QString& chapterName, std::vector<std::unique_ptr<Event>>&& events)
+Scene::Scene(const QString& name, const QString& chapterName, /*const Scenery& scenery,*/ std::vector<std::unique_ptr<Event>>&& events)
 	: name(name), 
     chapterName_(chapterName),
-    scenery(scenery), 
+    //scenery(scenery), 
     events_(std::move(events))
 {
     if (this->name.isEmpty())
