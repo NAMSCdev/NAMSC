@@ -1,9 +1,10 @@
 #include "ChoiceItemModel.h"
 
 #include "Novel/Data/Novel.h"
+#include "Novel/Event/EventChoice.h"
 
-ChoiceItemModel::ChoiceItemModel(std::vector<Choice>* choices, QObject *parent)
-	: QAbstractTableModel(parent), choices_(choices)
+ChoiceItemModel::ChoiceItemModel(EventChoice* parentEvent, QObject *parent)
+	: QAbstractTableModel(parent), parentEvent(parentEvent), choices(&parentEvent->choices)
 {
 	setHeaderData(Name, Qt::Horizontal, tr("Name"));
 }
@@ -18,7 +19,7 @@ Qt::ItemFlags ChoiceItemModel::flags(const QModelIndex& index) const
 
 int ChoiceItemModel::rowCount(const QModelIndex& parent) const
 {
-	return choices_->size();
+	return choices->size();
 }
 
 int ChoiceItemModel::columnCount(const QModelIndex& parent) const
@@ -29,19 +30,19 @@ int ChoiceItemModel::columnCount(const QModelIndex& parent) const
 QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 {
 	if (!index.isValid()) return QVariant();
-	if (index.row() >= choices_->size() || index.row() < 0) return QVariant();
+	if (index.row() >= choices->size() || index.row() < 0) return QVariant();
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column())
 		{
 		case Name:
-			return choices_->at(index.row()).name;
+			return choices->at(index.row()).name;
 		case Text:
-			return choices_->at(index.row()).text.text();
+			return choices->at(index.row()).text.text();
 		case JumpToScene:
-			return choices_->at(index.row()).jumpToSceneName;
+			return choices->at(index.row()).jumpToSceneName;
 		case Condition:
-			return choices_->at(index.row()).condition;
+			return choices->at(index.row()).condition;
 		}
 	}
 
@@ -51,7 +52,7 @@ QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
-		Choice& affectedRow = choices_->at(index.row());
+		Choice& affectedRow = choices->at(index.row());
 
 		switch (index.column())
 		{
@@ -106,9 +107,7 @@ bool ChoiceItemModel::insertRows(int row, int count, const QModelIndex& parent)
 
 	for (int rowNum = 0; rowNum < count; ++rowNum)
 	{
-		Translation translation;
-		translation.setTranslation(NovelSettings::getInstance().language, "");
-		choices_->emplace(choices_->cbegin() + row + rowNum, "hello", std::move(translation), "", "", Choice::ChoiceDisplayOptions());
+		choices->emplace(choices->cbegin() + row + rowNum, parentEvent);
 	}
 
 	endInsertRows();

@@ -9,7 +9,7 @@ class ChoiceItemModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	ChoiceItemModel(std::vector<Choice>* choices, QObject *parent = nullptr);
+	ChoiceItemModel(EventChoice* parentEvent, QObject *parent = nullptr);
 	~ChoiceItemModel() override;
 
 	Qt::ItemFlags flags(const QModelIndex& index) const override;
@@ -30,5 +30,6 @@ private:
 		Condition
 	};
 
-	std::vector<Choice>* choices_;
+	EventChoice* parentEvent;
+	std::vector<Choice>* choices;
 };

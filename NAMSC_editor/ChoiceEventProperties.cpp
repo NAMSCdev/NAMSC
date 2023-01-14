@@ -39,7 +39,7 @@ void ChoiceEventProperties::prepareConnections()
 
 void ChoiceEventProperties::prepareDataInUi()
 {
-	ui.choiceEventTableView->setModel(new ChoiceItemModel(&choices->choices, ui.choiceEventTableView));
+	ui.choiceEventTableView->setModel(new ChoiceItemModel(choices, ui.choiceEventTableView));
 
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Name, &lineEditDelegate);
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Condition, &lineEditDelegate);

@@ -30,7 +30,6 @@ public slots:
 
 private:
     Ui::NAMSC_editorClass ui;
-    Novel novel;
 
     PropertyConnectionSwitchboard switchboard;
     QGraphicsScene* scene; // todo remove?
