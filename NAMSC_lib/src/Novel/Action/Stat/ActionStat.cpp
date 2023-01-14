@@ -3,63 +3,54 @@
 #include "Novel/Data/Save/NovelState.h"
 #include "Novel/Data/Scene.h"
 
-ActionStat::ActionStat(Event* const parentEvent, Scene* const parentScene) noexcept
-	: Action(parentEvent, parentScene)
+ActionStat::~ActionStat() = default;
+
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(ActionStat& first, ActionStat& second) noexcept
+{
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<Action&>(first), static_cast<Action&>(second));
+	swap(first.statName_, second.statName_);
+	swap(first.stat_,     second.stat_);
+}
+
+ActionStat::ActionStat(Event* const parentEvent, const QString& statName, Stat* stat)
+	: Action(parentEvent), 
+	statName_(statName), 
+	stat_(stat)
 {
 }
 
-ActionStat::ActionStat(Event* const parentEvent, Scene* const parentScene, const QString& statName)
-	: Action(parentEvent, parentScene), statName_(statName)
+void ActionStat::serializableLoad(QDataStream& dataStream)
 {
-	checkForErrors(true);
+	Action::serializableLoad(dataStream);
+	dataStream >> statName_;
 }
 
-ActionStat& ActionStat::operator=(const ActionStat& obj) noexcept
+void ActionStat::serializableSave(QDataStream& dataStream) const
 {
-	if (this == &obj) return *this;
-
-	Action::operator=(obj);
-	statName_ = obj.statName_;
-	stat_     = obj.stat_;
-
-	return *this;
+	Action::serializableSave(dataStream);
+	dataStream << statName_;
 }
 
-bool ActionStat::operator==(const ActionStat& obj) const noexcept
+//deleted
+//bool ActionStat::operator==(const ActionStat& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return Action::operator==(obj)    &&
+//		   statName_ == obj.statName_;//&&
+//		   //stat_     == obj.stat_;
+//}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+QString ActionStat::getStatName() const noexcept
 {
-	if (this == &obj) return true;
-
-	return	Action::operator==(obj)    &&
-			statName_ == obj.statName_;//&&
-			//stat_     == obj.stat_;
-}
-
-bool ActionStat::checkForErrors(bool bComprehensive) const
-{
-	bool bError = Action::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (NovelState::getCurrentlyLoadedState()->getStat(statName_) == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::StatInvalid << "No valid Stat assigned. Was it deleted and not replaced?";
-			if (statName_ != "")
-				qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist. Definition file might be corrupted";
-		}
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	//if (bError)
-	//	qDebug() << "Error occurred in ActionStat::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
-	return bError;
-}
-
-void ActionStat::syncWithSave() noexcept
-{
-	stat_ = NovelState::getCurrentlyLoadedState()->getStat(statName_);
-	if (stat_ == nullptr)
-		qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist";
+	return statName_;
 }
 
 const Stat* ActionStat::getStat() const noexcept
@@ -72,38 +63,25 @@ Stat* ActionStat::getStat() noexcept
 	return stat_; 
 }
 
-QString ActionStat::getStatName() const noexcept 
-{ 
-	return statName_; 
-}
-
-void ActionStat::setStat(const QString& statName) noexcept
+void ActionStat::setStat(const QString& statName, Stat* stat) noexcept
 {
-	Stat* newStat = nullptr;
-	newStat = NovelState::getCurrentlyLoadedState()->getStat(statName);
-	if (newStat == nullptr)
-		qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName << "\" does not exist";
-	else
+	if (stat)
 	{
-		statName_ = statName;
-		stat_ = newStat;
-		checkForErrors(true);
+		if (stat->name != statName)
+		{
+			qCritical() << NovelLib::ErrorType::StatInvalid << "Stat's name missmatch (statName=\"" + statName + "\", stat->name=\"" + stat->name + "\")";
+			return;
+		}
 	}
-}
+	else stat = NovelState::getCurrentlyLoadedState()->getStat(statName);
+	
+	if (!stat)
+	{
+		qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName + "\" does not exist";
+		return;
+	}
 
-void ActionStat::serializableLoad(QDataStream& dataStream)
-{
-	Action::serializableLoad(dataStream);
-	dataStream >> statName_;
-
-	//stat_ = NovelState::getCurrentlyLoadedState()->getStat(statName_);
-	//if (stat_ == nullptr)
-	//	qCritical() << this << NovelLib::ErrorType::StatMissing << "Stat \"" << statName_ << "\" does not exist. Definition file might be corrupted";
-	//checkForErrors();
-}
-
-void ActionStat::serializableSave(QDataStream& dataStream) const
-{
-	Action::serializableSave(dataStream);
-	dataStream << statName_;
+	statName_ = statName;
+	stat_     = stat;
+	errorCheck(true);
 }

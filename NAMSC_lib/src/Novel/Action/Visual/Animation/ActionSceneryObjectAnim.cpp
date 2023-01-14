@@ -2,99 +2,82 @@
 
 #include "Novel/Data/Scene.h"
 
-template class ActionSceneryObjectAnim<AnimNodeDouble1D>;
-template class ActionSceneryObjectAnim<AnimNodeDouble2D>;
-template class ActionSceneryObjectAnim<AnimNodeDouble3D>;
-template class ActionSceneryObjectAnim<AnimNodeDouble4D>;
-
-template class ActionSceneryObjectAnim<AnimNodeLongLong1D>;
-template class ActionSceneryObjectAnim<AnimNodeLongLong2D>;
-template class ActionSceneryObjectAnim<AnimNodeLongLong3D>;
-template class ActionSceneryObjectAnim<AnimNodeLongLong4D>;
-
 template <class AnimNode>
-ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene) noexcept
-	: ActionSceneryObject(parentEvent, parentScene)
+ActionSceneryObjectAnim<AnimNode>::~ActionSceneryObjectAnim() = default;
+
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+template<typename AnimNode>
+void swap(ActionSceneryObjectAnim<AnimNode>& first, ActionSceneryObjectAnim<AnimNode>& second) noexcept
 {
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<ActionSceneryObject&>(first), static_cast<ActionSceneryObject&>(second));
+	swap(first.priority,                   second.priority);
+	swap(first.startDelay,                 second.startDelay);
+	swap(first.speed,                      second.speed);
+	swap(first.timesPlayed,                second.timesPlayed);
+	swap(first.bFinishAnimationAtEventEnd, second.bFinishAnimationAtEventEnd);
+	first.swapPrivate(second);
 }
 
-template <class AnimNode>
-ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, Scene* const parentScene, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bStopAnimationAtEventEnd)
-	: ActionSceneryObject(parentEvent, parentScene, sceneryObjectName), assetAnimName_(assetAnimName), priority(priority), startDelay(startDelay), speed(speed), timesPlayed(timesPlayed), bStopAnimationAtEventEnd(bStopAnimationAtEventEnd)
+template<typename AnimNode>
+void ActionSceneryObjectAnim<AnimNode>::swapPrivate(ActionSceneryObjectAnim& second) noexcept
 {
-	//checkForErrors(true);
-}
-
-template <class AnimNode> 
-ActionSceneryObjectAnim<AnimNode>& ActionSceneryObjectAnim<AnimNode>::operator=(const ActionSceneryObjectAnim<AnimNode>&obj) noexcept
-{
-	if (this == &obj)
-		return *this;
-
-	ActionSceneryObject::operator=(obj);
-	assetAnimName_           = obj.assetAnimName_;
-	assetAnim_               = obj.assetAnim_;
-	startDelay               = obj.startDelay;
-	speed                    = obj.speed;
-	timesPlayed              = obj.timesPlayed;
-	bStopAnimationAtEventEnd = obj.bStopAnimationAtEventEnd;
-
-	return *this;
-}
-
-template <class AnimNode> 
-bool ActionSceneryObjectAnim<AnimNode>::operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept
-{
-	if (this == &obj)
-		return true;
-
-	return	ActionSceneryObject::operator==(obj)                    &&
-			assetAnimName_ == obj.assetAnimName_                    &&
-			//assetAnim_     == obj.assetAnim_                        &&
-			startDelay     == obj.startDelay                        &&
-			speed          == obj.speed                             &&
-			timesPlayed    == obj.timesPlayed                       &&
-			bStopAnimationAtEventEnd == obj.bStopAnimationAtEventEnd;
+	using std::swap;
+	swap(this->assetAnimName_, second.assetAnimName_);
+	swap(this->assetAnim_,     second.assetAnim_);
+	swap(this->animator_,      second.animator_);
 }
 
 template <class AnimNode>
-bool ActionSceneryObjectAnim<AnimNode>::checkForErrors(bool bComprehensive) const
+ActionSceneryObjectAnim<AnimNode>::ActionSceneryObjectAnim(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName, uint priority, uint startDelay, double speed, int timesPlayed, bool bFinishAnimationAtEventEnd, SceneryObject* sceneryObject, AssetAnim<AnimNode>* assetAnim)
+	: ActionSceneryObject(parentEvent, sceneryObjectName, sceneryObject),
+	assetAnimName_(assetAnimName), 
+	priority(priority), 
+	startDelay(startDelay), 
+	speed(speed), 
+	timesPlayed(timesPlayed), 
+	bFinishAnimationAtEventEnd(bFinishAnimationAtEventEnd), 
+	assetAnim_(assetAnim)
 {
-	bool bError = ActionSceneryObject::checkForErrors(bComprehensive);
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (assetAnim_ == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetAnimInvalid << "No valid AnimAsset assigned. Was it deleted and not replaced?";
-			if (assetAnimName_ != "")
-				qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "AssetAnim \"" << assetAnimName_ << "\" does not exist or read. Definition file might be corrupted";
-		}
-		else bError |= assetAnim_->checkForErrors(bComprehensive);
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	//if (bError)
-	//	qDebug() << "Error occurred in ActionSceneryObjectAnim::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
-
-	return bError;
 }
 
-template <class AnimNode>
-void ActionSceneryObjectAnim<AnimNode>::ensureResourcesAreLodaded()
+//deleted
+//template <class AnimNode> 
+//bool ActionSceneryObjectAnim<AnimNode>::operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept
+//{
+//	if (this == &obj)
+//		return true;
+//
+//	return ActionSceneryObject::operator==(obj)                         &&
+//		   assetAnimName_ == obj.assetAnimName_                         &&
+//		   priority       == obj.priority                               &&
+//		   startDelay     == obj.startDelay                             &&
+//		   speed          == obj.speed                                  &&
+//		   timesPlayed    == obj.timesPlayed                            &&
+//		   bFinishAnimationAtEventEnd == obj.bFinishAnimationAtEventEnd;
+//}
+
+template<typename AnimNode>
+void ActionSceneryObjectAnim<AnimNode>::serializableLoad(QDataStream& dataStream)
 {
-	if (assetAnim_->isLoaded())
-		assetAnim_->load();
+	ActionSceneryObject::serializableLoad(dataStream);
+	dataStream >> assetAnimName_ >> priority >> startDelay >> speed >> timesPlayed >> bFinishAnimationAtEventEnd;
+	//assetAnim_ is loaded in a derived class
 }
+
+template<typename AnimNode>
+void ActionSceneryObjectAnim<AnimNode>::serializableSave(QDataStream& dataStream) const
+{
+	ActionSceneryObject::serializableSave(dataStream);
+	dataStream << assetAnimName_ << priority << startDelay << speed << timesPlayed << bFinishAnimationAtEventEnd;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
 
 //SetAssetAnim is defined in concrete ActionSceneryObjectAnims
-template<typename AnimNode>
-AssetAnim<AnimNode>* ActionSceneryObjectAnim<AnimNode>::getAssetAnim() noexcept
-{ 
-	return assetAnim_; 
-}
-
 template<typename AnimNode>
 const AssetAnim<AnimNode>* ActionSceneryObjectAnim<AnimNode>::getAssetAnim() const noexcept
 { 
@@ -108,16 +91,9 @@ QString ActionSceneryObjectAnim<AnimNode>::getAssetAnimName() const noexcept
 }
 
 template<typename AnimNode>
-void ActionSceneryObjectAnim<AnimNode>::serializableLoad(QDataStream& dataStream)
+AssetAnim<AnimNode>* ActionSceneryObjectAnim<AnimNode>::getAssetAnim() noexcept
 {
-	ActionSceneryObject::serializableLoad(dataStream);
-	dataStream >> assetAnimName_ >> startDelay >> speed >> timesPlayed >> bStopAnimationAtEventEnd;
-	//assetAnim_ is loaded in a derived class
+	return assetAnim_;
 }
 
-template<typename AnimNode>
-void ActionSceneryObjectAnim<AnimNode>::serializableSave(QDataStream& dataStream) const
-{
-	ActionSceneryObject::serializableSave(dataStream);
-	dataStream << assetAnimName_ << startDelay << speed << timesPlayed << bStopAnimationAtEventEnd;
-}
+#include "Novel/Action/Visual/Animation/ActionSceneryObjectAnimInstances.h"

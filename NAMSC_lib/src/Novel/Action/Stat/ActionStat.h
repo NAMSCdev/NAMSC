@@ -6,28 +6,32 @@
 /// Contains common properties of Actions that manage Stats
 class ActionStat : public Action
 {
+	/// Swap trick
+	friend void swap(ActionStat& first, ActionStat& second) noexcept;
 public:
-	ActionStat(Event* const parentEvent, Scene* const parentScene) noexcept;
 	/// \exception Error Couldn't find the Stat named `statName`
-	ActionStat(Event* const parentEvent, Scene* const parentScene, const QString& statName);
-	ActionStat(const ActionStat& obj) = delete;
-	ActionStat& operator=(const ActionStat& obj) noexcept;
-	bool operator==(const ActionStat& obj) const noexcept;
-	bool operator!=(const ActionStat& obj) const = default; //{ return !(*this == obj); }
+	explicit ActionStat(Event* const parentEvent, const QString& statName = "", Stat* stat = nullptr);
+	ActionStat(const ActionStat& obj)             noexcept = delete;
+	ActionStat(ActionStat&& obj)                  noexcept = delete;
+	ActionStat& operator=(const ActionStat& obj)  noexcept = delete;
+	bool operator==(const ActionStat& obj) const  noexcept = delete;
+	bool operator!=(const ActionStat& obj) const  noexcept = delete;
+	//Makes it abstract
+	virtual ~ActionStat() = 0;
 
 	/// \exception Error `stat_` is invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const override;
+	virtual bool errorCheck(bool bComprehensive = false) const override;
 
 	/// Connects the Stat pointer to the actual Stat in the NovelState
 	/// Must be called after the Save is loaded
 	/// \exception Error Couldn't find the Stat named `statName_` in the current NovelState (`Novel::save`)
 	void syncWithSave() noexcept override;
 
-	const Stat* getStat() const noexcept;
-	Stat* getStat() noexcept;
 	QString getStatName() const noexcept;
-	void setStat(const QString& statName) noexcept;
+	const Stat* getStat() const noexcept;
+	Stat*       getStat()       noexcept;
+	void setStat(const QString& statName, Stat* stat = nullptr) noexcept;
 
 protected:
 	QString statName_ = "";

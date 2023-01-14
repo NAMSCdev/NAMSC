@@ -3,96 +3,116 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Data/Scene.h"
 
-Sentence::Sentence(Event* const parentEvent, Scene* const parentScene) noexcept
-	: parentEvent_(parentEvent), parentScene_(parentScene)
+Sentence::Sentence(Event* const parentEvent)
+	: parentEvent(parentEvent)
 {
 }
 
-Sentence::Sentence(Event* const parentEvent, Scene* const parentScene, const Translation& text, const QString& displayedName, const QString& characterName, const QString& voiceName, const QString& assetImageName, double cpsMultiplier, uint cpsOverwrite, bool bEndWithInput, uint waitBeforeContinueTime)
-	: parentEvent_(parentEvent), parentScene_(parentScene), text(text), displayedName(displayedName), characterName(characterName), voiceName_(voiceName), assetImageName_(assetImageName), cpsMultiplier(cpsMultiplier), cpsOverwrite(cpsOverwrite), bEndWithInput(bEndWithInput), waitBeforeContinueTime(waitBeforeContinueTime)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(Sentence& first, Sentence& second) noexcept
 {
+	using std::swap;
+	swap(first.text,                   second.text);
+	swap(first.displayedName,          second.displayedName);
+	swap(first.characterName_,         second.characterName_);
+	swap(first.voiceName_,             second.voiceName_);
+	swap(first.assetImageName_,        second.assetImageName_);
+	swap(first.cpsMultiplier,          second.cpsMultiplier);
+	swap(first.cpsOverwrite,           second.cpsOverwrite);
+	swap(first.bEndWithInput,          second.bEndWithInput);
+	swap(first.waitBeforeContinueTime, second.waitBeforeContinueTime);
+	swap(first.character_,             second.character_);
+	swap(first.voice_,                 second.voice_);
+	swap(first.assetImage_,            second.assetImage_);
 }
 
-Sentence& Sentence::operator=(Sentence obj) noexcept
+Sentence::Sentence(Event* const parentEvent, const Translation& text, const QString& displayedName, const QString& characterName, const QString& voiceName, const QString& assetImageName, double cpsMultiplier, uint cpsOverwrite, bool bEndWithInput, uint waitBeforeContinueTime, Character* character, Voice* voice, AssetImage* assetImage)
+	: parentEvent(parentEvent), 
+	text(text), 
+	displayedName(displayedName), 
+	characterName_(characterName), 
+	voiceName_(voiceName), 
+	assetImageName_(assetImageName), 
+	cpsMultiplier(cpsMultiplier), 
+	cpsOverwrite(cpsOverwrite), 
+	bEndWithInput(bEndWithInput), 
+	waitBeforeContinueTime(waitBeforeContinueTime),
+	character_(character),
+	voice_(voice),
+	assetImage_(assetImage)
 {
-	if (this == &obj) return *this;
+	errorCheck(true);
+}
 
-	std::swap(this->text,                   obj.text);
-	std::swap(this->displayedName,          obj.displayedName);
-	std::swap(this->characterName,          obj.characterName);
-	std::swap(this->assetImageName_,        obj.assetImageName_);
-	std::swap(this->assetImage_,            obj.assetImage_);
-	std::swap(this->voiceName_,             obj.voiceName_);
-	std::swap(this->voice_,                 obj.voice_);
-	std::swap(this->cpsMultiplier,          obj.cpsMultiplier);
-	std::swap(this->cpsOverwrite,           obj.cpsOverwrite);
-	std::swap(this->bEndWithInput,          obj.bEndWithInput);
-	std::swap(this->waitBeforeContinueTime, obj.waitBeforeContinueTime);
-
-	return *this;
+Sentence::Sentence(const Sentence& obj) noexcept
+	: parentEvent(obj.parentEvent),
+	text(obj.text),
+	displayedName(obj.displayedName),
+	characterName_(obj.characterName_),
+	voiceName_(obj.voiceName_),
+	assetImageName_(obj.assetImageName_),
+	cpsMultiplier(obj.cpsMultiplier),
+	cpsOverwrite(obj.cpsOverwrite),
+	bEndWithInput(obj.bEndWithInput),
+	waitBeforeContinueTime(obj.waitBeforeContinueTime),
+	character_(obj.character_),
+	voice_(obj.voice_),
+	assetImage_(obj.assetImage_)
+{
 }
 
 bool Sentence::operator==(const Sentence& obj) const noexcept
 {
 	if (this == &obj) return true;
 
-	return	text                   == obj.text                  &&
-			displayedName          == obj.displayedName         &&
-			characterName          == obj.characterName         &&
-			assetImageName_        == obj.assetImageName_       &&
-			voiceName_             == obj.voiceName_	        &&
-			cpsMultiplier          == obj.cpsMultiplier         &&
-			cpsOverwrite           == obj.cpsOverwrite	        &&
-			bEndWithInput          == obj.bEndWithInput	        &&
-			waitBeforeContinueTime == obj.waitBeforeContinueTime;
+	return text                   == obj.text                   &&
+		   displayedName          == obj.displayedName          &&
+		   characterName_         == obj.characterName_         &&
+		   voiceName_             == obj.voiceName_             &&
+		   assetImageName_        == obj.assetImageName_        &&
+		   cpsMultiplier          == obj.cpsMultiplier          &&
+		   cpsOverwrite           == obj.cpsOverwrite           &&
+		   bEndWithInput          == obj.bEndWithInput          &&
+		   waitBeforeContinueTime == obj.waitBeforeContinueTime;
 }
 
-bool Sentence::checkForErrors(bool bComprehensive) const
+void Sentence::serializableLoad(QDataStream& dataStream)
 {
-	bool bError = false;
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (assetImage_ == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
-		}
-		if (parentScene_->scenery.getDisplayedCharacter(characterName) == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
-			if (characterName != "")
-				qCritical() << this << NovelLib::ErrorType::CharacterMissing << "Character \"" << characterName << "\" does not exist. Definition file might be corrupted";
-		}
-		if (voice_ == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
-			if (voiceName_ != "")
-				qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName_ << "\" does not exist. Definition file might be corrupted";
-		}
-	};
+	dataStream >> text >> displayedName >> characterName_ >> voiceName_ >> assetImageName_ >> cpsMultiplier >> cpsOverwrite >> bEndWithInput >> waitBeforeContinueTime;
 
-	if (NovelLib::catchExceptions(errorChecker, bComprehensive) || text.checkForErrors(bComprehensive))
-		qDebug() << "An Error occurred in Sentence::checkForErrors of Scene \"" << parentScene_->name << "\" Event " << parentEvent_->getIndex();
-
-	return bError;
+	//voice_ = Novel::getInstance().getVoice(voiceName_);
 }
 
-void Sentence::setAssetImage(const QString& assetImageName) noexcept
+void Sentence::serializableSave(QDataStream& dataStream) const
 {
-	AssetImage* newAssetImage = nullptr;
-	newAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
-	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName << "\" does not exist";
-	else
-	{
-		assetImageName_ = assetImageName;
-		assetImage_     = newAssetImage;
-		checkForErrors(true);
-	}
+	dataStream << text << displayedName << characterName_ << voiceName_ << assetImageName_ << cpsMultiplier << cpsOverwrite << bEndWithInput << waitBeforeContinueTime;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+Sentence::Sentence(Sentence&& obj) noexcept
+	: Sentence(obj.parentEvent)
+{
+	swap(*this, obj);
+}
+
+Sentence& Sentence::operator=(Sentence obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	return *this;
+}
+
+QString Sentence::getAssetImageName() const noexcept
+{
+	return assetImageName_;
+}
+
+const AssetImage* Sentence::getAssetImage() const noexcept
+{
+	return assetImage_;
 }
 
 AssetImage* Sentence::getAssetImage() noexcept
@@ -100,33 +120,63 @@ AssetImage* Sentence::getAssetImage() noexcept
 	return assetImage_; 
 }
 
-const AssetImage* Sentence::getAssetImage() const noexcept
-{ 
-	return assetImage_; 
-}
-
-QString Sentence::getAssetImageName() const noexcept
+void Sentence::setAssetImage(const QString& assetImageName, AssetImage* assetImage) noexcept
 {
-	return assetImageName_; 
-}
-
-void Sentence::setVoice(const QString& voiceName) noexcept
-{
-	Voice* newVoice = nullptr;
-	newVoice = Novel::getInstance().getVoice(voiceName);
-	if (newVoice == nullptr)
-		qCritical() << this << NovelLib::ErrorType::VoiceMissing << "Voice \"" << voiceName << "\" does not exist";
-	else
+	if (assetImage)
 	{
-		voiceName_ = voiceName;
-		voice_     = newVoice;
-		checkForErrors(true);
+		if (assetImage->name != assetImageName)
+		{
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "AssetImage's name missmatch (assetImageName=\"" + assetImageName + "\", assetImage->name=\"" + assetImage->name + "\")";
+			return;
+		}
 	}
+	else assetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
+
+	if (!assetImage)
+	{
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName + "\" does not exist";
+		return;
+	}
+	assetImageName_ = assetImageName;
+	assetImage_     = assetImage;
+	errorCheck(true);
 }
 
-Voice* Sentence::getVoice() noexcept
+QString Sentence::getCharacterName() const noexcept
 {
-	return voice_;
+	return characterName_;
+}
+
+const Character* Sentence::getCharacter() const noexcept
+{
+	return character_;
+}
+
+Character* Sentence::getCharacter() noexcept
+{
+	return character_;
+}
+
+void Sentence::setCharacter(const QString& characterName, Character* character) noexcept
+{
+	if (character)
+	{
+		if (character->name != characterName)
+		{
+			qCritical() << NovelLib::ErrorType::CharacterInvalid << "Character's name missmatch (characterName=\"" + characterName + "\", character->name=\"" + character->name + "\")";
+			return;
+		}
+	}
+
+	if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
+		qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName + "\" does not exist";
+	characterName_ = characterName_;
+	errorCheck(true);
+}
+
+QString Sentence::getVoiceName() const noexcept
+{
+	return voiceName_;
 }
 
 const Voice* Sentence::getVoice() const noexcept
@@ -134,19 +184,29 @@ const Voice* Sentence::getVoice() const noexcept
 	return voice_; 
 }
 
-QString Sentence::getVoiceName() const noexcept
-{ 
-	return voiceName_;
+Voice* Sentence::getVoice() noexcept
+{
+	return voice_;
 }
 
-void Sentence::serializableLoad(QDataStream& dataStream)
+void Sentence::setVoice(const QString& voiceName, Voice* voice) noexcept
 {
-	dataStream >> text >> displayedName >> characterName >> assetImageName_ >> voiceName_ >> cpsMultiplier >> cpsOverwrite >> bEndWithInput >> waitBeforeContinueTime;
+	if (voice)
+	{
+		if (voice->name != voiceName)
+		{
+			qCritical() << NovelLib::ErrorType::VoiceInvalid << "Voice's name missmatch (voiceName=\"" + voiceName + "\", voice->name=\"" + voice->name + "\")";
+			return;
+		}
+	}
+	else voice = Novel::getInstance().getVoice(voiceName);
 
-	voice_ = Novel::getInstance().getVoice(voiceName_);
-}
-
-void Sentence::serializableSave(QDataStream& dataStream) const
-{
-	dataStream << text << displayedName << characterName << voiceName_ << assetImageName_ << cpsMultiplier << cpsOverwrite << bEndWithInput << waitBeforeContinueTime;
+	if (!voice)
+	{
+		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName + "\" does not exist";
+		return;
+	}
+	voiceName_ = voiceName;
+	voice_     = voice;
+	errorCheck(true);
 }

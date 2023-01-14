@@ -7,17 +7,23 @@
 class ActionVisitorCorrectSounds;
 
 /// Holds data for QSoundEffect, to play some Sound
-struct Sound final
+class Sound final
 {
 	friend ActionVisitorCorrectSounds;
+	/// Swap trick
+	friend void swap(Sound& first, Sound& second) noexcept;
 public:
-	Sound()                                 = default;
+	Sound()                                 noexcept = default;
+	/// \param startDelay In milliseconds
+	/// \param bPersistToNewEvent Whether the Sound should be cut if user gets to the next Scene's Event before this SoundEffect has ended playing
 	/// \exception Error Couldn't find/read the File under `soundFilePath`
-	Sound(const QString& name, const QString& soundFilePath, AudioSettings audioSettings, uint startDelay, bool bPersistToNewEvent);
-	Sound(const Sound& obj)                 = default;
-	Sound& operator=(Sound obj) noexcept;
-	bool operator==(const Sound& obj) const noexcept;
-	bool operator!=(const Sound& obj) const = default;
+	explicit Sound(const QString& name, const QString& soundFilePath, AudioSettings audioSettings = AudioSettings(), uint startDelay = 0, bool bPersistToNewEvent = false);
+	Sound(const Sound& obj)                 noexcept = default;
+	Sound(Sound&& obj)                      noexcept = default;
+	Sound& operator=(const Sound& obj)      noexcept = default;
+	//Sound& operator=(Sound obj)             noexcept;
+	bool operator==(const Sound& obj) const noexcept = default;
+	bool operator!=(const Sound& obj) const noexcept = default;
 
 	/// \todo Setup audioSettings as well
 	/// \todo Connect with our new class
@@ -30,7 +36,7 @@ public:
 	/// \exception Error `soundFilePath` is invalid / Sound File's content cannot be read (whatever the reason)
 	/// \return Whether an Error has occurred
 	/// \todo check if the format is right
-	bool checkForErrors(bool bComprehensive = false) const;
+	bool errorCheck(bool bComprehensive = false) const;
 
 	QString name            = "";
 
@@ -40,9 +46,11 @@ public:
 
 	AudioSettings audioSettings;
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// In milliseconds
 	uint startDelay         = 0;
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Whether the Sound should be cut if user gets to the next Scene's Event before this SoundEffect has ended playing
 	bool bPersistToNewEvent = false;
 

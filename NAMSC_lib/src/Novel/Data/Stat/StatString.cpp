@@ -2,72 +2,76 @@
 
 #include "Exceptions.h"
 
-StatString::StatString(const QString& name, const QString& displayName, bool bShow, uint priority,
-					   const ShowNotification showNotification, const QString& value, uint maxChars) 
-	: Stat(name, displayName, bShow, priority, showNotification), value(value), maxChars(maxChars)
-{ 
-	checkForErrors(true);
-}
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
 
-StatString& StatString::operator=(StatString obj) noexcept
+void swap(StatString& first, StatString& second) noexcept
 {
-	if (this == &obj) return *this;
-
-	std::swap(this->name,             obj.name);
-	std::swap(this->displayName,      obj.displayName);
-	std::swap(this->bShow,            obj.bShow);
-	std::swap(this->priority,         obj.priority);
-	std::swap(this->showNotification, obj.showNotification);
-	std::swap(this->value,            obj.value);
-	std::swap(this->maxChars,         obj.maxChars);
-
-	return *this;
+	using std::swap;
+	//Static cast, because no check is needed and it's faster
+	swap(static_cast<Stat&>(first), static_cast<Stat&>(second));
+	swap(first.value,    second.value);
+	swap(first.maxChars, second.maxChars);
 }
 
-bool StatString::operator==(const StatString& obj) const noexcept
-{
-	if (this == &obj) return true;
-
-	return	Stat::operator==(obj)    &&
-			value    == obj.value    &&
-			maxChars == obj.maxChars;
-}
-
-bool StatString::checkForErrors(bool bComprehensive) const
-{
-	bool bError = false;
-
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		//todo: check evaulation
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive); 
-	if (bError)
-		qDebug() << "Error occurred in StatString::checkForErrors \"" << name << '\"';
-
-	return bError;
-}
-
-void StatString::setValueFromString(const QString& str)
+StatString::StatString(const QString& name, const QString& displayName, bool bShow, uint priority, const ShowNotification showNotification, const QString& value, uint maxChars) 
+	: Stat(name, displayName, bShow, priority, showNotification), 
+	value(value),
+	maxChars(maxChars)
 { 
-	value = str;
+	errorCheck(true);
 }
 
-NovelLib::SerializationID StatString::getType() const noexcept
-{ 
-	return NovelLib::SerializationID::StatString; 
-}
+//defaulted
+//StatString::StatString(const StatString& obj) noexcept
+//	: Stat(obj.name, obj.displayName, obj.bShow, obj.priority, obj.showNotification),
+//	value(obj.value),
+//	maxChars(obj.maxChars)
+//{
+//}
+
+//defaulted
+//bool StatString::operator==(const StatString& obj) const noexcept
+//{
+//	if (this == &obj) return true;
+//
+//	return Stat::operator==(obj)    &&
+//		   value    == obj.value    &&
+//		   maxChars == obj.maxChars;
+//}
 
 void StatString::serializableLoad(QDataStream& dataStream)
 {
 	Stat::serializableLoad(dataStream);
 	dataStream >> value >> maxChars;
-	//checkForErrors();
 }
 
 void StatString::serializableSave(QDataStream& dataStream) const
 {
 	Stat::serializableSave(dataStream);
 	dataStream << value << maxChars;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//StatString::StatString(StatString&& obj) noexcept
+//	: StatString()
+//{
+//	swap(*this, obj);
+//}
+
+//defaulted
+//StatString& StatString::operator=(StatString obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+NovelLib::SerializationID StatString::getType() const noexcept
+{ 
+	return NovelLib::SerializationID::StatString; 
 }

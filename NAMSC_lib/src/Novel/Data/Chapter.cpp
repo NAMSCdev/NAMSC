@@ -2,21 +2,71 @@
 
 #include "Novel/Data/Novel.h"
 
-Chapter::Chapter(const QString& name, const QString& parentName) : name(name)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(Chapter& first, Chapter& second) noexcept
+{
+	using std::swap;
+	swap(first.name,        second.name);
+	swap(first.parentName_, second.parentName_);
+	swap(first.parent_,     second.parent_);
+}
+
+Chapter::Chapter(const QString& name, const QString& parentName)
+	: name(name)
 {
 	setParent(parentName);
 }
 
-Chapter& Chapter::operator=(Chapter obj) noexcept
+//defaulted
+//Chapter::Chapter(const Chapter& obj) noexcept
+//	: name(obj.name),
+//	parentName_(obj.parentName_),
+//	parent_(obj.parent_)
+//{
+//}
+
+///defaulted
+//bool Chapter::operator==(const Chapter& obj) const noexcept
+//{
+//	if (this == &obj)
+//		return true;
+//
+//	return name        == obj.name        &&
+//		   parentName_ == obj.parentName_;
+//}
+
+void Chapter::serializableLoad(QDataStream& dataStream)
 {
-	if (this == &obj) return *this;
+	dataStream >> name >> parentName_;
 
-	std::swap(this->name,        obj.name);
-	std::swap(this->parentName_, obj.parentName_);
-	std::swap(this->parent_,     obj.parent_);
-
-	return *this; 
+	parent_ = Novel::getInstance().getChapter(parentName_);
 }
+
+void Chapter::serializableSave(QDataStream& dataStream) const
+{
+	dataStream << name << parentName_;
+}
+
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//Chapter::Chapter(Chapter&& obj) noexcept
+//	: Chapter()
+//{
+//	swap(*this, obj);
+//}
+
+//defaulted 
+//Chapter& Chapter::operator=(Chapter obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this; 
+//}
 
 bool Chapter::operator==(const QString& name) const noexcept
 {
@@ -28,24 +78,9 @@ bool Chapter::operator!=(const QString& name) const noexcept
 	return this->name != name;
 }
 
-void Chapter::setParent(const QString& parentName, Chapter* parent) noexcept
+QString Chapter::getParentName() const noexcept
 {
-	if (parent)
-	{
-		parentName_ = parentName;
-		parent_     = parent;
-		return;
-	}
-
-	Chapter* newParent = nullptr;
-	newParent = Novel::getInstance().getChapter(parentName);
-	if (newParent == nullptr)
-		qCritical() << this << NovelLib::ErrorType::ChapterMissing << "Chapter \"" << parentName << "\" does not exist";
-	else
-	{
-		parentName_ = parentName;
-		parent_     = newParent;
-	}
+	return parentName_;
 }
 
 const Chapter* Chapter::getParent() const noexcept
@@ -58,19 +93,23 @@ Chapter* Chapter::getParent() noexcept
 	return parent_;
 }
 
-QString Chapter::getParentName() const noexcept
+void Chapter::setParent(const QString& parentName, Chapter* parent) noexcept
 {
-	return parentName_;
-}
+	if (parent)
+	{
+		if (parent->name != parentName)
+		{
+			qCritical() << NovelLib::ErrorType::ChapterMissing << "Chapter's name missmatch (parentName=\"" + parentName + "\", parent->name=\"" + parent->name + "\")";
+			return;
+		}
+	}
+	else parent = Novel::getInstance().getChapter(parentName);
 
-void Chapter::serializableLoad(QDataStream& dataStream)
-{
-	dataStream >> name >> parentName_;
-
-	parent_ = Novel::getInstance().getChapter(parentName_);
-}
-
-void Chapter::serializableSave(QDataStream& dataStream) const
-{
-	dataStream << name << parentName_;
+	if (!parent)
+	{
+		qCritical() << NovelLib::ErrorType::ChapterMissing << "Chapter \"" + parentName + "\" does not exist";
+		return;
+	}
+	parentName_ = parentName;
+	parent_     = parent;
 }

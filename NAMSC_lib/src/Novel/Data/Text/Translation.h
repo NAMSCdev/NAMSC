@@ -6,21 +6,25 @@
 #include "Novel/Data/NovelSettings.h"
 
 /// Class representing every Speech that is to be spoken by a Character or Narrator
-/// [optional] It also contains duration of every word if it's to be voiced/slowed down
+/// [optional] It also contains duration of every word if it's to be voiced
 class Translation
 {
-	//Other Friends
+	//Other friends
 	friend class NovelSettings;
+	/// Swap trick
+	friend void swap(Translation& first, Translation& second) noexcept;
 public:
-	Translation()                                 = default;
-	Translation(const std::unordered_map<QString, QString>& translations);
-	Translation(const Translation& obj)           = default;
-	Translation& operator=(Translation obj) noexcept;
-	bool operator==(const Translation& obj) const = default;
-	bool operator!=(const Translation& obj) const = default; //{ return !(*this == obj); }
+	/// \param translations	Store text for different languages
+	Translation(const std::unordered_map<QString, QString>& translations = std::unordered_map<QString, QString>());
+	Translation(const Translation& obj)            noexcept = default;
+	Translation(Translation&& obj)                 noexcept = default;
+	Translation& operator=(const Translation& obj) noexcept = default;
+	//Translation& operator=(Translation obj)        noexcept;
+	bool operator==(const Translation& obj) const  noexcept = default;
+	bool operator!=(const Translation& obj) const  noexcept = default;
 
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive) const;
+	bool errorCheck(bool bComprehensive) const;
 
 	/// Returns the text in the given language
 	/// \param language Returns text in this language, or if it doesn't have it - in default one (`NovelSettings::defaultLanguage`)
@@ -41,6 +45,7 @@ private:
 	/// \param defaultLanguage Previous default language
 	void defaultLanguageChangeFix(const QString& newDefaultLanguage);
 
+	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Store text for different languages
 	std::unordered_map<QString, QString> /*textT*/translations_;
 

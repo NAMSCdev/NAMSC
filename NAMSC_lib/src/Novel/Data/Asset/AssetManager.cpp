@@ -1,179 +1,103 @@
 #include "Novel/Data/Asset/AssetManager.h"
 
-#include <QFile>
+#include "Helpers.h"
 
 AssetManager& AssetManager::getInstance() noexcept
 {
 	static AssetManager assetManager;
 	return assetManager;
-};
-
-void AssetManager::loadAllAssetsDefinitions()
-{
-	loadDefinitions("Assets/colorAnims.bin",		colorAnims_);
-	loadDefinitions("Assets/moveAnims.bin",			moveAnims_);
-	loadDefinitions("Assets/rotateAnims.bin",		rotateAnims_);
-	loadDefinitions("Assets/scaleAnims.bin",		scaleAnims_);
-	loadDefinitions("Assets/backgroundImages.bin",	backgroundImages_);
-	loadDefinitions("Assets/objectImages.bin",		objectImages_);
 }
 
-void AssetManager::saveAllAssetsDefinitions()
+AssetAnimColor* AssetManager::getAssetAnimColor(const QString& assetAnimColorName)
 {
-	saveDefinitions("Assets/colorAnims.bin",		colorAnims_);
-	saveDefinitions("Assets/moveAnims.bin",			moveAnims_);
-	saveDefinitions("Assets/rotateAnims.bin",		rotateAnims_);
-	saveDefinitions("Assets/scaleAnims.bin",		scaleAnims_);
-	saveDefinitions("Assets/backgroundImages.bin",	backgroundImages_);
-	saveDefinitions("Assets/objectImages.bin",		objectImages_);
+	return NovelLib::getFromNamedMap(colorAnims_, assetAnimColorName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetAnimColor* AssetManager::getAssetAnimColor(const QString& assetAnimColorName) noexcept
+AssetAnimMove* AssetManager::getAssetAnimMove(const QString& assetAnimMoveName)
 {
-	return getAsset<AssetAnimColor>(assetAnimColorName, colorAnims_);
+	return NovelLib::getFromNamedMap(moveAnims_, assetAnimMoveName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetAnimMove* AssetManager::getAssetAnimMove(const QString& assetAnimMoveName) noexcept
+AssetAnimRotate* AssetManager::getAssetAnimRotate(const QString& assetAnimRotateName)
 {
-	return getAsset<AssetAnimMove>(assetAnimMoveName, moveAnims_);
+	return NovelLib::getFromNamedMap(rotateAnims_, assetAnimRotateName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetAnimRotate* AssetManager::getAssetAnimRotate(const QString& assetAnimRotateName) noexcept
+AssetAnimScale* AssetManager::getAssetAnimScale(const QString& assetAnimScaleName)
 {
-	return getAsset<AssetAnimRotate>(assetAnimRotateName, rotateAnims_);
+	return NovelLib::getFromNamedMap(scaleAnims_, assetAnimScaleName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetAnimScale* AssetManager::getAssetAnimScale(const QString& assetAnimScaleName) noexcept
+AssetImage* AssetManager::getAssetImageSceneryBackground(const QString& assetImageName)
 {
-	return getAsset<AssetAnimScale>(assetAnimScaleName, scaleAnims_);
+	return NovelLib::getFromNamedMap(backgroundImages_, assetImageName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetImage* AssetManager::getAssetImageSceneryBackground(const QString& assetImageName) noexcept
+AssetImage* AssetManager::getAssetImageSceneryObject(const QString& assetImageName)
 {
-	return getAsset<AssetImage>(assetImageName, backgroundImages_);
+	return NovelLib::getFromNamedMap(objectImages_, assetImageName, "Asset", NovelLib::ErrorType::General, false);
 }
 
-AssetImage* AssetManager::getAssetImageSceneryObject(const QString& assetImageName) noexcept
+AssetAnimColor* AssetManager::addAssetAnimColor(const QString& name, uint size, uint pos, const QString& path)
 {
-	return getAsset<AssetImage>(assetImageName, objectImages_);
+	return NovelLib::addToNamedMap(colorAnims_, name, std::move(AssetAnimColor(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetAnimColor(const QString& assetAnimColor, uint size, uint pos, const QString& path) 
+AssetAnimScale* AssetManager::addAssetAnimMove(const QString& name, uint size, uint pos, const QString& path)
 {
-	insertAsset<AssetAnimColor>(assetAnimColor, size, pos, path, colorAnims_);
+	return NovelLib::addToNamedMap(moveAnims_, name, std::move(AssetAnimScale(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetAnimMove(const QString& name, uint size, uint pos, const QString& path)
+AssetAnimRotate* AssetManager::addAssetAnimRotate(const QString& name, uint size, uint pos, const QString& path)
 {
-	insertAsset<AssetAnimMove>(name, size, pos, path, moveAnims_);
+	return NovelLib::addToNamedMap(rotateAnims_, name, std::move(AssetAnimRotate(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetAnimRotate(const QString& name, uint size, uint pos, const QString& path)
+AssetAnimScale* AssetManager::addAssetAnimScale(const QString& name, uint size, uint pos, const QString& path)
 {
-	insertAsset<AssetAnimRotate>(name, size, pos, path, rotateAnims_);
+	return NovelLib::addToNamedMap(scaleAnims_, name, std::move(AssetAnimScale(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetAnimScale(const QString& name, uint size, uint pos, const QString& path)
+AssetImage* AssetManager::addAssetImageSceneryBackground(const QString& name, uint size, uint pos, const QString& path)
 {
-	insertAsset<AssetAnimScale>(name, size, pos, path, scaleAnims_);
+	return NovelLib::addToNamedMap(backgroundImages_, name, std::move(AssetImage(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetImageSceneryBackground(const QString& name, uint size, uint pos, const QString& path)
+AssetImage* AssetManager::addAssetImageSceneryObject(const QString& name, uint size, uint pos, const QString& path)
 {
-	insertAsset<AssetImage>(name, size, pos, path, backgroundImages_);
+	return NovelLib::addToNamedMap(objectImages_, name, std::move(AssetImage(name, size, pos, path)), "Asset", NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::insertAssetImageSceneryObject(const QString& name, uint size, uint pos, const QString& path)
+AssetAnimColor* AssetManager::renameAssetAnimColor(const QString& oldName, const QString& newName)
 {
-	insertAsset<AssetImage>(name, size, pos, path, objectImages_);
+	return NovelLib::renameInNamedMap(colorAnims_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
 }
 
-void AssetManager::saveAllAssets()
+AssetAnimScale* AssetManager::renameAssetAnimMove(const QString& oldName, const QString& newName)
 {
-	//for (std::pair<const QString, AssetAnimColor>& asset : colorAnims_)
-	//	asset.second.save();
-	//for (std::pair<const QString, AssetAnimMove>& asset : moveAnims_)
-	//	asset.second.save();
-	//for (std::pair<const QString, AssetAnimRotate>& asset : rotateAnims_)
-	//	asset.second.save();
-	//for (std::pair<const QString, AssetAnimScale>& asset : scaleAnims_)
-	//	asset.second.save();
-	//for (std::pair<const QString, AssetImage>& asset : backgroundImages_)
-	//	asset.second.save();
-	//for (std::pair<const QString, AssetImage>& asset : objectImages_)
-	//	asset.second.save();
+	return NovelLib::renameInNamedMap(moveAnims_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
+}
+
+AssetAnimRotate* AssetManager::renameAssetAnimRotate(const QString& oldName, const QString& newName)
+{
+	return NovelLib::renameInNamedMap(rotateAnims_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
+}
+
+AssetAnimScale* AssetManager::renameAssetAnimScale(const QString& oldName, const QString& newName)
+{
+	return NovelLib::renameInNamedMap(scaleAnims_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
+}
+
+AssetImage* AssetManager::renameAssetImageSceneryBackground(const QString& oldName, const QString& newName)
+{
+	return NovelLib::renameInNamedMap(backgroundImages_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
+}
+
+AssetImage* AssetManager::renameAssetImageSceneryObject(const QString& oldName, const QString& newName)
+{
+	return NovelLib::renameInNamedMap(objectImages_, oldName, newName, "Asset", NovelLib::ErrorType::General, NovelLib::ErrorType::General, false);
 }
 
 void AssetManager::correctAssets(QString name, uint oldSize, uint size, uint pos, QString path)
 {
-}
-
-template<typename AssetType>
-const AssetType* AssetManager::getAsset(const QString& name, const std::unordered_map<QString, AssetType>& map) const noexcept
-{
-	if (map.contains(name))
-		return &map[name];
-	return nullptr;
-}
-
-template<typename AssetType>
-AssetType* AssetManager::getAsset(const QString& name, std::unordered_map<QString, AssetType>& map) noexcept
-{
-	if (map.contains(name))
-		return &map[name];
-	return nullptr;
-}
-
-template<typename AssetType>
-void AssetManager::insertAsset(const QString& name, uint size, uint pos, const QString& path, std::unordered_map<QString, AssetType>& map)
-{
-	if (map.contains(name))
-		qCritical() << this << NovelLib::ErrorType::General << "An Asset with name (object's name: \"" << name << "\") already exists!";
-	map.insert(std::make_pair(name, std::move(AssetType(name, size, pos, path))));
-}
-
-template<typename AssetType>
-void AssetManager::loadDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map)
-{
-	QFile file(path);
-	if (!file.open(QIODevice::ReadOnly))
-	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not open the File \"" << path << "\": ";
-		return;
-	}
-	try
-	{
-		QDataStream dataStream(&file);
-		while (!dataStream.atEnd())
-		{
-			AssetType asset;
-			dataStream >> asset;
-			map.insert(std::make_pair<QString, AssetType>(QString(asset.name), std::move(asset)));
-		}
-	}
-	catch (QException exception)
-	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not read from File \"" << path << "\": " << exception.what();
-	}
-}
-
-template<typename AssetType>
-void AssetManager::saveDefinitions(const QString& path, std::unordered_map<QString, AssetType>& map)
-{
-	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		qCritical() << this << NovelLib::ErrorType::General << "Couldn't open \"" << path << "\" File";
-		return;
-	}
-	try
-	{
-		QDataStream dataStream(&file);
-		//for (const std::pair<const QString, AssetType>& asset : map)
-		//	dataStream << asset.second;
-	}
-	catch (QException& exception)
-	{
-		qCritical() << this << NovelLib::ErrorType::General << "Could not write to File \"" << path << "\": " << exception.what();
-	}
 }

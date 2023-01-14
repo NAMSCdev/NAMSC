@@ -2,22 +2,26 @@
 
 #include <QString>
 
-/// [optional] The additonal label of a Scene, which allows us to put Scenes into easier managable bins
-struct Chapter
+/// The additonal label of a Scene, which allows us to put Scenes into easier managable bins
+class Chapter
 {
-    Chapter() = default;
-    Chapter(const QString& name, const QString& parentName);
-    Chapter(const Chapter& obj) = default;
-    Chapter& operator=(Chapter obj) noexcept;
+    /// Swap trick
+    friend void swap(Chapter& first, Chapter& second) noexcept;
+public:
+    Chapter(const QString& name = "", const QString& parentName = "");
+    Chapter(const Chapter& obj)                noexcept = default;
+    Chapter(Chapter&& obj)                     noexcept = default;
+    Chapter& operator=(const Chapter &obj)     noexcept = default;
+    //Chapter& operator=(Chapter obj)            noexcept = default;
     bool operator==(const QString& name) const noexcept;
-    bool operator==(const Chapter& obj) const = default;
+    bool operator==(const Chapter& obj)  const noexcept = default;
     bool operator!=(const QString& name) const noexcept;
-    bool operator!=(const Chapter& obj) const = default;
+    bool operator!=(const Chapter& obj)  const noexcept = default;
 
-    void setParent(const QString& parentName, Chapter* parent = nullptr) noexcept;
+    QString getParentName()    const noexcept;
     const Chapter* getParent() const noexcept;
-    Chapter* getParent() noexcept;
-    QString getParentName() const noexcept;
+    Chapter*       getParent()       noexcept;
+    void setParent(const QString& parentName, Chapter* parent = nullptr) noexcept;
 
     QString name         = "";
 

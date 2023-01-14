@@ -44,7 +44,7 @@ public:
     virtual void visitActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove* action)    {}
     virtual void visitActionSceneryObjectAnimRotate(ActionSceneryObjectAnimRotate* action){}
     virtual void visitActionSceneryObjectAnimScale(ActionSceneryObjectAnimScale* action)  {}
-    virtual void visitActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade* action){}
+    virtual void visitActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade* action)    {}
                                                                                         
     virtual void visitActionSceneryObjectSetImage(ActionSceneryObjectSetImage* action)    {}
     virtual void visitActionCharacterSetVoice(ActionCharacterSetVoice* action)            {}

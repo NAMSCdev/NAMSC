@@ -51,7 +51,7 @@ void ActionVisitorCorrectAssetAnimColor::visitActionSceneryObjectAnimColor(Actio
 		action->assetAnim_ = nullptr;
 		action->assetAnim_ = AssetManager::getInstance().getAssetAnimColor(newAssetName_);
 		if (action->assetAnim_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" << newAssetName_ << "\" does not exist. Asset replacement failed";
+			qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Color AssetAnim \"" + newAssetName_ + "\" does not exist. Asset replacement failed";
 	}
 }
 
@@ -63,7 +63,7 @@ void ActionVisitorCorrectAssetAnimMove::visitActionSceneryObjectAnimMove(ActionS
 		action->assetAnim_ = nullptr;
 		action->assetAnim_ = AssetManager::getInstance().getAssetAnimMove(newAssetName_);
 		if (action->assetAnim_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" << newAssetName_ << "\" does not exist. Asset replacement failed";
+			qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Move AssetAnim \"" + newAssetName_ + "\" does not exist. Asset replacement failed";
 	}
 }
 
@@ -75,7 +75,7 @@ void ActionVisitorCorrectAssetAnimRotate::visitActionSceneryObjectAnimRotate(Act
 		action->assetAnim_ = nullptr;
 		action->assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(newAssetName_);
 		if (action->assetAnim_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" << newAssetName_ << "\" does not exist. Asset replacement failed";
+			qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Rotate AssetAnim \"" + newAssetName_ + "\" does not exist. Asset replacement failed";
 	}
 }
 
@@ -92,7 +92,7 @@ void ActionVisitorCorrectAssetAnimScale::visitActionSceneryObjectAnimScale(Actio
 		action->assetAnim_ = nullptr;
 		action->assetAnim_ = AssetManager::getInstance().getAssetAnimScale(newAssetName_);
 		if (action->assetAnim_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" << newAssetName_ << "\" does not exist. Asset replacement failed";
+			qCritical() << NovelLib::ErrorType::AssetAnimMissing << "Scale AssetAnim \"" + newAssetName_ + "\" does not exist. Asset replacement failed";
 	}
 }
 
@@ -118,7 +118,7 @@ void ActionVisitorCorrectBackgroundAssetImage::visitActionSetBackground(ActionSe
 		action->assetImage_ = nullptr;
 		action->assetImage_ = AssetManager::getInstance().getAssetImageSceneryBackground(newAssetName_);
 		if (action->assetImage_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << newAssetName_ << "\" does not exist. Definition file might be corrupted";
+			qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + newAssetName_ + "\" does not exist. Definition file might be corrupted";
 	}
 }
 
@@ -130,6 +130,6 @@ void ActionVisitorCorrectSceneryObjectAssetImage::visitActionSceneryObjectSetIma
 		action->assetImage_ = nullptr;
 		action->assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(newAssetName_);
 		if (action->assetImage_ == nullptr)
-			qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" << newAssetName_ << "\" does not exist. Definition file might be corrupted";
+			qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + newAssetName_ + "\" does not exist. Definition file might be corrupted";
 	}
 }

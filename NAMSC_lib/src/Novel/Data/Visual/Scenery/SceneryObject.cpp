@@ -1,147 +1,106 @@
 #include "Novel/Data/Visual/Scenery/SceneryObject.h"
 
-SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, const QPoint pos, const QSize scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible)
-	: name(name), assetImageName_(assetImageName), pos(pos), scale(scale), rotationDegree(rotationDegree), colorMultiplier(colorMultiplier), alphaMultiplier(alphaMultiplier), bVisible(bVisible)
+//If you add/remove a member field, remember to update these
+//  MEMBER_FIELD_SECTION_CHANGE BEGIN
+
+void swap(SceneryObject& first, SceneryObject& second) noexcept
 {
-	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
-	SceneryObject::checkForErrors(true);
+	using std::swap;
+	swap(first.name,            second.name);
+	swap(first.assetImageName_, second.assetImageName_);
+	swap(first.bMirrored,       second.bMirrored);
+	swap(first.pos,             second.pos);
+	swap(first.scale,           second.scale);
+	swap(first.rotationDegree,  second.rotationDegree);
+	swap(first.colorMultiplier, second.colorMultiplier);
+	swap(first.alphaMultiplier, second.alphaMultiplier);
+	swap(first.bVisible,        second.bVisible);
+	swap(first.assetImage_,     second.assetImage_);
 }
 
-SceneryObject::SceneryObject(const SceneryObject& obj) noexcept
-	: name(obj.name), 
-	  assetImageName_(obj.assetImageName_), 
-	  pos(obj.pos), 
-	  scale(obj.scale),
-	  rotationDegree(obj.rotationDegree),
-	  colorMultiplier(obj.colorMultiplier), 
-	  alphaMultiplier(obj.alphaMultiplier),
-	  bVisible(obj.bVisible)
+SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, bool bMirrored, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, AssetImage* assetImage)
+	: name(name), 
+	assetImageName_(assetImageName),
+	bMirrored(bMirrored),
+	pos(pos),
+	scale(scale),
+	rotationDegree(rotationDegree), 
+	colorMultiplier(colorMultiplier), 
+	alphaMultiplier(alphaMultiplier), 
+	bVisible(bVisible),
+	assetImage_(assetImage)
 {
+	if (!assetImage_)
+		assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
+	SceneryObject::errorCheck(true);
 }
 
-
-SceneryObject& SceneryObject::operator=(SceneryObject obj) noexcept
-{ 
-	if (this == &obj) return *this;
-
-	std::swap(this->name,            obj.name);
-	std::swap(this->assetImageName_, obj.assetImageName_);
-	std::swap(this->assetImage_,     obj.assetImage_);
-	std::swap(this->pos,             obj.pos);
-	std::swap(this->scale,           obj.scale);
-	std::swap(this->rotationDegree,  obj.rotationDegree);
-	std::swap(this->colorMultiplier, obj.colorMultiplier);
-	std::swap(this->alphaMultiplier, obj.alphaMultiplier);
-	std::swap(this->bVisible,        obj.bVisible);
-
-	return *this; 
-}
+//defaulted
+//SceneryObject::SceneryObject(const SceneryObject& obj) noexcept
+//	: name(obj.name), 
+//	assetImageName_(obj.assetImageName_), 
+//	bMirrored(obj.bMirrored),
+//	pos(obj.pos), 
+//	scale(obj.scale),
+//	rotationDegree(obj.rotationDegree),
+//	colorMultiplier(obj.colorMultiplier), 
+//	alphaMultiplier(obj.alphaMultiplier),
+//	bVisible(obj.bVisible),
+//	assetImage_(obj.assetImage_)
+//{
+//}
 
 bool SceneryObject::operator==(const SceneryObject& obj) const noexcept
 {
 	if (this == &obj)
 		return true;
 
-	return  name            == obj.name            &&
-			assetImageName_ == obj.assetImageName_ &&
-			pos             == obj.pos             &&
-			scale           == obj.scale           &&
-			rotationDegree  == obj.rotationDegree  &&
-			colorMultiplier == obj.colorMultiplier &&
-			alphaMultiplier == obj.alphaMultiplier && 
-			bVisible        == obj.bVisible;
+	return name            == obj.name            &&
+		   assetImageName_ == obj.assetImageName_ &&
+		   bMirrored       == obj.bMirrored       &&
+		   pos             == obj.pos             &&
+		   scale           == obj.scale           &&
+		   rotationDegree  == obj.rotationDegree  &&
+		   colorMultiplier == obj.colorMultiplier &&
+		   alphaMultiplier == obj.alphaMultiplier && 
+		   bVisible        == obj.bVisible;
 }
 
-bool SceneryObject::checkForErrors(bool bComprehensive) const
+void SceneryObject::serializableLoad(QDataStream& dataStream)
 {
-	bool bError = false;
+	dataStream >> name >> assetImageName_ >> bMirrored >> pos >> scale >> rotationDegree >> colorMultiplier[0] >> colorMultiplier[1] >> colorMultiplier[2] >> colorMultiplier[3] >> alphaMultiplier >> bVisible;
 
-	static auto errorChecker = [&](bool bComprehensive)
-	{
-		if (assetImage_ == nullptr)
-		{
-			bError = true;
-			qCritical() << this << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ == "")
-				qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" << assetImageName_ << "\" does not exist. Definition file might be corrupted";
-		}
-		else
-			bError |= assetImage_->checkForErrors(bComprehensive);
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "Error occurred in SceneryObject::checkForErrors (object's name: \"" << name << ")\"";
-
-	return bError;
+	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
+	SceneryObject::errorCheck();
 }
 
-void SceneryObject::run()
+void SceneryObject::serializableSave(QDataStream& dataStream) const
 {
-	for (AnimatorSceneryObjectColor& animator : animatorsColor_)
-		animator.run();
-
-	for (AnimatorSceneryObjectFade& animator : animatorsFade_)
-		animator.run();
-
-	for (AnimatorSceneryObjectRotate& animator : animatorsRotate_)
-		animator.run();
-
-	for (AnimatorSceneryObjectMove& animator : animatorsMove_)
-		animator.run();
-
-	for (AnimatorSceneryObjectScale& animator : animatorsScale_)
-		animator.run();
+	dataStream << name << assetImageName_ << bMirrored << pos << scale << rotationDegree << colorMultiplier[0] << colorMultiplier[1] << colorMultiplier[2] << colorMultiplier[3] << alphaMultiplier << bVisible;
 }
 
-void SceneryObject::update(uint elapsedTime)
+//  MEMBER_FIELD_SECTION_CHANGE END
+
+//defaulted
+//SceneryObject::SceneryObject(SceneryObject&& obj) noexcept
+//	: SceneryObject()
+//{
+//	swap(*this, obj);
+//}
+
+//defaulted
+//SceneryObject& SceneryObject::operator=(SceneryObject obj) noexcept
+//{
+//	if (this == &obj) return *this;
+//
+//	swap(*this, obj);
+//
+//	return *this;
+//}
+
+QString SceneryObject::getAssetImageName() const noexcept
 {
-	if (playedAnimatorColorIndex_ != -1)
-		if (animatorsColor_[playedAnimatorColorIndex_].update(elapsedTime))
-			if (++playedAnimatorColorIndex_ > animatorsColor_.size())
-				playedAnimatorColorIndex_ = -1;
-
-	if (playedAnimatorFadeIndex_ != -1)
-		if (animatorsFade_[playedAnimatorFadeIndex_].update(elapsedTime))
-			if (++playedAnimatorFadeIndex_ > animatorsFade_.size())
-				playedAnimatorFadeIndex_ = -1;
-
-	if (playedAnimatorMoveIndex_ != -1)
-		if (animatorsMove_[playedAnimatorMoveIndex_].update(elapsedTime))
-			if (++playedAnimatorMoveIndex_ > animatorsMove_.size())
-				playedAnimatorMoveIndex_ = -1;
-
-	if (playedAnimatorRotateIndex_ != -1)
-		if (animatorsRotate_[playedAnimatorRotateIndex_].update(elapsedTime))
-			if (++playedAnimatorRotateIndex_ > animatorsRotate_.size())
-				playedAnimatorRotateIndex_ = -1;
-
-	if (playedAnimatorScaleIndex_ != -1)
-		if (animatorsScale_[playedAnimatorScaleIndex_].update(elapsedTime))
-			if (++playedAnimatorScaleIndex_ > animatorsScale_.size())
-				playedAnimatorScaleIndex_ = -1;
-}
-
-void SceneryObject::setAssetImage(const QString& assetImageName, AssetImage* assetImage) noexcept
-{
-	if (assetImage != nullptr)
-	{
-		assetImageName_ = assetImageName;
-		assetImage_     = assetImage;
-		checkForErrors(true);
-		return;
-	}
-
-	AssetImage* newAssetImage = nullptr;
-	newAssetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
-	if (newAssetImage == nullptr)
-		qCritical() << this << NovelLib::ErrorType::AssetImageMissing << "AssetImage \"" << assetImageName << "\" does not exist";
-	else
-	{
-		assetImageName_ = assetImageName;
-		assetImage_     = newAssetImage;
-		checkForErrors(true);
-	}
+	return assetImageName_;
 }
 
 const AssetImage* SceneryObject::getAssetImage() const noexcept
@@ -154,9 +113,26 @@ AssetImage* SceneryObject::getAssetImage() noexcept
 	return assetImage_;
 }
 
-QString SceneryObject::getAssetImageName() noexcept
+void SceneryObject::setAssetImage(const QString& assetImageName, AssetImage* assetImage) noexcept
 {
-	return assetImageName_;
+	if (assetImage)
+	{
+		if (assetImage->name != assetImageName)
+		{
+			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "AssetImage's name missmatch (assetImageName=\"" + assetImageName + "\", assetImage->name=\"" + assetImage->name + "\")";
+			return;
+		}
+	}
+	else assetImage = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName);
+
+	if (!assetImage)
+	{
+		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName + "\" does not exist";
+		return;
+	}
+	assetImageName_ = assetImageName;
+	assetImage_     = assetImage;
+	errorCheck(true);
 }
 
 void SceneryObject::addAnimator(AnimatorSceneryObjectColor&& animatorColor)
@@ -196,29 +172,9 @@ void SceneryObject::addAnimator(AnimatorSceneryObjectScale&& animatorScale)
 
 void SceneryObject::resetAnimators()
 {
-	animatorsColor_.clear();
-	animatorsFade_.clear();
-	animatorsMove_.clear();
+	animatorsColor_ .clear();
+	animatorsFade_  .clear();
+	animatorsMove_  .clear();
 	animatorsRotate_.clear();
-	animatorsScale_.clear();
-}
-
-/// \exception Error Couldn't load the `assetImage_`
-void SceneryObject::ensureResourcesAreLoaded()
-{
-	if (assetImage_ && !assetImage_->isLoaded())
-		assetImage_->load();
-}
-
-void SceneryObject::serializableLoad(QDataStream& dataStream)
-{
-	dataStream >> name >> assetImageName_ >> pos >> scale >> rotationDegree >> colorMultiplier[0] >> colorMultiplier[1] >> colorMultiplier[2] >> colorMultiplier[3] >> alphaMultiplier >> bVisible;
-
-	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
-	SceneryObject::checkForErrors();
-}
-
-void SceneryObject::serializableSave(QDataStream& dataStream) const
-{
-	dataStream << name << assetImageName_ << pos << scale << rotationDegree << colorMultiplier[0] << colorMultiplier[1] << colorMultiplier[2] << colorMultiplier[3] << alphaMultiplier << bVisible;
+	animatorsScale_ .clear();
 }

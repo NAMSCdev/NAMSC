@@ -9,29 +9,34 @@
 /// Overwrites current `sounds` in the Scenery, which contains Sounds queued to be played after `startDelay` milliseconds have passed
 class ActionAudioSetSounds final : public ActionAudio
 {
-	friend class ActionVisitorCorrectSounds;
+	friend ActionVisitorCorrectSounds;
+	/// Swap trick
+	friend void swap(ActionAudioSetSounds& first, ActionAudioSetSounds& second) noexcept;
 public:
-	ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene) noexcept;
+	explicit ActionAudioSetSounds(Event* const parentEvent)          noexcept;
 	/// \exception Error Couldn't find/read the SoundEffects' files
-	ActionAudioSetSounds(Event* const parentEvent, Scene* const parentScene, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds);
-	ActionAudioSetSounds(const ActionAudioSetSounds& obj) = delete;
-	ActionAudioSetSounds& operator=(const ActionAudioSetSounds& obj) noexcept;
-	bool operator==(const ActionAudioSetSounds& obj) const noexcept;
-	bool operator!=(const ActionAudioSetSounds& obj) const = default; //{ return !(*this == obj); }
+	ActionAudioSetSounds(Event* const parentEvent, const AudioSettings& audioSettings, const std::unordered_map<QString, Sound>& sounds = std::unordered_map<QString, Sound>());
+	ActionAudioSetSounds(const ActionAudioSetSounds& obj)            noexcept = delete;
+	ActionAudioSetSounds(ActionAudioSetSounds&& obj)                 noexcept;
+	ActionAudioSetSounds& operator=(const ActionAudioSetSounds& obj) noexcept = delete;
+	//ActionAudioSetSounds& operator=(ActionAudioSetSounds obj)        noexcept;
+	bool operator==(const ActionAudioSetSounds& obj) const           noexcept = delete;
+	bool operator!=(const ActionAudioSetSounds& obj) const           noexcept = delete;
 
 	/// \exception Error Some of Sounds in `sounds` container are invalid
 	/// \return Whether an Error has occurred
-	bool checkForErrors(bool bComprehensive = false) const;
+	bool errorCheck(bool bComprehensive = false) const override;
 
 	void ensureResourcesAreLoaded();
 
 	void run() override;
 
-	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read
-	void setOnRunListener(std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun) noexcept;
+	/// Sets a function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	void setOnRunListener(std::function<void(const Event* const parentEvent, const std::unordered_map<QString, Sound>* const sounds)> onRun) noexcept;
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
+	/// TODO: make it private and create setters/getters
 	std::unordered_map<QString, Sound> sounds;
 
 private:
@@ -39,8 +44,8 @@ private:
 	/// \return NovelLib::SerializationID corresponding to the class of a serialized object
 	NovelLib::SerializationID getType() const noexcept override;
 	
-	/// A function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read
-	std::function<void(Event* const parentEvent, Scene* const parentScene, std::unordered_map<QString, Sound>* sound)> onRun_ = nullptr;
+	/// A function pointer that is called (if not nullptr) after the ActionAudioSetSounds's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
+	std::function<void(const Event* const parentEvent, const std::unordered_map<QString, Sound>* const sounds)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---
