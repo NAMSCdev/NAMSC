@@ -32,12 +32,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;qml;widgets;opengl;multimedia;openglwidgets</QtModules>
+    <QtModules>core;gui;widgets;opengl;multimedia;openglwidgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;qml;widgets;opengl;multimedia;openglwidgets</QtModules>
+    <QtModules>core;gui;widgets;opengl;multimedia;openglwidgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -106,10 +106,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="MainWindow.qrc" />
-    <QtUic Include="MainWindow.ui" />
-    <QtMoc Include="MainWindow.h" />
-    <ClCompile Include="MainWindow.cpp" />
+    <QtRcc Include="NAMSC_engine.qrc" />
+    <QtUic Include="NAMSC_engine.ui" />
+    <QtMoc Include="NAMSC_engine.h" />
+    <ClCompile Include="NAMSC_engine.cpp" />
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_engine.ico" />
     <ResourceCompile Include="NAMSC_engine.rc" />
