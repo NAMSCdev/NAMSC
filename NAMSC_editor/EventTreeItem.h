@@ -5,6 +5,7 @@
 #include "QVariant"
 #include "Novel/Event/Event.h"
 #include "Novel/SceneComponent.h"
+#include "EventTreeItem.h"
 
 class EventTreeItem
 {

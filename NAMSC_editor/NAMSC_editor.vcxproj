@@ -163,7 +163,7 @@
     <QtMoc Include="CharacterTree.h" />
     <QtMoc Include="CharacterTreeWidgetItem.h" />
     <ClInclude Include="EventTreeItem.h" />
-    <ClInclude Include="EventTreeItemModel.h" />
+    <QtMoc Include="EventTreeItemModel.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
     <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />

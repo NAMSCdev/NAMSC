@@ -5,6 +5,8 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Data/Scene.h"
 #include "Novel/Event/EventDialogue.h"
+#include "Novel/Event/EventChoice.h"
+#include "Novel/Event/EventJump.h"
 
 EventTreeItemModel::EventTreeItemModel(const QString& data, QObject* parent)
     : QAbstractItemModel(parent)
@@ -75,6 +77,49 @@ void EventTreeItemModel::nodeSelectionChanged(GraphNode* node)
     setupModelData(Novel::getInstance().getScene(node->getLabel()));
 }
 
+void EventTreeItemModel::sceneUpdated(Scene* scene)
+{
+    qDebug() << "Scene updated";
+    setupModelData(Novel::getInstance().getScene(scene->getName()));
+}
+
+void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
+{
+    if(selected.size() > 0)
+    {
+        QModelIndex index = selected.indexes().at(0);
+        qDebug() << data(index, Qt::DisplayRole);
+        EventTreeItem* item = static_cast<EventTreeItem*>(index.internalPointer());
+        switch(item->component->getType())
+        {
+        case SCENE:
+            qDebug() << item->component->getName();
+            emit propertyTabChangeRequested(static_cast<Scene*>(item->component), PropertyTypes::Scene);
+            break;
+        case EVENT:
+            switch(item->component->getEventType())
+            {
+            case EventSubType::EVENT_DIALOG:
+                emit propertyTabChangeRequested(static_cast<EventDialogue*>(item->component), PropertyTypes::DialogEventItem);
+                break;
+            case EventSubType::EVENT_JUMP:
+                emit propertyTabChangeRequested(static_cast<EventJump*>(item->component), PropertyTypes::JumpEventItem);
+                break;
+            case EventSubType::EVENT_CHOICE:
+                emit propertyTabChangeRequested(static_cast<EventChoice*>(item->component), PropertyTypes::ChoiceEventItem);
+                break;
+            }
+            break;
+        case OBJECT:
+            emit propertyTabChangeRequested(item->component, PropertyTypes::CharacterTreeItem);
+            break;
+        case CHARACTER:
+            emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectTreeItem);
+            break;
+        }
+    }
+}
+
 QVariant EventTreeItemModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
@@ -87,8 +132,7 @@ QVariant EventTreeItemModel::data(const QModelIndex& index, int role) const
         return QVariant();
 
     EventTreeItem* item = static_cast<EventTreeItem*>(index.internalPointer());
-
-    qDebug() << "EventTreeItemModel::data " << item->data(0);
+    
     return item->data(index.column());
 }
 
@@ -117,6 +161,7 @@ void EventTreeItemModel::appendEvent(Event* event, EventTreeItem* parentScene)
     EventTreeItem* eventItem = new EventTreeItem(event, parentScene);
     parentScene->appendChild(eventItem);
 
+
     /* where are objects held?
     for (int i = 0; i < event->getObjects()->size(); i++)
     {
@@ -130,44 +175,14 @@ void EventTreeItemModel::setupModelData(Scene* scene)
     beginResetModel();
     if(rootItem->childCount()!=0) rootItem->removeChild(0);
     SceneComponent* rootComponent = dynamic_cast<SceneComponent*>(scene);
-    qDebug() << rootComponent->getName() << " " << rootComponent->getTypeName();
+    qDebug() << "Setting EventsTree with root: " << rootComponent->getName() << " " << rootComponent->getTypeName();
     EventTreeItem* sceneItem = new EventTreeItem(scene, rootItem);
     rootItem->appendChild(sceneItem);
-    qDebug() << rowCount();
     rootItem->child(0)->data(0);
     for (int i = 0 ; i < scene->getEvents()->size() ; i++)
     {
         appendEvent(scene->getEvents()->at(i).get(), sceneItem);
     }
+    
     endResetModel();
-    
-    /*
-    auto dialogue1 = new EventDialogue(dynamic_cast<Scene*>(sceneItem->component));
-    dialogue1->label = "Test Event";
-    dialogue1->sentences.emplace_back(dialogue1, dialogue1->parentScene_);
-    auto eventItem1 = new EventTreeItem(dialogue1, sceneItem);
-    sceneItem->appendChild(eventItem1);
-
-
-    auto dialogue2 = new EventDialogue(dynamic_cast<Scene*>(sceneItem->component));
-    dialogue2->label = "Test Event 2";
-    dialogue2->sentences.emplace_back(dialogue2, dialogue2->parentScene_);
-    auto eventItem2 = new EventTreeItem(dialogue1, sceneItem);
-    sceneItem->appendChild(eventItem2);
-    */
-    
-    /*
-    auto event2 = new EventTreeItem({ tr("Event2"), tr("Summary") }, sceneItem);
-    sceneItem->appendChild(event2);
-
-    auto event3 = new EventTreeItem({ tr("Event3"), tr("Summary") }, sceneItem);
-    sceneItem->appendChild(event3);
-
-    event2->appendChild(new EventTreeItem({ tr("Character1"), tr("Summary") }, event2));
-    event2->appendChild(new EventTreeItem({ tr("Object1"), tr("Summary") }, event2));
-    event2->appendChild(new EventTreeItem({ tr("Object1"), tr("Summary") }, event2));
-
-    eventItem1->appendChild(new EventTreeItem({ tr("Character1"), tr("Summary") }, eventItem1));
-    eventItem1->appendChild(new EventTreeItem({ tr("Object1"), tr("Summary") }, eventItem1));
-    */
 }

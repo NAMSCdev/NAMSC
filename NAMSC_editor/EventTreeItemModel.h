@@ -3,6 +3,7 @@
 
 #include "EventTreeItem.h"
 #include "GraphNode.h"
+#include "PropertyTypes.h"
 #include "Novel/Event/Event.h"
 #include "QVariant"
 #include "QObject"
@@ -10,6 +11,7 @@
 class EventTreeItemModel :
     public QAbstractItemModel
 {
+    Q_OBJECT
 public:
     explicit EventTreeItemModel(const QString& data, QObject* parent = nullptr);
     ~EventTreeItemModel();
@@ -26,10 +28,13 @@ public:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
-public slots:
+public Q_SLOTS:
+    void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     void nodeSelectionChanged(GraphNode* node);
+    void sceneUpdated(Scene* scene);
 
-
+signals:
+    void propertyTabChangeRequested(void* object, PropertyTypes dataType);
 private:
     void setupModelData(Scene* scene);
     EventTreeItem* rootItem;

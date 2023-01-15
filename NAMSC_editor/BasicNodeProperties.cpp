@@ -59,8 +59,10 @@ void BasicNodeProperties::updateLabelInNode()
 		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
 		return;
 	}
-
-	Novel::getInstance().getScene(currentlySelectedNode->getLabel())->name = lineEditText; // todo remember to change key
+    QString oldName = Novel::getInstance().getScene(currentlySelectedNode->getLabel())->getName();
+	//Novel::getInstance().getScene(currentlySelectedNode->getLabel())->name = lineEditText; // todo remember to change key
+    Novel::getInstance().renameScene(oldName, lineEditText);
 	currentlySelectedNode->setLabel(lineEditText);
-	currentlySelectedNode->update();
+    currentlySelectedNode->update();
+    emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
 }

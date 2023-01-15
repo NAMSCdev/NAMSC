@@ -175,17 +175,17 @@
     <ClCompile Include="JumpEventProperties.cpp">
       <Filter>Source Files\Properties\Events</Filter>
     </ClCompile>
-    <ClCompile Include="EventTreeItem.cpp">
-      <Filter>Source Files\BottomPanel</Filter>
-    </ClCompile>
-    <ClCompile Include="EventTreeItemModel.cpp">
-      <Filter>Source Files\BottomPanel</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterTreeWidgetItem.cpp">
       <Filter>Source Files\LeftPanelTabs</Filter>
     </ClCompile>
     <ClCompile Include="CharacterTree.cpp">
       <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTreeItemModel.cpp">
+      <Filter>Source Files\BottomPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTreeItem.cpp">
+      <Filter>Source Files\BottomPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +252,9 @@
     <QtMoc Include="CharacterTreeWidgetItem.h">
       <Filter>Header Files\LeftPanelTabs</Filter>
     </QtMoc>
+    <QtMoc Include="EventTreeItemModel.h">
+      <Filter>Header Files\BottomPanel</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphNodeBody.h">
@@ -282,9 +285,6 @@
       <Filter>Header Files\LeftPanelTabs</Filter>
     </ClInclude>
     <ClInclude Include="EventTreeItem.h">
-      <Filter>Header Files\BottomPanel</Filter>
-    </ClInclude>
-    <ClInclude Include="EventTreeItemModel.h">
       <Filter>Header Files\BottomPanel</Filter>
     </ClInclude>
   </ItemGroup>

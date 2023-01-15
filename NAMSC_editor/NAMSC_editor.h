@@ -1,10 +1,6 @@
 #pragma once
 
 #include <QFileSystemModel>
-#include <QtWidgets/QMainWindow>
-#include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QMimeDatabase>
 
 #include "GraphNode.h"
 #include "ui_NAMSC_editor.h"
