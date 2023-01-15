@@ -26,8 +26,22 @@ bool Asset::errorCheck(bool bComprehensive) const
 	return bError;
 }
 
-//template<typename AnimNode>
-//bool AssetAnim<AnimNode>::errorCheck(bool bComprehensive) const
+template<typename AnimNode>
+bool AssetAnim<AnimNode>::errorCheck(bool bComprehensive) const
+{
+	bool bError = Asset::errorCheck(bComprehensive);
+
+	auto errorChecker = [this](bool bComprehensive)
+	{
+		//todo: check timeStamps
+	};
+
+	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
+	if (bError)
+		qDebug() << "Error occurred in AssetAnim::errorCheck \"" + name + '\"';
+
+	return bError;
+}
 
 bool AssetImage::errorCheck(bool bComprehensive) const
 {
@@ -56,3 +70,5 @@ bool AssetImage::errorCheck(bool bComprehensive) const
 
 	return bError;
 }
+
+#include "Novel/Data/Asset/AssetAnimInstances.h"

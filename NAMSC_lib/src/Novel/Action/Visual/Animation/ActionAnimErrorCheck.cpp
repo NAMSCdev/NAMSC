@@ -7,7 +7,7 @@ bool ActionSceneryObjectAnim<AnimNode>::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObject::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (assetAnim_ == nullptr)
 		{
@@ -29,7 +29,7 @@ bool ActionSceneryObjectAnimColor::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -44,7 +44,7 @@ bool ActionSceneryObjectAnimFade::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -60,7 +60,7 @@ bool ActionSceneryObjectAnimMove::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -75,7 +75,7 @@ bool ActionSceneryObjectAnimRotate::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -91,7 +91,7 @@ bool ActionSceneryObjectAnimScale::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
