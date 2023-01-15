@@ -1,3 +1,5 @@
+#include <QDir>
+
 #include "Novel/Data/Asset/AssetManager.h"
 
 #include <QFile>
@@ -49,8 +51,8 @@ void AssetManager::saveDefinitions(const QString& path, std::unordered_map<QStri
 	try
 	{
 		QDataStream dataStream(&file);
-		//for (const std::pair<const QString, AssetType>& asset : map)
-		//	dataStream << asset.second;
+		for (const std::pair<const QString, AssetType>& asset : map)
+			dataStream << asset.second;
 	}
 	catch (QException& exception)
 	{
@@ -70,12 +72,12 @@ void AssetManager::loadAllAssetsDefinitions()
 
 void AssetManager::saveAllAssetsDefinitions()
 {
-	saveDefinitions("Assets/colorAnims.bin",       colorAnims_);
-	saveDefinitions("Assets/moveAnims.bin",        moveAnims_);
-	saveDefinitions("Assets/rotateAnims.bin",      rotateAnims_);
-	saveDefinitions("Assets/scaleAnims.bin",       scaleAnims_);
-	saveDefinitions("Assets/backgroundImages.bin", backgroundImages_);
-	saveDefinitions("Assets/objectImages.bin",     objectImages_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/colorAnims.bin", colorAnims_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/moveAnims.bin",        moveAnims_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/rotateAnims.bin",      rotateAnims_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/scaleAnims.bin",       scaleAnims_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/backgroundImages.bin", backgroundImages_);
+	saveDefinitions(QDir::currentPath() + "/game/" + "Assets/objectImages.bin",     objectImages_);
 }
 
 void AssetManager::saveAllAssets()

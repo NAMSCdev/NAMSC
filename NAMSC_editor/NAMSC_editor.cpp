@@ -11,6 +11,8 @@
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
+#include "Novel\Data\Asset\AssetManager.h"
+#include "Novel/Event/EventDialogue.h"
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -65,6 +67,35 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
+
+    Novel& novel = Novel::getInstance();
+ //   novel.newState(0);
+	//AssetManager& assetManager = AssetManager::getInstance();
+ //   assetManager.addAssetImageSceneryBackground("testBackground", 0, 0, "game\\Assets\\kot.png");
+ //   assetManager.addAssetImageSceneryObject("kotImage", 0, 0, "game\\Assets\\pies.png");
+
+ //   Scene scene(QString("start"), QString(""));
+
+ //   Character testCharacter(QString("kot1"), QString("kotImage"), false, QPoint(0, 0), QSizeF(1.0, 1.0), 20.0);
+
+ //   Scenery scenery;
+ //   scenery.setBackgroundAssetImage("testBackground");
+ //   scenery.setDisplayedCharacter("kot1", testCharacter);
+ //   testCharacter.name = "kot2";
+ //   scenery.setDisplayedCharacter("kot2", testCharacter);
+
+ //   Event* event = new EventDialogue(&scene);
+ //   event->scenery = scenery;
+ //   scene.addEvent(event);
+ //   novel.addScene("start", std::move(scene));
+
+ //   novel.setDefaultCharacter("kot", Character("kot", "kotImage"));
+ //   novel.setDefaultSceneryObject("pies", SceneryObject("pies", "testBackground"));
+
+ //   novel.saveNovel(0);
+
+    Novel::getInstance().loadNovel(0, false);
+    qDebug() << "Loading done!";
 }
 
 void NAMSC_editor::prepareAssetsTree()
