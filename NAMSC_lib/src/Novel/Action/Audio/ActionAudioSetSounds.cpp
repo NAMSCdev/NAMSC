@@ -52,9 +52,9 @@ ActionAudioSetSounds::ActionAudioSetSounds(Event* const parentEvent, const Audio
 void ActionAudioSetSounds::serializableLoad(QDataStream& dataStream)
 {
 	ActionAudio::serializableLoad(dataStream);
-	uint soundsSize;
+	size_t soundsSize;
 	dataStream >> soundsSize;
-	for (uint i = 0; i != soundsSize; ++i)
+	for (size_t i = 0u; i != soundsSize; ++i)
 	{
 		Sound sound;
 		dataStream >> sound;

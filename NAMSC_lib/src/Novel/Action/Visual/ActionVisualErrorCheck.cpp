@@ -11,7 +11,7 @@ bool ActionSceneryObject::errorCheck(bool bComprehensive) const
 		if (parentEvent->parentScene->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::SceneryObjectInvalid << "No valid SceneryObject assigned. Was it deleted and not replaced?";
-			if (sceneryObjectName_ != "")
+			if (!sceneryObjectName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::SceneryObjectMissing << "SceneryObject \"" + sceneryObjectName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
@@ -32,7 +32,7 @@ bool ActionCharacter::errorCheck(bool bComprehensive) const
 		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
-			if (characterName_ != "")
+			if (!characterName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
@@ -53,7 +53,7 @@ bool ActionSceneryObjectSetImage::errorCheck(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ == "")
+			if (!assetImageName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
@@ -74,7 +74,7 @@ bool ActionCharacterSetVoice::errorCheck(bool bComprehensive) const
 		if (voice_ == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
-			if (voiceName_ != "")
+			if (!voiceName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
@@ -95,7 +95,7 @@ bool ActionSetBackground::errorCheck(bool bComprehensive) const
 		if (assetImage_ == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Background AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ == "")
+			if (!assetImageName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Background AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};

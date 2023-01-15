@@ -13,7 +13,7 @@ bool ActionStat::errorCheck(bool bComprehensive) const
 		if (NovelState::getCurrentlyLoadedState()->getStat(statName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::StatInvalid << "No valid Stat assigned. Was it deleted and not replaced?";
-			if (statName_ != "")
+			if (!statName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::StatMissing << "Stat \"" + statName_ + "\" does not exist. Definition file might be corrupted";
 		}
 	};
