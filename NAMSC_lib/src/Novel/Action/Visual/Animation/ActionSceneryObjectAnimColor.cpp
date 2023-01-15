@@ -50,7 +50,6 @@ void ActionSceneryObjectAnimColor::setOnRunListener(std::function<void(const Eve
 void ActionSceneryObjectAnimColor::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
-
 	assetAnim_ = AssetManager::getInstance().getAssetAnimColor(assetAnimName_);
 	errorCheck();
 }
