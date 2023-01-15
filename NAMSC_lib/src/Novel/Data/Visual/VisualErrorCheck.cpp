@@ -9,7 +9,7 @@ bool SceneryObject::errorCheck(bool bComprehensive) const
 		if (!assetImage_)
 		{
 			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ != "")
+			if (!assetImageName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 		else assetImage_->errorCheck(bComprehensive);

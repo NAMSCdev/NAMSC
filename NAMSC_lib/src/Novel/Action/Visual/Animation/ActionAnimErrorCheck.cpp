@@ -12,7 +12,7 @@ bool ActionSceneryObjectAnim<AnimNode>::errorCheck(bool bComprehensive) const
 		if (assetAnim_ == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::AssetAnimInvalid << "No valid AnimAsset assigned. Was it deleted and not replaced?";
-			if (assetAnimName_ != "")
+			if (!assetAnimName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::AssetAnimMissing << "AssetAnim \"" + assetAnimName_ + "\" does not exist or read. Definition file might be corrupted";
 		}
 		else assetAnim_->errorCheck(bComprehensive);
