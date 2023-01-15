@@ -35,6 +35,8 @@ public:
 	/// 6 - loading Scenes
 	void loadNovel(uint slot, bool createNew);
 
+	void saveNovel(uint slot);
+
 	/// Creates a new NovelState (resets the old one, if exists) and loads it into the SaveSlot
 	void newState(uint slot);
 	/// Loads Player's NovelState from a SaveFile in the given SaveSlot
