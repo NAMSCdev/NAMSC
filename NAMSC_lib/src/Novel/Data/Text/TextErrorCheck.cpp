@@ -46,21 +46,21 @@ bool Sentence::errorCheck(bool bComprehensive) const
 		//if (!assetImage_)
 		//{
 		//	qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-		//	if (assetImageName_ != "")
+		//	if (!assetImageName_.isEmpty())
 		//		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		//}
 		//Check Character
 		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
-			if (characterName_ != "")
+			if (!characterName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName_ + "\" does not exist. Definition file might be corrupted";
 		}
 		//Check Voice
 		//if (voice_ == nullptr)
 		//{
 		//	qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
-		//	if (voiceName_ != "")
+		//	if (!voiceName_.isEmpty())
 		//		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 		//}
 	};
