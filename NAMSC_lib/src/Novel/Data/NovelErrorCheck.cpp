@@ -18,7 +18,7 @@ bool Novel::errorCheck(bool bComprehensive) const
 
 	bError |= stateAtSceneBeginning_.errorCheck();
 	bError |= state_.errorCheck();
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -30,7 +30,7 @@ bool Novel::errorCheck(bool bComprehensive) const
 bool Scene::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 

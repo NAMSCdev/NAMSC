@@ -6,7 +6,7 @@
 bool Asset::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (path.isEmpty() && QFileInfo::exists(path))
 		{
@@ -31,7 +31,7 @@ bool AssetAnim<AnimNode>::errorCheck(bool bComprehensive) const
 {
 	bool bError = Asset::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//todo: check timeStamps
 	};
@@ -47,7 +47,7 @@ bool AssetImage::errorCheck(bool bComprehensive) const
 {
 	bool bError = Asset::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (bComprehensive)
 		{

@@ -13,7 +13,7 @@ void Novel::loadNovel(uint slot, bool createNew)
 	//NovelSettings::load();
 	/*loadChapters();*/ if (createNew || !loadState(slot)) newState(slot);
 	loadAssetsDefinitions();
-	loadVoices();
+	//loadVoices();
 	loadDefaultSceneryObjectsDefinitions(); loadDefaultCharacterDefinitions();
 	loadScenes();
 }
@@ -178,14 +178,16 @@ void Novel::loadScenes()
 {
 	QDirIterator it("game\\Scenes", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
-		QFile serializedFile(it.next());
+		auto val = it.next();
+		QFile serializedFile(val);
 		serializedFile.open(QIODeviceBase::ReadOnly);
 
 		QDataStream dataStream(&serializedFile);
 
 		Scene scene;
 		dataStream >> scene;
-		addScene(scene.name, std::move(scene));
+		QString sceneName = scene.name;
+		addScene(sceneName, std::move(scene));
 	}
 }
 

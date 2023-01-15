@@ -8,7 +8,7 @@ bool Event::errorCheck(bool bComprehensive) const
 	for (const std::unique_ptr<Action>& action : actions_)
 		bError |= action->errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (bComprehensive)
 			for (auto it = parentScene->events_.cbegin(); it != parentScene->events_.cend(); ++it)
@@ -33,7 +33,7 @@ bool EventChoice::errorCheck(bool bComprehensive) const
 	for (const Choice& choice : choices)
 		bError |= choice.errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -51,7 +51,7 @@ bool EventDialogue::errorCheck(bool bComprehensive) const
 	for (const Sentence& sentence : sentences)
 		bError |= sentence.errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -66,7 +66,7 @@ bool EventEndIf::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (getIndex() <= partner_->getIndex())
 		{
@@ -85,7 +85,7 @@ bool EventIf::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//todo check condition
 		return false;
@@ -102,7 +102,7 @@ bool EventInput::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//todo check if `regex` is valid
 		//todo check if `logicalExpression` is valid
@@ -119,7 +119,7 @@ bool EventJump::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (jumpToSceneName == "")
 		{
@@ -139,7 +139,7 @@ bool EventWait::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 

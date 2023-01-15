@@ -4,7 +4,7 @@ bool SceneryObject::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (!assetImage_)
 		{
@@ -26,7 +26,7 @@ bool Character::errorCheck(bool bComprehensive) const
 {
 	bool bError = SceneryObject::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//Check if the name is undefined
 		//if (defaultVoiceName_ == "")
@@ -67,7 +67,7 @@ bool Scenery::errorCheck(bool bComprehensive) const
 	for (const std::pair<const QString, Sound>& sound : sounds_)
 		bError |= sound.second.errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
