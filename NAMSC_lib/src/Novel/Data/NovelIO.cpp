@@ -13,7 +13,7 @@ void Novel::loadNovel(uint slot, bool createNew)
 	//NovelSettings::load();
 	/*loadChapters();*/ if (createNew || !loadState(slot)) newState(slot);
 	loadAssetsDefinitions();
-	loadVoices();
+	//loadVoices();
 	loadDefaultSceneryObjectsDefinitions(); loadDefaultCharacterDefinitions();
 	loadScenes();
 }
