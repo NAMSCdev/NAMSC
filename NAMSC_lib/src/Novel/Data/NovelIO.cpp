@@ -13,7 +13,7 @@ void Novel::loadNovel(uint slot, bool createNew)
 	//NovelSettings::load();
 	/*loadChapters();*/ if (createNew || !loadState(slot)) newState(slot);
 	loadAssetsDefinitions();
-	//loadVoices();
+	loadVoices();
 	loadDefaultSceneryObjectsDefinitions(); loadDefaultCharacterDefinitions();
 	loadScenes();
 }
@@ -76,7 +76,7 @@ void Novel::loadChapters()
 
 		Chapter chapter;
 		dataStream >> chapter;
-		setChapter(chapter);
+		setChapter(chapter.name, chapter);
 	}
 }
 
@@ -107,7 +107,7 @@ void Novel::loadDefaultCharacterDefinitions()
 
 		Character character;
 		dataStream >> character;
-		setDefaultCharacter(character);
+		setDefaultCharacter(character.name, character);
 	}
 }
 
@@ -138,7 +138,7 @@ void Novel::loadDefaultSceneryObjectsDefinitions()
 
 		SceneryObject sceneryObject;
 		dataStream >> sceneryObject;
-		setDefaultSceneryObject(sceneryObject);
+		setDefaultSceneryObject(sceneryObject.name, sceneryObject);
 	}
 }
 
@@ -178,16 +178,14 @@ void Novel::loadScenes()
 {
 	QDirIterator it("game\\Scenes", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
-		auto val = it.next();
-		QFile serializedFile(val);
+		QFile serializedFile(it.next());
 		serializedFile.open(QIODeviceBase::ReadOnly);
 
 		QDataStream dataStream(&serializedFile);
 
 		Scene scene;
 		dataStream >> scene;
-		QString sceneName = scene.name;
-		addScene(sceneName, std::move(scene));
+		addScene(scene.name, std::move(scene));
 	}
 }
 
@@ -218,7 +216,7 @@ void Novel::loadVoices()
 
 		Voice voice;
 		dataStream >> voice;
-		setVoice(voice);
+		setVoice(voice.name, voice);
 	}
 }
 

@@ -1,6 +1,5 @@
 ﻿#include "NAMSC_editor.h"
 #include <qinputdialog.h>
-#include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
 
@@ -41,52 +40,6 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
     }
 }
 
-void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-{
-    QString category;
-    switch (type)
-    {
-    case QtDebugMsg:
-        category = "Debug";
-        break;
-    default:
-    case QtInfoMsg:
-        category = "Info";
-        break;
-    case QtWarningMsg:
-        category = "Warning";
-        break;
-    case QtCriticalMsg:
-        category = "Critical";
-        break;
-    case QtFatalMsg:
-        category = "Fatal";
-        break;
-    }
-
-    QString message = '[' + category + "] [" + context.function + " {" + context.file + ':' + std::to_string(context.line).c_str() + "}]" + msg;
-    switch (type)
-    {
-    case QtDebugMsg:
-#ifdef DEBUG
-        QMessageBox::information(nullptr, category, message);
-#endif
-        break;
-
-    default:
-    case QtInfoMsg:
-    case QtWarningMsg:
-        QMessageBox::warning(nullptr, category, message);
-        break;
-
-    case QtCriticalMsg:
-    case QtFatalMsg:
-        QMessageBox::critical(nullptr, category, message);
-        throw NovelLib::NovelException(msg);
-        break;
-    }
-}
-
 
 NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
@@ -95,7 +48,6 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     // Prepare ui
     ui.setupUi(this);
-    //qInstallMessageHandler(errorMessageHandler); // Causes editor to crash -> Retrieving non existing element from a map returns null and is used to check if a key is already used. Also there seems to be an issue with quick dialog boxes, which also return some warning from qt but work anyway.
 
     ui.mainSplitter->setSizes({ 20, 60, 20 });
     ui.middlePanel->setStretchFactor(0, 70);
@@ -117,24 +69,22 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     //needs to be after preparing other widgets
     prepareSwitchboard();
 
-    createDanglingContextMenuActions();
-
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
 
- //   Novel& novel = Novel::getInstance();
+    Novel& novel = Novel::getInstance();
  //   novel.newState(0);
 	//AssetManager& assetManager = AssetManager::getInstance();
- //   assetManager.addAssetImageSceneryBackground("game/Assets/kot.png", 0, 0, "game/Assets/kot.png");
- //   assetManager.addAssetImageSceneryObject("game/Assets/pies.png", 0, 0, "game/Assets/pies.png");
+ //   assetManager.addAssetImageSceneryBackground("testBackground", 0, 0, "game\\Assets\\kot.png");
+ //   assetManager.addAssetImageSceneryObject("kotImage", 0, 0, "game\\Assets\\pies.png");
 
  //   Scene scene(QString("start"), QString(""));
 
- //   Character testCharacter(QString("kot1"), QString("game/Assets/pies.png"), false, QPoint(0, 0), QSizeF(1.0, 1.0), 20.0);
+ //   Character testCharacter(QString("kot1"), QString("kotImage"), false, QPoint(0, 0), QSizeF(1.0, 1.0), 20.0);
 
  //   Scenery scenery;
- //   scenery.setBackgroundAssetImage("game/Assets/kot.png");
+ //   scenery.setBackgroundAssetImage("testBackground");
  //   scenery.setDisplayedCharacter("kot1", testCharacter);
  //   testCharacter.name = "kot2";
  //   scenery.setDisplayedCharacter("kot2", testCharacter);
@@ -144,18 +94,13 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
  //   scene.addEvent(event);
  //   novel.addScene("start", std::move(scene));
 
- //   novel.setDefaultCharacter("kot", Character("kot", "game/Assets/pies.png"));
- //   novel.setDefaultSceneryObject("pies", SceneryObject("pies", "game/Assets/kot.png"));
+ //   novel.setDefaultCharacter("kot", Character("kot", "kotImage"));
+ //   novel.setDefaultSceneryObject("pies", SceneryObject("pies", "testBackground"));
 
  //   novel.saveNovel(0);
 
-    //Novel::getInstance().loadNovel(0, false);
-
-	//Novel::getInstance().saveNovel(0);
- //   saveEditor();
-
-    //Novel::getInstance().loadNovel(0, false);
-    //loadEditor();
+    Novel::getInstance().loadNovel(0, false);
+    qDebug() << "Loading done!";
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -172,12 +117,9 @@ void NAMSC_editor::prepareEventsTree()
 {
     EventTreeItemModel* model = new EventTreeItemModel("test", nullptr);
     ui.eventsTree->setModel(model);
-    ui.eventsTree->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents); // 0 should be the event name
-    connect(ui.eventsTree->model(), &QAbstractItemModel::modelReset, ui.eventsTree, &QTreeView::expandAll);
     ui.eventsTree->setItemsExpandable(true);
-	connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);
+    connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);
     connect(static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::propertyTabChangeRequested, this, &NAMSC_editor::propertyTabChangeRequested);
-
 }
 
 void NAMSC_editor::prepareSwitchboard()
@@ -207,16 +149,6 @@ void NAMSC_editor::prepareSwitchboard()
     connect(&switchboard, &PropertyConnectionSwitchboard::characterSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
 }
 
-void NAMSC_editor::loadEditor()
-{
-    loadGraph(ui.graphView);
-}
-
-void NAMSC_editor::saveEditor()
-{
-    saveGraph(ui.graphView);
-}
-
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
 {
     while (ui.propertiesLayout->count() != 0)
@@ -233,12 +165,12 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         {
         case PropertyTypes::Node:
         {
-            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(static_cast<GraphNode*>(object));
-            ui.propertiesLayout->addWidget(properties);
-            static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
-            connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+                GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(static_cast<GraphNode*>(object));
+                ui.propertiesLayout->addWidget(properties);
+                static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
+                connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+                break;
         }
-        break;
         case PropertyTypes::ObjectTreeItem:
             // todo currently assuming it's always Image
         	ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
@@ -248,7 +180,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             break;
         case PropertyTypes::Scene:
         {
-            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(ui.graphView->getNodeByName(static_cast<Scene*>(object)->getComponentName()));
+            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(ui.graphView->getNodeByName(static_cast<Scene*>(object)->getName()));
             ui.propertiesLayout->addWidget(properties);
             connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
             break;
@@ -257,10 +189,10 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             ui.propertiesLayout->addWidget(new DialogEventProperties(static_cast<EventDialogue*>(object)));
             break;
         case PropertyTypes::ChoiceEventItem:
-            ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object), ui.graphView));
+            ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object)));
             break;
         case PropertyTypes::JumpEventItem:
-            ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object), ui.graphView));
+            ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object)));
             break;
         }
 
@@ -286,12 +218,12 @@ void NAMSC_editor::debugConstructorActions()
     QString scene2Name = QString("Scene 2");
     snovel.addScene(scene2Name, Scene(scene2Name));
     Scene* scene2 = snovel.getScene(scene2Name);
-    Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("En"), QString("Choice event in scene 2")} }));
+    Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("english"), QString("Choice event in scene 2")} }));
     EventChoice* eventChoice = new EventChoice(
         scene2, 
         "Choice Event",
         choicetext);
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} })), "", "Scene 1"));
+    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} }))));
     eventChoice->choices.push_back(Choice(eventChoice, "Choice 2", Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
 
     scene2->insertEvent(0, eventChoice);
@@ -303,98 +235,26 @@ void NAMSC_editor::debugConstructorActions()
     //node2->appendConnectionPoint(GraphConnectionType::In);
     scene->addItem(node2);
 
-    node->moveBy(-100, -100);
-    node2->moveBy(300, 300);
     //node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
-    
+
     //connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
     //    {
     //        qDebug() << node->getLabel() << "has been double clicked!";
     //    });
 
-    //node->connectToNode(node2->getLabel());
-
-    //node->connectToNode(node2->getLabel());
-    //node->connectToNode(node->getLabel());
-    //node->disconnectFrom(node2->getLabel());
+    node->connectToNode(node2->getLabel());
+    node->disconnectFrom(node2->getLabel());
+    // Raw properties add
+    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
+    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
+    //props->setScene(scene);
+    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
+    //cbutton->setText("Basic node options");
+    //cbutton->setContent(props);
+    //ui.propertiesLayout->addWidget(cbutton);
+    //ui.propertiesLayout->addWidget(props);
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
-}
-
-void NAMSC_editor::createDanglingContextMenuActions()
-{
-    ui.eventsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui.eventsTree, &QTreeView::customContextMenuRequested, this, &NAMSC_editor::invokeEventsContextMenu);
-
-    addDialogueEventAction = new QAction(tr("Add dialog event"), ui.eventsTree);
-    addChoiceEventAction = new QAction(tr("Add choice event"), ui.eventsTree);
-    addJumpEventAction = new QAction(tr("Add jump event"), ui.eventsTree);
-
-    connect(addDialogueEventAction, &QAction::triggered, ui.eventsTree, [&]
-        {
-            if (ui.graphView->scene()->selectedItems().size()) {
-                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventDialogue(scene, "New dialog", {}));
-                
-            }
-        });
-
-    connect(addChoiceEventAction, &QAction::triggered, ui.eventsTree, [&]
-        {
-            if (ui.graphView->scene()->selectedItems().size()) {
-                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventChoice(scene, "New choice", {}));
-            }
-        });
-
-    connect(addJumpEventAction, &QAction::triggered, ui.eventsTree, [&]
-        {
-            if (ui.graphView->scene()->selectedItems().size()) {
-                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventJump(scene, "New jump", {}));
-            }
-        });
-
-}
-
-void NAMSC_editor::invokeEventsContextMenu(const QPoint& pos)
-{
-    QMenu menu(ui.eventsTree);
-    menu.addAction(addDialogueEventAction);
-    menu.addAction(addChoiceEventAction);
-    menu.addAction(addJumpEventAction);
-    menu.exec(ui.eventsTree->mapToGlobal(pos));
-}
-
-void NAMSC_editor::loadGraph(GraphView* graph)
-{
-    QDirIterator it("game\\Graph", QStringList(), QDir::Files, QDirIterator::Subdirectories);
-    while (it.hasNext())
-    {
-        QFile serializedFile(it.next());
-        serializedFile.open(QIODeviceBase::ReadOnly);
-
-        QDataStream dataStream(&serializedFile);
-
-        dataStream >> *graph;
-    }
-}
-
-void NAMSC_editor::saveGraph(GraphView* graph)
-{
-    QDir graphDir = QDir::currentPath();
-    graphDir.mkpath("game\\Graph");
-    graphDir.cd("game\\Graph"); // todo check; eventually apply to NovelIO.cpp
-
-    if (ui.graphView != nullptr)
-    {
-        QFile serializedFile(graphDir.path() + "\\graph");
-        serializedFile.open(QIODeviceBase::WriteOnly);
-
-        QDataStream dataStream(&serializedFile);
-
-        dataStream << *graph;
-    }
 }
 
 void NAMSC_editor::supportedFormats()
