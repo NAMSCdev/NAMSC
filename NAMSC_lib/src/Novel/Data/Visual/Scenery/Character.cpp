@@ -51,7 +51,7 @@ void Character::serializableLoad(QDataStream& dataStream)
 {
 	SceneryObject::serializableLoad(dataStream);
 	dataStream >> defaultVoiceName_;
-	defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName_);
+	if (!defaultVoiceName_.isEmpty())  {defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName_);}
 
 	errorCheck();
 }

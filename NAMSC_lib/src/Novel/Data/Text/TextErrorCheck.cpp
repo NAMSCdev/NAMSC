@@ -7,7 +7,7 @@
 bool Choice::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (jumpToSceneName == "")
 			qCritical() << NovelLib::ErrorType::JumpInvalid << "Choice is missing a jumpToSceneName";
@@ -24,7 +24,7 @@ bool Choice::errorCheck(bool bComprehensive) const
 bool Choice::ChoiceDisplayOptions::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//if (fontName_ == "")
 			//qCritical() << NovelLib::ErrorType::General << "No Font set";
@@ -40,7 +40,7 @@ bool Choice::ChoiceDisplayOptions::errorCheck(bool bComprehensive) const
 bool Sentence::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//Check AssetImage
 		//if (!assetImage_)
@@ -74,7 +74,7 @@ bool Sentence::errorCheck(bool bComprehensive) const
 bool Translation::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (!translations_.contains(NovelSettings::getInstance().defaultLanguage))
 			qCritical() << NovelLib::ErrorType::General << "Translation doesn't have default language set";
@@ -91,7 +91,7 @@ bool Translation::errorCheck(bool bComprehensive) const
 bool Voice::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (fontName_ == "")
 			qCritical() << NovelLib::ErrorType::General << "No Font set";

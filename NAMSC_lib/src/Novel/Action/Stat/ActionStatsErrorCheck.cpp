@@ -8,7 +8,7 @@ bool ActionStat::errorCheck(bool bComprehensive) const
 {
 	bool bError = Action::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (NovelState::getCurrentlyLoadedState()->getStat(statName_) == nullptr)
 		{
@@ -28,7 +28,7 @@ bool ActionStatSetValue::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionStat::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//TODO: check `expression` by trying to parse it with an evaluator
 	};

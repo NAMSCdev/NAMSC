@@ -6,7 +6,7 @@ bool ActionSceneryObject::errorCheck(bool bComprehensive) const
 {
 	bool bError = Action::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (parentEvent->parentScene->scenery.getDisplayedSceneryObject(sceneryObjectName_) == nullptr)
 		{
@@ -27,7 +27,7 @@ bool ActionCharacter::errorCheck(bool bComprehensive) const
 {
 	bool bError = Action::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
@@ -48,7 +48,7 @@ bool ActionSceneryObjectSetImage::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObject::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (assetImage_ == nullptr)
 		{
@@ -69,7 +69,7 @@ bool ActionCharacterSetVoice::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionCharacter::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (voice_ == nullptr)
 		{
@@ -90,7 +90,7 @@ bool ActionSetBackground::errorCheck(bool bComprehensive) const
 {
 	bool bError = Action::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (assetImage_ == nullptr)
 		{

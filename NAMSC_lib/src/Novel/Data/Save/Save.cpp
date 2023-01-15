@@ -9,7 +9,7 @@ bool NovelState::errorCheck(bool bComprehensive) const
 {
     bool bError = false;
 
-    //static auto errorChecker = [this](bool bComprehensive)
+    //auto errorChecker = [this](bool bComprehensive)
     //{
     //};
 
