@@ -7,5 +7,6 @@ enum class PropertyTypes
 	CharacterTreeItem,
 	ChoiceEventItem,
 	DialogEventItem,
-	JumpEventItem
+	JumpEventItem,
+    Scene
 };

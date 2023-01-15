@@ -31,15 +31,15 @@ AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
             QModelIndex index = fileModel->index(sourceRow, 0, sourceParent);
     QMimeData* mime = fileModel->mimeData({ index });
     if (mime->hasUrls())
-    {
-        QUrl fileUrl = mime->urls().at(0);
-        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
-        if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
-        {
-            return true;
-        }
-    }
-    return false;
+	    {
+	        QUrl fileUrl = mime->urls().at(0);
+	        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
+	        if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
+	        {
+	            return true;
+	        }
+	    }
+	    return false;
         }
     );
     this->hideColumn(1);

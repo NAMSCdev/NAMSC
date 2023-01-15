@@ -13,5 +13,5 @@ public:
     ~NAMSC_engine();
 
 private:
-    Ui::NAMSC_engine ui;
+    Ui::mainWindow ui;
 };

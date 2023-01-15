@@ -4,12 +4,13 @@
 #include <QString>
 #include <vector>
 
+#include "Novel/SceneComponent.h"
 #include "Novel/Action/Action.h"
 #include "Novel/Event/Visitor/EventVisitor.h"
 #include "Novel/Data/Visual/Scenery/Scenery.h"
 
 /// Represents a state change in the Scene
-class Event : public NovelFlowInterface
+class Event : public NovelFlowInterface, public SceneComponent
 {
 	/// Our overlord
 	friend Scene;
@@ -64,6 +65,13 @@ public:
 	Scenery scenery;
 
 	Scene* const parentScene;
+
+    // SceneComponent for EventsTree
+    virtual QString getTypeName() { return "Event"; }
+    virtual QString getSubTypeName() = 0;
+    virtual SceneComponentType getType() { return EVENT; }
+    virtual EventSubType getEventType() = 0;
+    virtual QString getName() { return label; }
 protected:
 	std::vector<std::unique_ptr<Action>> actions_;
 

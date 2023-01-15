@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1423</width>
     <height>720</height>
    </rect>
   </property>
@@ -470,7 +470,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QTextEdit" name="textEdit"/>
+           <widget class="QTreeView" name="eventsTree"/>
           </item>
          </layout>
         </widget>
@@ -570,7 +570,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1143</width>
+     <width>1423</width>
      <height>22</height>
     </rect>
    </property>

@@ -36,6 +36,10 @@ public:
 	/// A jump might contain a logical expression, so the jump happens only if the `condition` is met
 	QString condition       = "";
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "Jump"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_JUMP; }
+
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

@@ -32,6 +32,11 @@ public:
 	Voice*       getDefaultVoice()       noexcept;
 	void setDefaultVoice(const QString& defaultVoiceName, Voice* defaultVoice = nullptr) noexcept;
 
+    // SceneComponent for EventsTree
+    virtual QString getTypeName() { return "Character"; }
+    virtual QString getSubTypeName() { return "Character"; }
+    virtual SceneComponentType getType() { return CHARACTER; }
+
 private:
 	QString defaultVoiceName_ = "";
 	Voice*  defaultVoice_     = nullptr;

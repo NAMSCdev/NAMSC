@@ -119,6 +119,8 @@
     <ClCompile Include="CustomSortFilterProxyModel.cpp" />
     <ClCompile Include="DialogEventProperties.cpp" />
     <ClCompile Include="DialogItemModel.cpp" />
+    <ClCompile Include="EventTreeItem.cpp" />
+    <ClCompile Include="EventTreeItemModel.cpp" />
     <ClCompile Include="GraphArrow.cpp" />
     <ClCompile Include="GraphConnectionPoint.cpp" />
     <ClCompile Include="GraphNode.cpp" />
@@ -160,6 +162,8 @@
     <QtMoc Include="DialogItemModel.h" />
     <QtMoc Include="CharacterTree.h" />
     <QtMoc Include="CharacterTreeWidgetItem.h" />
+    <ClInclude Include="EventTreeItem.h" />
+    <QtMoc Include="EventTreeItemModel.h" />
     <ClInclude Include="GraphNodePropertiesPack.h" />
     <QtMoc Include="ObjectTreeWidgetItem.h" />
     <QtMoc Include="ProjectConfiguration.h" />
