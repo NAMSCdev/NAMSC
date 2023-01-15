@@ -32,6 +32,10 @@ public:
 	/// In milliseconds
 	uint waitTime = 1000;
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "Wait"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_WAIT; }
+
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

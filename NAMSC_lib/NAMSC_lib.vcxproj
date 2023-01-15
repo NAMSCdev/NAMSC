@@ -124,7 +124,6 @@
     <ClInclude Include="src\Novel\Data\ActionVisualAll.h" />
     <ClInclude Include="src\Novel\Data\Asset\AssetAnimInstances.h" />
     <ClInclude Include="src\Novel\Data\Chapter.h" />
-    <ClInclude Include="src\Novel\Data\Event.h" />
     <ClInclude Include="src\Novel\Data\EventAll.h" />
     <ClInclude Include="src\Novel\Data\Text\Choice.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorAll.h" />
@@ -132,6 +131,7 @@
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterfaceInstances.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNodeInstances.h" />
+    <ClInclude Include="src\Novel\SceneComponent.h" />
     <ClInclude Include="src\Novel\Widget\SceneryObjectWidget.h" />
     <QtMoc Include="src\Novel\Widget\SceneWidget.h" />
     <ClInclude Include="src\Serialization.h" />
@@ -289,6 +289,7 @@
     <ClCompile Include="src\Novel\Event\EventResourceLoad.cpp" />
     <ClCompile Include="src\Novel\Event\EventRun.cpp" />
     <ClCompile Include="src\Novel\Event\EventWait.cpp" />
+    <ClCompile Include="src\Novel\SceneComponent.cpp" />
     <ClCompile Include="src\Novel\Widget\SceneryObjectWidget.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>

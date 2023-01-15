@@ -28,6 +28,10 @@ public:
 
 	void acceptVisitor(EventVisitor* visitor) override;
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "End if"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_END_IF; }
+
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

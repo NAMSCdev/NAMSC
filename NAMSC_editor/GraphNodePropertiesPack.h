@@ -7,6 +7,7 @@ class GraphNodePropertiesPack : public QFrame
 public:
 	GraphNodePropertiesPack(GraphNode* node);
 	~GraphNodePropertiesPack();
+    BasicNodeProperties* basicNodeProperties;
 
 
 private:
@@ -15,7 +16,6 @@ private:
 
 	// Owning pointers
 	QLayout* layout;
-	BasicNodeProperties* basicNodeProperties;
 
 	void initProperties();
 };

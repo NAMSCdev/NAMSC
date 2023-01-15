@@ -473,9 +473,6 @@
     <ClInclude Include="src\Novel\Data\EventAll.h">
       <Filter>Header Files\Novel\Data\All</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Data\Event.h">
-      <Filter>Header Files\Novel\Data</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Event\EventAll.h">
       <Filter>Header Files\Novel\Event\All</Filter>
     </ClInclude>
@@ -532,6 +529,9 @@
     </ClInclude>
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimInstances.h">
       <Filter>Header Files\Novel\Action\Visual\Animation\Instances</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\SceneComponent.h">
+      <Filter>Header Files\Novel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -822,6 +822,9 @@
     </ClCompile>
     <ClCompile Include="src\Novel\Data\Visual\Animation\AnimatorBase.cpp">
       <Filter>Source Files\Definition\Novel\Data\Visual\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\SceneComponent.cpp">
+      <Filter>Source Files\Novel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,9 @@ public:
 	/// \todo make it private and create getters/setters
 	std::vector<Sentence> sentences;
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "Dialogue"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_DIALOG; }
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

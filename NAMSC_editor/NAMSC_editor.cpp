@@ -1,14 +1,16 @@
 ﻿#include "NAMSC_editor.h"
-#include <qfilesystemmodel.h>
 #include <qinputdialog.h>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
-#include <qsortfilterproxymodel.h>
 
 #include "BasicNodeProperties.h"
-#include "CustomSortFilterProxyModel.h"
-#include "ObjectTreeWidgetItem.h"
+#include "ChoiceEventProperties.h"
+#include "DialogEventProperties.h"
+#include "EventTreeItemModel.h"
+#include "EventTreeItem.h"
+#include "GraphNodePropertiesPack.h"
+#include "JumpEventProperties.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
@@ -110,6 +112,9 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     debugConstructorActions();
     prepareAssetsTree();
+    prepareEventsTree();
+
+    //needs to be after preparing other widgets
     prepareSwitchboard();
 
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
@@ -156,6 +161,15 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
+void NAMSC_editor::prepareEventsTree()
+{
+    EventTreeItemModel* model = new EventTreeItemModel("test", nullptr);
+    ui.eventsTree->setModel(model);
+    ui.eventsTree->setItemsExpandable(true);
+    connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);
+    connect(static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::propertyTabChangeRequested, this, &NAMSC_editor::propertyTabChangeRequested);
+}
+
 void NAMSC_editor::prepareSwitchboard()
 {
     // Connect to switchboard 
@@ -198,15 +212,35 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         switch (dataType)
         {
         case PropertyTypes::Node:
-        	ui.propertiesLayout->addWidget(new GraphNodePropertiesPack(static_cast<GraphNode*>(object)));
-            break;
-
+        {
+                GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(static_cast<GraphNode*>(object));
+                ui.propertiesLayout->addWidget(properties);
+                static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
+                connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+                break;
+        }
         case PropertyTypes::ObjectTreeItem:
             // todo currently assuming it's always Image
         	ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
             break;
         case PropertyTypes::CharacterTreeItem:
             ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
+            break;
+        case PropertyTypes::Scene:
+        {
+            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(ui.graphView->getNodeByName(static_cast<Scene*>(object)->getName()));
+            ui.propertiesLayout->addWidget(properties);
+            connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+            break;
+        }
+        case PropertyTypes::DialogEventItem:
+            ui.propertiesLayout->addWidget(new DialogEventProperties(static_cast<EventDialogue*>(object)));
+            break;
+        case PropertyTypes::ChoiceEventItem:
+            ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object)));
+            break;
+        case PropertyTypes::JumpEventItem:
+            ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object)));
             break;
         }
 
@@ -216,35 +250,45 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
 
 void NAMSC_editor::debugConstructorActions()
 {
+    Novel& snovel = Novel::getInstance();
+    QString scene1Name = QString("Scene 1");
+    snovel.addScene(scene1Name, Scene(scene1Name));
+    Scene* scene1 = snovel.getScene(scene1Name);
+    scene1->insertEvent(0, new EventJump(scene1, "Jump to Scene 2", "Scene 2"));
+    scene1->insertEvent(0, new EventDialogue(scene1, "Dialogue3", {}));
+    scene1->insertEvent(0, new EventDialogue(scene1, "Dialogue2", {}));
+    scene1->insertEvent(0, new EventDialogue(scene1, "Dialogue1", {}));
+
     node = new GraphNode;
-    node->setLabel("To nie jest tak, że dobrze albo, że niedobrze, po prostu NAMSC nam idzie okropnie i to będzie cud jak się wyrobimy");
-    //node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
-    //node->appendConnectionPoint(GraphConnectionType::In);
-
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
-    //node->appendConnectionPoint(GraphConnectionType::Out);
+    node->setLabel(scene1->name);
     scene->addItem(node);
+    
+    QString scene2Name = QString("Scene 2");
+    snovel.addScene(scene2Name, Scene(scene2Name));
+    Scene* scene2 = snovel.getScene(scene2Name);
+    Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("english"), QString("Choice event in scene 2")} }));
+    EventChoice* eventChoice = new EventChoice(
+        scene2, 
+        "Choice Event",
+        choicetext);
+    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} }))));
+    eventChoice->choices.push_back(Choice(eventChoice, "Choice 2", Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
 
+    scene2->insertEvent(0, eventChoice);
+    scene2->insertEvent(0, new EventDialogue(scene2, "Dialogue3", {}));
+    scene2->insertEvent(0, new EventDialogue(scene2, "Dialogue2", {}));
+    scene2->insertEvent(0, new EventDialogue(scene2, "Dialogue1", {}));
     node2 = new GraphNode;
-    node2->setLabel("BigD");
+    node2->setLabel(scene2->name);
     //node2->appendConnectionPoint(GraphConnectionType::In);
-
     scene->addItem(node2);
 
     //node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
 
-    connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
-        {
-            qDebug() << node->getLabel() << "has been double clicked!";
-        });
+    //connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
+    //    {
+    //        qDebug() << node->getLabel() << "has been double clicked!";
+    //    });
 
     node->connectToNode(node2->getLabel());
     node->disconnectFrom(node2->getLabel());
@@ -267,7 +311,7 @@ void NAMSC_editor::supportedFormats()
     supportedImageFormats.append(db.mimeTypeForName("image/bmp"));
     supportedImageFormats.append(db.mimeTypeForName("image/jpeg"));
 
-
+    /*
     supportedAudioFormats.append(db.mimeTypeForName("audio/mpeg"));
     supportedAudioFormats.append(db.mimeTypeForName("audio/MPA"));
     supportedAudioFormats.append(db.mimeTypeForName("audio/mpa-robust"));
@@ -278,6 +322,7 @@ void NAMSC_editor::supportedFormats()
     supportedAudioFormats.append(db.mimeTypeForName("audio/vnd.wave"));
 
     supportedAudioFormats.append(db.mimeTypeForName("audio/flac"));
+    */
 }
 
 NAMSC_editor::~NAMSC_editor()

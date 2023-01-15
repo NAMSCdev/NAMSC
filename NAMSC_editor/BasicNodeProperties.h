@@ -5,6 +5,7 @@
 #include "GraphNode.h"
 #include "ui_BasicNodeProperties.h"
 #include "CollapseButton.h"
+#include "EventTreeItemModel.h"
 
 class BasicNodeProperties : public QFrame
 {
@@ -20,6 +21,9 @@ public:
 
 public slots:
 	void selectedNodeChanged();
+
+    signals:
+    void sceneUpdated(Scene* scene);
 
 private:
 	bool instantTextChangeUpdate = false;

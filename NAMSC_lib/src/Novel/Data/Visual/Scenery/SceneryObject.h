@@ -2,12 +2,13 @@
 
 #include <QVarLengthArray>
 
+#include "Novel/SceneComponent.h"
 #include "Novel/Data/Asset/AssetManager.h"
 
 #include "Novel/Data/Visual/Animation/AnimatorAll.h"
 
 /// Holds data for a drawable object
-class SceneryObject
+class SceneryObject : public SceneComponent
 {
 	/// Swap trick
 	friend void swap(SceneryObject& first, SceneryObject& second) noexcept;
@@ -62,6 +63,13 @@ public:
 	bool bMirrored              = false;
 
 	bool bVisible               = false;
+
+    // SceneComponent for EventsTree
+    virtual QString getTypeName() { return "Scenery Object"; }
+    virtual QString getSubTypeName() { return "Scenery Object"; }
+    virtual SceneComponentType getType() { return OBJECT; }
+    virtual EventSubType getEventType() { return EventSubType::NOT_EVENT; }
+    virtual QString getName() { return name; }
 
 protected:
 	QString     assetImageName_ = "";

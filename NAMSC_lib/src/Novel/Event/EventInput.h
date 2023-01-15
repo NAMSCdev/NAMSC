@@ -91,6 +91,10 @@ public:
 	/// Perform jump if `logicalExpression` failed
 	QString logicalExpression_failureJumpToSceneName = "";
 
+    // methods for events tree
+    virtual QString getSubTypeName() { return "Input"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_INPUT; }
+
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

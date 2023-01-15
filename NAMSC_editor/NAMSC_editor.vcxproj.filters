@@ -69,6 +69,12 @@
     <Filter Include="Header Files\Properties\Objects\Nodes">
       <UniqueIdentifier>{4053e4d8-787b-4de9-a5ff-8edff650563a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\BottomPanel">
+      <UniqueIdentifier>{9eef4be0-9b2f-43be-8683-b0a04db2867a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BottomPanel">
+      <UniqueIdentifier>{b50801e7-81f9-4b3a-b3dd-7067399dba81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="NAMSC_editor.qrc">
@@ -169,11 +175,17 @@
     <ClCompile Include="JumpEventProperties.cpp">
       <Filter>Source Files\Properties\Events</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterTreeWidgetItem.cpp">
+      <Filter>Source Files\LeftPanelTabs</Filter>
+    </ClCompile>
     <ClCompile Include="CharacterTree.cpp">
       <Filter>Source Files\LeftPanelTabs</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterTreeWidgetItem.cpp">
-      <Filter>Source Files\LeftPanelTabs</Filter>
+    <ClCompile Include="EventTreeItemModel.cpp">
+      <Filter>Source Files\BottomPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="EventTreeItem.cpp">
+      <Filter>Source Files\BottomPanel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +252,9 @@
     <QtMoc Include="CharacterTreeWidgetItem.h">
       <Filter>Header Files\LeftPanelTabs</Filter>
     </QtMoc>
+    <QtMoc Include="EventTreeItemModel.h">
+      <Filter>Header Files\BottomPanel</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphNodeBody.h">
@@ -268,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="TreeWidgetItemTypes.h">
       <Filter>Header Files\LeftPanelTabs</Filter>
+    </ClInclude>
+    <ClInclude Include="EventTreeItem.h">
+      <Filter>Header Files\BottomPanel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
