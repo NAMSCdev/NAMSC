@@ -49,9 +49,7 @@ void ActionSceneryObjectAnimRotate::setOnRunListener(std::function<void(const Ev
 void ActionSceneryObjectAnimRotate::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
-
-	if (!assetAnimName_.isEmpty())
-		assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
+	assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
 	errorCheck();
 }
 

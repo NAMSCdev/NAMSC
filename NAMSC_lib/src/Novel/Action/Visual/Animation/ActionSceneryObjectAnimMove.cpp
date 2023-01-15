@@ -49,9 +49,7 @@ void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(const Even
 void ActionSceneryObjectAnimMove::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
-	
-	if (!assetAnimName_.isEmpty())
-		assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
+	assetAnim_ = AssetManager::getInstance().getAssetAnimMove(assetAnimName_);
 	errorCheck();
 }
 
