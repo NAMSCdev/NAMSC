@@ -16,9 +16,10 @@ void swap(Event& first, Event& second) noexcept
 	swap(first.actions_, second.actions_);
 }
 
-Event::Event(Scene* const parentScene, const QString& label)
-	: parentScene(parentScene), 
-	label(label)
+Event::Event(Scene* const parentScene, const QString& label, std::vector<std::unique_ptr<Action>>&& actions)
+	: parentScene(parentScene),
+	label(label),
+	actions_(std::move(actions))
 {
 }
 
@@ -80,7 +81,7 @@ void Event::serializableLoad(QDataStream& dataStream)
 
 void Event::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << getType() << label << actions_.size();
+	dataStream << getType() << label;
 	for (const std::unique_ptr<Action>& action : actions_)
 		dataStream << *action;
 }

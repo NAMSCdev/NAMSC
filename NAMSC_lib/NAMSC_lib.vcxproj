@@ -32,15 +32,14 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;opengl;multimedia;openglwidgets</QtModules>
+    <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.2.4_msvc2019_64</QtInstall>
-    <QtModules>core;gui;widgets;opengl;multimedia;openglwidgets</QtModules>
+    <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
-    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -116,19 +115,24 @@
     <ClInclude Include="src\Novel\Action\Stat\ActionStatAll.h" />
     <ClInclude Include="src\Novel\Action\Visual\ActionVisualAll.h" />
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionAnimAll.h" />
+    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimInstances.h" />
     <ClInclude Include="src\Novel\Data\Action.h" />
     <ClInclude Include="src\Novel\Data\ActionAll.h" />
     <ClInclude Include="src\Novel\Data\ActionAnimAll.h" />
     <ClInclude Include="src\Novel\Data\ActionAudioAll.h" />
     <ClInclude Include="src\Novel\Data\ActionStatAll.h" />
     <ClInclude Include="src\Novel\Data\ActionVisualAll.h" />
+    <ClInclude Include="src\Novel\Data\Asset\AssetAnimInstances.h" />
     <ClInclude Include="src\Novel\Data\Chapter.h" />
     <ClInclude Include="src\Novel\Data\EventAll.h" />
     <ClInclude Include="src\Novel\Data\Text\Choice.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorAll.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBaseInstances.h" />
     <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectFade.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterfaceInstances.h" />
+    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNodeInstances.h" />
     <ClInclude Include="src\Novel\SceneComponent.h" />
-    <QtMoc Include="src\Novel\Widget\SceneryObjectWidget.h" />
+    <ClInclude Include="src\Novel\Widget\SceneryObjectWidget.h" />
     <QtMoc Include="src\Novel\Widget\SceneWidget.h" />
     <ClInclude Include="src\Serialization.h" />
     <ClInclude Include="src\Novel\Action\Visitor\ActionVisitorCorrectAsset.h" />
@@ -194,7 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Exceptions.cpp" />
-    <ClCompile Include="src\Helpers.cpp" />
     <ClCompile Include="src\Novel\Action\Action.cpp" />
     <ClCompile Include="src\Novel\Action\ActionAudioErrorCheck.cpp" />
     <ClCompile Include="src\Novel\Action\Audio\ActionAudio.cpp" />
@@ -287,8 +290,18 @@
     <ClCompile Include="src\Novel\Event\EventRun.cpp" />
     <ClCompile Include="src\Novel\Event\EventWait.cpp" />
     <ClCompile Include="src\Novel\SceneComponent.cpp" />
-    <ClCompile Include="src\Novel\Widget\SceneryObjectWidget.cpp" />
-    <ClCompile Include="src\Novel\Widget\SceneWidget.cpp" />
+    <ClCompile Include="src\Novel\Widget\SceneryObjectWidget.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Widget\SceneWidget.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="src\Serialization.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

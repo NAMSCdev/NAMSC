@@ -70,8 +70,7 @@ void SceneryObject::serializableLoad(QDataStream& dataStream)
 {
 	dataStream >> name >> assetImageName_ >> bMirrored >> pos >> scale >> rotationDegree >> colorMultiplier[0] >> colorMultiplier[1] >> colorMultiplier[2] >> colorMultiplier[3] >> alphaMultiplier >> bVisible;
 
-	if (!assetImageName_.isEmpty())
-		assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
+	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
 	SceneryObject::errorCheck();
 }
 
@@ -81,16 +80,6 @@ void SceneryObject::serializableSave(QDataStream& dataStream) const
 }
 
 //  MEMBER_FIELD_SECTION_CHANGE END
-
-bool SceneryObject::operator==(const QString& name) const noexcept
-{
-	return this->name == name;
-}
-
-bool SceneryObject::operator!=(const QString& name) const noexcept
-{
-	return this->name != name;
-}
 
 //defaulted
 //SceneryObject::SceneryObject(SceneryObject&& obj) noexcept
@@ -188,24 +177,4 @@ void SceneryObject::resetAnimators()
 	animatorsMove_  .clear();
 	animatorsRotate_.clear();
 	animatorsScale_ .clear();
-}
-
-QString SceneryObject::getComponentTypeName() const noexcept 
-{ 
-	return QString("Scenery Object"); 
-}
-
-QString SceneryObject::getComponentSubTypeName() const noexcept
-{ 
-	return QString("Scenery Object");
-}
-
-SceneComponentType SceneryObject::getComponentType() const noexcept 
-{ 
-	return OBJECT; 
-}
-
-QString SceneryObject::getComponentName() const noexcept 
-{ 
-	return name; 
 }

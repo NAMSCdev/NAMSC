@@ -10,7 +10,7 @@ public:
 	explicit EventIf(Scene* const parentScene) noexcept;
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or the `condition` couldn't be parsed
-	EventIf(Scene* const parentScene, const QString& label, const QString& condition = "");
+	EventIf(Scene* const parentScene, const QString& label, const QString& condition = "", std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventIf(const EventIf& obj)                noexcept = delete;
 	EventIf(EventIf&& obj)                     noexcept;
 	EventIf& operator=(const EventIf& obj)     noexcept = delete;
@@ -31,9 +31,9 @@ public:
 
 	QString condition = "";
 
-	//todo: do not botch
-    QString getComponentSubTypeName()    const noexcept override { return "If"; }
-    EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_IF; }
+    // methods for events tree
+    virtual QString getSubTypeName() { return "If"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_IF; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed

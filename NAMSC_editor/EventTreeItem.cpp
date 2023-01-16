@@ -14,9 +14,9 @@ EventTreeItem::~EventTreeItem()
 void EventTreeItem::appendChild(EventTreeItem* item)
 {
     if (
-        (component->getComponentType() == NOT_COMPONENT) ||
-        (item->component->getComponentType() == EVENT && component->getComponentType() == SCENE) ||
-        (item->component->getComponentType() == OBJECT && component->getComponentType() == EVENT)
+        (component->getType() == NOT_COMPONENT) ||
+        (item->component->getType() == EVENT && component->getType() == SCENE) ||
+        (item->component->getType() == OBJECT && component->getType() == EVENT)
         )
     {
         m_childItems.append(item);
@@ -63,9 +63,9 @@ QVariant EventTreeItem::data(int column) const
 	switch (column)
 	{
 	case 0:
-        return component->getComponentName();
+        return component->getName();
 	case 1:
-        return component->getComponentSubTypeName();
+        return component->getSubTypeName();
 	}
     return QVariant();
 }

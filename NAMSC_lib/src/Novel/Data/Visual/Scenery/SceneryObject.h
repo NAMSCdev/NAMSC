@@ -23,8 +23,6 @@ public:
 	//SceneryObject& operator=(SceneryObject obj)        noexcept;
 	bool operator==(const SceneryObject& obj) const    noexcept;
 	bool operator!=(const SceneryObject& obj) const    noexcept = default;
-	bool operator==(const QString& name)      const    noexcept;
-	bool operator!=(const QString& name)      const    noexcept;
 	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~SceneryObject() = default;
 
@@ -66,11 +64,12 @@ public:
 
 	bool bVisible               = false;
 
-	//todo: do not botch
-	QString getComponentTypeName()        const noexcept override;
-	QString getComponentSubTypeName()     const noexcept override;
-	SceneComponentType getComponentType() const noexcept override;
-	QString getComponentName()            const noexcept override;
+    // SceneComponent for EventsTree
+    virtual QString getTypeName() { return "Scenery Object"; }
+    virtual QString getSubTypeName() { return "Scenery Object"; }
+    virtual SceneComponentType getType() { return OBJECT; }
+    virtual EventSubType getEventType() { return EventSubType::NOT_EVENT; }
+    virtual QString getName() { return name; }
 
 protected:
 	QString     assetImageName_ = "";

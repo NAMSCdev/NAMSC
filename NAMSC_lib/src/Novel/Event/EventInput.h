@@ -26,7 +26,7 @@ public:
 	/// \param -1 is unlimited tries to enter the text, so basically until `logicalExpression` evaluates to `true`
 	/// \param Perform jump if `logicalExpression` failed
 	/// \exception One of the Actions contains an Error or the regex is not properly formatted or the Stat couldn't be found or logicalExpression is not properly formatted
-	EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName = "", bool bDigitsOnly = false, const long long digitsOnly_min = 0, const long long digitsOnly_max = 1000, uint minCharacters = 0, const QString& regex = "", bool bLogicalExpression = false, const QString& logicalExpression = "", int logicalExpression_tries = 0, const QString& logicalExpression_failureJumpToSceneName = "");
+	EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName = "", bool bDigitsOnly = false, const long long digitsOnly_min = 0, const long long digitsOnly_max = 1000, uint minCharacters = 0, const QString& regex = "", bool bLogicalExpression = false, const QString& logicalExpression = "", int logicalExpression_tries = 0, const QString& logicalExpression_failureJumpToSceneName = "", std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
 	EventInput(const EventInput& obj)            noexcept = delete;
 	EventInput(EventInput&& obj)                 noexcept;
 	EventInput& operator=(const EventInput& obj) noexcept = delete;
@@ -91,9 +91,9 @@ public:
 	/// Perform jump if `logicalExpression` failed
 	QString logicalExpression_failureJumpToSceneName = "";
 
-    //todo: do not botch
-    QString getComponentSubTypeName()    const noexcept override { return "Input"; }
-    EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_INPUT; }
+    // methods for events tree
+    virtual QString getSubTypeName() { return "Input"; }
+    virtual EventSubType getEventType() { return EventSubType::EVENT_INPUT; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed

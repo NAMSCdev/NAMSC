@@ -6,7 +6,7 @@
 
 /// The logical unit of the Novel's flow in the [Novel](#Novel)
 /// The Editor user should be able to create one whenever
-class Scene final : public SceneComponent, public NovelFlowInterface
+class Scene final : public NovelFlowInterface
 {
 	/// Our overlord
 	friend class Novel;
@@ -18,7 +18,7 @@ class Scene final : public SceneComponent, public NovelFlowInterface
 public:
 	Scene()                                  noexcept = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
-	explicit Scene(const QString& name, const QString& chapterName = ""/*, const Scenery& scenery = Scenery(),*/);
+	explicit Scene(const QString& name, const QString& chapterName = "", /*const Scenery& scenery = Scenery(),*/ std::vector<std::unique_ptr<Event>> && events = std::move(std::vector<std::unique_ptr<Event>>()));
 	Scene(Scene&& obj)                       noexcept;
 	Scene& operator=(const Scene &obj)       noexcept = delete;
 	bool operator==(const Scene& obj) const  noexcept = delete;
@@ -61,13 +61,6 @@ public:
 	/// Currently displayed media of the Scene
 	Scenery	scenery;
 
-	//todo: do not botch
-    QString getComponentTypeName()        const noexcept override { return "Scene"; }
-    QString getComponentSubTypeName()     const noexcept override { return "Scene"; }
-    SceneComponentType getComponentType() const noexcept override { return SCENE; }
-    EventSubType getComponentEventType()  const noexcept override { return EventSubType::NOT_EVENT; }
-    QString getComponentName()            const noexcept override { return name; }
-	
 private:
 	QString        chapterName_ = "";
 	const Chapter* chapter_     = nullptr;

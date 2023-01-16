@@ -19,7 +19,7 @@ public:
     int childCount() const;
     int columnCount() const;
     QVariant data(int column) const;
-    QVariant getComponentName() const;
+    QVariant getName() const;
     QVariant getSubname() const;
     int row() const;
     EventTreeItem* parentItem();
