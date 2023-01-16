@@ -32,7 +32,7 @@ private:
 	QPointF contextMenuInvokePosition;
 
 	QAction* addCharacterToSceneAction;
-	QAction* removeCharacterFromTreeAction; // TODO
+	QAction* removeCharacterFromTreeAction; // TODO remove character from characterTree
 
 	void createContextMenu();
 };

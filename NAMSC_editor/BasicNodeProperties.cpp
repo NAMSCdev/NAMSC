@@ -18,11 +18,6 @@ BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
 BasicNodeProperties::~BasicNodeProperties()
 {}
 
-//void BasicNodeProperties::setScene(QGraphicsScene* scene)
-//{
-//	this->scene = scene;
-//}
-
 void BasicNodeProperties::updateConnections(bool b)
 {
 	instantTextChangeUpdate = b;
@@ -39,30 +34,22 @@ void BasicNodeProperties::updateConnections(bool b)
 void BasicNodeProperties::selectedNodeChanged()
 {
 	updateConnections(instantTextChangeUpdate);
-	//if (scene->selectedItems().isEmpty())
-	//{
-	//	ui.nodeNameLineEdit->setText("");
-	//	ui.nodeNameLineEdit->setEnabled(false);
-	//}
-	//else {
-		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel());
-	//}
+	ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel());
 }
 
 void BasicNodeProperties::updateLabelInNode()
 {
 	QString lineEditText = ui.nodeNameLineEdit->text();
 
-	if (Novel::getInstance().getScene(lineEditText) != nullptr)
+	if (Novel::getInstance().renameScene(currentlySelectedNode->getLabel(), lineEditText) == nullptr)
 	{
 		QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
 		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
 		return;
 	}
-    QString oldName = Novel::getInstance().getScene(currentlySelectedNode->getLabel())->getName();
-	//Novel::getInstance().getScene(currentlySelectedNode->getLabel())->name = lineEditText; // todo remember to change key
-    Novel::getInstance().renameScene(oldName, lineEditText);
-	currentlySelectedNode->setLabel(lineEditText);
-    currentlySelectedNode->update();
-    emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
+	else
+	{
+		currentlySelectedNode->setLabel(lineEditText);
+		currentlySelectedNode->update();
+	}
 }

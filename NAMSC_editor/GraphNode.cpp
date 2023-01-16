@@ -124,7 +124,6 @@ void GraphNode::removeConnectionPoint(GraphConnectionType type, size_t index)
 	}
 }
 
-// todo test
 bool GraphNode::removeConnectionPointByName(QString nodeName, GraphConnectionType type)
 {
 	auto& connectionPointList = type == GraphConnectionType::In ? inputConnectionPointList : outputConnectionPointList;
@@ -239,7 +238,6 @@ QString GraphNode::getLabel() const
 	return nodeBody.label;
 }
 
-// todo test
 bool GraphNode::connectToNode(QString nodeName)
 {
 	for(auto elem : scene()->items())

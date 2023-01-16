@@ -33,8 +33,7 @@ void LineEditDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, 
 	// low possibility that there should be a signal emitted
 	QString text = lineEdit->text();
 
-	// todo EditRole
-	model->setData(index, text, Qt::EditRole);
+	model->setData(index, text, Qt::EditRole); // Maybe | Qt::DisplayRole
 }
 
 void LineEditDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option,

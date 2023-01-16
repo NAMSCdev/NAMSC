@@ -12,11 +12,11 @@ DialogItemModel::~DialogItemModel()
 int DialogItemModel::rowCount(const QModelIndex& parent) const
 {
 	if (sentences == nullptr) {
-		return sentences->size();
+		return 0;
 	}
 	else
 	{
-		return 0;
+		return sentences->size();
 	}
 }
 
@@ -69,8 +69,7 @@ bool DialogItemModel::insertRows(int row, int count, const QModelIndex& parent)
 
 	for (int rowNum = 0; rowNum < count; ++rowNum)
 	{
-		//Sentence sentence;
-		//sentences->emplace(sentences->cbegin() + row + rowNum, Sentence(parentEvent, parentEvent)); // TODO currently cant get parent scene. It will be possible in the near future
+		sentences->emplace(sentences->cbegin() + row + rowNum, Sentence(parentEvent));
 	}
 
 	endInsertRows();

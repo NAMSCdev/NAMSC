@@ -12,6 +12,8 @@ ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, QWidget *pare
 	: QFrame(parent), choices(choices)
 {
 	ui.setupUi(this);
+	ui.choiceEventTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.choiceEventTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 	ui.choiceEventCollapseButton->setContent(ui.choiceEventContent);
 	ui.choiceEventCollapseButton->setText(tr("Choice event properties"));
@@ -54,34 +56,34 @@ void ChoiceEventProperties::createContextMenu()
 
 	connect(addChoiceAction, &QAction::triggered, this, [&]
 		{
-			QString name;
-			bool pressedOk = false;
-			bool isNameOk = false;
-			do {
-				name = QInputDialog::getText(this, tr("Add new choice"), tr("Provide unique choice name:"), QLineEdit::Normal, "", &pressedOk);
+		//	QString name;
+		//	bool pressedOk = false;
+		//	bool isNameOk = false;
+		//	do {
+		//		name = QInputDialog::getText(this, tr("Add new choice"), tr("Provide unique choice name:"), QLineEdit::Normal, "", &pressedOk);
 
-				if (!pressedOk) break;
-				else if (name.isNull() || name.isEmpty())
-				{
-					continue;
-				}
-				else if (std::find_if(choices->choices.begin(), choices->choices.end(), [&](Choice elem)
-					{
-						return elem.name == name;
-					}) != choices->choices.end())
-				{
-					QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
-					continue;
-				}
-				else isNameOk = true;
-			} while (!isNameOk);
+		//		if (!pressedOk) break;
+		//		else if (name.isNull() || name.isEmpty())
+		//		{
+		//			continue;
+		//		}
+		//		else if (std::find_if(choices->choices.begin(), choices->choices.end(), [&](Choice elem)
+		//			{
+		//				return elem.name == name;
+		//			}) != choices->choices.end())
+		//		{
+		//			QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+		//			continue;
+		//		}
+		//		else isNameOk = true;
+		//	} while (!isNameOk);
 
-		if (pressedOk)
-		{
-			// push_back, potentially want to insert
-			//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
+		//if (pressedOk)
+		//{
+		//	// push_back, potentially want to insert
+		//	//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
 			static_cast<ChoiceItemModel*>(ui.choiceEventTableView->model())->insertRows(ui.choiceEventTableView->model()->rowCount(), 1);
-		}
+		//}
 
 		});
 }
