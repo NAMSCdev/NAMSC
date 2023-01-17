@@ -1,3 +1,5 @@
+#include <QDir>
+
 #include "Novel/Data/Novel.h"
 
 #include <QFile>
@@ -7,7 +9,7 @@ bool NovelState::errorCheck(bool bComprehensive) const
 {
     bool bError = false;
 
-    //static auto errorChecker = [this](bool bComprehensive)
+    //auto errorChecker = [this](bool bComprehensive)
     //{
     //};
 
@@ -26,6 +28,7 @@ bool NovelState::errorCheck(bool bComprehensive) const
 NovelState NovelState::load(uint saveSlot)
 {
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
+    save.open(QIODeviceBase::ReadOnly);
     QDataStream dataStream(&save);
     NovelState novelState;
     dataStream >> novelState;
@@ -45,8 +48,11 @@ NovelState NovelState::reset(uint saveSlot)
 void NovelState::save()
 {
     NovelState& novelState = Novel::getInstance().state_;
+    QDir(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)).mkpath("NAMSC");
     QFile save(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/NAMSC/" + QString::number(saveSlot) + ".sav");
+    save.open(QIODeviceBase::WriteOnly);
     QDataStream dataStream(&save);
+    dataStream << novelState;
 }
 
 void NovelState::update(uint elapsedTime)

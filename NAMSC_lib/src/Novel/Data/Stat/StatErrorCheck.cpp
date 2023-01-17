@@ -7,7 +7,7 @@
 bool StatDouble::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (min > max)
 			qCritical() << NovelLib::ErrorType::StatMinMax << "StatDouble (object's name: \"" + name + "\") has its min value higher than its max value";
@@ -25,7 +25,7 @@ bool StatDouble::errorCheck(bool bComprehensive) const
 bool StatLongLong::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (min > max)
 			qCritical() << NovelLib::ErrorType::StatMinMax << "StatLongLong (object's name: \"" + name + "\") has its min value higher than its max value";
@@ -44,7 +44,7 @@ bool StatString::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//todo: check evaulation
 	};

@@ -80,7 +80,7 @@ void EventTreeItemModel::nodeSelectionChanged(GraphNode* node)
 void EventTreeItemModel::sceneUpdated(Scene* scene)
 {
     qDebug() << "Scene updated";
-    setupModelData(Novel::getInstance().getScene(scene->getName()));
+    setupModelData(Novel::getInstance().getScene(scene->getComponentName()));
 }
 
 void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -90,14 +90,14 @@ void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const 
         QModelIndex index = selected.indexes().at(0);
         qDebug() << data(index, Qt::DisplayRole);
         EventTreeItem* item = static_cast<EventTreeItem*>(index.internalPointer());
-        switch(item->component->getType())
+        switch(item->component->getComponentType())
         {
         case SCENE:
-            qDebug() << item->component->getName();
+            qDebug() << item->component->getComponentName();
             emit propertyTabChangeRequested(static_cast<Scene*>(item->component), PropertyTypes::Scene);
             break;
         case EVENT:
-            switch(item->component->getEventType())
+            switch(item->component->getComponentEventType())
             {
             case EventSubType::EVENT_DIALOG:
                 emit propertyTabChangeRequested(static_cast<EventDialogue*>(item->component), PropertyTypes::DialogEventItem);
@@ -175,7 +175,7 @@ void EventTreeItemModel::setupModelData(Scene* scene)
     beginResetModel();
     if(rootItem->childCount()!=0) rootItem->removeChild(0);
     SceneComponent* rootComponent = dynamic_cast<SceneComponent*>(scene);
-    qDebug() << "Setting EventsTree with root: " << rootComponent->getName() << " " << rootComponent->getTypeName();
+    qDebug() << "Setting EventsTree with root: " << rootComponent->getComponentName() << " " << rootComponent->getComponentTypeName();
     EventTreeItem* sceneItem = new EventTreeItem(scene, rootItem);
     rootItem->appendChild(sceneItem);
     rootItem->child(0)->data(0);

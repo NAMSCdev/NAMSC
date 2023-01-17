@@ -22,6 +22,7 @@ Asset::~Asset() = default;
 void Asset::serializableLoad(QDataStream& dataStream)
 {
 	dataStream >> name >> size >> path >> pos;
+
 	errorCheck();
 }
 

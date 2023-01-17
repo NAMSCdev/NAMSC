@@ -19,8 +19,8 @@ void swap(EventJump& first, EventJump& second) noexcept
 	swap(first.onRun_,          second.onRun_);
 }
 
-EventJump::EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)),
+EventJump::EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)
+	: Event(parentScene, label),
 	jumpToSceneName(jumpToSceneName),
 	condition(condition)
 {
@@ -42,6 +42,7 @@ void EventJump::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
 	dataStream >> jumpToSceneName >> condition;
+
 	errorCheck();
 }
 

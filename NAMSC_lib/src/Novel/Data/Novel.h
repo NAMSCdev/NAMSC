@@ -35,6 +35,8 @@ public:
 	/// 6 - loading Scenes
 	void loadNovel(uint slot, bool createNew);
 
+	void saveNovel(uint slot);
+
 	/// Creates a new NovelState (resets the old one, if exists) and loads it into the SaveSlot
 	void newState(uint slot);
 	/// Loads Player's NovelState from a SaveFile in the given SaveSlot
@@ -55,7 +57,7 @@ public:
 	const Chapter* getChapter(const QString& chapterName)     const;
 	Chapter*       getChapter(const QString& chapterName);
 	void setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept;
-	Chapter* setChapter(const QString& chapterName, const Chapter& chapter);
+	Chapter* setChapter(const Chapter& chapter);
 	Chapter* renameChapter(const QString& oldName, const QString& newName);
 	bool removeChapter(const QString& chapterName);
 	void clearChapters() noexcept;
@@ -64,7 +66,7 @@ public:
 	const Character* getDefaultCharacter(const QString& characterName)   const;
 	Character*       getDefaultCharacter(const QString& characterName);
 	void setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept;
-	Character* setDefaultCharacter(const QString& characterName, const Character& character);
+	Character* setDefaultCharacter(const Character& character);
 	Character* renameDefaultCharacter(const QString& oldName, const QString& newName);
 	bool removeDefaultCharacter(const QString& characterName);
 	void clearDefaultCharacters() noexcept;
@@ -73,7 +75,7 @@ public:
 	const SceneryObject* getDefaultSceneryObject(const QString& sceneryObjectName) const;
 	SceneryObject*       getDefaultSceneryObject(const QString& sceneryObjectName);
 	void setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
-	SceneryObject* setDefaultSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject);
+	SceneryObject* setDefaultSceneryObject(const SceneryObject& sceneryObject);
 	SceneryObject* renameDefaultSceneryObject(const QString& oldName, const QString& newName);
 	bool removeDefaultSceneryObject(const QString& sceneryObjectName);
 	void clearDefaultSceneryObject() noexcept;
@@ -87,16 +89,18 @@ public:
 	Scene* renameScene(const QString& oldName, const QString& newName);
 	/// Also corrects jumps to Scenes that theirs index changed
 	bool removeScene(const QString& sceneName);
-	void clearScene() noexcept;
+	void clearScenes() noexcept;
 
 	const std::unordered_map<QString, Voice>* getVoices() const noexcept;
 	const Voice* getVoice(const QString& voiceName)       const;
 	Voice*       getVoice(const QString& voiceName);
 	void setVoices(const std::unordered_map<QString, Voice>& voices) noexcept;
-	Voice* setVoice(const QString& voiceName, const Voice& voice);
+	Voice* setVoice(const Voice& voice);
 	Voice* renameVoice(const QString& oldName, const QString& newName);
 	bool removeVoice(const QString& voiceName);
 	void clearVoices() noexcept;
+
+	void clearNovel() noexcept;
 
 	/// Needs to be created after QApplication 
 	/// It should be deleted by the QWidget it will be assigned to, instead of manually
@@ -161,5 +165,5 @@ private:
 	QElapsedTimer novelStartElapsedTimer_;
 
 	/// Renders the Scene (its Scenery)
-	SceneWidget* sceneWidget_;
+	SceneWidget* sceneWidget_ = nullptr;
 };

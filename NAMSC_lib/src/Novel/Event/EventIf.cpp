@@ -18,8 +18,8 @@ void swap(EventIf& first, EventIf& second) noexcept
 	swap(first.onRun_,    second.onRun_);
 }
 
-EventIf::EventIf(Scene* const parentScene, const QString& label, const QString& condition, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)),
+EventIf::EventIf(Scene* const parentScene, const QString& label, const QString& condition)
+	: Event(parentScene, label),
 	condition(condition)
 {
 	errorCheck(true);
@@ -34,6 +34,7 @@ void EventIf::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
 	dataStream >> condition;
+
 	errorCheck();
 }
 

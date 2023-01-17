@@ -41,7 +41,8 @@ void Chapter::serializableLoad(QDataStream& dataStream)
 {
 	dataStream >> name >> parentName_;
 
-	parent_ = Novel::getInstance().getChapter(parentName_);
+	if (!parentName_.isEmpty())
+		parent_ = Novel::getInstance().getChapter(parentName_);
 }
 
 void Chapter::serializableSave(QDataStream& dataStream) const

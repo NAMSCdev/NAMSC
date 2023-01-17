@@ -13,7 +13,7 @@ class Scenery final
 public:
 	Scenery()                                 noexcept = default;
 	/// \param backgroundAssetImage Copies the AssetImage pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
-	explicit Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist = MusicPlaylist(), const std::unordered_map<QString, Character>& displayedCharacters = std::unordered_map<QString, Character>(), const std::unordered_map<QString, SceneryObject>& displayedSceneryObjects = std::unordered_map<QString, SceneryObject>(), const std::unordered_map<QString, Sound>& sounds = std::unordered_map<QString, Sound>(), AssetImage* backgroundAssetImage = nullptr);
+	explicit Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist = MusicPlaylist(), const std::vector<Character>& displayedCharacters = std::vector<Character>(), const std::vector<SceneryObject>& displayedSceneryObjects = std::vector<SceneryObject>(), const std::vector<Sound>& sounds = std::vector<Sound>(), AssetImage* backgroundAssetImage = nullptr);
 	Scenery(const Scenery& obj)               noexcept = default;
 	Scenery(Scenery&& obj)                    noexcept = default;
 	///This one needs to be optimized at the cost of strong exception safety, as it is frequently assigned during gameplay (so the performance is a priority here)
@@ -50,30 +50,33 @@ public:
 	AssetImage*       getBackgroundAssetImage()       noexcept;
 	void setBackgroundAssetImage(const QString& backgroundAssetImageName, AssetImage* backgroundAssetImage = nullptr) noexcept;
 
-	const std::unordered_map<QString, Character>* getDisplayedCharacters() const noexcept;
-	const Character* getDisplayedCharacter(const QString& characterName)   const;
+	const std::vector<Character>* getDisplayedCharacters() const noexcept;
+	const Character* getDisplayedCharacter(const QString& characterName) const;
 	Character*       getDisplayedCharacter(const QString& characterName);
-	void setDisplayedCharacters(const std::unordered_map<QString, Character>& characters) noexcept;
-	Character* setDisplayedCharacter(const QString& characterName, const Character& character);
-	Character* renameDisplayedCharacter(const QString& oldName, const QString& newName);
+	void setDisplayedCharacters(const std::vector<Character>& characters) noexcept;
+	Character* insertDisplayedCharacter(uint index, const Character& character);
+	Character* addDisplayedCharacter(const Character& character);
+	Character* addDisplayedCharacter(Character&& character);
 	bool removeDisplayedCharacter(const QString& characterName);
 	void clearDisplayedCharacters() noexcept;
 
-	const std::unordered_map<QString, SceneryObject>* getDisplayedSceneryObjects()   const noexcept;
+	const std::vector<SceneryObject>* getDisplayedSceneryObjects() const noexcept;
 	const SceneryObject* getDisplayedSceneryObject(const QString& sceneryObjectName) const;
 	SceneryObject*       getDisplayedSceneryObject(const QString& sceneryObjectName);
-	void setDisplayedSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept;
-	SceneryObject* setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject);
-	SceneryObject* renameDisplayedSceneryObject(const QString& oldName, const QString& newName);
+	void setDisplayedSceneryObjects(const std::vector<SceneryObject>& sceneryObjects) noexcept;
+	SceneryObject* insertDisplayedSceneryObject(uint index, const SceneryObject& sceneryObject);
+	SceneryObject* addDisplayedSceneryObject(const SceneryObject& sceneryObject);
+	SceneryObject* addDisplayedSceneryObject(SceneryObject&& sceneryObject);
 	bool removeDisplayedSceneryObject(const QString& sceneryObjectName);
 	void clearDisplayedSceneryObject() noexcept;
 
-	const std::unordered_map<QString, Sound>* getSounds() const noexcept;
-	const Sound* getSound(const QString& soundName)       const;
+	const std::vector<Sound>* getSounds() const noexcept;
+	const Sound* getSound(const QString& soundName) const;
 	Sound*       getSound(const QString& soundName);
-	void setSounds(const std::unordered_map<QString, Sound>& sounds) noexcept;
-	Sound* setSound(const QString& soundName, const Sound& sound);
-	Sound* renameSound(const QString& oldName, const QString& newName);
+	void setSounds(const std::vector<Sound>& sounds) noexcept;
+	Sound* insertSound(uint index, const Sound& sound);
+	Sound* addSound(const Sound& sound);
+	Sound* addSound(Sound&& sound);
 	bool removeSound(const QString& soundName);
 	void clearSounds() noexcept;
 
@@ -83,13 +86,13 @@ private:
 	QString     backgroundAssetImageName_ = "";
 	AssetImage* backgroundAssetImage_     = nullptr;
 
-	std::unordered_map<QString, Character>     displayedCharacters_;
+	std::vector<Character>     displayedCharacters_;
 
-	std::unordered_map<QString, SceneryObject> displayedSceneryObjects_;
+	std::vector<SceneryObject> displayedSceneryObjects_;
 
 	/// Sounds that haven't been played yet, but they are supossed to be played at some point in time
 	/// `void update()` should remove already played ones
-	std::unordered_map<QString, Sound> sounds_;
+	std::vector<Sound> sounds_;
 
 public:
 	//---SERIALIZATION---

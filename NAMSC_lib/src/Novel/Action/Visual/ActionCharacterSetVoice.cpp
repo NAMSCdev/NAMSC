@@ -60,7 +60,8 @@ void ActionCharacterSetVoice::serializableLoad(QDataStream& dataStream)
 	ActionCharacter::serializableLoad(dataStream);
 	dataStream >> voiceName_;
 
-	voice_ = Novel::getInstance().getVoice(voiceName_);
+	if (!voiceName_.isEmpty())
+		voice_ = Novel::getInstance().getVoice(voiceName_);
 	errorCheck();
 }
 

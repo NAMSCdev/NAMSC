@@ -21,7 +21,7 @@ Sound::Sound(const QString &name, const QString& soundFilePath, AudioSettings au
 	startDelay(startDelay),
 	bPersistToNewEvent(bPersistToNewEvent)
 {
-	errorCheck(true);
+	//errorCheck(true);
 }
 
 //defaulted

@@ -23,7 +23,7 @@ void CharacterTree::addAssetToCharacters(QString relativePath, QString name, Tre
 		Character tempCharacter;
 		tempCharacter.name = name;
 		tempCharacter.setAssetImage(relativePath);
-		Novel::getInstance().setDefaultCharacter(name, tempCharacter);
+		Novel::getInstance().setDefaultCharacter(tempCharacter);
 
 		tempTreeItem = new CharacterTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->character = Novel::getInstance().getDefaultCharacter(name);

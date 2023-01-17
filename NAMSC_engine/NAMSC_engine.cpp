@@ -1,6 +1,7 @@
 #include "NAMSC_engine.h"
 
 #include <QMessageBox>
+#include <QFile>
 
 #include "Novel/Event/EventDialogue.h"
 
@@ -68,16 +69,17 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
 
     Scenery scenery;
     scenery.setBackgroundAssetImage("testBackground");
-    scenery.setDisplayedCharacter("kot1", testCharacter);
+    scenery.addDisplayedCharacter(testCharacter);
     testCharacter.bMirrored      = true;
     testCharacter.rotationDegree = 0.0;
     testCharacter.name           = "kot2";
     testCharacter.pos            = QPoint(600, 100);
-    scenery.setDisplayedCharacter("kot2", testCharacter);
+    scenery.addDisplayedCharacter(testCharacter);
 
     Event* event = new EventDialogue(&scene);
     event->scenery = scenery;
     scene.addEvent(event);
+
     novel.addScene("start", std::move(scene));
 
 #endif

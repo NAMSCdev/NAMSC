@@ -2,7 +2,7 @@
 
 #include "Exceptions.h"
 
-Choice::Choice(Event* const parentEvent) noexcept
+Choice::Choice(EventChoice* const parentEvent) noexcept
 	: parentEvent(parentEvent)
 {
 }
@@ -30,7 +30,7 @@ void swap(Choice::ChoiceDisplayOptions& first, Choice::ChoiceDisplayOptions& sec
 	std::swap(first.font_,                  second.font_);
 }
 
-Choice::Choice(Event* const parentEvent, const QString& name, const Translation& text, const QString& condition, const QString& jumpToSceneName, const ChoiceDisplayOptions& choiceDisplayOptions)
+Choice::Choice(EventChoice* const parentEvent, const QString& name, const Translation& text, const QString& condition, const QString& jumpToSceneName, const ChoiceDisplayOptions& choiceDisplayOptions)
 	: parentEvent(parentEvent),
 	name(name),
 	text(text),

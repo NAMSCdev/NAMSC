@@ -6,7 +6,7 @@
 bool Asset::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (path.isEmpty() && QFileInfo::exists(path))
 		{
@@ -26,28 +26,14 @@ bool Asset::errorCheck(bool bComprehensive) const
 	return bError;
 }
 
-template<typename AnimNode>
-bool AssetAnim<AnimNode>::errorCheck(bool bComprehensive) const
-{
-	bool bError = Asset::errorCheck(bComprehensive);
-
-	static auto errorChecker = [this](bool bComprehensive)
-	{
-		//todo: check timeStamps
-	};
-
-	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);
-	if (bError)
-		qDebug() << "Error occurred in AssetAnim::errorCheck \"" + name + '\"';
-
-	return bError;
-}
+//template<typename AnimNode>
+//bool AssetAnim<AnimNode>::errorCheck(bool bComprehensive) const
 
 bool AssetImage::errorCheck(bool bComprehensive) const
 {
 	bool bError = Asset::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (bComprehensive)
 		{
@@ -70,5 +56,3 @@ bool AssetImage::errorCheck(bool bComprehensive) const
 
 	return bError;
 }
-
-#include "Novel/Data/Asset/AssetAnimInstances.h"

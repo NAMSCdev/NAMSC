@@ -67,7 +67,8 @@ void ActionSetBackground::serializableLoad(QDataStream& dataStream)
 	Action::serializableLoad(dataStream);
 	dataStream >> assetImageName_ >> transitionType >> transitionTime;
 
-	assetImage_ = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName_);
+	if (!assetImageName_.isEmpty())
+		assetImage_ = AssetManager::getInstance().getAssetImageSceneryBackground(assetImageName_);
 	errorCheck();
 }
 

@@ -50,7 +50,8 @@ void ActionSceneryObjectAnimRotate::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 
-	assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
+	if (!assetAnimName_.isEmpty())
+		assetAnim_ = AssetManager::getInstance().getAssetAnimRotate(assetAnimName_);
 	errorCheck();
 }
 

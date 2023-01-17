@@ -15,7 +15,7 @@ public:
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \param A text to be displayed during Choice selection screen
 	/// \exception One of the Actions or the Choices or the `text` contains an Error 
-	EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText = Translation(), const std::vector<Choice>& choices = std::vector<Choice>(), std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText = Translation());
 	EventChoice(const EventChoice& obj)            noexcept = delete;
 	EventChoice(EventChoice&& obj)                 noexcept;
 	EventChoice& operator=(const EventChoice& obj) noexcept = delete;
@@ -40,9 +40,9 @@ public:
 	/// \todo make it private and create getters/setters
 	std::vector<Choice> choices;
 
-    // methods for events tree
-    virtual QString getSubTypeName() { return "Choice"; }
-    virtual EventSubType getEventType() { return EventSubType::EVENT_CHOICE; }
+	//todo: do not botch
+	QString getComponentSubTypeName()    const noexcept override { return "Choice"; }
+    EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_CHOICE; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
