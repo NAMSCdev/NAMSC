@@ -12,7 +12,6 @@ class CharacterTree  : public QTreeWidget
 public:
 	CharacterTree(QWidget *parent = nullptr);
 
-	// TODO serialization / deserialization
 
 public slots:
 	void addAssetToCharacters(QString path, QString name, TreeWidgetItemTypes type);

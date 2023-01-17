@@ -54,8 +54,8 @@ GraphNode* GraphView::getNodeByName(const QString& name)
 {
     for (auto node : scene()->items())
     {
-        auto castedNodePtr = qgraphicsitem_cast<GraphNode*>(node);
-        if (castedNodePtr->getLabel() == name) return castedNodePtr;
+        auto castedNodePtr = dynamic_cast<GraphNode*>(node);
+        if (castedNodePtr != nullptr && castedNodePtr->getLabel() == name) return castedNodePtr;
     }
 
     return nullptr;

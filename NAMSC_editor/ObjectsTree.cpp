@@ -13,12 +13,16 @@ ObjectsTree::ObjectsTree(QWidget* parent) : QTreeWidget(parent)
 	createContextMenu();
 }
 
-void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTypes type)
+void ObjectsTree::addAssetToObjects(QString relativePath, QString name, TreeWidgetItemTypes type)
 {
 	ObjectTreeWidgetItem* tempTreeItem;
 
 	if (type == TreeWidgetItemTypes::ImageObject) {
-		Novel::getInstance().setDefaultSceneryObject(name, SceneryObject(name, path));
+		//QString relPath = QDir(QDir::currentPath()).relativeFilePath(relativePath);
+		AssetManager::getInstance().addAssetImageSceneryBackground(relativePath, 0, 0, relativePath);
+		AssetManager::getInstance().addAssetImageSceneryObject(relativePath, 0, 0, relativePath);
+
+		Novel::getInstance().setDefaultSceneryObject(name, SceneryObject(name, relativePath));
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);
@@ -30,7 +34,7 @@ void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTy
 		// todo handle sound objects
 	}
 
-	tempTreeItem->relativeAssetPath = ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(path);
+	tempTreeItem->relativeAssetPath = ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(relativePath);
 
 	tempTreeItem->setText(0, name);
 
