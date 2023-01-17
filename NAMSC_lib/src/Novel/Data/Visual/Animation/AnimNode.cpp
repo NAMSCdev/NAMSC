@@ -26,51 +26,23 @@ void AnimNodeBase::serializableSave(QDataStream& dataStream) const
     dataStream << timeStamp << interpolationMethod;
 }
 
-template<uint dimension>
-AnimNodeDouble<dimension>::AnimNodeDouble(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<double, dimension>& state)
-    : AnimNodeBase(timeStamp, interpolationMethod),
-    state_(state)
-{
-}
+//template<uint dimension>
+//AnimNodeDouble<dimension>::AnimNodeDouble(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<double, dimension>& state)
 
-template<uint dimension>
-void AnimNodeDouble<dimension>::serializableLoad(QDataStream& dataStream)
-{
-    AnimNodeBase::serializableLoad(dataStream);
-    for (uint i = 0; i != dimension; ++i)
-        dataStream >> state_[dimension];
-}
+//template<uint dimension>
+//void AnimNodeDouble<dimension>::serializableLoad(QDataStream& dataStream)
 
-template<uint dimension>
-void AnimNodeDouble<dimension>::serializableSave(QDataStream& dataStream) const
-{
-    AnimNodeBase::serializableSave(dataStream);
-    for (uint i = 0; i != dimension; ++i)
-        dataStream << state_[dimension];
-}
+//template<uint dimension>
+//void AnimNodeDouble<dimension>::serializableSave(QDataStream& dataStream) const
 
-template<uint dimension>
-AnimNodeLongLong<dimension>::AnimNodeLongLong(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<long long, dimension>& state)
-    : AnimNodeBase(timeStamp, interpolationMethod),
-    state_(state)
-{
-}
+//template<uint dimension>
+//AnimNodeLongLong<dimension>::AnimNodeLongLong(uint timeStamp, AnimInterpolationMethod interpolationMethod, const QVarLengthArray<long long, dimension>& state)
 
-template<uint dimension>
-void AnimNodeLongLong<dimension>::serializableLoad(QDataStream& dataStream)
-{
-    AnimNodeBase::serializableLoad(dataStream);
-    for (uint i = 0; i != dimension; ++i)
-        dataStream >> state_[dimension];
-}
+//template<uint dimension>
+//void AnimNodeLongLong<dimension>::serializableLoad(QDataStream& dataStream)
 
-template<uint dimension>
-void AnimNodeLongLong<dimension>::serializableSave(QDataStream& dataStream) const
-{
-    AnimNodeBase::serializableSave(dataStream);
-    for (uint i = 0; i != dimension; ++i)
-        dataStream << state_[dimension];
-}
+//template<uint dimension>
+//void AnimNodeLongLong<dimension>::serializableSave(QDataStream& dataStream) const
 
 //  MEMBER_FIELD_SECTION_CHANGE END
 
@@ -88,5 +60,3 @@ bool AnimNodeBase::operator==(uint rhs) const noexcept
 {
     return timeStamp == rhs;
 }
-
-#include "Novel/Data/Visual/Animation/AnimNodeInstances.h"

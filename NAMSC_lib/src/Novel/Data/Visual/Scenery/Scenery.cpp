@@ -23,7 +23,7 @@ void swap(Scenery& first, Scenery& second) noexcept
 	swap(first.backgroundAssetImage_,     second.backgroundAssetImage_);
 }
 
-Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::unordered_map<QString, Character>& displayedCharacters, const std::unordered_map<QString, SceneryObject>& displayedSceneryObjects, const std::unordered_map<QString, Sound>& sounds, AssetImage* backgroundAssetImage)
+Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::vector<Character>& displayedCharacters, const std::vector<SceneryObject>& displayedSceneryObjects, const std::vector<Sound>& sounds, AssetImage* backgroundAssetImage)
 	: backgroundAssetImageName_(backgroundAssetImageName),
 	musicPlaylist(musicPlaylist), 
 	displayedCharacters_(displayedCharacters), 
@@ -83,25 +83,21 @@ void Scenery::serializableLoad(QDataStream& dataStream)
 	{
 		Character character;
 		dataStream >> character;
-		//TODO: check safety
-		QString& name = character.name;
-		displayedCharacters_[name] = std::move(character);
+		addDisplayedCharacter(std::move(character));
 	}
 
 	for (size_t i = 0; i != displayedSceneryObjectsSize; ++i)
 	{
 		SceneryObject sceneryObject;
 		dataStream >> sceneryObject;
-		QString& name = sceneryObject.name;
-		displayedSceneryObjects_[name] = std::move(sceneryObject);
+		addDisplayedSceneryObject(std::move(sceneryObject));
 	}
 
 	for (size_t i = 0; i != soundsSize; ++i)
 	{
 		Sound sound;
 		dataStream >> sound;
-		QString& name = sound.name;
-		sounds_[name] = std::move(sound);
+		addSound(std::move(sound));
 	}
 
 	errorCheck();
@@ -111,12 +107,12 @@ void Scenery::serializableSave(QDataStream& dataStream) const
 {
 	dataStream << backgroundAssetImageName_ << musicPlaylist;
 	dataStream << displayedCharacters_.size() << displayedSceneryObjects_.size() << sounds_.size();
-	for (const std::pair<const QString, Character>& character : displayedCharacters_)
-		dataStream << character.second;
-	for (const std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		dataStream << sceneryObject.second;
-	for (const std::pair <const QString, Sound>& sound : sounds_)
-		dataStream << sound.second;
+	for (const Character& character : displayedCharacters_)
+		dataStream << character;
+	for (const SceneryObject& sceneryObject : displayedSceneryObjects_)
+		dataStream << sceneryObject;
+	for (const Sound& sound : sounds_)
+		dataStream << sound;
 }
 
 //  MEMBER_FIELD_SECTION_CHANGE END
@@ -155,11 +151,11 @@ void Scenery::addAnimator(AnimatorSceneryObjectScale&& animatorScale)
 
 void Scenery::resetAnimators() noexcept
 {
-	for (std::pair<const QString, Character>& character : displayedCharacters_)
-		character.second.resetAnimators();
+	for (Character& character : displayedCharacters_)
+		character.resetAnimators();
 
-	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.second.resetAnimators();
+	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.resetAnimators();
 }
 
 QString Scenery::getBackgroundAssetImageName() const noexcept
@@ -199,39 +195,44 @@ void Scenery::setBackgroundAssetImage(const QString& backgroundAssetImageName, A
 	errorCheck(true);
 }
 
-const std::unordered_map<QString, Character>* Scenery::getDisplayedCharacters() const noexcept
+const std::vector<Character>* Scenery::getDisplayedCharacters() const noexcept
 {
 	return &displayedCharacters_;
 }
 
 const Character* Scenery::getDisplayedCharacter(const QString& characterName) const
 {
-	return NovelLib::getFromNamedMap(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
 Character* Scenery::getDisplayedCharacter(const QString& characterName)
 {
-	return NovelLib::getFromNamedMap(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
-void Scenery::setDisplayedCharacters(const std::unordered_map<QString, Character>& characters) noexcept
+void Scenery::setDisplayedCharacters(const std::vector<Character>& characters) noexcept
 {
 	displayedCharacters_ = characters;
 }
 
-Character* Scenery::setDisplayedCharacter(const QString& characterName, const Character& character)
+Character* Scenery::insertDisplayedCharacter(uint index, const Character& character)
 {
-	return NovelLib::setInNamedMap(displayedCharacters_, characterName, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::listInsert(displayedCharacters_, index, character, "Character", NovelLib::ErrorType::CharacterInvalid);
 }
 
-Character* Scenery::renameDisplayedCharacter(const QString& oldName, const QString& newName)
+Character* Scenery::addDisplayedCharacter(const Character& character)
 {
-	return NovelLib::renameInNamedMap(displayedCharacters_, oldName, newName, "Character", NovelLib::ErrorType::CharacterMissing, NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::listAdd(displayedCharacters_, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+}
+
+Character* Scenery::addDisplayedCharacter(Character&& character)
+{
+	return NovelLib::listAdd(displayedCharacters_, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid);
 }
 
 bool Scenery::removeDisplayedCharacter(const QString& characterName)
 {
-	return NovelLib::removeFromNamedMap(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::listRemove(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
 void Scenery::clearDisplayedCharacters() noexcept
@@ -239,40 +240,44 @@ void Scenery::clearDisplayedCharacters() noexcept
 	displayedCharacters_.clear();
 }
 
-const std::unordered_map<QString, SceneryObject>* Scenery::getDisplayedSceneryObjects() const noexcept
+const std::vector<SceneryObject>* Scenery::getDisplayedSceneryObjects() const noexcept
 {
 	return &displayedSceneryObjects_;
 }
 
 const SceneryObject* Scenery::getDisplayedSceneryObject(const QString& sceneryObjectName) const
 {
-	return NovelLib::getFromNamedMap(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
 SceneryObject* Scenery::getDisplayedSceneryObject(const QString& sceneryObjectName)
 {
-	return NovelLib::getFromNamedMap(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
-void Scenery::setDisplayedSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept
+void Scenery::setDisplayedSceneryObjects(const std::vector<SceneryObject>& sceneryObjects) noexcept
 {
 	displayedSceneryObjects_ = sceneryObjects;
 }
 
-SceneryObject* Scenery::setDisplayedSceneryObject(const QString& sceneryObjectName, const SceneryObject& sceneryObject)
+SceneryObject* Scenery::insertDisplayedSceneryObject(uint index, const SceneryObject& sceneryObject)
 {
-	return NovelLib::setInNamedMap(displayedSceneryObjects_, sceneryObjectName, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::listInsert(displayedSceneryObjects_, index, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
-SceneryObject* Scenery::renameDisplayedSceneryObject(const QString& oldName, const QString& newName)
+SceneryObject* Scenery::addDisplayedSceneryObject(const SceneryObject& sceneryObject)
 {
-	return NovelLib::renameInNamedMap(displayedSceneryObjects_, oldName, newName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+}
 
+SceneryObject* Scenery::addDisplayedSceneryObject(SceneryObject&& sceneryObject)
+{
+	return NovelLib::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
 }
 
 bool Scenery::removeDisplayedSceneryObject(const QString& sceneryObjectName)
 {
-	return NovelLib::removeFromNamedMap(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::listRemove(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
 }
 
 void Scenery::clearDisplayedSceneryObject() noexcept
@@ -280,7 +285,7 @@ void Scenery::clearDisplayedSceneryObject() noexcept
 	displayedSceneryObjects_.clear();
 }
 
-const std::unordered_map<QString, Sound>* Scenery::getSounds() const noexcept
+const std::vector<Sound>* Scenery::getSounds() const noexcept
 {
 	return &sounds_;
 }
@@ -288,36 +293,44 @@ const std::unordered_map<QString, Sound>* Scenery::getSounds() const noexcept
 const Sound* Scenery::getSound(const QString& soundName) const
 {
 	//TODO: Sound errors
-	return NovelLib::getFromNamedMap(sounds_, soundName, "Sound");
+	return NovelLib::listGet(sounds_, soundName, "Sound");
 }
 
 Sound* Scenery::getSound(const QString& soundName)
 {
 	//TODO: Sound errors
-	return NovelLib::getFromNamedMap(sounds_, soundName, "Sound");
+	return NovelLib::listGet(sounds_, soundName, "Sound");
 }
 
-void Scenery::setSounds(const std::unordered_map<QString, Sound>& sounds) noexcept
+void Scenery::setSounds(const std::vector<Sound>& sounds) noexcept
 {
 	sounds_ = sounds;
 }
 
-Sound* Scenery::setSound(const QString& soundName, const Sound& sound)
+Sound* Scenery::insertSound(uint index, const Sound& sound)
 {
 	//TODO: Sound errors
-	return NovelLib::setInNamedMap(sounds_, soundName, sound, "Sound");
+	return NovelLib::listInsert(sounds_, index, sound, "Sound");
 }
 
-Sound* Scenery::renameSound(const QString& oldName, const QString& newName)
+Sound* Scenery::addSound(const Sound& sound)
 {
 	//TODO: Sound errors
-	return NovelLib::renameInNamedMap(sounds_, oldName, newName, "Sound");
+	return NovelLib::listAdd(sounds_, sound, "Sound");
+}
+
+Sound* Scenery::addSound(Sound&& sound)
+{
+	//return nullptr;
+	//TODO: Sound errors
+	return NovelLib::listAdd(sounds_, std::move(sound), "Sound");
 }
 
 bool Scenery::removeSound(const QString& soundName)
 {
+	//return true;
 	//TODO: Sound errors
-	return NovelLib::getFromNamedMap(sounds_, soundName, "Sound");
+	return NovelLib::listRemove(sounds_, soundName, "Sound");
 }
 
 void Scenery::clearSounds() noexcept

@@ -16,11 +16,10 @@ void swap(Scene& first, Scene& second) noexcept
     swap(first.events_,      second.events_);
 }
 
-Scene::Scene(const QString& name, const QString& chapterName, std::vector<std::unique_ptr<Event>>&& events)
+Scene::Scene(const QString& name, const QString& chapterName/*, const Scenery& scenery,*/)
 	: name(name), 
-    chapterName_(chapterName),
-    //scenery(scenery), 
-    events_(std::move(events))
+    chapterName_(chapterName)//,
+    //scenery(scenery)
 {
     if (this->name.isEmpty())
         this->name = Novel::getInstance().nextFreeSceneName();
@@ -33,9 +32,9 @@ Scene::Scene(const QString& name, const QString& chapterName, std::vector<std::u
 void Scene::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> name >> chapterName_ >> scenery;
-    uint size;
+    size_t size;
     dataStream >> size;
-    for (uint i = 0; i != size; ++i)
+    for (size_t i = 0u; i != size; ++i)
     {
         Event* ev;
         NovelLib::SerializationID type;
@@ -70,7 +69,8 @@ void Scene::serializableLoad(QDataStream& dataStream)
         dataStream >> *ev;
         events_.emplace_back(ev);
     }
-    chapter_ = Novel::getInstance().getChapter(chapterName_);
+    if (!chapterName_.isEmpty())
+        chapter_ = Novel::getInstance().getChapter(chapterName_);
 }
 
 void Scene::serializableSave(QDataStream& dataStream) const

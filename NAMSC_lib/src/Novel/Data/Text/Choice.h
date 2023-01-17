@@ -66,10 +66,10 @@ public:
 		void serializableSave(QDataStream& dataStream) const;
 	};
 
-	Choice(Event* const parentEvent) noexcept;
+	Choice(EventChoice* const parentEvent) noexcept;
 	/// \param Logical condition that needs to be fulfilled in order for this Choice to be available
 	/// \exception Error `choiceDisplayOptions` might contain invalid Font or the jump is set to non-existent Scene or the `condition` is not formatted properly
-	Choice(Event* const parentEvent, const QString& name, const Translation& text = Translation(), const QString& condition = "", const QString& jumpToSceneName = "", const ChoiceDisplayOptions& displayOptions = ChoiceDisplayOptions());
+	Choice(EventChoice* const parentEvent, const QString& name, const Translation& text = Translation(), const QString& condition = "", const QString& jumpToSceneName = "", const ChoiceDisplayOptions& displayOptions = ChoiceDisplayOptions());
 	Choice(const Choice& obj)                noexcept;
 	Choice(Choice&& obj)                     noexcept;
 	//Choice& operator=(const Choice& obj)     noexcept;
@@ -89,7 +89,7 @@ public:
 	/// Sets a function pointer that is called (if not nullptr) after the Choice's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
 	void setOnRunListener(std::function<void(const QString& name, const Translation* const text, const QString& condition, const QString& jumpToSceneName)> onRun) noexcept;
 
-	Event* const parentEvent;
+	EventChoice* const parentEvent;
 
 	QString name            = "";
 

@@ -14,7 +14,7 @@ public:
 	explicit EventDialogue(Scene* const parentScene)   noexcept;
 	/// \param label Displayed in the Editor to distinquish important Event
 	/// \exception One of the Actions or Sentences contains an Error
-	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences = std::vector<Sentence>(), std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences = std::vector<Sentence>());
 	EventDialogue(const EventDialogue& obj)            noexcept = delete;
 	EventDialogue(EventDialogue&& obj)                 noexcept;
 	EventDialogue& operator=(const EventDialogue& obj) noexcept = delete;
@@ -35,9 +35,9 @@ public:
 	/// \todo make it private and create getters/setters
 	std::vector<Sentence> sentences;
 
-    // methods for events tree
-    virtual QString getSubTypeName() { return "Dialogue"; }
-    virtual EventSubType getEventType() { return EventSubType::EVENT_DIALOG; }
+	//todo: do not botch
+	QString getComponentSubTypeName()    const noexcept override { return "Dialogue"; }
+    EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_DIALOG; }
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	NovelLib::SerializationID getType() const noexcept override;

@@ -51,8 +51,9 @@ void Character::serializableLoad(QDataStream& dataStream)
 {
 	SceneryObject::serializableLoad(dataStream);
 	dataStream >> defaultVoiceName_;
-	if (!defaultVoiceName_.isEmpty())  {defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName_);}
 
+	if (!defaultVoiceName_.isEmpty())  
+		defaultVoice_ = Novel::getInstance().getVoice(defaultVoiceName_);
 	errorCheck();
 }
 
@@ -110,4 +111,19 @@ void Character::setDefaultVoice(const QString& defaultVoiceName, Voice* defaultV
 	defaultVoiceName_ = defaultVoiceName;
 	defaultVoice_     = defaultVoice;
 	errorCheck(true);
+}
+
+QString Character::getComponentTypeName() const noexcept 
+{ 
+	return QString("Character"); 
+}
+
+QString Character::getComponentSubTypeName() const noexcept 
+{ 
+	return QString("Character");
+}
+
+SceneComponentType Character::getComponentType() const noexcept 
+{
+	return CHARACTER;
 }

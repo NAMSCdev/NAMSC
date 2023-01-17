@@ -12,7 +12,7 @@ public:
 	explicit EventJump(Scene* const parentScene) noexcept;
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or the `jumpToSceneName` points to a deleted Scene or the `condition` is not structured properly
-	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName = "", const QString& condition = "", std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName = "", const QString& condition = "");
 	EventJump(const EventJump& obj)             noexcept = delete;
 	EventJump(EventJump&& obj)                  noexcept;
 	EventJump& operator=(const EventJump& obj)  noexcept = delete;
@@ -29,16 +29,16 @@ public:
 	/// Sets a function pointer that is called (if not nullptr) after the EventJump's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
 	void setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)> onRun) noexcept;
 
+	//todo: do not botch
+	QString      getComponentSubTypeName() const noexcept override { return "Jump"; };
+	EventSubType getComponentEventType()   const noexcept override { return EventSubType::EVENT_JUMP; };
+
 	void acceptVisitor(EventVisitor* visitor) override;
 
 	QString jumpToSceneName = "";
 
 	/// A jump might contain a logical expression, so the jump happens only if the `condition` is met
 	QString condition       = "";
-
-    // methods for events tree
-    virtual QString getSubTypeName() { return "Jump"; }
-    virtual EventSubType getEventType() { return EventSubType::EVENT_JUMP; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed

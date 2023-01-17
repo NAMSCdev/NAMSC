@@ -96,76 +96,11 @@ void AssetManager::saveAllAssets()
 	//	asset.second.save();
 }
 
-template<typename AnimNode>
-void AssetAnim<AnimNode>::load()
-{
-	//if (size_ == 0)
-	//{
-	//	/// TODO: throw some Exception
-	//	return;
-	//}
-	//checkFileExistence();
-	//animNodes_.reset(new std::vector<AnimNode>);
+//template<typename AnimNode>
+//void AssetAnim<AnimNode>::load()
 
-	//QFile file(path_);
-	//if (!file.open(QIODevice::ReadOnly))
-	//{
-	//	/// TODO: throw some Exception
-	//	return;
-	//}
-	//QDataStream dataStream(&file);
-	//dataStream.skipRawData(pos_);
-
-	//uint animNodesSize;
-	//dataStream >> animNodesSize;
-
-	//for (uint i = 0; i != animNodesSize; ++i)
-	//{
-	//	AnimNode node;
-	//	dataStream >> node;
-
-	//	animNodes_.get()->push_back(node));
-	//}
-}
-
-template<typename AnimNode>
-void AssetAnim<AnimNode>::save()
-{
-	//if (!bChanged_)
-	//	return;
-
-	//checkFileExistence();
-	//QFile file(path_);
-	//if (!file.open(QIODevice::ReadWrite))
-	//{
-	//	/// TODO: throw some Exception
-	//	return;
-	//}
-	//QDataStream dataStream(&file);
-	//QByteArray allData = file.readAll();
-	//allData.remove(pos_, size_);
-
-	//QByteArray newData;
-	//QDataStream newDataStream(newData);
-	//newDataStream << animNodes_->size();
-
-	//for (const AnimNode& node : animNodes_)
-	//	newDataStream << node;
-
-	//allData.insert(pos_, newData);
-
-	//uint oldSize = size_;
-	//size_ = newData.size();
-
-	//file.seek(0);
-	//file.resize(0);
-	//dataStream.writeRawData(allData, allData.size());
-
-	//bChanged_ = false;
-
-	//if (onSave)
-	//	onSave(name_, oldSize, size_, pos_, path_);
-}
+//template<typename AnimNode>
+//void AssetAnim<AnimNode>::save()
 
 void AssetImage::load()
 {
@@ -202,5 +137,3 @@ void AssetImage::load()
 void AssetImage::save()
 {
 }
-
-#include "Novel/Data/Asset/AssetAnimInstances.h"

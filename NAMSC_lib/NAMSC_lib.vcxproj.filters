@@ -35,27 +35,6 @@
     <Filter Include="Header Files\Novel\Action\Visitor">
       <UniqueIdentifier>{6080db29-3c5b-4829-a44d-54f8d9c0fc28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Novel\Data">
-      <UniqueIdentifier>{dc403543-3ce4-4dde-80fc-05f2ff10020e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Text">
-      <UniqueIdentifier>{b71c3b2e-8293-4bd4-8ae8-e22e75f3fd41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Stat">
-      <UniqueIdentifier>{3af74631-5db9-42a3-801f-2fb6c210054b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Asset">
-      <UniqueIdentifier>{8d3bdb15-520d-4918-aabb-bb898ee8987e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Asset\Type">
-      <UniqueIdentifier>{18415931-debd-44da-9a65-06e9ef6a6e33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Save">
-      <UniqueIdentifier>{b989ef28-2f90-4522-a678-8a5967f03c3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Audio">
-      <UniqueIdentifier>{73ef85df-b01b-4e5f-861d-65a15492d6ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Novel\Event">
       <UniqueIdentifier>{fc29e866-ac17-4c5d-8af3-b4f17ebe35ef}</UniqueIdentifier>
     </Filter>
@@ -68,26 +47,11 @@
     <Filter Include="Header Files\Novel\Action\Visual\Animation\Type">
       <UniqueIdentifier>{7e62eb7b-f272-41df-a723-059756853e77}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Novel\Data\Stat\Type">
-      <UniqueIdentifier>{e03a9efd-a006-4de3-a41d-2c98f192eb0f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Novel\Action\Visitor\Type">
       <UniqueIdentifier>{d1bf0d02-1b06-4d9f-ab30-3a349f1abfd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Novel\Event\Visitor\Type">
       <UniqueIdentifier>{f77a6d81-ef23-4744-8aa1-5b1d0e0e4388}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual">
-      <UniqueIdentifier>{a74fd9f0-1d66-48ed-b5d2-d30638b4cb0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual\Animation">
-      <UniqueIdentifier>{2c065f27-f045-416b-a0d3-fcc8138b925b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual\Animation\Type">
-      <UniqueIdentifier>{80695e86-4de5-4d0c-86ea-542e25620983}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual\Scenery">
-      <UniqueIdentifier>{98612309-1dbf-42f9-b238-9742aa78ef07}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Novel\Action\Stat">
       <UniqueIdentifier>{e67f42d7-f8fb-401f-afe0-12347570a4a2}</UniqueIdentifier>
@@ -100,12 +64,6 @@
     </Filter>
     <Filter Include="Header Files\Novel\Action\Visual\Type">
       <UniqueIdentifier>{89fc13ea-5c37-4173-9a85-a1f2d970bd59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Widget">
-      <UniqueIdentifier>{0e05deef-08f3-4fc3-a85e-58e470230001}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\All">
-      <UniqueIdentifier>{a4a4507b-cef7-40df-a665-073bddae35df}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Novel\Event\All">
       <UniqueIdentifier>{a6ffc2a4-c87e-4312-999a-b365c89b51c2}</UniqueIdentifier>
@@ -124,18 +82,6 @@
     </Filter>
     <Filter Include="Header Files\Novel\Action\Visual\Animation\All">
       <UniqueIdentifier>{49a3c7ce-1885-4ac3-bd56-863b92d5e66e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual\Animation\All">
-      <UniqueIdentifier>{990398b0-6232-4376-911c-cc7d6952ab80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Visual\Animation\Instances">
-      <UniqueIdentifier>{d114bfc5-6f0c-4246-8edc-3b4b8b8036c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Data\Asset\Instances">
-      <UniqueIdentifier>{30db3b23-1c36-47f5-811a-c82534fd38fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Novel\Action\Visual\Animation\Instances">
-      <UniqueIdentifier>{63afe90f-c4b7-48be-9c79-6f9a3706db9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
@@ -266,6 +212,51 @@
     </Filter>
     <Filter Include="Source Files\Definition\Novel\Event\Type">
       <UniqueIdentifier>{ec489cd1-8a1f-4e42-b8dc-4e5f78e44d06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data">
+      <UniqueIdentifier>{dc403543-3ce4-4dde-80fc-05f2ff10020e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Text">
+      <UniqueIdentifier>{b71c3b2e-8293-4bd4-8ae8-e22e75f3fd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Stat">
+      <UniqueIdentifier>{3af74631-5db9-42a3-801f-2fb6c210054b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Stat\Type">
+      <UniqueIdentifier>{e03a9efd-a006-4de3-a41d-2c98f192eb0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Asset">
+      <UniqueIdentifier>{8d3bdb15-520d-4918-aabb-bb898ee8987e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Asset\Type">
+      <UniqueIdentifier>{18415931-debd-44da-9a65-06e9ef6a6e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Save">
+      <UniqueIdentifier>{b989ef28-2f90-4522-a678-8a5967f03c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Audio">
+      <UniqueIdentifier>{73ef85df-b01b-4e5f-861d-65a15492d6ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual">
+      <UniqueIdentifier>{a74fd9f0-1d66-48ed-b5d2-d30638b4cb0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation">
+      <UniqueIdentifier>{2c065f27-f045-416b-a0d3-fcc8138b925b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation\Type">
+      <UniqueIdentifier>{80695e86-4de5-4d0c-86ea-542e25620983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Animation\All">
+      <UniqueIdentifier>{990398b0-6232-4376-911c-cc7d6952ab80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\Visual\Scenery">
+      <UniqueIdentifier>{98612309-1dbf-42f9-b238-9742aa78ef07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Data\All">
+      <UniqueIdentifier>{a4a4507b-cef7-40df-a665-073bddae35df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Novel\Widget">
+      <UniqueIdentifier>{0e05deef-08f3-4fc3-a85e-58e470230001}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +440,6 @@
     <ClInclude Include="src\Novel\Data\Stat\StatDouble.h">
       <Filter>Header Files\Novel\Data\Stat\Type</Filter>
     </ClInclude>
-    <ClInclude Include="src\Novel\Widget\SceneryObjectWidget.h">
-      <Filter>Header Files\Widget</Filter>
-    </ClInclude>
     <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnim.h">
       <Filter>Header Files\Novel\Action\Visual\Animation</Filter>
     </ClInclude>
@@ -514,21 +502,6 @@
     </ClInclude>
     <ClInclude Include="src\Helpers.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorBaseInstances.h">
-      <Filter>Header Files\Novel\Data\Visual\Animation\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimatorSceneryObjectInterfaceInstances.h">
-      <Filter>Header Files\Novel\Data\Visual\Animation\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Visual\Animation\AnimNodeInstances.h">
-      <Filter>Header Files\Novel\Data\Visual\Animation\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Data\Asset\AssetAnimInstances.h">
-      <Filter>Header Files\Novel\Data\Asset\Instances</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Novel\Action\Visual\Animation\ActionSceneryObjectAnimInstances.h">
-      <Filter>Header Files\Novel\Action\Visual\Animation\Instances</Filter>
     </ClInclude>
     <ClInclude Include="src\Novel\SceneComponent.h">
       <Filter>Header Files\Novel</Filter>
@@ -824,15 +797,21 @@
       <Filter>Source Files\Definition\Novel\Data\Visual\Animator</Filter>
     </ClCompile>
     <ClCompile Include="src\Novel\SceneComponent.cpp">
-      <Filter>Source Files\Novel</Filter>
+      <Filter>Source Files\Definition\Novel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Helpers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\Novel\Widget\SceneWidget.h">
-      <Filter>Header Files\Widget</Filter>
+      <Filter>Header Files\Novel\Widget</Filter>
     </QtMoc>
     <QtMoc Include="src\Novel\Data\Novel.h">
       <Filter>Header Files\Novel\Data</Filter>
+    </QtMoc>
+    <QtMoc Include="src\Novel\Widget\SceneryObjectWidget.h">
+      <Filter>Header Files\Novel\Widget</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

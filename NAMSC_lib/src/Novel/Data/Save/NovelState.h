@@ -43,7 +43,7 @@ public:
     const Stat* getStat(const QString& statName) const;
     Stat*       getStat(const QString& statName);
     /// Takes ownership of the `stat`
-    Stat* addStat(const QString& statName, Stat*&& stat);
+    Stat* addStat(Stat*&& stat);
     Stat* renameStat(const QString& oldName, const QString& newName);
     bool removeStat(const QString& statName);
     void clearStats() noexcept;

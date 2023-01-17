@@ -58,14 +58,14 @@ bool Scenery::errorCheck(bool bComprehensive) const
 
 	bError |= musicPlaylist.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, Character>& character : displayedCharacters_)
-		bError |= character.second.errorCheck(bComprehensive);
+	for (const Character& character : displayedCharacters_)
+		bError |= character.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		bError |= sceneryObject.second.errorCheck(bComprehensive);
+	for (const SceneryObject& sceneryObject : displayedSceneryObjects_)
+		bError |= sceneryObject.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, Sound>& sound : sounds_)
-		bError |= sound.second.errorCheck(bComprehensive);
+	for (const Sound& sound : sounds_)
+		bError |= sound.errorCheck(bComprehensive);
 
 	//auto errorChecker = [this](bool bComprehensive)
 	//{

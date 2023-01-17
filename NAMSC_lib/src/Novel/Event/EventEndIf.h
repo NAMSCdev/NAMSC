@@ -10,7 +10,7 @@ public:
 	explicit EventEndIf(Scene* const parentScene) noexcept;
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or there is no matching EventIf or its index is after this EventEndIf
-	EventEndIf(Scene* const parentScene, const QString& label, EventIf* const partner = nullptr, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventEndIf(Scene* const parentScene, const QString& label, EventIf* const partner = nullptr);
 	EventEndIf(const EventEndIf& obj)             noexcept = delete;
 	EventEndIf(EventEndIf&& obj)                  noexcept;
 	EventEndIf& operator=(const EventEndIf& obj)  noexcept = delete;
@@ -28,9 +28,9 @@ public:
 
 	void acceptVisitor(EventVisitor* visitor) override;
 
-    // methods for events tree
-    virtual QString getSubTypeName() { return "End if"; }
-    virtual EventSubType getEventType() { return EventSubType::EVENT_END_IF; }
+	//todo: do not botch
+	QString getComponentSubTypeName()    const noexcept override { return "End if"; }
+	EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_END_IF; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed

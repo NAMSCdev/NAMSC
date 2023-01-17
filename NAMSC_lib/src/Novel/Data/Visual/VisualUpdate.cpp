@@ -30,9 +30,9 @@ void SceneryObject::update(uint elapsedTime)
 
 void Scenery::update(uint elapsedTime)
 {
-	for (std::pair<const QString, Character>&     character     : displayedCharacters_)
-		character.second.update(elapsedTime);
+	for (Character&     character     : displayedCharacters_)
+		character.update(elapsedTime);
 
-	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.second.update(elapsedTime);
+	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.update(elapsedTime);
 }

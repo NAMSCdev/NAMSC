@@ -52,6 +52,7 @@ void ActionAudioSetMusic::serializableLoad(QDataStream& dataStream)
 {
 	ActionAudio::serializableLoad(dataStream);
 	dataStream >> musicPlaylist_;
+
 	errorCheck();
 }
 

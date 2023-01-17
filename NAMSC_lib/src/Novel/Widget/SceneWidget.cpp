@@ -28,17 +28,17 @@ const std::vector<SceneryObjectWidget*>* SceneWidget::getSceneryObjectWidgets() 
 	return &sceneryObjectWidgets_;
 }
 
-const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index) const noexcept
+const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index) const
 {
 	return sceneryObjectWidgets_[index];
 }
 
-SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index) noexcept
+SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index)
 {
 	return sceneryObjectWidgets_[index];
 }
 
-void SceneWidget::addSceneryObjectWidget(const SceneryObject& sceneryObject) noexcept
+void SceneWidget::addSceneryObjectWidget(const SceneryObject& sceneryObject)
 {
 	if (!sceneryObject.getAssetImage())
 		return;

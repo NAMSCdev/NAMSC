@@ -4,7 +4,6 @@
 #include <QString>
 #include <vector>
 
-#include "Novel/SceneComponent.h"
 #include "Novel/Action/Action.h"
 #include "Novel/Event/Visitor/EventVisitor.h"
 #include "Novel/Data/Visual/Scenery/Scenery.h"
@@ -18,7 +17,7 @@ class Event : public NovelFlowInterface, public SceneComponent
 	friend void swap(Event& first, Event& second) noexcept;
 public:
 	/// \param label Displayed in the Editor to distinquish important Events
-	explicit Event(Scene* const parentScene, const QString& label = "", std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	explicit Event(Scene* const parentScene, const QString& label = "");
 	Event(const Event& obj)                 noexcept = delete;
 	Event(Event&& obj)                      noexcept;
 	Event& operator=(const Event& obj)      noexcept = delete;
@@ -66,12 +65,11 @@ public:
 
 	Scene* const parentScene;
 
-    // SceneComponent for EventsTree
-    virtual QString getTypeName() { return "Event"; }
-    virtual QString getSubTypeName() = 0;
-    virtual SceneComponentType getType() { return EVENT; }
-    virtual EventSubType getEventType() = 0;
-    virtual QString getName() { return label; }
+    //todo: do not botch
+    virtual QString getComponentTypeName()        const noexcept { return "Event"; }
+    virtual SceneComponentType getComponentType() const noexcept { return EVENT; }
+    virtual EventSubType getComponentEventType()  const noexcept override = 0;
+    virtual QString getComponentName()            const noexcept{ return label; }
 protected:
 	std::vector<std::unique_ptr<Action>> actions_;
 

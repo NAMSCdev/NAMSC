@@ -30,8 +30,8 @@ void swap(EventInput& first, EventInput& second) noexcept
 	swap(first.onReject_,                                second.onReject_);
 }
 
-EventInput::EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, uint minCharacters, const QString& regex, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)), 
+EventInput::EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, uint minCharacters, const QString& regex, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName)
+	: Event(parentScene, label), 
 	minCharacters(minCharacters), 
 	regex(regex), 
 	inputStatName_(inputStatName),
@@ -64,6 +64,7 @@ void EventInput::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
 	dataStream >> bDigitsOnly >> digitsOnly_min >> digitsOnly_max >> minCharacters >> regex >>  bLogicalExpression >> logicalExpression >> logicalExpression_tries >> logicalExpression_failureJumpToSceneName >> inputStatName_;
+
 	errorCheck();
 }
 

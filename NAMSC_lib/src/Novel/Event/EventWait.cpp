@@ -18,8 +18,8 @@ void swap(EventWait& first, EventWait& second) noexcept
 	swap(first.onRun_,   second.onRun_);
 }
 
-EventWait::EventWait(Scene* const parentScene, const QString& label, uint waitTime, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)), 
+EventWait::EventWait(Scene* const parentScene, const QString& label, uint waitTime)
+	: Event(parentScene, label), 
 	waitTime(waitTime)
 {
 	errorCheck(true);
@@ -34,6 +34,7 @@ void EventWait::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
 	dataStream >> waitTime;
+
 	errorCheck();
 }
 
@@ -41,7 +42,7 @@ void EventWait::serializableSave(QDataStream& dataStream) const
 {
 	Event::serializableSave(dataStream);
 	dataStream << waitTime;
-}
+} 
 
 //  MEMBER_FIELD_SECTION_CHANGE END
 
