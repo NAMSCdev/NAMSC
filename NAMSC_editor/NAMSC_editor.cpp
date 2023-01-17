@@ -291,16 +291,8 @@ void NAMSC_editor::debugConstructorActions()
     //    });
 
     node->connectToNode(node2->getLabel());
-    node->disconnectFrom(node2->getLabel());
-    // Raw properties add
-    //auto* cbutton = new CollapseButton(ui.propertiesWidget);
-    //auto* props = new BasicNodeProperties(ui.propertiesWidget);
-    //props->setScene(scene);
-    //connect(scene, &QGraphicsScene::selectionChanged, props, &BasicNodeProperties::selectedNodeChanged);
-    //cbutton->setText("Basic node options");
-    //cbutton->setContent(props);
-    //ui.propertiesLayout->addWidget(cbutton);
-    //ui.propertiesLayout->addWidget(props);
+    node->connectToNode(node->getLabel());
+    //node->disconnectFrom(node2->getLabel());
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
 }

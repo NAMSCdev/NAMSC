@@ -16,13 +16,9 @@ ObjectsTree::ObjectsTree(QWidget* parent) : QTreeWidget(parent)
 void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTypes type)
 {
 	ObjectTreeWidgetItem* tempTreeItem;
-	
 
 	if (type == TreeWidgetItemTypes::ImageObject) {
-		SceneryObject tempSceneryObject;
-		tempSceneryObject.name = name;
-		tempSceneryObject.setAssetImage(path);
-		Novel::getInstance().setDefaultSceneryObject(tempSceneryObject); // todo check if setting scenery objects like that is ok
+		Novel::getInstance().setDefaultSceneryObject(name, SceneryObject(name, path));
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);
@@ -30,12 +26,12 @@ void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTy
 	}
 	else if (type == TreeWidgetItemTypes::SoundObject)
 	{
-		// todo
+		return;
+		// todo handle sound objects
 	}
 
 	tempTreeItem->relativeAssetPath = ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(path);
 
-	
 	tempTreeItem->setText(0, name);
 
 	addTopLevelItem(tempTreeItem);
