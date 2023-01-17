@@ -76,7 +76,7 @@ void Novel::loadChapters()
 
 		Chapter chapter;
 		dataStream >> chapter;
-		setChapter(chapter.name, chapter);
+		setChapter(chapter);
 	}
 }
 
@@ -107,7 +107,7 @@ void Novel::loadDefaultCharacterDefinitions()
 
 		Character character;
 		dataStream >> character;
-		setDefaultCharacter(character.name, character);
+		setDefaultCharacter(character);
 	}
 }
 
@@ -138,7 +138,7 @@ void Novel::loadDefaultSceneryObjectsDefinitions()
 
 		SceneryObject sceneryObject;
 		dataStream >> sceneryObject;
-		setDefaultSceneryObject(sceneryObject.name, sceneryObject);
+		setDefaultSceneryObject(sceneryObject);
 	}
 }
 
@@ -218,7 +218,7 @@ void Novel::loadVoices()
 
 		Voice voice;
 		dataStream >> voice;
-		setVoice(voice.name, voice);
+		setVoice(voice);
 	}
 }
 

@@ -49,7 +49,9 @@ void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(const Eve
 void ActionSceneryObjectAnimScale::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
-	assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
+	
+	if (!assetAnimName_.isEmpty())
+		assetAnim_ = AssetManager::getInstance().getAssetAnimScale(assetAnimName_);
 	errorCheck();
 }
 

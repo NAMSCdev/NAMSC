@@ -228,7 +228,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             break;
         case PropertyTypes::Scene:
         {
-            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(ui.graphView->getNodeByName(static_cast<Scene*>(object)->getName()));
+            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(ui.graphView->getNodeByName(static_cast<Scene*>(object)->getComponentName()));
             ui.propertiesLayout->addWidget(properties);
             connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
             break;
