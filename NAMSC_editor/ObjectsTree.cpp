@@ -22,7 +22,7 @@ void ObjectsTree::addAssetToObjects(QString relativePath, QString name, TreeWidg
 		AssetManager::getInstance().addAssetImageSceneryBackground(relativePath, 0, 0, relativePath);
 		AssetManager::getInstance().addAssetImageSceneryObject(relativePath, 0, 0, relativePath);
 
-		Novel::getInstance().setDefaultSceneryObject(name, SceneryObject(name, relativePath));
+		Novel::getInstance().setDefaultSceneryObject(SceneryObject(name, relativePath));
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);

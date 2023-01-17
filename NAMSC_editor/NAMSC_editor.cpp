@@ -95,7 +95,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     // Prepare ui
     ui.setupUi(this);
-    qInstallMessageHandler(errorMessageHandler);
+    //qInstallMessageHandler(errorMessageHandler); // Causes editor to crash -> Retrieving non existing element from a map returns null and is used to check if a key is already used. Also there seems to be an issue with quick dialog boxes, which also return some warning from qt but work anyway.
 
     ui.mainSplitter->setSizes({ 20, 60, 20 });
     ui.middlePanel->setStretchFactor(0, 70);
