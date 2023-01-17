@@ -186,7 +186,7 @@ void AssetTreeView::createContextMenu()
 
         if (!pressedOk) return;
 
-        emit addAssetToCharacters(selectedItem.path(), objectName, type);
+        emit addAssetToCharacters(QDir(QDir::currentPath()).relativeFilePath(selectedItem.toLocalFile()), objectName, type);
             });
 }
 
