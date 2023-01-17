@@ -11,7 +11,7 @@ public:
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \param waitTime In milliseconds
 	/// \exception One of the Actions contains an Error
-	EventWait(Scene* const parentScene, const QString& label, uint waitTime = 1000, std::vector<std::unique_ptr<Action>>&& actions = std::move(std::vector<std::unique_ptr<Action>>()));
+	EventWait(Scene* const parentScene, const QString& label, uint waitTime = 1000);
 	EventWait(const EventWait& obj)             noexcept = delete;
 	EventWait(EventWait&& obj)                  noexcept;
 	EventWait& operator=(const EventWait& obj)  noexcept = delete;
@@ -32,9 +32,9 @@ public:
 	/// In milliseconds
 	uint waitTime = 1000;
 
-    // methods for events tree
-    virtual QString getSubTypeName() { return "Wait"; }
-    virtual EventSubType getEventType() { return EventSubType::EVENT_WAIT; }
+    //todo: do not botch
+    QString getComponentSubTypeName()    const noexcept override { return "Wait"; }
+    EventSubType getComponentEventType() const noexcept override { return EventSubType::EVENT_WAIT; }
 
 private:
 	/// Needed for Serialization, to know the class of an object before the loading performed

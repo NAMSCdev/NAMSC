@@ -14,8 +14,6 @@ SceneryObjectWidget::SceneryObjectWidget(const SceneryObject& sceneryObject, boo
 	//TODO: setScale resizes the QPixmap
 	setPos(sceneryObject.pos);
 	setRotation(sceneryObject.rotationDegree);
-
-	//setPixmap(QPixmap::fromImage(*sceneryObject.getAssetImage()->getImage()));
 }
 
 void SceneryObjectWidget::switchToPreview()

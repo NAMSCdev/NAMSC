@@ -53,7 +53,11 @@ struct AnimNodeDouble final : public AnimNodeBase
 {
 	/// \param timeStamp Time point (in milliseconds) when the Animation will achieve this Node's state
 	/// \param state This state will be reached exactly at `timeStamp` time point
-	AnimNodeDouble(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<double, dimension>& state = QVarLengthArray<double, dimension>());
+	AnimNodeDouble(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<double, dimension>& state = QVarLengthArray<double, dimension>())
+		: AnimNodeBase(timeStamp, interpolationMethod),
+		state_(state)
+	{
+	}
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// This state will be reached exactly at `timeStamp` time point
@@ -65,10 +69,22 @@ public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
-	void serializableLoad(QDataStream& dataStream) override;
+	void serializableLoad(QDataStream& dataStream) override
+	{
+		AnimNodeBase::serializableLoad(dataStream);
+
+		for (uint i = 0u; i != dimension; ++i)
+			dataStream >> state_[dimension];
+	}
 	/// Saving an object to a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to save to
-	void serializableSave(QDataStream& dataStream) const override;
+	void serializableSave(QDataStream& dataStream) const override
+	{
+		AnimNodeBase::serializableSave(dataStream);
+
+		for (uint i = 0u; i != dimension; ++i)
+			dataStream << state_[dimension];
+	}
 };
 
 /// Animation Node, which state is an array of `double`
@@ -77,7 +93,11 @@ struct AnimNodeLongLong final : public AnimNodeBase
 {
 	/// \param timeStamp Time point (in milliseconds) when the Animation will achieve this Node's state
 	/// \param state This state will be reached exactly at `timeStamp` time point
-	AnimNodeLongLong(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<long long, dimension>& state = QVarLengthArray<long long, dimension>());
+	AnimNodeLongLong(uint timeStamp = 0, AnimInterpolationMethod interpolationMethod = AnimInterpolationMethod::Linear, const QVarLengthArray<long long, dimension>& state = QVarLengthArray<long long, dimension>())
+		: AnimNodeBase(timeStamp, interpolationMethod),
+		state_(state)
+	{
+	}
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// This state will be reached exactly at `timeStamp` time point
@@ -89,10 +109,22 @@ public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to read from
-	void serializableLoad(QDataStream& dataStream) override;
+	void serializableLoad(QDataStream& dataStream) override
+	{
+		AnimNodeBase::serializableLoad(dataStream);
+
+		for (uint i = 0u; i != dimension; ++i)
+			dataStream >> state_[dimension];
+	}
 	/// Saving an object to a binary file
 	/// \param dataStream Stream (presumably connected to a QFile) to save to
-	void serializableSave(QDataStream& dataStream) const override;
+	void serializableSave(QDataStream& dataStream) const override
+	{
+		AnimNodeBase::serializableSave(dataStream);
+
+		for (uint i = 0u; i != dimension; ++i)
+			dataStream << state_[dimension];
+	}
 };
 
 using AnimNodeDouble1D   = AnimNodeDouble<1>;

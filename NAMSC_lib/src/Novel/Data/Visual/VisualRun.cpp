@@ -20,9 +20,9 @@ void SceneryObject::run()
 
 void Scenery::run()
 {
-	for (std::pair<const QString, Character>&     character     : displayedCharacters_)
-		character.second.run();
+	for (Character&     character     : displayedCharacters_)
+		character.run();
 
-	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.second.run();
+	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.run();
 }

@@ -19,8 +19,8 @@ void swap(EventChoice& first, EventChoice& second) noexcept
 	swap(first.onRun_,    second.onRun_);
 }
 
-EventChoice::EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText, const std::vector<Choice>& choices, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)),
+EventChoice::EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText)
+	: Event(parentScene, label),
 	menuText_(menuText),
 	choices(choices)
 {
@@ -35,10 +35,9 @@ void EventChoice::setOnRunListener(std::function<void(const Scene* const parentS
 void EventChoice::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
-	uint choicesSize = 0;
+	uint choicesSize;
 	dataStream >> choicesSize;
-
-	for (unsigned i = 0; i != choicesSize; ++i)
+	for (size_t i = 0u; i != choicesSize; ++i)
 	{
 		Choice choice(this);
 		dataStream >> choice;
@@ -51,8 +50,8 @@ void EventChoice::serializableLoad(QDataStream& dataStream)
 void EventChoice::serializableSave(QDataStream& dataStream) const
 {
 	Event::serializableSave(dataStream);
-	dataStream << choices.size();
 
+	dataStream << static_cast<uint>(choices.size());
 	for (const Choice& choice : choices)
 		dataStream << choice;
 }

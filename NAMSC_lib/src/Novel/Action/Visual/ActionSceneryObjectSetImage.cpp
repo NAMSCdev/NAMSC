@@ -60,7 +60,8 @@ void ActionSceneryObjectSetImage::serializableLoad(QDataStream& dataStream)
 	ActionSceneryObject::serializableLoad(dataStream);
 	dataStream >> assetImageName_;
 
-	assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
+	if (!assetImageName_.isEmpty())
+		assetImage_ = AssetManager::getInstance().getAssetImageSceneryObject(assetImageName_);
 	errorCheck();
 }
 

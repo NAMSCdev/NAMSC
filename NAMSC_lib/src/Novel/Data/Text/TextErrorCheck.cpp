@@ -7,7 +7,7 @@
 bool Choice::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (jumpToSceneName == "")
 			qCritical() << NovelLib::ErrorType::JumpInvalid << "Choice is missing a jumpToSceneName";
@@ -24,7 +24,7 @@ bool Choice::errorCheck(bool bComprehensive) const
 bool Choice::ChoiceDisplayOptions::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//if (fontName_ == "")
 			//qCritical() << NovelLib::ErrorType::General << "No Font set";
@@ -40,27 +40,27 @@ bool Choice::ChoiceDisplayOptions::errorCheck(bool bComprehensive) const
 bool Sentence::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//Check AssetImage
 		//if (!assetImage_)
 		//{
 		//	qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-		//	if (assetImageName_ != "")
+		//	if (!assetImageName_.isEmpty())
 		//		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		//}
 		//Check Character
 		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
-			if (characterName_ != "")
+			if (!characterName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::CharacterMissing << "Character \"" + characterName_ + "\" does not exist. Definition file might be corrupted";
 		}
 		//Check Voice
 		//if (voice_ == nullptr)
 		//{
 		//	qCritical() << NovelLib::ErrorType::VoiceInvalid << "No valid Voice assigned. Was it deleted and not replaced?";
-		//	if (voiceName_ != "")
+		//	if (!voiceName_.isEmpty())
 		//		qCritical() << NovelLib::ErrorType::VoiceMissing << "Voice \"" + voiceName_ + "\" does not exist. Definition file might be corrupted";
 		//}
 	};
@@ -74,7 +74,7 @@ bool Sentence::errorCheck(bool bComprehensive) const
 bool Translation::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (!translations_.contains(NovelSettings::getInstance().defaultLanguage))
 			qCritical() << NovelLib::ErrorType::General << "Translation doesn't have default language set";
@@ -91,7 +91,7 @@ bool Translation::errorCheck(bool bComprehensive) const
 bool Voice::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (fontName_ == "")
 			qCritical() << NovelLib::ErrorType::General << "No Font set";

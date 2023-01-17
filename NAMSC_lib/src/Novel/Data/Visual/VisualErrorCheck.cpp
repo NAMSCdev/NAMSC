@@ -4,12 +4,12 @@ bool SceneryObject::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		if (!assetImage_)
 		{
 			qCritical() << NovelLib::ErrorType::AssetImageInvalid << "No valid Sprite AssetImage assigned. Was it deleted and not replaced?";
-			if (assetImageName_ != "")
+			if (!assetImageName_.isEmpty())
 				qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		}
 		else assetImage_->errorCheck(bComprehensive);
@@ -26,7 +26,7 @@ bool Character::errorCheck(bool bComprehensive) const
 {
 	bool bError = SceneryObject::errorCheck(bComprehensive);
 
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//Check if the name is undefined
 		//if (defaultVoiceName_ == "")
@@ -58,16 +58,16 @@ bool Scenery::errorCheck(bool bComprehensive) const
 
 	bError |= musicPlaylist.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, Character>& character : displayedCharacters_)
-		bError |= character.second.errorCheck(bComprehensive);
+	for (const Character& character : displayedCharacters_)
+		bError |= character.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		bError |= sceneryObject.second.errorCheck(bComprehensive);
+	for (const SceneryObject& sceneryObject : displayedSceneryObjects_)
+		bError |= sceneryObject.errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, Sound>& sound : sounds_)
-		bError |= sound.second.errorCheck(bComprehensive);
+	for (const Sound& sound : sounds_)
+		bError |= sound.errorCheck(bComprehensive);
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 

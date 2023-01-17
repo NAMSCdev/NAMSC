@@ -19,8 +19,8 @@ void swap(EventDialogue& first, EventDialogue& second) noexcept
 	swap(first.onRun_,    second.onRun_);
 }
 
-EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)), 
+EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences)
+	: Event(parentScene, label), 
 	sentences(sentences)
 {
 	errorCheck(true);
@@ -34,10 +34,9 @@ void EventDialogue::setOnRunListener(std::function<void(const Scene* const paren
 void EventDialogue::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
-	uint sentencesSize = 0;
+	uint sentencesSize;
 	dataStream >> sentencesSize;
-
-	for (unsigned i = 0; i != sentencesSize; ++i)
+	for (uint i = 0u; i != sentencesSize; ++i)
 	{
 		Sentence sentence(this);
 		dataStream >> sentence;
@@ -50,7 +49,7 @@ void EventDialogue::serializableLoad(QDataStream& dataStream)
 void EventDialogue::serializableSave(QDataStream& dataStream) const
 {
 	Event::serializableSave(dataStream);
-	dataStream << sentences.size();
+	dataStream << static_cast<uint>(sentences.size());
 
 	for (const Sentence& sentence : sentences)
 		dataStream << sentence;

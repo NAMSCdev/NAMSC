@@ -4,8 +4,8 @@ void Scenery::render(SceneWidget* sceneWidget)
 {
 	if (sceneWidget)
 	{
-		if (backgroundAssetImage_ && backgroundAssetImage_->isLoaded())
-			sceneWidget->changeBackground(backgroundAssetImage_->getImage());
+		//if (backgroundAssetImage_ && backgroundAssetImage_->isLoaded())
+			//sceneWidget->changeBackground(backgroundAssetImage_->getImage());
 
 		auto renderSceneryObject = [&sceneWidget](SceneryObject& sceneryObject)
 		{
@@ -14,10 +14,10 @@ void Scenery::render(SceneWidget* sceneWidget)
 				sceneWidget->addSceneryObjectWidget(sceneryObject);
 		};
 
-		for (std::pair<const QString, SceneryObject>& displayedSceneryObject : displayedSceneryObjects_)
-			renderSceneryObject(displayedSceneryObject.second);
+		for (SceneryObject& displayedSceneryObject : displayedSceneryObjects_)
+			renderSceneryObject(displayedSceneryObject);
 
-		for (std::pair<const QString, Character>& displayedCharacter : displayedCharacters_)
-			renderSceneryObject(displayedCharacter.second);
+		for (Character& displayedCharacter : displayedCharacters_)
+			renderSceneryObject(displayedCharacter);
 	}
 }

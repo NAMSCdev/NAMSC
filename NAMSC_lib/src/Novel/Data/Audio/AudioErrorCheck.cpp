@@ -8,7 +8,7 @@ bool AudioSettings::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
 
-	//static auto errorChecker = [this](bool bComprehensive)
+	//auto errorChecker = [this](bool bComprehensive)
 	//{
 	//};
 
@@ -22,7 +22,7 @@ bool AudioSettings::errorCheck(bool bComprehensive) const
 bool Sound::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		//Check if the name is undefined
 		if (soundFilePath == "")
@@ -49,7 +49,7 @@ bool Sound::errorCheck(bool bComprehensive) const
 bool MusicPlaylist::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	static auto errorChecker = [this](bool bComprehensive)
+	auto errorChecker = [this](bool bComprehensive)
 	{
 		for (const std::pair<QString, QString>& song : songs)
 		{

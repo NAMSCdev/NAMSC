@@ -56,6 +56,7 @@ void ActionSceneryObjectAnimFade::serializableLoad(QDataStream& dataStream)
 {
 	ActionSceneryObjectAnim::serializableLoad(dataStream);
 	dataStream >> duration >> bAppear;
+
 	errorCheck();
 }
 

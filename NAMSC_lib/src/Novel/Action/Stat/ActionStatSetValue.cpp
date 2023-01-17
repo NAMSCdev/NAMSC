@@ -52,6 +52,7 @@ void ActionStatSetValue::serializableLoad(QDataStream& dataStream)
 {
 	ActionStat::serializableLoad(dataStream);
 	dataStream >> expression;
+
 	errorCheck();
 }
 

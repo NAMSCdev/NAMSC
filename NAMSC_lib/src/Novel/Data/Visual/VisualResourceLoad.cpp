@@ -15,16 +15,16 @@ void SceneryObject::ensureResourcesAreLoaded()
 
 void Scenery::ensureResourcesAreLoaded()
 {
-	for (std::pair<const QString, Character>& character : displayedCharacters_)
-		character.second.ensureResourcesAreLoaded();
+	for (Character& character : displayedCharacters_)
+		character.ensureResourcesAreLoaded();
 
-	for (std::pair<const QString, SceneryObject>& sceneryObject : displayedSceneryObjects_)
-		sceneryObject.second.ensureResourcesAreLoaded();
+	for (SceneryObject& sceneryObject : displayedSceneryObjects_)
+		sceneryObject.ensureResourcesAreLoaded();
 
 	//todo: add QSoundEffect from Widget
-	for (std::pair<const QString, Sound>& sound : sounds_)
-		if (!sound.second.isLoaded())
-			sound.second.load();
+	for (Sound& sound : sounds_)
+		if (!sound.isLoaded())
+			sound.load();
 
 	if (!backgroundAssetImage_->isLoaded())
 		backgroundAssetImage_->load();

@@ -19,8 +19,8 @@ void swap(EventEndIf& first, EventEndIf& second) noexcept
 	swap(first.onRun_,   second.onRun_);
 }
 
-EventEndIf::EventEndIf(Scene* const parentScene, const QString& label, EventIf* const partner, std::vector<std::unique_ptr<Action>>&& actions)
-	: Event(parentScene, label, std::move(actions)),
+EventEndIf::EventEndIf(Scene* const parentScene, const QString& label, EventIf* const partner)
+	: Event(parentScene, label),
 	partner_(partner)
 {
 	errorCheck(true);
@@ -37,6 +37,7 @@ void EventEndIf::serializableLoad(QDataStream& dataStream)
 	uint index;
 	dataStream >> index;
 	partner_ = dynamic_cast<EventIf*>(parentScene->getEvent(index));
+
 	errorCheck();
 }
 

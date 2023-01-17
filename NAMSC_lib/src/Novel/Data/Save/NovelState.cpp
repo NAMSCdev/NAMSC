@@ -137,27 +137,27 @@ const std::unordered_map<QString, std::shared_ptr<Stat>>* NovelState::getStats()
 
 const Stat* NovelState::getStat(const QString& statName) const
 {
-    return NovelLib::getFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+    return NovelLib::mapGet(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
 }
 
 Stat* NovelState::getStat(const QString& statName)
 {
-    return NovelLib::getFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+    return NovelLib::mapGet(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
 }
 
-Stat* NovelState::addStat(const QString& statName, Stat*&& stat)
+Stat* NovelState::addStat(Stat*&& stat)
 {
-    return NovelLib::addToNamedMap(stats_, statName, std::move(std::shared_ptr<Stat>(stat)), "Stat", NovelLib::ErrorType::StatInvalid)->get();
+    return NovelLib::mapSet(stats_, std::move(std::shared_ptr<Stat>(stat)), "Stat", NovelLib::ErrorType::StatInvalid)->get();
 }
 
 Stat* NovelState::renameStat(const QString& oldName, const QString& newName)
 {
-    return NovelLib::renameSharedInNamedMap<std::shared_ptr<Stat>, Stat*>(stats_, oldName, newName, "Stat", NovelLib::ErrorType::StatMissing, NovelLib::ErrorType::StatInvalid);
+    return NovelLib::mapRename(stats_, oldName, newName, "Stat", NovelLib::ErrorType::StatMissing, NovelLib::ErrorType::StatInvalid)->get();
 }
 
 bool NovelState::removeStat(const QString& statName)
 {
-    return NovelLib::removeFromNamedMap(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing);
+    return NovelLib::mapRemove(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing);
 }
 
 void NovelState::clearStats() noexcept
