@@ -12,7 +12,6 @@ class CharacterTree  : public QTreeWidget
 public:
 	CharacterTree(QWidget *parent = nullptr);
 
-	// TODO serialization / deserialization
 
 public slots:
 	void addAssetToCharacters(QString path, QString name, TreeWidgetItemTypes type);
@@ -32,7 +31,7 @@ private:
 	QPointF contextMenuInvokePosition;
 
 	QAction* addCharacterToSceneAction;
-	QAction* removeCharacterFromTreeAction; // TODO
+	QAction* removeCharacterFromTreeAction; // TODO remove character from characterTree
 
 	void createContextMenu();
 };

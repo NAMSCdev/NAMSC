@@ -34,8 +34,10 @@ public:
 
 	bool isConnected() const;
 
+	std::shared_ptr<GraphArrow> arrow;
+
 private:
 	QRectF pointBoundingRect;
 	QColor pointColor = Qt::darkRed;
-	std::shared_ptr<GraphArrow> arrow;
+	
 };

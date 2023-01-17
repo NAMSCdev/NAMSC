@@ -11,15 +11,18 @@ CharacterTree::CharacterTree(QWidget *parent) : QTreeWidget(parent)
 	createContextMenu();
 }
 
-void CharacterTree::addAssetToCharacters(QString path, QString name, TreeWidgetItemTypes type)
+void CharacterTree::addAssetToCharacters(QString relativePath, QString name, TreeWidgetItemTypes type)
 {
 	CharacterTreeWidgetItem* tempTreeItem;
 
 	if (type == TreeWidgetItemTypes::ImageObject)
 	{
+		AssetManager::getInstance().addAssetImageSceneryBackground(relativePath, 0, 0, relativePath);
+		AssetManager::getInstance().addAssetImageSceneryObject(relativePath, 0, 0, relativePath);
+
 		Character tempCharacter;
 		tempCharacter.name = name;
-		tempCharacter.setAssetImage(path);
+		tempCharacter.setAssetImage(relativePath);
 		Novel::getInstance().setDefaultCharacter(tempCharacter);
 
 		tempTreeItem = new CharacterTreeWidgetItem(this, static_cast<int>(type));
@@ -31,7 +34,7 @@ void CharacterTree::addAssetToCharacters(QString path, QString name, TreeWidgetI
 		// todo error?
 	}
 
-	tempTreeItem->relativeAssetPath = ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(path);
+	tempTreeItem->relativeAssetPath = ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(relativePath);
 
 	tempTreeItem->setText(0, name);
 

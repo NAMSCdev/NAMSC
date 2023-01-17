@@ -80,7 +80,8 @@ void EventTreeItemModel::nodeSelectionChanged(GraphNode* node)
 void EventTreeItemModel::sceneUpdated(Scene* scene)
 {
     qDebug() << "Scene updated";
-    setupModelData(Novel::getInstance().getScene(scene->getComponentName()));
+    if (scene == nullptr) setupModelData(nullptr);
+    else setupModelData(Novel::getInstance().getScene(scene->getComponentName()));
 }
 
 void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -175,13 +176,15 @@ void EventTreeItemModel::setupModelData(Scene* scene)
     beginResetModel();
     if(rootItem->childCount()!=0) rootItem->removeChild(0);
     SceneComponent* rootComponent = dynamic_cast<SceneComponent*>(scene);
-    qDebug() << "Setting EventsTree with root: " << rootComponent->getComponentName() << " " << rootComponent->getComponentTypeName();
-    EventTreeItem* sceneItem = new EventTreeItem(scene, rootItem);
-    rootItem->appendChild(sceneItem);
-    rootItem->child(0)->data(0);
-    for (int i = 0 ; i < scene->getEvents()->size() ; i++)
-    {
-        appendEvent(scene->getEvents()->at(i).get(), sceneItem);
+    if (rootComponent != nullptr) {
+        qDebug() << "Setting EventsTree with root: " << rootComponent->getComponentName() << " " << rootComponent->getComponentTypeName();
+        EventTreeItem* sceneItem = new EventTreeItem(scene, rootItem);
+        rootItem->appendChild(sceneItem);
+        rootItem->child(0)->data(0);
+        for (int i = 0; i < scene->getEvents()->size(); i++)
+        {
+            appendEvent(scene->getEvents()->at(i).get(), sceneItem);
+        }
     }
     
     endResetModel();

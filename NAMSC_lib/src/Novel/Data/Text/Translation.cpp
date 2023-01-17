@@ -49,7 +49,7 @@ void Translation::serializableLoad(QDataStream& dataStream)
 
 void Translation::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << translations_.size();
+	dataStream << static_cast<uint>(translations_.size());
 	for (std::pair<QString, QString> translation : translations_)
 		dataStream << translation;
 }

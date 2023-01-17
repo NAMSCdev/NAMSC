@@ -8,10 +8,12 @@
 
 #include "ChoiceItemModel.h"
 
-ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, QWidget *parent)
-	: QFrame(parent), choices(choices)
+ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, GraphView* graph, QWidget *parent)
+	: QFrame(parent), choices(choices), graph(graph)
 {
 	ui.setupUi(this);
+	ui.choiceEventTableView->setSelectionMode(QAbstractItemView::SingleSelection);
+	ui.choiceEventTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 	ui.choiceEventCollapseButton->setContent(ui.choiceEventContent);
 	ui.choiceEventCollapseButton->setText(tr("Choice event properties"));
@@ -39,7 +41,7 @@ void ChoiceEventProperties::prepareConnections()
 
 void ChoiceEventProperties::prepareDataInUi()
 {
-	ui.choiceEventTableView->setModel(new ChoiceItemModel(choices, ui.choiceEventTableView));
+	ui.choiceEventTableView->setModel(new ChoiceItemModel(choices, graph, ui.choiceEventTableView));
 
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Name, &lineEditDelegate);
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Condition, &lineEditDelegate);
@@ -54,34 +56,34 @@ void ChoiceEventProperties::createContextMenu()
 
 	connect(addChoiceAction, &QAction::triggered, this, [&]
 		{
-			QString name;
-			bool pressedOk = false;
-			bool isNameOk = false;
-			do {
-				name = QInputDialog::getText(this, tr("Add new choice"), tr("Provide unique choice name:"), QLineEdit::Normal, "", &pressedOk);
+		//	QString name;
+		//	bool pressedOk = false;
+		//	bool isNameOk = false;
+		//	do {
+		//		name = QInputDialog::getText(this, tr("Add new choice"), tr("Provide unique choice name:"), QLineEdit::Normal, "", &pressedOk);
 
-				if (!pressedOk) break;
-				else if (name.isNull() || name.isEmpty())
-				{
-					continue;
-				}
-				else if (std::find_if(choices->choices.begin(), choices->choices.end(), [&](Choice elem)
-					{
-						return elem.name == name;
-					}) != choices->choices.end())
-				{
-					QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
-					continue;
-				}
-				else isNameOk = true;
-			} while (!isNameOk);
+		//		if (!pressedOk) break;
+		//		else if (name.isNull() || name.isEmpty())
+		//		{
+		//			continue;
+		//		}
+		//		else if (std::find_if(choices->choices.begin(), choices->choices.end(), [&](Choice elem)
+		//			{
+		//				return elem.name == name;
+		//			}) != choices->choices.end())
+		//		{
+		//			QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+		//			continue;
+		//		}
+		//		else isNameOk = true;
+		//	} while (!isNameOk);
 
-		if (pressedOk)
-		{
-			// push_back, potentially want to insert
-			//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
+		//if (pressedOk)
+		//{
+		//	// push_back, potentially want to insert
+		//	//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
 			static_cast<ChoiceItemModel*>(ui.choiceEventTableView->model())->insertRows(ui.choiceEventTableView->model()->rowCount(), 1);
-		}
+		//}
 
 		});
 }
@@ -105,3 +107,4 @@ void ChoiceEventProperties::updateText(Choice* c, QString text)
 {
 	// todo eventually remove
 }
+// todo HIDE COLUMN WITH CHOICE NAME

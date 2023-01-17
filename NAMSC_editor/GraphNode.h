@@ -5,6 +5,8 @@
 #include "GraphConnectionPoint.h"
 #include "Novel/Data/Scene.h"
 
+#include "Serialization.h"
+
 class GraphNode : public QGraphicsObject
 {
 	Q_OBJECT
@@ -18,12 +20,14 @@ public:
 	QRectF boundingRect() const override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-	void appendConnectionPoint(GraphConnectionType type);
+	QList<std::shared_ptr<GraphConnectionPoint>> getConnectionPoints(GraphConnectionType type);
+	std::shared_ptr<GraphConnectionPoint> appendConnectionPoint(GraphConnectionType type);
 	void insertConnectionPoint(GraphConnectionType type, size_t index);
 	void removeConnectionPoint(GraphConnectionType type, size_t index);
-	bool removeConnectionPointByName(QString nodeName, GraphConnectionType type);
 
-	void connectPointTo(size_t index, GraphConnectionPoint* destination);
+	bool removeConnectionPoint(std::shared_ptr<GraphConnectionPoint> point);
+
+	void connectPointTo(std::shared_ptr<GraphConnectionPoint> source, std::shared_ptr<GraphConnectionPoint> destination);
 	void disconnectPoint(GraphConnectionType type, size_t index);
 
 	std::shared_ptr<GraphConnectionPoint> connectionPointAt(GraphConnectionType type, size_t index);
@@ -38,10 +42,12 @@ public:
 
 	QString getLabel() const;
 	// Assuming names are unique, otherwise will connect to first found
+	// Connects this node to nodeName. It only connects it on the graph and does not do it in the lib
 	bool connectToNode(QString nodeName);
 	// Disconnects only from output nodes
+	// Disconnects this node from nodeName. It only disconnects it on the graph and does not do it in the lib
 	bool disconnectFrom(QString nodeName);
-
+	
 public slots:
 	void setLabel(QString label);
 
@@ -57,4 +63,8 @@ private:
 
 	void setFlags();
 
+
+public:
+	void serializableLoad(QDataStream& dataStream);
+	void serializableSave(QDataStream& dataStream) const;
 };

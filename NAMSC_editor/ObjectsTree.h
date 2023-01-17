@@ -37,7 +37,7 @@ private:
 	QPointF contextMenuInvokePosition;
 
 	QAction* addObjectToSceneAction;
-	QAction* removeObjectFromTreeAction; // TODO
+	QAction* removeObjectFromTreeAction; // TODO add remove object from ObjectTree
 
 	void createContextMenu();
 };

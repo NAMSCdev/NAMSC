@@ -3,8 +3,8 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Event/EventChoice.h"
 
-ChoiceItemModel::ChoiceItemModel(EventChoice* parentEvent, QObject *parent)
-	: QAbstractTableModel(parent), parentEvent(parentEvent), choices(&parentEvent->choices)
+ChoiceItemModel::ChoiceItemModel(EventChoice* parentEvent, GraphView* graph, QObject *parent)
+	: QAbstractTableModel(parent), parentEvent(parentEvent), choices(&parentEvent->choices), graph(graph)
 {
 	setHeaderData(Name, Qt::Horizontal, tr("Name"));
 }
@@ -46,6 +46,14 @@ QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 		}
 	}
 
+	if (role == Qt::BackgroundRole && index.column() == JumpToScene)
+	{
+		if (graph->getNodeByName(index.data(Qt::DisplayRole).toString()) == nullptr)
+		{
+			return QBrush(QColor(255, 70, 70));
+		}
+	}
+
 	return QVariant();
 }
 
@@ -63,6 +71,13 @@ bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, i
 			affectedRow.text.setTranslation(NovelSettings::getInstance().language, value.toString());
 			break;
 		case JumpToScene:
+			if (affectedRow.jumpToSceneName != value.toString()) {
+				graph->getNodeByName(affectedRow.parentEvent->parentScene->name)->disconnectFrom(affectedRow.jumpToSceneName);
+				if (graph->getNodeByName(value.toString()) != nullptr)
+				{
+					graph->getNodeByName(affectedRow.parentEvent->parentScene->name)->connectToNode(value.toString());
+				}
+			}
 			affectedRow.jumpToSceneName = value.toString();
 			break;
 		case Condition:

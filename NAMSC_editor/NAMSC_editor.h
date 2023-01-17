@@ -20,6 +20,9 @@ public:
 
     void prepareSwitchboard();
 
+    void loadEditor();
+    void saveEditor();
+
 public slots:
     void propertyTabChangeRequested(void* object, PropertyTypes dataType);
 
@@ -40,4 +43,14 @@ private:
     CustomSortFilterProxyModel* proxyFileFilter;
 
     void debugConstructorActions();
+
+    QAction* addDialogueEventAction;
+    QAction* addChoiceEventAction;
+    QAction* addJumpEventAction;
+
+    void createDanglingContextMenuActions();
+    void invokeEventsContextMenu(const QPoint& pos);
+
+    void loadGraph(GraphView* graph);
+    void saveGraph(GraphView* graph);
 };

@@ -3,13 +3,14 @@
 #include <QAbstractItemModel>
 
 #include "Novel/Data/Text/Choice.h"
+#include "GraphView.h"
 
 class ChoiceItemModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 public:
-	ChoiceItemModel(EventChoice* parentEvent, QObject *parent = nullptr);
+	ChoiceItemModel(EventChoice* parentEvent, GraphView* graph, QObject* parent = nullptr);
 	~ChoiceItemModel() override;
 
 	Qt::ItemFlags flags(const QModelIndex& index) const override;
@@ -30,6 +31,7 @@ private:
 		Condition
 	};
 
+	GraphView* graph;
 	EventChoice* parentEvent;
 	std::vector<Choice>* choices;
 };

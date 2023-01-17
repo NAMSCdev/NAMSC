@@ -2,8 +2,8 @@
 #include <QPainter>
 #include "GraphConnectionPoint.h"
 
-GraphArrow::GraphArrow(GraphConnectionPoint* source, GraphConnectionPoint* dest)
-	: QGraphicsObject(nullptr), connectionSource(source), connectionDestination(dest)
+GraphArrow::GraphArrow(std::shared_ptr<GraphConnectionPoint> source, std::shared_ptr<GraphConnectionPoint> dest)
+	: QGraphicsObject(nullptr), connectionSource(source.get()), connectionDestination(dest.get())
 {
 	adjust();
 }
@@ -50,7 +50,6 @@ void GraphArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	QPainterPath path(sourcePoint);
 	path.cubicTo(QPointF{ sourcePoint.x(), (destinationPoint.y() + sourcePoint.y()) / 2 }, QPointF{ destinationPoint.x(), (destinationPoint.y() + sourcePoint.y()) / 2 }, destinationPoint);
 
-	//QLineF line(sourcePoint, destinationPoint);
 	if (qFuzzyCompare(path.length(), qreal(0.))) {
 		return;
 	}
@@ -58,6 +57,5 @@ void GraphArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	// Draw the line itself
 	//painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	//painter->drawLine(line);
 	painter->drawPath(path);
 }

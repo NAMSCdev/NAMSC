@@ -2,6 +2,7 @@
 #include <QGraphicsView>
 
 #include "GraphNode.h"
+#include "Serialization.h"
 
 class GraphView : public QGraphicsView
 {
@@ -34,9 +35,17 @@ private:
 
 	QPointF mousePressOrigin;
 	QPointF contextMenuPosition;
+
 	QAction* createNodeAction;
+	QAction* removeNodeAction;
 
 private slots:
 	void createNode();
+	void removeNode();
+
+
+public:
+	void serializableLoad(QDataStream& dataStream);
+	void serializableSave(QDataStream& dataStream) const;
 };
 
