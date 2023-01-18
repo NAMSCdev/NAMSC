@@ -1,7 +1,7 @@
 #include "JumpEventProperties.h"
 
-JumpEventProperties::JumpEventProperties(EventJump* jump, QWidget *parent)
-	: QFrame(parent), jump(jump)
+JumpEventProperties::JumpEventProperties(EventJump* jump, GraphView* graph, QWidget *parent)
+	: QFrame(parent), jump(jump), graph(graph)
 {
 	ui.setupUi(this);
 
@@ -26,11 +26,34 @@ void JumpEventProperties::prepareDataInUi()
 {
 	ui.jumpToSceneLineEdit->setText(jump->jumpToSceneName);
 	ui.conditionLineEdit->setText(jump->condition);
+
+	if (graph->getNodeByName(jump->jumpToSceneName) == nullptr)
+	{
+		QPalette palette;
+		palette.setColor(QPalette::Base, QColor(255, 70, 70));
+		ui.jumpToSceneLineEdit->setPalette(palette);
+	}
 }
 
 void JumpEventProperties::updateJumpToScene()
 {
-	jump->jumpToSceneName = ui.jumpToSceneLineEdit->text();
+	QPalette palette;
+	const QString nodeToJump = ui.jumpToSceneLineEdit->text();
+	const auto node = graph->getNodeByName(jump->parentScene->name);
+
+	node->disconnectFrom(jump->jumpToSceneName);
+
+	if (graph->getNodeByName(nodeToJump) != nullptr) {
+		node->connectToNode(nodeToJump);
+		palette.setColor(QPalette::Base, Qt::white);
+	}
+	else
+	{
+		palette.setColor(QPalette::Base, QColor(255, 70, 70));
+	}
+
+	ui.jumpToSceneLineEdit->setPalette(palette);
+	jump->jumpToSceneName = nodeToJump;
 }
 
 void JumpEventProperties::updateCondition()

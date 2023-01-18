@@ -255,7 +255,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object), ui.graphView));
             break;
         case PropertyTypes::JumpEventItem:
-            ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object)));
+            ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object), ui.graphView));
             break;
         }
 
