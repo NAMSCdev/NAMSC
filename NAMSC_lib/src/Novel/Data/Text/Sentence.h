@@ -40,7 +40,7 @@ public:
 	/// \param voice Copies the Voice pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \param assetImage Copies the AssetImage pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error An Error occurred in `text` or the 'character_'/`voice_`/`assetImage_` couldn't be found/read
-	Sentence(Event* const parentEvent, const Translation& text, const QString& displayedName = "", const QString& characterName = "", const QString& voiceName = "", const QString& assetImageName = "", double cpsMultiplier = 1.0, uint cpsOverwrite = 0, bool bEndWithInput = true, uint waitBeforeContinueTime = 1000, Character* character = nullptr, Voice* voice = nullptr, AssetImage* assetImage = nullptr);
+	Sentence(Event* const parentEvent, const Translation& translation, const QString& displayedName = "", const QString& characterName = "", const QString& voiceName = "", const QString& assetImageName = "", double cpsMultiplier = 1.0, uint cpsOverwrite = 0, bool bEndWithInput = true, uint waitBeforeContinueTime = 1000, Character* character = nullptr, Voice* voice = nullptr, AssetImage* assetImage = nullptr);
 	Sentence(const Sentence& obj)              noexcept;
 	Sentence(Sentence&& obj)                   noexcept;
 	Sentence& operator=(Sentence obj)          noexcept;
@@ -74,7 +74,7 @@ public:
 	/// If not empty, this name will be displayed as the Character's name during this Sentence's display
 	QString     displayedName   = "";
 
-	Translation text;
+	Translation translation;
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Multiplies `NovelSettings::cps_` setting, unless `cpsOverwrite` is set

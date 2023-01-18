@@ -8,7 +8,7 @@ bool Asset::errorCheck(bool bComprehensive) const
 	bool bError = false;
 	auto errorChecker = [this](bool bComprehensive)
 	{
-		if (path.isEmpty() && QFileInfo::exists(path))
+		if (path.isEmpty() || !QFileInfo::exists(path))
 		{
 			NovelLib::ErrorType type = NovelLib::ErrorType::Critical;
 			if (dynamic_cast<const AssetImage*>(this))
@@ -35,6 +35,11 @@ bool AssetImage::errorCheck(bool bComprehensive) const
 
 	auto errorChecker = [this](bool bComprehensive)
 	{
+		if (!QFileInfo::exists(path))
+		{
+			qCritical() << NovelLib::ErrorType::AssetImageFileMissing;
+			//todo: error better
+		}
 		if (bComprehensive)
 		{
 			//todo: check lastError?
@@ -46,8 +51,6 @@ bool AssetImage::errorCheck(bool bComprehensive) const
 			}
 			//todo: compare lastError?
 		}
-
-		return false;
 	};
 
 	bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);

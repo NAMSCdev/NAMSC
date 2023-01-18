@@ -16,10 +16,6 @@ void Event::run()
 
 	scenery.render(sceneWidget);
 
-	AssetImage* assetImage = scenery.getBackgroundAssetImage();
-	if (assetImage)
-		emit novel.pendChangeBackground(assetImage->getImage());
-
 	for (std::unique_ptr<Action>& action : actions_)
 		action->run();
 }
@@ -48,12 +44,28 @@ void Choice::run()
 
 void EventChoice::run()
 {
+	Novel& novel = Novel::getInstance();
+
 	Event::run();
+
+	if (!choices.empty())
+		emit novel.pendEventChoiceDisplay(choices);
 }
 
 void EventDialogue::run()
 {
+	Novel& novel             = Novel::getInstance();
+	SceneWidget* sceneWidget = novel.getSceneWidget();
+	QGraphicsScene* scene    = nullptr;
+	if (sceneWidget)
+		scene = sceneWidget->scene();
+	if (!scene)
+		return;
+
 	Event::run();
+	
+	if (!sentences.empty())
+		emit novel.pendEventDialogueDisplay(sentences, NovelState::getCurrentlyLoadedState()->sentenceID);
 }
 
 void EventInput::run()

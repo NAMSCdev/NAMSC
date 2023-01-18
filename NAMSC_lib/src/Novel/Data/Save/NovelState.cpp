@@ -100,7 +100,7 @@ void NovelState::serializableLoad(QDataStream& dataStream)
 
 void NovelState::serializableSave(QDataStream& dataStream) const
 {
-    dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << sentenceID << stats_.size();
+    dataStream << saveDate << screenshot << scenery << saveSlot << sceneName << eventID << sentenceID << static_cast<uint>(stats_.size());
 
     for (const std::pair<const QString, std::shared_ptr<Stat>>& stat : stats_)
         dataStream << *(stat.second.get());

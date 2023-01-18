@@ -7,12 +7,12 @@ class SceneryObjectWidget final : public QObject, public QGraphicsPixmapItem
 {
 	Q_OBJECT
 public:
-	SceneryObjectWidget(const SceneryObject& sceneryObject, bool preview = false);
-	SceneryObjectWidget(const SceneryObjectWidget&) = delete;
+	SceneryObjectWidget(const SceneryObject& sceneryObject, int zorder = 0, bool bPreview = false);
+	SceneryObjectWidget(const SceneryObjectWidget&)            = delete;
 	SceneryObjectWidget& operator=(const SceneryObjectWidget&) = delete;
 	void switchToPreview();
 	void switchToDisplay();
 
 private:
-	bool preview_;
+	bool bPreview_ = false;
 };

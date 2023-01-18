@@ -44,15 +44,6 @@ private:
 
 	/// A function pointer that is called (if not nullptr) after the EventDialogue's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
 	std::function<void(const Scene* const parentScene, const QString& label, const std::vector<Sentence>* const sentences)> onRun_ = nullptr;
-
-	QElapsedTimer cpsTimer;
-
-	/// Whether the user provided input to skip the text appearing
-	bool bCickSkip = false;
-
-	/// Prevents accidential Scene skip due to a double click when one was intended (just to skip the text appearing)
-	QElapsedTimer antiDoubleClickTimer;
-
 public:
 	//---SERIALIZATION---
 	/// Loading an object from a binary file

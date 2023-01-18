@@ -3,7 +3,8 @@
 #include "Novel/Data/Audio/MusicPlaylist.h"
 #include "Novel/Data/Audio/Sound.h"
 #include "Novel/Data/Visual/Scenery/Character.h"
-#include "Novel/Widget/SceneWidget.h"
+
+class SceneWidget;
 
 /// All the media managed by the library
 class Scenery final

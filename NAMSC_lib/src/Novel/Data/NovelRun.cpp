@@ -76,16 +76,19 @@ void Scene::update()
 
 void Scene::end()
 {
-	const NovelState* currentState = NovelState::getCurrentlyLoadedState();
-	uint eventID = currentState->eventID;
+	NovelState* currentState = NovelState::getCurrentlyLoadedState();
 
-	if (eventID >= events_.size())
+	QString currentScene = currentState->sceneName;
+	if (currentState->eventID >= events_.size())
 	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
+		qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << currentState->eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
 		return;
 	}
 
-	events_[eventID]->end();
+	getEvent(currentState->eventID)->end();
+	if (currentScene == currentState->sceneName)
+		if (++(currentState->eventID) < events_.size())
+			getEvent(currentState->eventID)->run();
 }
 
 void Scene::syncWithSave() noexcept

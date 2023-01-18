@@ -34,7 +34,13 @@ QString Novel::nextFreeSceneName() const noexcept
 SceneWidget* Novel::createSceneWidget()
 {
 	sceneWidget_ = new SceneWidget(nullptr);
-	connect(this, &Novel::pendChangeBackground, sceneWidget_, &SceneWidget::changeBackground);
+	connect(this,         &Novel::pendBackgroundDisplay,     sceneWidget_, &SceneWidget::displayBackground);
+	connect(this,         &Novel::pendSceneryObjectsDisplay, sceneWidget_, &SceneWidget::displaySceneryObjects);
+	connect(this,         &Novel::pendCharactersDisplay,     sceneWidget_, &SceneWidget::displayCharacters);
+	connect(this,         &Novel::pendEventChoiceDisplay,    sceneWidget_, &SceneWidget::displayEventChoice);
+	connect(this,         &Novel::pendEventDialogueDisplay,  sceneWidget_, &SceneWidget::displayEventDialogue);
+	connect(sceneWidget_, &SceneWidget::pendNovelEnd,        this,         &Novel::end);
+
 	return sceneWidget_;
 }
 
@@ -180,7 +186,7 @@ Scene* Novel::getScene(const QString& sceneName)
 	return NovelLib::mapGet(scenes_, sceneName, "Scene");
 }
 
-Scene* Novel::addScene(const QString& sceneName, Scene&& scene)
+Scene* Novel::addScene(Scene&& scene)
 {
 	//TODO: Scene errors
 	return NovelLib::mapSet(scenes_, std::move(scene), "Scene");
