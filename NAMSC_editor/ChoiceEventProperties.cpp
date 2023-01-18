@@ -8,8 +8,8 @@
 
 #include "ChoiceItemModel.h"
 
-ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, QWidget *parent)
-	: QFrame(parent), choices(choices)
+ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, GraphView* graph, QWidget *parent)
+	: QFrame(parent), choices(choices), graph(graph)
 {
 	ui.setupUi(this);
 	ui.choiceEventTableView->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -41,7 +41,7 @@ void ChoiceEventProperties::prepareConnections()
 
 void ChoiceEventProperties::prepareDataInUi()
 {
-	ui.choiceEventTableView->setModel(new ChoiceItemModel(choices, ui.choiceEventTableView));
+	ui.choiceEventTableView->setModel(new ChoiceItemModel(choices, graph, ui.choiceEventTableView));
 
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Name, &lineEditDelegate);
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Condition, &lineEditDelegate);
@@ -107,3 +107,4 @@ void ChoiceEventProperties::updateText(Choice* c, QString text)
 {
 	// todo eventually remove
 }
+// todo HIDE COLUMN WITH CHOICE NAME

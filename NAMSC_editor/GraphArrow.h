@@ -8,7 +8,7 @@ class GraphArrow : public QGraphicsObject
 {
 public:
 	GraphArrow(QGraphicsObject *parent);
-	GraphArrow(GraphConnectionPoint* source, GraphConnectionPoint* dest);
+	GraphArrow(std::shared_ptr<GraphConnectionPoint> source, std::shared_ptr<GraphConnectionPoint> dest);
 	~GraphArrow();
 
 	//void setSourcePoint(const QPointF point);

@@ -5,13 +5,14 @@
 #include "LineEditDelegate.h"
 #include "ui_ChoiceEventProperties.h"
 #include "Novel/Event/EventChoice.h"
+#include "GraphView.h"
 
 class ChoiceEventProperties : public QFrame
 {
 	Q_OBJECT
 
 public:
-	ChoiceEventProperties(EventChoice* choices, QWidget *parent = nullptr);
+	ChoiceEventProperties(EventChoice* choices, GraphView* graph, QWidget *parent = nullptr);
 	~ChoiceEventProperties();
 
 protected:
@@ -19,6 +20,7 @@ protected:
 
 private:
 	EventChoice* choices;
+	GraphView* graph;
 
 	QAction* addChoiceAction;
 	QAction* removeChoiceAction;

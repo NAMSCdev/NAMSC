@@ -2,6 +2,7 @@
 #include <QGraphicsView>
 
 #include "GraphNode.h"
+#include "Serialization.h"
 
 class GraphView : public QGraphicsView
 {
@@ -38,5 +39,10 @@ private:
 
 private slots:
 	void createNode();
+
+
+public:
+	void serializableLoad(QDataStream& dataStream);
+	void serializableSave(QDataStream& dataStream) const;
 };
 

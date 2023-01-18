@@ -8,6 +8,8 @@
 #include <QPointF>
 #include "GraphNode.h"
 #include "Novel/Data/Novel.h"
+#include "Novel/Event/EventChoice.h"
+#include "Novel/Event/EventJump.h"
 
 GraphView::GraphView(QWidget* parent) : QGraphicsView(parent)
 {
@@ -54,8 +56,8 @@ GraphNode* GraphView::getNodeByName(const QString& name)
 {
     for (auto node : scene()->items())
     {
-        auto castedNodePtr = dynamic_cast<GraphNode*>(node);
-        if (castedNodePtr != nullptr && castedNodePtr->getLabel() == name) return castedNodePtr;
+        const auto castNodePtr = dynamic_cast<GraphNode*>(node);
+        if (castNodePtr != nullptr && castNodePtr->getLabel() == name) return castNodePtr;
     }
 
     return nullptr;
@@ -204,5 +206,57 @@ void GraphView::createNode()
         GraphNode* node = new GraphNode(roundedPos);
         node->setLabel(name);
         scene()->addItem(node);
+    }
+}
+
+void GraphView::serializableLoad(QDataStream& dataStream)
+{
+    size_t numberOfNodes;
+    dataStream >> numberOfNodes;
+
+    for (size_t i = 0ull; i < numberOfNodes; ++i)
+    {
+        GraphNode* node = new GraphNode();
+        dataStream >> *node;
+        scene()->addItem(node);
+    }
+
+    // Cannot do both at the same time, because a node may be not constructed before, so there's no possible connection
+    for (const auto& scenePair : *Novel::getInstance().getScenes())
+    {
+        // If can get a node
+        GraphNode* node = getNodeByName(scenePair.first);
+	    if (node != nullptr)
+	    {
+            // Look through all events and connect nodes wherever applicable
+		    for (const auto& ev : *scenePair.second.getEvents())
+		    {
+			    if (auto evj = dynamic_cast<EventJump*>(ev.get())) node->connectToNode(evj->jumpToSceneName);
+
+
+                else if (auto evc = dynamic_cast<EventChoice*>(ev.get()))
+                {
+	                for (const auto& choice : evc->choices) node->connectToNode(choice.jumpToSceneName);
+                }
+                // todo check if names of the nodes exist, though it should work anyway
+		    }
+	    }
+    }
+}
+
+void GraphView::serializableSave(QDataStream& dataStream) const
+{
+    const auto& itemsOnScene = scene()->items();
+
+    // Counts GraphNode objects on the scene. It should be the same as the number of scenes in the Novel
+    dataStream << [&]() { size_t i = 0;  for (const auto& elem : itemsOnScene) if (dynamic_cast<GraphNode*>(elem) != nullptr) ++i; return i; }();
+
+    for (auto elem : itemsOnScene)
+    {
+        GraphNode* node = dynamic_cast<GraphNode*>(elem);
+	    if (node != nullptr)
+	    {
+            dataStream << *node;
+	    }
     }
 }

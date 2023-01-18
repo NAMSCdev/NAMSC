@@ -12,8 +12,9 @@ GraphNode::GraphNode(QGraphicsObject* parent)
 	//setZValue(-1); // example zvalue usage
 }
 
-GraphNode::GraphNode(const QPoint& pos, QGraphicsObject* parent) : QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(pos, pos + QPoint{ 300, 200 })))
+GraphNode::GraphNode(const QPoint& pos, QGraphicsObject* parent) : QGraphicsObject(parent), nodeBody(GraphNodeBody(this, QRectF(0, 0, 300, 200)))
 {
+	moveBy(pos.x(), pos.y());
 	setFlags();
 }
 
@@ -29,9 +30,9 @@ QRectF GraphNode::boundingRect() const
 
 void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-	Q_UNUSED(painter);
-	Q_UNUSED(option);
-	Q_UNUSED(widget);
+	Q_UNUSED(painter)
+	Q_UNUSED(option)
+	Q_UNUSED(widget)
 }
 
 void GraphNode::setLabel(QString label)
@@ -51,10 +52,11 @@ void GraphNode::setLabel(QString label)
 	}
 }
 
-void GraphNode::appendConnectionPoint(GraphConnectionType type)
+std::shared_ptr<GraphConnectionPoint> GraphNode::appendConnectionPoint(GraphConnectionType type)
 {
 	auto point = std::shared_ptr<GraphConnectionPoint>(new GraphConnectionPoint(this));
-	QPointF pointPos{ pos().x(), pos().y() + boundingRect().height() / 5 };
+	//QPointF pointPos{ pos().x(), pos().y() + boundingRect().height() / 5 };
+	QPointF pointPos{ 0, boundingRect().height() / 5 };
 	QPointF delta;
 	
 	switch (type) {
@@ -63,7 +65,7 @@ void GraphNode::appendConnectionPoint(GraphConnectionType type)
 		inputConnectionPointList.append(point);
 		delta = { 0, boundingRect().height() / inputConnectionPointList.size() * 0.6 };
 		for (auto elem : inputConnectionPointList) {
-			elem->setPos(pointPos + (delta / 2) - QPointF{0, elem->boundingRect().height() / 2});
+			elem->setPos(pointPos + (delta / 2) - QPointF{ 0, elem->boundingRect().height() / 2 });
 			pointPos += delta;
 		}
 		break;
@@ -82,6 +84,7 @@ void GraphNode::appendConnectionPoint(GraphConnectionType type)
 	}
 
 	update();
+	return point;
 }
 
 // TODO improve as append above
@@ -104,18 +107,30 @@ void GraphNode::insertConnectionPoint(GraphConnectionType type, size_t index)
 	}
 }
 
-// TODO improve as append above
 void GraphNode::removeConnectionPoint(GraphConnectionType type, size_t index)
 {
+	QPointF pointPos{ 0, boundingRect().height() / 5 };
+	QPointF delta;
+
 	switch (type) {
 	case GraphConnectionType::In:
 		if (inputConnectionPointList.size() > index) {
 			inputConnectionPointList.removeAt(index);
+			delta = { 0, boundingRect().height() / inputConnectionPointList.size() * 0.6 };
+			for (auto elem : inputConnectionPointList) {
+				elem->setPos(pointPos + (delta / 2) - QPointF{ 0, elem->boundingRect().height() / 2 });
+				pointPos += delta;
+			}
 		}
 		break;
 	case GraphConnectionType::Out:
 		if (outputConnectionPointList.size() > index) {
 			outputConnectionPointList.removeAt(index);
+			delta = { 0, boundingRect().height() / outputConnectionPointList.size() * 0.6 };
+			for (auto elem : outputConnectionPointList) {
+				elem->setPos(pointPos + (delta / 2) - QPointF{ 0, elem->boundingRect().height() / 2 });
+				pointPos += delta;
+			}
 		}
 		break;
 	default:
@@ -124,31 +139,18 @@ void GraphNode::removeConnectionPoint(GraphConnectionType type, size_t index)
 	}
 }
 
-bool GraphNode::removeConnectionPointByName(QString nodeName, GraphConnectionType type)
+bool GraphNode::removeConnectionPoint(std::shared_ptr<GraphConnectionPoint> point)
 {
-	auto& connectionPointList = type == GraphConnectionType::In ? inputConnectionPointList : outputConnectionPointList;
-
-	for (auto& elem : connectionPointList)
-	{
-		// If input then we are the destination, else we are the source
-		if ((type == GraphConnectionType::In && elem->getSourceNodeName() == nodeName) || (type == GraphConnectionType::Out && elem->getDestinationNodeName() == nodeName))
-		{
-			connectionPointList.removeOne(elem);
-			return true;
-		}
-	}
-
-	return false;
+	return outputConnectionPointList.removeOne(point) ? true : inputConnectionPointList.removeOne(point);
 }
 
-void GraphNode::connectPointTo(size_t index, GraphConnectionPoint* destination)
+void GraphNode::connectPointTo(std::shared_ptr<GraphConnectionPoint> source, std::shared_ptr<GraphConnectionPoint> destination)
 {
-	if (outputConnectionPointList.size() > index) {
-		auto arrow = std::make_shared<GraphArrow>(outputConnectionPointList.at(index).get(), destination);
-		outputConnectionPointList.at(index)->connectArrow(arrow);
-		destination->connectArrow(arrow);
-		scene()->addItem(arrow.get());
-	}
+	auto arrow = std::make_shared<GraphArrow>(source, destination);
+	source->connectArrow(arrow);
+	destination->connectArrow(arrow);
+
+	scene()->addItem(arrow.get());
 }
 
 std::shared_ptr<GraphConnectionPoint> GraphNode::connectionPointAt(GraphConnectionType type, size_t index)
@@ -242,12 +244,13 @@ bool GraphNode::connectToNode(QString nodeName)
 {
 	for(auto elem : scene()->items())
 	{
-		auto node = dynamic_cast<GraphNode*>(elem);
-		if (node != nullptr && node->getLabel() == nodeName)
+		auto otherNode = dynamic_cast<GraphNode*>(elem);
+		if (otherNode != nullptr && otherNode->getLabel() == nodeName)
 		{
-			appendConnectionPoint(GraphConnectionType::Out);
-			node->appendConnectionPoint(GraphConnectionType::In);
-			connectPointTo(outputConnectionPointList.size() - 1, node->inputConnectionPointList.last().get());
+			auto point = appendConnectionPoint(GraphConnectionType::Out);
+			auto otherPoint = otherNode->appendConnectionPoint(GraphConnectionType::In);
+
+			connectPointTo(point, otherPoint);
 			outputConnectionPointList.last()->setSourceNodeName(getLabel());
 			outputConnectionPointList.last()->setDestinationNodeName(nodeName);
 			return true;
@@ -259,34 +262,81 @@ bool GraphNode::connectToNode(QString nodeName)
 
 bool GraphNode::disconnectFrom(QString nodeName)
 {
-	// Find if connection to that node exists
-	for (auto& connectionPoint : outputConnectionPointList)
+	std::shared_ptr<GraphConnectionPoint> thisConnectionPoint;
+	std::shared_ptr<GraphConnectionPoint> otherConnectionPoint;
+	GraphNode* otherNode;
+
+	// Find connection in this node
+	for (const auto& connectionPoint : outputConnectionPointList)
 	{
-		 if (connectionPoint->isConnected() && connectionPoint->getDestinationNodeName() == nodeName)
-		 {
-			// Find the node
-			 for (auto elemNode : scene()->items())
-			 {
-				 auto node = dynamic_cast<GraphNode*>(elemNode);
-				 if (node != nullptr)
-				 {
-					 node->removeConnectionPointByName(getLabel(), GraphConnectionType::In);
-					 outputConnectionPointList.removeOne(connectionPoint);
-					 return true;
-				 }
-			 }
-		 }
+		if (connectionPoint->isConnected() && connectionPoint->getDestinationNodeName() == nodeName)
+		{
+			thisConnectionPoint = connectionPoint;
+		}
 	}
 
-	return false;
+	if (thisConnectionPoint == nullptr)
+	{
+		qDebug() << "Node connection to `" << nodeName << "` not found.";
+		return false;
+	}
+
+	// Find target node
+	for (auto node : scene()->items())
+	{
+		auto castNode = dynamic_cast<GraphNode*>(node);
+		if (castNode && castNode->getLabel() == nodeName)
+		{
+			// Find connection in other node
+			for (const auto& connectionPoint : castNode->inputConnectionPointList)
+			{
+				if (connectionPoint->isConnected() 
+					&& connectionPoint->getDestinationNodeName() == nodeName 
+					&& thisConnectionPoint->arrow.get() == connectionPoint->arrow.get())
+				{
+					otherConnectionPoint = connectionPoint;
+					otherNode = castNode;
+				}
+			}
+		}
+	}
+
+	if (otherConnectionPoint == nullptr)
+	{
+		qDebug() << "Returning connection from node `" << nodeName << "` not found.";
+		return false;
+	}
+
+	// Remove item from scene
+	scene()->removeItem(thisConnectionPoint->arrow.get());
+
+	qDebug() << "Source connection point removed: " << removeConnectionPoint(thisConnectionPoint);
+	qDebug() << "Destination connection point removed: " << otherNode->removeConnectionPoint(otherConnectionPoint);
+
+	return true;
 }
 
 void GraphNode::setFlags()
 {
 	setFlag(ItemHasNoContents);
 	setFlag(ItemIsMovable);
-	setCacheMode(DeviceCoordinateCache); // Not required - potentially increases performance
+	setCacheMode(DeviceCoordinateCache);
 	setFlag(ItemSendsScenePositionChanges);
 	setFlag(ItemIsFocusable);
 	setFlag(ItemIsSelectable);
+}
+
+void GraphNode::serializableLoad(QDataStream& dataStream)
+{
+	QPointF pos;
+	QString label;
+	dataStream >> label >> pos;
+	setLabel(label);
+	setPos(pos);
+}
+
+void GraphNode::serializableSave(QDataStream& dataStream) const
+{
+	// Label should identify the scene and pos is the only attribute required to save for now. Connection points and body can be reconstructed with other information. It has to be consistent with scenes anyway.
+	dataStream << getLabel() << scenePos();
 }

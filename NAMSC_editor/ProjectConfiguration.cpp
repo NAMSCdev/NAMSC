@@ -3,6 +3,7 @@
 #include <QFileDialog>
 
 #include "NewProjectDialog.h"
+#include "Novel/Data/Novel.h"
 
 void ProjectConfiguration::createNewProject()
 {

@@ -148,7 +148,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
  //   novel.saveNovel(0);
 
     //Novel::getInstance().loadNovel(0, false);
-    qDebug() << "Loading done!";
+
+	//Novel::getInstance().saveNovel(0);
+ //   saveEditor();
+
+    //Novel::getInstance().loadNovel(0, false);
+    //loadEditor();
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -197,6 +202,16 @@ void NAMSC_editor::prepareSwitchboard()
     connect(&switchboard, &PropertyConnectionSwitchboard::characterSelectionChangedSignal, this, &NAMSC_editor::propertyTabChangeRequested);
 }
 
+void NAMSC_editor::loadEditor()
+{
+    loadGraph(ui.graphView);
+}
+
+void NAMSC_editor::saveEditor()
+{
+    saveGraph(ui.graphView);
+}
+
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
 {
     while (ui.propertiesLayout->count() != 0)
@@ -237,7 +252,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             ui.propertiesLayout->addWidget(new DialogEventProperties(static_cast<EventDialogue*>(object)));
             break;
         case PropertyTypes::ChoiceEventItem:
-            ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object)));
+            ui.propertiesLayout->addWidget(new ChoiceEventProperties(static_cast<EventChoice*>(object), ui.graphView));
             break;
         case PropertyTypes::JumpEventItem:
             ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object)));
@@ -266,12 +281,12 @@ void NAMSC_editor::debugConstructorActions()
     QString scene2Name = QString("Scene 2");
     snovel.addScene(scene2Name, Scene(scene2Name));
     Scene* scene2 = snovel.getScene(scene2Name);
-    Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("english"), QString("Choice event in scene 2")} }));
+    Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("En"), QString("Choice event in scene 2")} }));
     EventChoice* eventChoice = new EventChoice(
         scene2, 
         "Choice Event",
         choicetext);
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} }))));
+    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} })), "", "Scene 1"));
     eventChoice->choices.push_back(Choice(eventChoice, "Choice 2", Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
 
     scene2->insertEvent(0, eventChoice);
@@ -283,18 +298,53 @@ void NAMSC_editor::debugConstructorActions()
     //node2->appendConnectionPoint(GraphConnectionType::In);
     scene->addItem(node2);
 
+    node->moveBy(-100, -100);
+    node2->moveBy(300, 300);
     //node->connectPointTo(0, node2->connectionPointAt(GraphConnectionType::In, 0).get());
-
+    
     //connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
     //    {
     //        qDebug() << node->getLabel() << "has been double clicked!";
     //    });
 
-    node->connectToNode(node2->getLabel());
-    node->connectToNode(node->getLabel());
+    //node->connectToNode(node2->getLabel());
+
+    //node->connectToNode(node2->getLabel());
+    //node->connectToNode(node->getLabel());
     //node->disconnectFrom(node2->getLabel());
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+}
+
+void NAMSC_editor::loadGraph(GraphView* graph)
+{
+    QDirIterator it("game\\Graph", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        QFile serializedFile(it.next());
+        serializedFile.open(QIODeviceBase::ReadOnly);
+
+        QDataStream dataStream(&serializedFile);
+
+        dataStream >> *graph;
+    }
+}
+
+void NAMSC_editor::saveGraph(GraphView* graph)
+{
+    QDir graphDir = QDir::currentPath();
+    graphDir.mkpath("game\\Graph");
+    graphDir.cd("game\\Graph"); // todo check; eventually apply to NovelIO.cpp
+
+    if (ui.graphView != nullptr)
+    {
+        QFile serializedFile(graphDir.path() + "\\graph");
+        serializedFile.open(QIODeviceBase::WriteOnly);
+
+        QDataStream dataStream(&serializedFile);
+
+        dataStream << *graph;
+    }
 }
 
 void NAMSC_editor::supportedFormats()

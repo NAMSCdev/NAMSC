@@ -80,7 +80,7 @@ void Event::serializableLoad(QDataStream& dataStream)
 
 void Event::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << getType() << label;
+	dataStream << getType() << label << actions_.size();
 	for (const std::unique_ptr<Action>& action : actions_)
 		dataStream << *action;
 }

@@ -20,6 +20,9 @@ public:
 
     void prepareSwitchboard();
 
+    void loadEditor();
+    void saveEditor();
+
 public slots:
     void propertyTabChangeRequested(void* object, PropertyTypes dataType);
 
@@ -40,4 +43,7 @@ private:
     CustomSortFilterProxyModel* proxyFileFilter;
 
     void debugConstructorActions();
+
+    void loadGraph(GraphView* graph);
+    void saveGraph(GraphView* graph);
 };
