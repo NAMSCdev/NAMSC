@@ -1,4 +1,4 @@
-#include "NAMSC_engine.h"
+﻿#include "NAMSC_engine.h"
 
 #include <QMessageBox>
 #include <QFile>
@@ -62,25 +62,62 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
 #ifdef DEBUG
     assetManager.addAssetImageSceneryBackground("testBackground", 0, 0, "C:\\Users\\Murloc\\Downloads\\pies.png");
     assetManager.addAssetImageSceneryObject("kotImage", 0, 0, "C:\\Users\\Murloc\\Downloads\\kot.png");
+    assetManager.addAssetImageSceneryObject("flamigno", 0, 0, "C:\\Users\\Murloc\\Downloads\\potwor.png");
 
     Scene scene(QString("start"), QString(""));
 
-    Character testCharacter(QString("kot1"), QString("kotImage"), false, QPoint(0, 0), QSizeF(1.0, 1.0), 20.0);
+    Character wikingCharacter(QString("Nieznajomy"), QString("kotImage"), false, QPoint(600, 40), QSizeF(1.0, 1.0), 0.0);
+    Character falmeCharacter(QString("Straszna istota!"), QString("flamigno"), false, QPoint(500, 680), QSizeF(1.0, 1.0), 0.0);
 
     Scenery scenery;
     scenery.setBackgroundAssetImage("testBackground");
-    scenery.addDisplayedCharacter(testCharacter);
-    testCharacter.bMirrored      = true;
-    testCharacter.rotationDegree = 0.0;
-    testCharacter.name           = "kot2";
-    testCharacter.pos            = QPoint(600, 100);
-    scenery.addDisplayedCharacter(testCharacter);
+    scenery.addDisplayedCharacter(wikingCharacter);
+    //scenery.addDisplayedCharacter(falmeCharacter);
 
-    Event* event = new EventDialogue(&scene);
+    EventDialogue* event = new EventDialogue(&scene);
     event->scenery = scenery;
+    event->sentences.emplace_back(event, Translation(Translate{ { "En", "Witaj!"} }), "Nieznajomy");
+    event->sentences.emplace_back(event, Translation(Translate { { "En", "Jestem Edggar. W pobliży grasuje niebezpieczny potwór. "} }), "Nieznajomy");
+    event->sentences.emplace_back(event, Translation(Translate { { "En", "Zostałeś ostrzeżony!"} }), "Edggar");
     scene.addEvent(event);
 
-    novel.addScene("start", std::move(scene));
+    scenery.clearDisplayedCharacters();
+    wikingCharacter.bMirrored = true;
+    scenery.addDisplayedCharacter(wikingCharacter);
+    EventDialogue* event2 = new EventDialogue(&scene);
+    event2->sentences.emplace_back(event2, Translation(Translate { { "En", "Żegnam!"} }), "Edggar");
+    //event->sentences.emplace_back(event, Translation({ {QString("En"), QString("I salute the pigeons!")} }), "Wiser whoever");
+    event2->scenery = scenery;
+    scene.addEvent(event2);
+
+    EventDialogue* event3 = new EventDialogue(&scene);
+    event3->sentences.emplace_back(event2, Translation(Translate{ { "En", "Podziwiasz otoczenie. Lorem ipsum, komu by się chciało pisać opisy przyrody... Masz na to czas, w końcu żaden potwór nie jest Tobie straszny!"} }), "");
+
+    scenery.clearDisplayedCharacters();
+    event3->scenery = scenery;
+    scene.addEvent(event3);
+
+    EventDialogue* event4 = new EventDialogue(&scene);
+    event4->sentences.emplace_back(event4, Translation(Translate{ { "En", "..."} }), "");
+
+    scenery.clearDisplayedCharacters();
+    scenery.addDisplayedCharacter(falmeCharacter);
+    event4->scenery = scenery;
+    scene.addEvent(event4);
+
+    EventDialogue* event5 = new EventDialogue(&scene);
+    event5->sentences.emplace_back(event5, Translation(Translate{ { "En", "No chyba, że ten!"} }), "");
+    event5->sentences.emplace_back(event5, Translation(Translate{ { "En", "J...j...j..."} }), "Straszna istotna");
+    event5->sentences.emplace_back(event5, Translation(Translate{ { "En", "J-JEŚĆ!"} }), "Straszna istotna");
+
+    scenery.clearDisplayedCharacters();
+    falmeCharacter.pos   = QPointF(80, 0);
+    falmeCharacter.scale = QSizeF(1.6, 1.6);
+    scenery.addDisplayedCharacter(falmeCharacter);
+    event5->scenery = scenery;
+    scene.addEvent(event5);
+
+    novel.addScene(std::move(scene));
 
 #endif
     ui.gameLayout->addWidget(novel.createSceneWidget());

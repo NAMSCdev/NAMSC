@@ -14,6 +14,7 @@ void swap(Scene& first, Scene& second) noexcept
     swap(first.chapter_,     second.chapter_);
     swap(first.scenery,      second.scenery);
     swap(first.events_,      second.events_);
+
 }
 
 Scene::Scene(const QString& name, const QString& chapterName/*, const Scenery& scenery,*/)
@@ -32,9 +33,9 @@ Scene::Scene(const QString& name, const QString& chapterName/*, const Scenery& s
 void Scene::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> name >> chapterName_ >> scenery;
-    size_t size;
+    uint size;
     dataStream >> size;
-    for (size_t i = 0u; i != size; ++i)
+    for (uint i = 0u; i != size; ++i)
     {
         Event* ev;
         NovelLib::SerializationID type;
@@ -75,7 +76,7 @@ void Scene::serializableLoad(QDataStream& dataStream)
 
 void Scene::serializableSave(QDataStream& dataStream) const
 {
-    dataStream << name << chapterName_ << scenery << events_.size();
+    dataStream << name << chapterName_ << scenery << static_cast<uint>(events_.size());
     for (const std::unique_ptr<Event>& ev : events_)
         dataStream << *ev;
 }

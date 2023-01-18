@@ -69,7 +69,7 @@ public:
     virtual QString getComponentTypeName()        const noexcept { return "Event"; }
     virtual SceneComponentType getComponentType() const noexcept { return EVENT; }
     virtual EventSubType getComponentEventType()  const noexcept override = 0;
-    virtual QString getComponentName()            const noexcept{ return label; }
+    virtual QString getComponentName()            const noexcept { return label; }
 protected:
 	std::vector<std::unique_ptr<Action>> actions_;
 

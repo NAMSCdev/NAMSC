@@ -18,7 +18,7 @@ void swap(SceneryObject& first, SceneryObject& second) noexcept
 	swap(first.assetImage_,     second.assetImage_);
 }
 
-SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, bool bMirrored, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, AssetImage* assetImage)
+SceneryObject::SceneryObject(const QString& name, const QString& assetImageName, bool bMirrored, const QPointF pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, AssetImage* assetImage)
 	: name(name), 
 	assetImageName_(assetImageName),
 	bMirrored(bMirrored),

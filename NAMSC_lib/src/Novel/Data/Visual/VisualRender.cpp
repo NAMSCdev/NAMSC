@@ -1,23 +1,18 @@
 #include "Novel/Data/Visual/Scenery/Scenery.h"
 
+#include "Novel/Data/Novel.h"
+#include "Novel/Widget/SceneWidget.h"
+
 void Scenery::render(SceneWidget* sceneWidget)
 {
 	if (sceneWidget)
 	{
-		//if (backgroundAssetImage_ && backgroundAssetImage_->isLoaded())
-			//sceneWidget->changeBackground(backgroundAssetImage_->getImage());
+		Novel& novel = Novel::getInstance();
+		if (backgroundAssetImage_)
+			emit novel.pendBackgroundDisplay(backgroundAssetImage_->getImage());
 
-		auto renderSceneryObject = [&sceneWidget](SceneryObject& sceneryObject)
-		{
-			AssetImage* sprite = sceneryObject.getAssetImage();
-			if (sprite && sprite->isLoaded())
-				sceneWidget->addSceneryObjectWidget(sceneryObject);
-		};
+		emit novel.pendSceneryObjectsDisplay(displayedSceneryObjects_);
 
-		for (SceneryObject& displayedSceneryObject : displayedSceneryObjects_)
-			renderSceneryObject(displayedSceneryObject);
-
-		for (Character& displayedCharacter : displayedCharacters_)
-			renderSceneryObject(displayedCharacter);
+		emit novel.pendCharactersDisplay(displayedCharacters_);
 	}
 }

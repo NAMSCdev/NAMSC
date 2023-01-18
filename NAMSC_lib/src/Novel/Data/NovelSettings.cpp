@@ -39,6 +39,6 @@ void NovelSettings::defaultLanguageChange(const QString& newDefaultLanguage)
             EventDialogue* eventDialog = dynamic_cast<EventDialogue*>(event.get());
             if (eventDialog)
                 for (Sentence& sentence : eventDialog->sentences)
-                    sentence.text.defaultLanguageChangeFix(oldDefaultLanguage);
+                    sentence.translation.defaultLanguageChangeFix(oldDefaultLanguage);
         }
 }

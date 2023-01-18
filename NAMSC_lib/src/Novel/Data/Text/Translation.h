@@ -16,6 +16,7 @@ class Translation
 public:
 	/// \param translations	Store text for different languages
 	Translation(const std::unordered_map<QString, QString>& translations = std::unordered_map<QString, QString>());
+	Translation(std::unordered_map<QString, QString>&& translations);
 	Translation(const Translation& obj)            noexcept = default;
 	Translation(Translation&& obj)                 noexcept = default;
 	Translation& operator=(const Translation& obj) noexcept = default;
@@ -28,7 +29,7 @@ public:
 
 	/// Returns the text in the given language
 	/// \param language Returns text in this language, or if it doesn't have it - in default one (`NovelSettings::defaultLanguage`)
-	const QString text(const QString language = NovelSettings::getInstance().language) noexcept;
+	QString text(const QString language = NovelSettings::getInstance().language) const noexcept;
 
 	/// Adds or replaces a Translation to the `translations` map
 	void setTranslation(const QString& language, const QString& newText);
@@ -63,3 +64,5 @@ public:
 	/// \param dataStream Stream (presumably connected to a QFile) to save to
 	void serializableSave(QDataStream& dataStream) const;
 };
+
+using Translate = std::unordered_map<QString, QString>;

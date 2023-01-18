@@ -44,10 +44,6 @@ public:
 	/// Saves Player's NovelState to a SaveFile in the current SaveSlot
 	void saveState();
 
-	void run()    override;
-	void update() override;
-	void end()    override;
-
 	void syncWithSave() noexcept override;
 
 	QString nextFreeChapterName() const noexcept;
@@ -85,7 +81,7 @@ public:
 	Scene*       getScene(const QString& sceneName);
 	/// Takes ownership of the Scene
 	/// Also corrects jumps to Scenes that theirs index changed
-	Scene* addScene(const QString& sceneName, Scene&& scene);
+	Scene* addScene(Scene&& scene);
 	Scene* renameScene(const QString& oldName, const QString& newName);
 	/// Also corrects jumps to Scenes that theirs index changed
 	bool removeScene(const QString& sceneName);
@@ -113,8 +109,19 @@ public:
 
 	QString defaultScene = "start";
 
+public slots:
+	void run()    override;
+	void update() override;
+	//Not a slot, but closely related to these above, so we place it here for clarity
+public:
+	void end()    override;
+
 signals:
-	void pendChangeBackground(const QImage* img);
+	void pendBackgroundDisplay(const QImage* img);
+	void pendSceneryObjectsDisplay(const std::vector<SceneryObject>& sceneryObjects);
+	void pendCharactersDisplay(const std::vector<Character>& characters);
+	void pendEventDialogueDisplay(const std::vector<Sentence>& sentences, uint sentenceReadIndex);
+	void pendEventChoiceDisplay(const std::vector<Choice>& choices);
 
 private:
 	//Nothing can create the Novel, but its methods
@@ -130,6 +137,7 @@ private:
 	/// \todo implement this
 	void loadChapters();
 	void saveChapters();
+
 	void loadDefaultCharacterDefinitions();
 	void saveDefaultCharacterDefinitions();
 
