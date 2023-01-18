@@ -28,7 +28,7 @@ TextWidget::TextWidget(QGraphicsScene* scene, const std::vector<Sentence>& sente
 	nameWidget_ = new DisplayNameWidget(text_[sentenceReadIndex_].first);
 	if (!(bNarrate_ = text_[sentenceReadIndex_].first.isEmpty()))
 		layout->addItem(nameWidget_);
-	layout->addItem(textWidget_ = new DisplayTextWidget(text_[sentenceReadIndex_].second));
+	layout->addItem(textWidget_ = new DisplayTextWidget(""));
 
 	cpsView_ = QStringView(text_[sentenceReadIndex_].second);
 
@@ -41,7 +41,6 @@ TextWidget::TextWidget(QGraphicsScene* scene, const std::vector<Sentence>& sente
 	cpsTimer_.start();
 	connect(&cpsCallTimer_, &QTimer::timeout, this, &TextWidget::updateText);
 	cpsCallTimer_.start(1000.0 / cps_);
-
 }
 
 void TextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -69,21 +68,28 @@ void TextWidget::mouseClicked()
 		layout->removeItem(textWidget_);
 
 		nameWidget_->text = text_[sentenceReadIndex_].first;
-		textWidget_->text = text_[sentenceReadIndex_].second;
+		textWidget_->text = "";
 
 		if (!(bNarrate_ = text_[sentenceReadIndex_].first.isEmpty()))
 			layout->addItem(nameWidget_);
 		layout->addItem(textWidget_);
 
 		setPos((RESOLUTION_X - minimumWidth()) / 2.0, RESOLUTION_Y * 0.95 - minimumHeight());
-		cpsTimer_.restart();
 
 		cpsView_ = QStringView(text_[sentenceReadIndex_].second);
+		cpsTimer_.restart();
 		update();
 	}
 }
 
 void TextWidget::updateText()
 {
-	int charactersDisplay = qRound(cpsTimer_.elapsed() / 1000.0 * cps_);
+	int charactersDisplay = qMin(static_cast<int>(cpsView_.length()), qRound(cpsTimer_.elapsed() / 1000.0 * cps_));
+	textWidget_->text = QString::fromRawData(cpsView_.data(), charactersDisplay);
+	if (charactersDisplay >= text_.size())
+	{
+		//cpsCallTimer_.stop();
+		//return;
+	}
+	update();
 }

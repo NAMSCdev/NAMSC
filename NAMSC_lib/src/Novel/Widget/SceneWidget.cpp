@@ -164,6 +164,7 @@ void SceneWidget::displaySceneryObjects(const std::vector<SceneryObject>& scener
 		if (sprite && sprite->isLoaded())
 			addSceneryObjectWidget(sceneryObject, i);
 	}
+	update();
 }
 
 void SceneWidget::displayCharacters(const std::vector<Character>& characters)
@@ -175,6 +176,7 @@ void SceneWidget::displayCharacters(const std::vector<Character>& characters)
 		if (sprite && sprite->isLoaded())
 			addSceneryObjectWidget(character, i);
 	}
+	update();
 }
 
 void SceneWidget::displayBackground(const QImage* img)

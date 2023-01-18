@@ -13,12 +13,13 @@ SceneryObjectWidget::SceneryObjectWidget(const SceneryObject& sceneryObject, int
 	QImage img = *sceneryObject.getAssetImage()->getImage();
 	if (sceneryObject.bMirrored)
 		img.mirror(true, false);
-	img = std::move(img.scaledToWidth(qRound(img.width() * sceneryObject.scale.width()), Qt::SmoothTransformation));
-	img = std::move(img.scaledToHeight(qRound(img.height() * sceneryObject.scale.height()), Qt::SmoothTransformation));
+	
+	matrixTransform_.translate(sceneryObject.pos.x(), sceneryObject.pos.y());
+	matrixTransform_.scale(sceneryObject.scale.width(), sceneryObject.scale.height());
+	matrixTransform_.rotate(sceneryObject.rotationDegree);
 	setPixmap(QPixmap::fromImage(std::move(img)));
 	//setZValue(zorder);
-	setPos(sceneryObject.pos);
-	setRotation(sceneryObject.rotationDegree);
+	setTransform(matrixTransform_);
 }
 
 void SceneryObjectWidget::switchToPreview()

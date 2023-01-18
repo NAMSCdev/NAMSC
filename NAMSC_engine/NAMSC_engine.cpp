@@ -112,7 +112,7 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
 
     scenery.clearDisplayedCharacters();
     falmeCharacter.pos   = QPointF(80, 0);
-    falmeCharacter.scale = QSizeF(1.6, 1.6);
+    falmeCharacter.scale = QSizeF(2.5, 2.5);
     scenery.addDisplayedCharacter(falmeCharacter);
     event5->scenery = scenery;
     scene.addEvent(event5);

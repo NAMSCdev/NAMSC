@@ -29,31 +29,17 @@ void DialogEventProperties::contextMenuEvent(QContextMenuEvent* event)
 	menu.exec(event->globalPos());
 }
 
-void DialogEventProperties::mousePressEvent(QMouseEvent* event)
-{
-	ui.dialogListView->clearSelection();
-	QFrame::mousePressEvent(event);
-}
-
 void DialogEventProperties::prepareConnections()
 {
 	connect(ui.dialogListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [&](const QItemSelection& selected, const QItemSelection& deselected)
 	{
 			if (selected.isEmpty()) {
-				ui.dialogTextEdit->blockSignals(true); // Prevent firing textchanged signal by setting text
-
 				ui.dialogTextEdit->setEnabled(false);
 				ui.dialogTextEdit->setText("");
-
-				ui.dialogTextEdit->blockSignals(false);
 			}
 			else
 			{
-				ui.dialogTextEdit->blockSignals(true); // Prevent firing textchanged signal by setting text
-
 				changeTextEdit(selected.indexes().constFirst());
-
-				ui.dialogTextEdit->blockSignals(false);
 			}
 	});
 	//connect(ui.dialogListView, &QListView::clicked, this, &changeTextEdit);
@@ -79,14 +65,14 @@ void DialogEventProperties::createContextMenu()
 void DialogEventProperties::changeTextEdit(const QModelIndex& index)
 {
 	ui.dialogTextEdit->setEnabled(true);
-	ui.dialogTextEdit->setText(dialogue->sentences.at(index.row()).text.text(NovelSettings::getInstance().language));
+	ui.dialogTextEdit->setText(dialogue->sentences.at(index.row()).translation.text());
 	lastClickedModelIndex = index;
 }
 
 void DialogEventProperties::changeModelItem()
 {
 	if (dialogue->sentences.size() > lastClickedModelIndex.row()) {
-		dialogue->sentences.at(lastClickedModelIndex.row()).text.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
+		dialogue->sentences.at(lastClickedModelIndex.row()).translation.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
 	}
 	else
 	{

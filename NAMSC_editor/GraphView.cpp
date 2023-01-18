@@ -199,7 +199,7 @@ void GraphView::createNode()
     {
         Scene s;
         s.name = name;
-        Novel::getInstance().addScene(name, std::move(s));
+        Novel::getInstance().addScene(std::move(s));
 
         GraphNode* node = new GraphNode(roundedPos);
         node->setLabel(name);
