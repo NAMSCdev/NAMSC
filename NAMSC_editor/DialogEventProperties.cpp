@@ -65,14 +65,14 @@ void DialogEventProperties::createContextMenu()
 void DialogEventProperties::changeTextEdit(const QModelIndex& index)
 {
 	ui.dialogTextEdit->setEnabled(true);
-	ui.dialogTextEdit->setText(dialogue->sentences.at(index.row()).text.text());
+	ui.dialogTextEdit->setText(dialogue->sentences.at(index.row()).translation.text());
 	lastClickedModelIndex = index;
 }
 
 void DialogEventProperties::changeModelItem()
 {
 	if (dialogue->sentences.size() > lastClickedModelIndex.row()) {
-		dialogue->sentences.at(lastClickedModelIndex.row()).text.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
+		dialogue->sentences.at(lastClickedModelIndex.row()).translation.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
 	}
 	else
 	{

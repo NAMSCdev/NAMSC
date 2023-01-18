@@ -14,5 +14,6 @@ public:
 	void switchToDisplay();
 
 private:
+	QTransform matrixTransform_;
 	bool bPreview_ = false;
 };

@@ -252,7 +252,7 @@ void NAMSC_editor::debugConstructorActions()
 {
     Novel& snovel = Novel::getInstance();
     QString scene1Name = QString("Scene 1");
-    snovel.addScene(scene1Name, Scene(scene1Name));
+    snovel.addScene(Scene(scene1Name));
     Scene* scene1 = snovel.getScene(scene1Name);
     scene1->insertEvent(0, new EventJump(scene1, "Jump to Scene 2", "Scene 2"));
     scene1->insertEvent(0, new EventDialogue(scene1, "Dialogue3", {}));
@@ -264,7 +264,7 @@ void NAMSC_editor::debugConstructorActions()
     scene->addItem(node);
     
     QString scene2Name = QString("Scene 2");
-    snovel.addScene(scene2Name, Scene(scene2Name));
+    snovel.addScene(Scene(scene2Name));
     Scene* scene2 = snovel.getScene(scene2Name);
     Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("english"), QString("Choice event in scene 2")} }));
     EventChoice* eventChoice = new EventChoice(
