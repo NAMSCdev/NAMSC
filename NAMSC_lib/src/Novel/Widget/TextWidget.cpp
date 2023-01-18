@@ -30,7 +30,7 @@ TextWidget::TextWidget(QGraphicsScene* scene, const std::vector<Sentence>& sente
 		layout->addItem(nameWidget_);
 	layout->addItem(textWidget_ = new DisplayTextWidget(text_[sentenceReadIndex_].second));
 
-	cpsView_(text_[sentenceReadIndex_].second);
+	cpsView_ = QStringView(text_[sentenceReadIndex_].second);
 
 	setLayout(layout);
 
@@ -39,6 +39,9 @@ TextWidget::TextWidget(QGraphicsScene* scene, const std::vector<Sentence>& sente
 	drawPen_.setColor(QColor(60, 68, 107, 255));
 	drawPen_.setWidth(2);
 	cpsTimer_.start();
+	connect(&cpsCallTimer_, &QTimer::timeout, this, &TextWidget::updateText);
+	cpsCallTimer_.start(1000.0 / cps_);
+
 }
 
 void TextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -53,11 +56,13 @@ void TextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 
 void TextWidget::mouseClicked()
 {
-	if (++sentenceReadIndex_ == text_.size())
+	if (++sentenceReadIndex_ >= text_.size())
 	{
-		emit pendNovelEnd();
+		//So it's done only once
+		if (sentenceReadIndex_ == text_.size())
+			emit pendNovelEnd();
 	}
-	else 
+	else
 	{
 		if (!bNarrate_)
 			layout->removeItem(nameWidget_);
@@ -73,11 +78,12 @@ void TextWidget::mouseClicked()
 		setPos((RESOLUTION_X - minimumWidth()) / 2.0, RESOLUTION_Y * 0.95 - minimumHeight());
 		cpsTimer_.restart();
 
+		cpsView_ = QStringView(text_[sentenceReadIndex_].second);
 		update();
 	}
 }
 
 void TextWidget::updateText()
 {
-	int charactersDisplay = qRound(cpsTimer_.elapsed();
+	int charactersDisplay = qRound(cpsTimer_.elapsed() / 1000.0 * cps_);
 }
