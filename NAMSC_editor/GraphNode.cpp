@@ -35,6 +35,11 @@ void GraphNode::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 	Q_UNUSED(widget)
 }
 
+QList<std::shared_ptr<GraphConnectionPoint>> GraphNode::getConnectionPoints(GraphConnectionType type)
+{
+	return type == GraphConnectionType::In ? inputConnectionPointList : outputConnectionPointList;
+}
+
 void GraphNode::setLabel(QString label)
 {
 	nodeBody.label = label;

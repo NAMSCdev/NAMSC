@@ -20,6 +20,7 @@ public:
 	QRectF boundingRect() const override;
 	void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
+	QList<std::shared_ptr<GraphConnectionPoint>> getConnectionPoints(GraphConnectionType type);
 	std::shared_ptr<GraphConnectionPoint> appendConnectionPoint(GraphConnectionType type);
 	void insertConnectionPoint(GraphConnectionType type, size_t index);
 	void removeConnectionPoint(GraphConnectionType type, size_t index);
@@ -44,7 +45,7 @@ public:
 	bool connectToNode(QString nodeName);
 	// Disconnects only from output nodes
 	bool disconnectFrom(QString nodeName);
-
+	
 public slots:
 	void setLabel(QString label);
 
