@@ -117,6 +117,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     //needs to be after preparing other widgets
     prepareSwitchboard();
 
+    createDanglingContextMenuActions();
+
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
@@ -170,9 +172,11 @@ void NAMSC_editor::prepareEventsTree()
 {
     EventTreeItemModel* model = new EventTreeItemModel("test", nullptr);
     ui.eventsTree->setModel(model);
+    connect(ui.eventsTree->model(), &QAbstractItemModel::modelReset, ui.eventsTree, &QTreeView::expandAll);
     ui.eventsTree->setItemsExpandable(true);
-    connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);
+	connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);
     connect(static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::propertyTabChangeRequested, this, &NAMSC_editor::propertyTabChangeRequested);
+
 }
 
 void NAMSC_editor::prepareSwitchboard()
@@ -314,6 +318,51 @@ void NAMSC_editor::debugConstructorActions()
     //node->disconnectFrom(node2->getLabel());
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+}
+
+void NAMSC_editor::createDanglingContextMenuActions()
+{
+    ui.eventsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.eventsTree, &QTreeView::customContextMenuRequested, this, &NAMSC_editor::invokeEventsContextMenu);
+
+    addDialogueEventAction = new QAction(tr("Add dialog event"), ui.eventsTree);
+    addChoiceEventAction = new QAction(tr("Add choice event"), ui.eventsTree);
+    addJumpEventAction = new QAction(tr("Add jump event"), ui.eventsTree);
+
+    connect(addDialogueEventAction, &QAction::triggered, ui.eventsTree, [&]
+        {
+            if (ui.graphView->scene()->selectedItems().size()) {
+                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
+                scene->addEvent(new EventDialogue(scene, "New dialog", {}));
+                
+            }
+        });
+
+    connect(addChoiceEventAction, &QAction::triggered, ui.eventsTree, [&]
+        {
+            if (ui.graphView->scene()->selectedItems().size()) {
+                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
+                scene->addEvent(new EventChoice(scene, "New choice", {}));
+            }
+        });
+
+    connect(addJumpEventAction, &QAction::triggered, ui.eventsTree, [&]
+        {
+            if (ui.graphView->scene()->selectedItems().size()) {
+                Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
+                scene->addEvent(new EventJump(scene, "New jump", {}));
+            }
+        });
+
+}
+
+void NAMSC_editor::invokeEventsContextMenu(const QPoint& pos)
+{
+    QMenu menu(ui.eventsTree);
+    menu.addAction(addDialogueEventAction);
+    menu.addAction(addChoiceEventAction);
+    menu.addAction(addJumpEventAction);
+    menu.exec(ui.eventsTree->mapToGlobal(pos));
 }
 
 void NAMSC_editor::loadGraph(GraphView* graph)

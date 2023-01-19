@@ -40,17 +40,18 @@ void BasicNodeProperties::selectedNodeChanged()
 void BasicNodeProperties::updateLabelInNode()
 {
 	QString lineEditText = ui.nodeNameLineEdit->text();
-
-	if (Novel::getInstance().renameScene(currentlySelectedNode->getLabel(), lineEditText) == nullptr)
-	{
-		QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
-		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
-		return;
-	}
-	else
-	{
-		currentlySelectedNode->setLabel(lineEditText);
-		currentlySelectedNode->update();
-    emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
+	if (currentlySelectedNode->getLabel() != lineEditText) {
+		if (Novel::getInstance().renameScene(currentlySelectedNode->getLabel(), lineEditText) == nullptr)
+		{
+			QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+			ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
+			return;
+		}
+		else
+		{
+			currentlySelectedNode->setLabel(lineEditText);
+			currentlySelectedNode->update();
+			emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
+		}
 	}
 }

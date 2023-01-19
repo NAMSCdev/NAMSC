@@ -44,6 +44,13 @@ private:
 
     void debugConstructorActions();
 
+    QAction* addDialogueEventAction;
+    QAction* addChoiceEventAction;
+    QAction* addJumpEventAction;
+
+    void createDanglingContextMenuActions();
+    void invokeEventsContextMenu(const QPoint& pos);
+
     void loadGraph(GraphView* graph);
     void saveGraph(GraphView* graph);
 };
