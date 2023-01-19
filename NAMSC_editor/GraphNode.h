@@ -42,8 +42,10 @@ public:
 
 	QString getLabel() const;
 	// Assuming names are unique, otherwise will connect to first found
+	// Connects this node to nodeName. It only connects it on the graph and does not do it in the lib
 	bool connectToNode(QString nodeName);
 	// Disconnects only from output nodes
+	// Disconnects this node from nodeName. It only disconnects it on the graph and does not do it in the lib
 	bool disconnectFrom(QString nodeName);
 	
 public slots:

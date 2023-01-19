@@ -7,6 +7,7 @@ GraphNodeBody::GraphNodeBody(QGraphicsObject* parent, QRectF bBox)
 	setDefaultBorderPen();
 	//setParent(parent);
 	//setFlag(ItemIsMovable);
+	setFlag(ItemIsSelectable, false);
 }
 
 GraphNodeBody::~GraphNodeBody()

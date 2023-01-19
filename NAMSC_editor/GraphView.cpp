@@ -157,6 +157,10 @@ void GraphView::contextMenuEvent(QContextMenuEvent* event)
 
     QMenu menu(this);
     menu.addAction(createNodeAction);
+    menu.addAction(removeNodeAction);
+    //if (itemAt(mapFromScene(contextMenuPosition.toPoint())) == nullptr) removeNodeAction->setDisabled(true);
+    if (scene()->focusItem() == nullptr) removeNodeAction->setDisabled(true);
+	else removeNodeAction->setEnabled(true);
     menu.exec(event->globalPos());
 
     qDebug() << scene()->itemAt(mapToScene(event->pos()), QTransform()); // Nodes detection
@@ -165,11 +169,15 @@ void GraphView::contextMenuEvent(QContextMenuEvent* event)
 
 void GraphView::createContextMenu()
 {
-    createNodeAction = new QAction(tr("Create Node"), this);
+    createNodeAction = new QAction(tr("Create node"), this);
     // createNodeAction->setShortcut();
-    createNodeAction->setStatusTip(tr("Create node at the current cursor's position"));
+    createNodeAction->setStatusTip(tr("Create node at the current mouse position"));
+
+    removeNodeAction = new QAction(tr("Remove node"), this);
+    removeNodeAction->setStatusTip(tr("Remove node at the current mouse position"));
 
     connect(createNodeAction, &QAction::triggered, this, &GraphView::createNode);
+    connect(removeNodeAction, &QAction::triggered, this, &GraphView::removeNode);
 }
 
 void GraphView::createNode()
@@ -207,6 +215,61 @@ void GraphView::createNode()
         node->setLabel(name);
         scene()->addItem(node);
     }
+}
+
+void GraphView::removeNode()
+{
+    auto* selectedNode = dynamic_cast<GraphNode*>(scene()->focusItem()); // check if cast is proper
+
+    if (selectedNode == nullptr)
+    {
+        qDebug() << "[GraphView] Focused item is not GraphNode*";
+    }
+
+    // Update jumps from other scenes to this
+    for (auto& conn : selectedNode->getConnectionPoints(GraphConnectionType::In))
+    {
+        for (auto& ev : *Novel::getInstance().getScene(conn->getSourceNodeName())->getEvents())
+        {
+            switch (ev->getComponentEventType())
+            {
+            case EventSubType::EVENT_CHOICE:
+                for (auto& choice : dynamic_cast<EventChoice*>(ev.get())->choices) {
+                    if (choice.jumpToSceneName == selectedNode->getLabel()) choice.jumpToSceneName = "";
+                }
+                break;
+            case EventSubType::EVENT_JUMP:
+                auto evj = dynamic_cast<EventJump*>(ev.get());
+                if (evj->jumpToSceneName == selectedNode->getLabel()) evj->jumpToSceneName = "";
+                break;
+            }
+        }
+
+    }
+
+    while(!selectedNode->getConnectionPoints(GraphConnectionType::In).isEmpty())
+    {
+        
+        if (auto* node = getNodeByName(selectedNode->getConnectionPoints(GraphConnectionType::In).first()->getSourceNodeName()))
+        {
+            node->disconnectFrom(selectedNode->getLabel());
+        }
+        else
+        {
+            qDebug() << "[GraphView] Found non existing node while removing the other";
+        }
+    }
+
+    while(!selectedNode->getConnectionPoints(GraphConnectionType::Out).isEmpty())
+    {
+        if (!selectedNode->disconnectFrom(selectedNode->getConnectionPoints(GraphConnectionType::Out).first()->getDestinationNodeName()))
+        {
+            qDebug() << "[GraphView] Found non existing node while removing the other";
+        }
+    }
+
+    Novel::getInstance().removeScene(selectedNode->getLabel());
+    scene()->removeItem(selectedNode);
 }
 
 void GraphView::serializableLoad(QDataStream& dataStream)

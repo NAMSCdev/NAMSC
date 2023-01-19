@@ -172,6 +172,7 @@ void NAMSC_editor::prepareEventsTree()
 {
     EventTreeItemModel* model = new EventTreeItemModel("test", nullptr);
     ui.eventsTree->setModel(model);
+    ui.eventsTree->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents); // 0 should be the event name
     connect(ui.eventsTree->model(), &QAbstractItemModel::modelReset, ui.eventsTree, &QTreeView::expandAll);
     ui.eventsTree->setItemsExpandable(true);
 	connect(ui.eventsTree->selectionModel(), &QItemSelectionModel::selectionChanged, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::selectionChanged);

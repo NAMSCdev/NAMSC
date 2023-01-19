@@ -35,10 +35,13 @@ private:
 
 	QPointF mousePressOrigin;
 	QPointF contextMenuPosition;
+
 	QAction* createNodeAction;
+	QAction* removeNodeAction;
 
 private slots:
 	void createNode();
+	void removeNode();
 
 
 public:
