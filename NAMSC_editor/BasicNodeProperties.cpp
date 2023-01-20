@@ -17,7 +17,9 @@ BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
 }
 
 BasicNodeProperties::~BasicNodeProperties()
-{}
+{
+	emit sceneUpdated(nullptr);
+}
 
 void BasicNodeProperties::updateConnections(bool b)
 {
