@@ -26,22 +26,21 @@ ActionAudioSetMusic::ActionAudioSetMusic(Event* const parentEvent, const AudioSe
 	errorCheck(true);
 }
 
-//deleted
-//ActionAudioSetMusic::ActionAudioSetMusic(const ActionAudioSetMusic& obj) noexcept
-//	: ActionAudio(obj.parentEvent), 
-//	musicPlaylist_(obj.musicPlaylist_), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionAudioSetMusic::ActionAudioSetMusic(const ActionAudioSetMusic& obj) noexcept
+	: ActionAudio(obj.parentEvent), 
+	musicPlaylist_(obj.musicPlaylist_), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionAudioSetMusic::operator==(const ActionAudioSetMusic& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionAudio::operator==(obj)         &&
-//		   musicPlaylist_ == obj.musicPlaylist_;
-//}
+//defaulted
+bool ActionAudioSetMusic::operator==(const ActionAudioSetMusic& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionAudio::operator==(obj)         &&
+		   musicPlaylist_ == obj.musicPlaylist_;
+}
 
 void ActionAudioSetMusic::setOnRunListener(std::function<void(const Event* const parentEvent, const MusicPlaylist* const musicPlaylist)> onRun) noexcept
 {
@@ -70,15 +69,14 @@ ActionAudioSetMusic::ActionAudioSetMusic(ActionAudioSetMusic&& obj) noexcept
 	swap(*this, obj);
 }
 
-//deleted
-//ActionAudioSetMusic& ActionAudioSetMusic::operator=(ActionAudioSetMusic obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionAudioSetMusic& ActionAudioSetMusic::operator=(ActionAudioSetMusic obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 const MusicPlaylist* ActionAudioSetMusic::getMusicPlaylist() const noexcept
 {

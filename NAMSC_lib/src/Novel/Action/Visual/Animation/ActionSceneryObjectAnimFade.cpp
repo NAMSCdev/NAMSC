@@ -28,24 +28,22 @@ ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(Event* const parentEven
 	errorCheck(true);
 }
 
-//deleted
-//ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept
-//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, "", obj.priority, obj.startDelay, 1.0, 1, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
-//	duration(obj.duration), 
-//	bAppear(obj.bAppear),
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, "", obj.priority, obj.startDelay, 1.0, 1, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
+	duration(obj.duration), 
+	bAppear(obj.bAppear),
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectAnimFade::operator==(const ActionSceneryObjectAnimFade& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionSceneryObjectAnim::operator==(obj) &&
-//		   duration != obj.duration                 &&
-//		   bAppear  != obj.bAppear;           
-//}
+bool ActionSceneryObjectAnimFade::operator==(const ActionSceneryObjectAnimFade& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionSceneryObjectAnim::operator==(obj) &&
+		   duration != obj.duration                 &&
+		   bAppear  != obj.bAppear;           
+}
 
 void ActionSceneryObjectAnimFade::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const sceneryObject, const uint& priority, const uint& startDelay, const bool& bFinishAnimationAtEventEnd, uint duration, bool bAppear)> onRun) noexcept
 {
@@ -74,15 +72,14 @@ ActionSceneryObjectAnimFade::ActionSceneryObjectAnimFade(ActionSceneryObjectAnim
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectAnimFade& ActionSceneryObjectAnimFade::operator=(ActionSceneryObjectAnimFade obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectAnimFade& ActionSceneryObjectAnimFade::operator=(ActionSceneryObjectAnimFade obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSceneryObjectAnimFade::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble1D>* assetAnim) noexcept
 {

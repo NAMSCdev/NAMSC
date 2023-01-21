@@ -6,50 +6,102 @@
 
 #include "Exceptions.h"
 
-namespace NovelLib
+namespace NovelLib::Helpers
 {
-	//Helper's helpers
-
 	template<typename T>
 	concept NotQObject = !std::derived_from<T, QObject>;
 
 	template<typename T>
-	concept NamedObject = NotQObject<T> && requires(T& t)
+	concept NamedObject = NotQObject<T> && requires(T & t)
 	{
 		t.name = QString();
 	};
 
 	template<typename T>
-	concept NamedPointer = NotQObject<T> && requires(T& t)
+	concept NamedPointer = NotQObject<T> && requires(T & t)
 	{
 		t->name = QString();
 	};
 
 	template<typename T>
+	concept LabeledObject = NotQObject<T> && requires(T & t)
+	{
+		t.label = QString();
+	};
+
+	template<typename T>
+	concept LabeledPointer = NotQObject<T> && requires(T & t)
+	{
+		t->label = QString();
+	};
+
+	template<typename T>
 	concept NamedEntity = NamedObject<T> || NamedPointer<T>;
 
+	template<typename T>
+	concept LabeledEntity = LabeledObject<T> || LabeledPointer<T>;
+
+	template<typename T>
+	concept IdentifiedEntity = NamedEntity<T> || LabeledEntity<T>;
+
 	template<NamedObject T>
-	QString getName(const T& object)
+	QString getIdentifier(const T& object)
 	{
 		return object.name;
 	}
 
 	template<NamedPointer T>
-	QString getName(const T& pointer)
+	QString getIdentifier(const T& pointer)
 	{
 		return pointer->name;
 	}
 
+	template<LabeledObject T>
+	QString getIdentifier(const T& object)
+	{
+		return object.label;
+	}
+
+	template<LabeledPointer T>
+	QString getIdentifier(const T& pointer)
+	{
+		return pointer->label;
+	}
+
 	template<NamedObject T>
-	void setName(T& object, const QString& name)
+	void setIdentifier(T& object, const QString& name)
 	{
 		object.name = name;
 	}
 
 	template<NamedPointer T>
-	void setName(T& pointer, const QString& name)
+	void setIdentifier(T& pointer, const QString& name)
 	{
 		pointer->name = name;
+	}
+
+	template<LabeledObject T>
+	void setIdentifier(T& object, const QString& label)
+	{
+		object.label = label;
+	}
+
+	template<LabeledPointer T>
+	void setIdentifier(T& pointer, const QString& label)
+	{
+		pointer->label = label;
+	}
+
+	template<typename T>
+	const typename T::pointer itToPtr(const T& it)
+	{
+		return &*it;
+	}
+
+	template<typename T>
+	typename T::pointer itToPtr(T& it)
+	{
+		return &*it;
 	}
 
 	QString parentMsg(const QString& parentType, const QString& parentName, const QString& parentParentType, const QString& parentParentName);
@@ -78,13 +130,13 @@ namespace NovelLib
 		return true;
 	}
 
-	//template<NamedEntity T>
+	//template<IdentifiedEntity T>
 	//bool checkName(const QString& name, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	//{
-	//	if (getName(entity) != name)
+	//	if (getIdentifier(entity) != name)
 	//	{
 	//		if (bThrowErrors)
-	//			qCritical() << errorTypeInvalid << type + "'s name missmatch (name=\"" + name + "\", instace name=\"" + getName(entity) + "\")" + parentMsg(parentType, parentName, parentParentType, parentParentName);
+	//			qCritical() << errorTypeInvalid << type + "'s name missmatch (name=\"" + name + "\", instace name=\"" + getIdentifier(entity) + "\")" + parentMsg(parentType, parentName, parentParentType, parentParentName);
 	//		return false;
 	//	}
 	//	return true;
@@ -102,10 +154,10 @@ namespace NovelLib
 		return true;
 	}
 
-	template<NamedEntity T>
-	std::vector<T>::iterator checkListExistence(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator checkListExistence(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getName(listEntity) == name; });
+		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getIdentifier(listEntity) == name; });
 		if (ret == list.end())
 		{
 			if (bThrowErrors)
@@ -114,14 +166,28 @@ namespace NovelLib
 		return ret;
 	}
 
-	template<NamedEntity T>
-	std::vector<T>::iterator checkListDuplicate(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator checkListDuplicate(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getName(listEntity) == name; });
+		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getIdentifier(listEntity) == name; });
 		if (ret != list.end())
 		{
 			if (bThrowErrors)
 				qCritical() << errorTypeInvalid << type + " \"" + name + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
+		}
+		return ret;
+	}
+
+	template<LabeledEntity T>
+	typename std::vector<T>::iterator checkListDuplicate(std::vector<T>& list, const QString& label, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	{
+		if (label.isEmpty())
+			return list.end();
+		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&label](T& listEntity) { return getIdentifier(listEntity) == label; });
+		if (ret != list.end())
+		{
+			if (bThrowErrors)
+				qCritical() << errorTypeInvalid << type + " \"" + label + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
 		}
 		return ret;
 	}
@@ -146,26 +212,25 @@ namespace NovelLib
 		return &(map.at(key));
 	}
 
-	template<NamedEntity T>
+	template<IdentifiedEntity T>
 	T* mapSet(std::unordered_map<QString, T>& map, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true) noexcept
 	{
-		return &(map[getName(entity)] = entity);
+		return &(map[getIdentifier(entity)] = entity);
 	}
 
-	template<NamedEntity T>
+	template<IdentifiedEntity T>
 	T* mapSet(std::unordered_map<QString, T>& map, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true) noexcept
 	{
-		const QString name = getName(entity);
+		const QString name = getIdentifier(entity);
 		if (map.contains(name))
 			map.erase(name);
 
 		map.emplace(name, std::move(entity));
 		
 		return &map.at(name);
-		return nullptr;
 	}
 
-	template<NamedEntity T>
+	template<IdentifiedEntity T>
 	T* mapRename(std::unordered_map<QString, T>& map, const QString& oldName, const QString& newName, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true) noexcept
 	{
 		if (!checkMapExistence(map, oldName, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
@@ -175,7 +240,7 @@ namespace NovelLib
 			return nullptr;
 
 		T&& object = std::move(map.at(oldName));
-		setName(object, newName);
+		setIdentifier(object, newName);
 
 		auto iteratorBoolPair = map.emplace(newName, std::move(object));
 		map.erase(oldName);
@@ -197,143 +262,164 @@ namespace NovelLib
 	//Lists
 
 	template<typename T>
-	const T* listGet(std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::const_iterator listGet(const std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		if (!checkListIndex(list, index, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+			return list.cend();
 
-		return &(list.at(index));
+		return list.cbegin() + index;
 	}
 
 	template<typename T>
-	T* listGet(std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::iterator listGet(std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		if (!checkListIndex(list, index, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+			return list.end();
 
-		return &(list.at(index));
+		return list.begin() + index;
 	}
 
-	template<NamedEntity T>
-	const T* listGet(const std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::const_iterator listGet(const std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::const_iterator ret = std::find_if(list.cbegin(), list.cend(), [&name](const T& listEntity) { return getName(listEntity) == name; });
+		typename std::vector<T>::const_iterator ret = std::find_if(list.cbegin(), list.cend(), [&name](const T& listEntity) { return getIdentifier(listEntity) == name; });
 		if (ret == list.cend())
 		{
 			if (bThrowErrors)
 				qCritical() << errorTypeMissing << "Tried to get a non-existent " + type + "\"" + name + '\"' + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return nullptr;
 		}
-		return &(*ret);
+		return ret;
 	}
 
-	template<NamedEntity T>
-	T* listGet(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator listGet(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getName(listEntity) == name; });
+		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getIdentifier(listEntity) == name; });
 		if (ret == list.end())
 		{
 			if (bThrowErrors)
 				qCritical() << errorTypeMissing << "Tried to get a non-existent " + type + "\"" + name + '\"' + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return nullptr;
 		}
-		return &(*ret);
+		return ret;
 	}
 
-	template<NamedEntity T>
-	T* listInsert(std::vector<T>& list, uint index, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator listInsert(std::vector<T>& list, uint index, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (!checkListIndex(list, index, type, NovelLib::ErrorType::General, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+		if (index != 0 && !checkListIndex(list, index - 1, type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
 
-		typename std::vector<T>::iterator ret = checkListDuplicate(list, getName(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
+		typename std::vector<T>::iterator ret = checkListDuplicate(list, getIdentifier(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
 		if (ret != list.end())
-			return nullptr;
-		return &(*(list.insert(list.begin() + index, entity)));
+			return list.end();
+
+		return list.insert(list.begin() + index, entity);
 	}
 
-	template<NamedEntity T>
-	T* listInsert(std::vector<T>& list, uint index, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator listInsert(std::vector<T>& list, uint index, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (!checkListIndex(list, index, type, NovelLib::ErrorType::General, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+		if (index != 0 && !checkListIndex(list, index - 1, type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
 
-		typename std::vector<T>::iterator ret = checkListDuplicate(list, getName(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
+		typename std::vector<T>::iterator ret = checkListDuplicate(list, getIdentifier(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
 		if (ret != list.end())
-			return nullptr;
-		return &(*(list.insert(list.begin() + index, std::move(entity))));
+			return list.end();
+
+		return list.insert(list.begin() + index, std::move(entity));
 	}
 
 	template<typename T>
-	T* listInsert(std::vector<T>& list, uint index, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::iterator listInsert(std::vector<T>& list, uint index, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (!checkListIndex(list, index, type, NovelLib::ErrorType::General, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+		if (index != 0 && !checkListIndex(list, index - 1, type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
 
-		return &(*(list.insert(list.begin() + index, entity)));
+		return list.insert(list.begin() + index, entity);
 	}
 
 	template<typename T>
-	T* listInsert(std::vector<T>& list, uint index, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::iterator listInsert(std::vector<T>& list, uint index, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (!checkListIndex(list, index, type, NovelLib::ErrorType::General, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
-			return nullptr;
+		if (index != 0 && !checkListIndex(list, index - 1, type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
 
-		return &(*(list.insert(list.begin() + index, std::move(entity))));
+		return list.insert(list.begin() + index, std::move(entity));
 	}
 
-	template<NamedEntity T>
-	T* listAdd(std::vector<T>& list, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<typename T>
+	typename std::vector<T>::iterator listReinsert(std::vector<T>& list, uint index, uint newIndex, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::iterator ret = checkListDuplicate(list, getName(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
+		if (index == newIndex)
+			return list.begin() + index;
+
+		if (!checkListIndex(list, index, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
+
+		if (newIndex != 0 && !checkListIndex(list, newIndex - 1, type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
+			return list.end();
+
+		if (index < newIndex)
+			--newIndex;
+
+		T&& movedElement = std::move(list.at(index));
+		list.erase(list.begin()  + index);
+
+		return list.insert(list.begin() + newIndex, std::move(movedElement));
+	}
+
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator listAdd(std::vector<T>& list, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	{
+		typename std::vector<T>::iterator ret = checkListDuplicate(list, getIdentifier(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
 		if (ret != list.end())
-			return nullptr;
+			return list.end();
 
 		list.push_back(entity);
 
-		return &(list.back());
+		return list.end() - 1;
 	}
 
 	template<typename T>
-	T* listAdd(std::vector<T>& list, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::iterator listAdd(std::vector<T>& list, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		list.push_back(entity);
 
-		return &(list.back());
+		return list.end() - 1;
 	}
 
-	template<NamedEntity T>
-	T* listAdd(std::vector<T>& list, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	template<IdentifiedEntity T>
+	typename std::vector<T>::iterator listAdd(std::vector<T>& list, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		typename std::vector<T>::iterator ret = checkListDuplicate(list, getName(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
+		typename std::vector<T>::iterator ret = checkListDuplicate(list, getIdentifier(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
 		if (ret != list.end())
-			return nullptr;
+			return list.end();
 
 		list.push_back(std::move(entity));
 
-		return &(list.back());
+		return list.end() - 1;
 	}
 
 	template<typename T>
-	T* listAdd(std::vector<T>& list, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	typename std::vector<T>::iterator listAdd(std::vector<T>& list, T&& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		list.push_back(std::move(entity));
 
-		return &(list.back());
+		return list.end() - 1;
 	}
 
 	template<typename T>
-		bool listRemove(std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	bool listRemove(std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		if (!checkListIndex(list, index, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors))
 			return false;
 
-		list.remove(list.begin() + index);
+		list.erase(list.begin() + index);
 
 		return true;
 	}
 
-	template<NamedEntity T>
+	template<IdentifiedEntity T>
 	bool listRemove(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		typename std::vector<T>::iterator ret = checkListExistence(list, name, type, errorTypeMissing, parentType, parentName, parentParentType, parentParentName, bThrowErrors);

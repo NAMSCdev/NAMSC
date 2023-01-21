@@ -5,7 +5,7 @@
 bool Event::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
-	for (const std::unique_ptr<Action>& action : actions_)
+	for (const std::shared_ptr<Action>& action : actions_)
 		bError |= action->errorCheck(bComprehensive);
 
 	auto errorChecker = [this](bool bComprehensive)
@@ -30,7 +30,7 @@ bool EventChoice::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	for (const Choice& choice : choices)
+	for (const Choice& choice : choices_)
 		bError |= choice.errorCheck(bComprehensive);
 
 	//auto errorChecker = [this](bool bComprehensive)
@@ -48,7 +48,7 @@ bool EventDialogue::errorCheck(bool bComprehensive) const
 {
 	bool bError = Event::errorCheck(bComprehensive);
 
-	for (const Sentence& sentence : sentences)
+	for (const Sentence& sentence : sentences_)
 		bError |= sentence.errorCheck(bComprehensive);
 
 	//auto errorChecker = [this](bool bComprehensive)

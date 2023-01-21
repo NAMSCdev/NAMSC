@@ -23,15 +23,14 @@ ActionSceneryObject::ActionSceneryObject(Event* const parentEvent, const QString
 {
 }
 
-//deleted
-//bool ActionSceneryObject::operator==(const ActionSceneryObject& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return Action::operator==(obj)                      &&
-//		   sceneryObjectName_ == obj.sceneryObjectName_;// &&
-//	       //sceneryObject_     == obj.sceneryObject_;
-//}
+bool ActionSceneryObject::operator==(const ActionSceneryObject& obj) const noexcept
+{
+	if (this == &obj)
+		return true;
+
+	return sceneryObjectName_ == obj.sceneryObjectName_;// &&
+	       //sceneryObject_     == obj.sceneryObject_;
+}
 
 void ActionSceneryObject::serializableLoad(QDataStream& dataStream)
 {

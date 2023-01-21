@@ -1,4 +1,5 @@
 #include "Novel/Data/Visual/Scenery/Scenery.h"
+#include "Novel/Widget/SceneWidget.h"
 
 void Scenery::render(SceneWidget* sceneWidget)
 {

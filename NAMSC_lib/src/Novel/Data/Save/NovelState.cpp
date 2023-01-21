@@ -1,10 +1,9 @@
 #include "Novel/Data/Novel.h"
 
-#include "Helpers.h"
 #include "Novel/Data/Stat/StatDouble.h"
 #include "Novel/Data/Stat/StatLongLong.h"
 #include "Novel/Data/Stat/StatString.h"
-#include "Serialization.h"
+#include "Helpers.h"
 
 //If you add/remove a member field, remember to update these
 //  MEMBER_FIELD_SECTION_CHANGE BEGIN
@@ -25,7 +24,7 @@ void swap(NovelState& first, NovelState& second) noexcept
 NovelState::NovelState(const QDate& saveDate, const QImage& screenshot, uint saveSlot, const QString& sceneName, uint eventID, uint sentenceID)
     : saveDate(saveDate), 
     screenshot(screenshot), 
-    scenery(scenery), 
+    //scenery(scenery), 
     saveSlot(saveSlot), 
     sceneName(sceneName), 
     eventID(eventID),
@@ -135,29 +134,44 @@ const std::unordered_map<QString, std::shared_ptr<Stat>>* NovelState::getStats()
     return &stats_;
 }
 
-const Stat* NovelState::getStat(const QString& statName) const
+const std::shared_ptr<Stat> NovelState::getStat(const QString& name) const
 {
-    return NovelLib::mapGet(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+    return *NovelLib::Helpers::mapGet(stats_, name, "Stat", NovelLib::ErrorType::StatMissing);
 }
 
-Stat* NovelState::getStat(const QString& statName)
+std::shared_ptr<Stat> NovelState::getStat(const QString& name)
 {
-    return NovelLib::mapGet(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing)->get();
+    return *NovelLib::Helpers::mapGet(stats_, name, "Stat", NovelLib::ErrorType::StatMissing);
 }
 
-Stat* NovelState::addStat(Stat*&& stat)
+const std::unordered_map<QString, std::shared_ptr<Stat>>* NovelState::setStats(const std::unordered_map<QString, std::shared_ptr<Stat>>& stats) noexcept
 {
-    return NovelLib::mapSet(stats_, std::move(std::shared_ptr<Stat>(stat)), "Stat", NovelLib::ErrorType::StatInvalid)->get();
+    return &(stats_ = stats);
 }
 
-Stat* NovelState::renameStat(const QString& oldName, const QString& newName)
+const std::unordered_map<QString, std::shared_ptr<Stat>>* NovelState::setStats(std::unordered_map<QString, std::shared_ptr<Stat>>&& stats) noexcept
 {
-    return NovelLib::mapRename(stats_, oldName, newName, "Stat", NovelLib::ErrorType::StatMissing, NovelLib::ErrorType::StatInvalid)->get();
+    return &(stats_ = std::move(stats));
 }
 
-bool NovelState::removeStat(const QString& statName)
+std::shared_ptr<Stat> NovelState::setStat(Stat* stat) noexcept
 {
-    return NovelLib::mapRemove(stats_, statName, "Stat", NovelLib::ErrorType::StatMissing);
+    return *NovelLib::Helpers::mapSet(stats_, std::move(std::shared_ptr<Stat>(stat)), "Stat", NovelLib::ErrorType::StatInvalid);
+}
+
+std::shared_ptr<Stat> NovelState::setStat(const std::shared_ptr<Stat>& stat) noexcept
+{
+    return *NovelLib::Helpers::mapSet(stats_, std::move(stat), "Stat", NovelLib::ErrorType::StatInvalid);
+}
+
+std::shared_ptr<Stat> NovelState::renameStat(const QString& oldName, const QString& newName)
+{
+    return *NovelLib::Helpers::mapRename(stats_, oldName, newName, "Stat", NovelLib::ErrorType::StatMissing, NovelLib::ErrorType::StatInvalid);
+}
+
+bool NovelState::removeStat(const QString& name)
+{
+    return NovelLib::Helpers::mapRemove(stats_, name, "Stat", NovelLib::ErrorType::StatMissing);
 }
 
 void NovelState::clearStats() noexcept

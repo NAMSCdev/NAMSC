@@ -10,7 +10,7 @@ namespace NovelLib
 		}
 		catch (NovelException& ex)
 		{
-			qCritical() << ex.what();;
+			qCritical() << ex.what();
 			return true;
 		}
 		catch (QException& ex)

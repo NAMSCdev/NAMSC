@@ -27,12 +27,12 @@ public:
 	/// \param Perform jump if `logicalExpression` failed
 	/// \exception One of the Actions contains an Error or the regex is not properly formatted or the Stat couldn't be found or logicalExpression is not properly formatted
 	EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName = "", bool bDigitsOnly = false, const long long digitsOnly_min = 0, const long long digitsOnly_max = 1000, uint minCharacters = 0, const QString& regex = "", bool bLogicalExpression = false, const QString& logicalExpression = "", int logicalExpression_tries = 0, const QString& logicalExpression_failureJumpToSceneName = "");
-	EventInput(const EventInput& obj)            noexcept = delete;
+	EventInput(const EventInput& obj)            noexcept;
 	EventInput(EventInput&& obj)                 noexcept;
-	EventInput& operator=(const EventInput& obj) noexcept = delete;
-	bool operator==(const EventInput& obj) const noexcept = delete;
-	bool operator!=(const EventInput& obj) const noexcept = delete;
-	
+	EventInput& operator=(EventInput obj)        noexcept;
+	bool operator==(const EventInput& obj) const noexcept;
+	bool operator!=(const EventInput& obj) const noexcept = default;
+
 	/// \exception Error invalid Action in `actions_` / invalid `regex` / invalid `Stat` / invalid `logicalExpression`
 	/// \return Whether an Error has occurred
 	/// \todo implement this
@@ -40,7 +40,7 @@ public:
 
 	void run() override;
 
-	void syncWithSave() noexcept override;
+	void syncWithSave() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the EventInput's `void run()` when the input was accepted, allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
 	void setOnSuccessListener(std::function<void(const Scene* const parentScene, const QString& label, const Stat* const inputStat, const uint& minCharacters, const QString& regex, const QString& inputStatName, const bool& bDigitsOnly, const long long& digitsOnly_min, const long long& digitsOnly_max, const bool& bLogicalExpression, const QString& logicalExpression, const int& logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName)> onSuccess) noexcept;

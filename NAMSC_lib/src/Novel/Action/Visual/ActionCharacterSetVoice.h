@@ -9,17 +9,16 @@ class ActionCharacterSetVoice final : public ActionCharacter
 	/// Swap trick
 	friend void swap(ActionCharacterSetVoice& first, ActionCharacterSetVoice& second) noexcept;
 public:
-	explicit ActionCharacterSetVoice(Event* const parentEvent)             noexcept;
+	explicit ActionCharacterSetVoice(Event* const parentEvent) noexcept;
 	/// \param character Copies the Character pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param voice Copies the Voice pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \exception Error Couldn't find the Character named `characterName` or couldn't find the Voice named `voiceName`
 	ActionCharacterSetVoice(Event* const parentEvent, const QString& characterName, const QString& voiceName = "", Character* character = nullptr, Voice* voice = nullptr);
-	ActionCharacterSetVoice(const ActionCharacterSetVoice& obj)            noexcept = delete;
-	ActionCharacterSetVoice(ActionCharacterSetVoice&& obj)                 noexcept;
-	ActionCharacterSetVoice& operator=(const ActionCharacterSetVoice& obj) noexcept = delete;
-	//ActionCharacterSetVoice& operator=(ActionCharacterSetVoice obj)        noexcept;
-	bool operator==(const ActionCharacterSetVoice& obj) const              noexcept = delete;
-	bool operator!=(const ActionCharacterSetVoice& obj) const              noexcept = delete;
+	ActionCharacterSetVoice(const ActionCharacterSetVoice& obj)     noexcept;
+	ActionCharacterSetVoice(ActionCharacterSetVoice&& obj)          noexcept;
+	ActionCharacterSetVoice& operator=(ActionCharacterSetVoice obj) noexcept;
+	bool operator==(const ActionCharacterSetVoice& obj) const       noexcept;
+	bool operator!=(const ActionCharacterSetVoice& obj) const       noexcept = default;
 
 	/// \exception Error 'character_`/`voice_` is invalid
 	/// \return Whether an Error has occurred

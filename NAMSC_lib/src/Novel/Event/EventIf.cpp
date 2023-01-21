@@ -25,6 +25,21 @@ EventIf::EventIf(Scene* const parentScene, const QString& label, const QString& 
 	errorCheck(true);
 }
 
+EventIf::EventIf(const EventIf& obj) noexcept
+	: Event(obj.parentScene, obj.label, obj.actions_),
+	condition(obj.condition),
+	onRun_(obj.onRun_)
+{
+}
+
+bool EventIf::operator==(const EventIf& obj) const noexcept
+{
+	if (this == &obj)
+		return true;
+
+	return actions_ == obj.actions_;
+}
+
 void EventIf::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const QString& condition)> onRun) noexcept
 {
 	onRun_ = onRun; 
@@ -50,6 +65,15 @@ EventIf::EventIf(EventIf&& obj) noexcept
 	: Event(obj.parentScene)
 {
 	swap(*this, obj);
+}
+
+EventIf& EventIf::operator=(EventIf obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+	
+	return *this;
 }
 
 void EventIf::acceptVisitor(EventVisitor* visitor)

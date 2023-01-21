@@ -40,11 +40,11 @@ namespace NovelLib
         StatDouble                          = 29,
         EventRenPyScript                    = 30,
         EventChoice                         = 31,
-        EventEndIf                          = 32,
-        EventIf                             = 33,
-        EventInput                          = 34,
-        EventJump                           = 35,
-        EventDialogue                       = 36,
+        EventDialogue                       = 32,
+        EventEndIf                          = 33,
+        EventIf                             = 34,
+        EventInput                          = 35,
+        EventJump                           = 36,
         EventWait                           = 37
     };
 }

@@ -10,11 +10,8 @@ class ActionAudio : public Action
 	friend void swap(ActionAudio& first, ActionAudio& second) noexcept;
 public:
 	explicit ActionAudio(Event* const parentEvent, const AudioSettings& audioSettings = AudioSettings());
-	ActionAudio(const ActionAudio& obj)            noexcept = delete;
-	ActionAudio(ActionAudio&& obj)                 noexcept = delete;
-	ActionAudio& operator=(const ActionAudio& obj) noexcept = delete;
-	bool operator==(const ActionAudio& obj) const  noexcept = delete;
-	bool operator!=(const ActionAudio& obj) const  noexcept = delete;
+	bool operator==(const ActionAudio& obj) const noexcept;
+	bool operator!=(const ActionAudio& obj) const noexcept = default;
 	//Makes it abstract
 	virtual ~ActionAudio() = 0;
 

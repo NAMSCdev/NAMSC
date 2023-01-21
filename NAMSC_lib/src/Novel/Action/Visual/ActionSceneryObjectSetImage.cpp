@@ -31,24 +31,22 @@ ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(Event* const parentEven
 	errorCheck(true);
 }
 
-//deleted
-//ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj) noexcept
-//	: ActionSceneryObject(obj.parentEvent, obj.sceneryObjectName_, obj.sceneryObject_), 
-//	assetImageName_(obj.assetImageName_),
-//	assetImage_(obj.assetImage_), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj) noexcept
+	: ActionSceneryObject(obj.parentEvent, obj.sceneryObjectName_, obj.sceneryObject_), 
+	assetImageName_(obj.assetImageName_),
+	assetImage_(obj.assetImage_), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectSetImage::operator==(const ActionSceneryObjectSetImage& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return	ActionSceneryObject::operator==(obj)   &&
-//			assetImageName_ == obj.assetImageName_;// &&
-//			//assetImage_     == obj.assetImage_;
-//}
+bool ActionSceneryObjectSetImage::operator==(const ActionSceneryObjectSetImage& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return	ActionSceneryObject::operator==(obj)   &&
+			assetImageName_ == obj.assetImageName_;// &&
+			//assetImage_     == obj.assetImage_;
+}
 
 void ActionSceneryObjectSetImage::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const sceneryObject, const QImage* const image)> onRun) noexcept
 {
@@ -79,15 +77,14 @@ ActionSceneryObjectSetImage::ActionSceneryObjectSetImage(ActionSceneryObjectSetI
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectSetImage& ActionSceneryObjectSetImage::operator=(ActionSceneryObjectSetImage obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectSetImage& ActionSceneryObjectSetImage::operator=(ActionSceneryObjectSetImage obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 QString ActionSceneryObjectSetImage::getAssetImageName() const noexcept
 {

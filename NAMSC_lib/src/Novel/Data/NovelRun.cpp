@@ -34,7 +34,7 @@ void Novel::end()
 		scene.second.end();
 }
 
-void Novel::syncWithSave() noexcept
+void Novel::syncWithSave()
 {
 	if (!scenes_.contains(state_.sceneName))
 	{
@@ -88,7 +88,7 @@ void Scene::end()
 	events_[eventID]->end();
 }
 
-void Scene::syncWithSave() noexcept
+void Scene::syncWithSave()
 {
 	const NovelState* currentState = NovelState::getCurrentlyLoadedState();
 	uint eventID = currentState->eventID;

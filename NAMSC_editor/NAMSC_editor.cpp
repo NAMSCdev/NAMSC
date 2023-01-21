@@ -290,7 +290,7 @@ void NAMSC_editor::debugConstructorActions()
 {
     Novel& snovel = Novel::getInstance();
     QString scene1Name = QString("Scene 1");
-    snovel.addScene(scene1Name, Scene(scene1Name));
+    snovel.addScene(Scene(scene1Name));
     Scene* scene1 = snovel.getScene(scene1Name);
     scene1->insertEvent(0, new EventJump(scene1, "Jump to Scene 2", "Scene 2"));
     scene1->insertEvent(0, new EventDialogue(scene1, "Dialogue3", {}));
@@ -302,15 +302,15 @@ void NAMSC_editor::debugConstructorActions()
     scene->addItem(node);
     
     QString scene2Name = QString("Scene 2");
-    snovel.addScene(scene2Name, Scene(scene2Name));
+    snovel.addScene(Scene(scene2Name));
     Scene* scene2 = snovel.getScene(scene2Name);
     Translation choicetext = Translation(std::unordered_map<QString, QString>({ {QString("En"), QString("Choice event in scene 2")} }));
     EventChoice* eventChoice = new EventChoice(
         scene2, 
         "Choice Event",
         choicetext);
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} })), "", "Scene 1"));
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 2", Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
+    eventChoice->addChoice(Choice(eventChoice, Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} })), "", "Scene 1"));
+    eventChoice->addChoice(Choice(eventChoice, Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
 
     scene2->insertEvent(0, eventChoice);
     scene2->insertEvent(0, new EventDialogue(scene2, "Dialogue3", {}));

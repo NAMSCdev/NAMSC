@@ -74,7 +74,7 @@ public:
 	/// If not empty, this name will be displayed as the Character's name during this Sentence's display
 	QString     displayedName   = "";
 
-	Translation text;
+	Translation translation;
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// Multiplies `NovelSettings::cps_` setting, unless `cpsOverwrite` is set

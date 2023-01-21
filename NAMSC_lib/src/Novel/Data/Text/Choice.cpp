@@ -13,7 +13,6 @@ Choice::Choice(EventChoice* const parentEvent) noexcept
 void swap(Choice& first, Choice& second) noexcept
 {
 	using std::swap;
-	swap(first.name,                 second.name);
 	swap(first.text,                 second.text);
 	swap(first.condition,            second.condition);
 	swap(first.jumpToSceneName,      second.jumpToSceneName);
@@ -30,9 +29,8 @@ void swap(Choice::ChoiceDisplayOptions& first, Choice::ChoiceDisplayOptions& sec
 	std::swap(first.font_,                  second.font_);
 }
 
-Choice::Choice(EventChoice* const parentEvent, const QString& name, const Translation& text, const QString& condition, const QString& jumpToSceneName, const ChoiceDisplayOptions& choiceDisplayOptions)
+Choice::Choice(EventChoice* const parentEvent, const Translation& text, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& choiceDisplayOptions)
 	: parentEvent(parentEvent),
-	name(name),
 	text(text),
 	condition(condition),
 	jumpToSceneName(jumpToSceneName), 
@@ -40,10 +38,8 @@ Choice::Choice(EventChoice* const parentEvent, const QString& name, const Transl
 {
 }
 
-//defaulted
 Choice::Choice(const Choice& obj) noexcept
-	: parentEvent(parentEvent),
-	name(obj.name),
+	: parentEvent(obj.parentEvent),
 	text(obj.text),
 	condition(obj.condition),
 	jumpToSceneName(obj.jumpToSceneName),
@@ -76,11 +72,10 @@ bool Choice::operator==(const Choice& obj) const noexcept
 {
 	if (this == &obj) return true;
 
-	return	name                 == obj.name                &&
-			text                 == obj.text                &&
-			condition            == obj.condition           &&
-			jumpToSceneName      == obj.jumpToSceneName     &&
-			choiceDisplayOptions == obj.choiceDisplayOptions;
+	return text                 == obj.text                &&
+		   condition            == obj.condition           &&
+		   jumpToSceneName      == obj.jumpToSceneName     &&
+		   choiceDisplayOptions == obj.choiceDisplayOptions;
 }
 
 //defaulted
@@ -88,26 +83,26 @@ bool Choice::operator==(const Choice& obj) const noexcept
 //{
 //	if (this == &obj) return true;
 //
-//	return	fontName_              == obj.fontName_              &&
-//			fontSize               == obj.fontSize               &&
-//			bHideIfConditionNotMet == obj.bHideIfConditionNotMet &&
-//			buttonWeight           == obj.buttonWeight           &&
-//			spacerWeight           == obj.spacerWeight;
+//	return fontName_              == obj.fontName_              &&
+//		   fontSize               == obj.fontSize               &&
+//		   bHideIfConditionNotMet == obj.bHideIfConditionNotMet &&
+//		   buttonWeight           == obj.buttonWeight           &&
+//		   spacerWeight           == obj.spacerWeight;
 //}
 
-void Choice::setOnRunListener(std::function<void(const QString& name, const Translation* const text, const QString& condition, const QString& jumpToSceneName)> onRun) noexcept
+void Choice::setOnRunListener(std::function<void(const Translation* const text, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& displayOptions)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
 
 void Choice::serializableLoad(QDataStream& dataStream)
 {
-	dataStream >> name >> text >> condition >> jumpToSceneName >> choiceDisplayOptions;
+	dataStream >> text >> condition >> jumpToSceneName >> choiceDisplayOptions;
 }
 
 void Choice::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << name << text << condition << jumpToSceneName << choiceDisplayOptions;
+	dataStream << text << condition << jumpToSceneName << choiceDisplayOptions;
 }
 
 void Choice::ChoiceDisplayOptions::serializableLoad(QDataStream& dataStream)

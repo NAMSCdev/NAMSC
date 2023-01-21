@@ -26,20 +26,18 @@ ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(Event* const parentEv
 	errorCheck(true);
 }
 
-//deleted
-//ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept
-//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(const ActionSceneryObjectAnimScale& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectAnimScale::operator==(const ActionSceneryObjectAnimScale& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionSceneryObjectAnim::operator==(obj);
-//}
+bool ActionSceneryObjectAnimScale::operator==(const ActionSceneryObjectAnimScale& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionSceneryObjectAnim::operator==(obj);
+}
 
 void ActionSceneryObjectAnimScale::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimScale* const assetAnimScale, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
@@ -68,15 +66,14 @@ ActionSceneryObjectAnimScale::ActionSceneryObjectAnimScale(ActionSceneryObjectAn
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectAnimScale& ActionSceneryObjectAnimScale::operator=(ActionSceneryObjectAnimScale obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectAnimScale& ActionSceneryObjectAnimScale::operator=(ActionSceneryObjectAnimScale obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSceneryObjectAnimScale::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble2D>* assetAnim) noexcept
 {

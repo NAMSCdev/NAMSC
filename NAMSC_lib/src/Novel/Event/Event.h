@@ -16,13 +16,9 @@ class Event : public NovelFlowInterface, public SceneComponent
 	/// Swap trick
 	friend void swap(Event& first, Event& second) noexcept;
 public:
-	/// \param label Displayed in the Editor to distinquish important Events
-	explicit Event(Scene* const parentScene, const QString& label = "");
-	Event(const Event& obj)                 noexcept = delete;
+	/// \param label Displayed in the Editor to distinquish between important Events
+	explicit Event(Scene* const parentScene, const QString& label = "", const std::vector<std::shared_ptr<Action>>& actions = std::vector<std::shared_ptr<Action>>());
 	Event(Event&& obj)                      noexcept;
-	Event& operator=(const Event& obj)      noexcept = delete;
-	bool operator==(const Event& obj) const noexcept = delete;
-	bool operator!=(const Event& obj) const noexcept = delete;
 	//The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Event() = 0;
 
@@ -39,20 +35,25 @@ public:
 
 	/// Some of the Event's Actions might need to access the data, that is a part of the Save
 	/// Must be called after the Save is loaded
-	virtual void syncWithSave() noexcept override;
+	virtual void syncWithSave() override;
 
-	const std::vector<std::unique_ptr<Action>>* getActions() const noexcept;
-	/// \exception Error Tried to get an Action past the `actions` container's size
-	const Action* getAction(uint actionIndex) const;
-	/// \exception Error Tried to get an Action past the `actions` container's size
-	Action*       getAction(uint actionIndex);
-	/// Takes ownership of the Action and manages its destruction
-	void addAction(Action* action);
-	/// Takes ownership of the Action and manages its destruction
-	/// \exception Error Tried to insert a new Action past the `actions` container's size
-	bool insertAction(uint actionIndex, Action* action);
-	/// \exception Error Tried to remove an Action past the `actions` container's size
-	bool removeAction(uint actionIndex);
+	const std::vector<std::shared_ptr<Action>>* getActions() const noexcept;
+	/// \exception Error Tried to get an Action past the `actions_` container's size
+	const std::shared_ptr<Action> getAction(uint index)      const;
+	/// \exception Error Tried to get an Action past the `actions_` container's size
+	std::shared_ptr<Action>       getAction(uint index);
+	const std::vector<std::shared_ptr<Action>>* setActions(const std::vector<std::shared_ptr<Action>>& actions) noexcept;
+	const std::vector<std::shared_ptr<Action>>* setActions(std::vector<std::shared_ptr<Action>>&& actions) noexcept;
+	std::shared_ptr<Action> addAction(Action* action);
+	std::shared_ptr<Action> addAction(std::shared_ptr<Action>&& action);
+	/// \exception Error Tried to insert a new Action past the `actions_` container's size
+	std::shared_ptr<Action> insertAction(uint index, Action* action);
+	/// \exception Error Tried to insert a new Action past the `actions_` container's size
+	std::shared_ptr<Action> insertAction(uint index, std::shared_ptr<Action>&& action);
+	/// \exception Error Tried to reinsert a new Action past the `actions_` container's size
+	std::shared_ptr<Action> reinsertAction(uint index, uint newIndex);
+	/// \exception Error Tried to remove an Action past the `actions_` container's size
+	bool removeAction(uint index);
 	void clearActions() noexcept;
 
 	virtual void acceptVisitor(EventVisitor* visitor) = 0;
@@ -71,7 +72,7 @@ public:
     virtual EventSubType getComponentEventType()  const noexcept override = 0;
     virtual QString getComponentName()            const noexcept{ return label; }
 protected:
-	std::vector<std::unique_ptr<Action>> actions_;
+	std::vector<std::shared_ptr<Action>> actions_;
 
 	/// Needed for Serialization, to know the class of an object before the loading performed
 	virtual NovelLib::SerializationID getType() const = 0;

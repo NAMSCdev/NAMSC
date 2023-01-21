@@ -34,11 +34,11 @@ void NovelSettings::defaultLanguageChange(const QString& newDefaultLanguage)
     const QString oldDefaultLanguage = defaultLanguage;
     defaultLanguage = newDefaultLanguage;
     for (std::pair < const QString, Scene>& scene : Novel::getInstance().scenes_)
-        for (std::unique_ptr<Event>& event : scene.second.events_)
+        for (std::shared_ptr<Event>& event : scene.second.events_)
         {
             EventDialogue* eventDialog = dynamic_cast<EventDialogue*>(event.get());
             if (eventDialog)
-                for (Sentence& sentence : eventDialog->sentences)
-                    sentence.text.defaultLanguageChangeFix(oldDefaultLanguage);
+                for (Sentence& sentence : eventDialog->sentences_)
+                    sentence.translation.defaultLanguageChangeFix(oldDefaultLanguage);
         }
 }

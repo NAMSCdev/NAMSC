@@ -11,7 +11,7 @@ class ActionSceneryObjectAnimColor final : public ActionSceneryObjectAnim<AnimNo
 	/// Swap trick
 	friend void swap(ActionSceneryObjectAnimColor& first, ActionSceneryObjectAnimColor& second) noexcept;
 public:
-	explicit ActionSceneryObjectAnimColor(Event* const parentEvent)                  noexcept;
+	explicit ActionSceneryObjectAnimColor(Event* const parentEvent) noexcept;
 	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param assetAnim Copies the AssetAnim pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param priority Animations can be queued, this is the priority in the queue (lower number equals higher priority)
@@ -21,12 +21,11 @@ public:
 	/// \param timesPlayed `-1` means infinite times
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName` or couldn't find/load the **color** AssetAnim named `assetAnimName`
 	ActionSceneryObjectAnimColor(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName = "", uint priority = 0, uint startDelay = 0, double speed = 1.0, int timesPlayed = 1, bool bFinishAnimationAtEventEnd = false, SceneryObject* sceneryObject = nullptr, AssetAnim<AnimNodeDouble4D>* assetAnim = nullptr);
-	ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor& obj)            noexcept = delete;
-	ActionSceneryObjectAnimColor(ActionSceneryObjectAnimColor&& obj)                 noexcept;
-	ActionSceneryObjectAnimColor& operator=(const ActionSceneryObjectAnimColor& obj) noexcept = delete;
-	//ActionSceneryObjectAnimColor& operator=(ActionSceneryObjectAnimColor obj)        noexcept;
-	bool operator==(const ActionSceneryObjectAnimColor& obj) const                   noexcept = delete;
-	bool operator!=(const ActionSceneryObjectAnimColor& obj) const                   noexcept = delete;
+	ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor& obj)      noexcept;
+	ActionSceneryObjectAnimColor(ActionSceneryObjectAnimColor&& obj)           noexcept;
+	ActionSceneryObjectAnimColor& operator=(ActionSceneryObjectAnimColor obj)  noexcept;
+	bool operator==(const ActionSceneryObjectAnimColor& obj) const             noexcept;
+	bool operator!=(const ActionSceneryObjectAnimColor& obj) const             noexcept = default;
 
 	/// \exception Error `sceneryObject_`/`assetAnim_` is invalid
 	/// \return Whether an Error has occurred

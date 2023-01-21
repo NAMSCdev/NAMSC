@@ -3,7 +3,7 @@
 #include "Novel/Event/EventDialogue.h"
 
 DialogItemModel::DialogItemModel(EventDialogue* event, QObject* parent)
-	: QAbstractListModel(parent), parentEvent(event), sentences(&event->sentences)
+	: QAbstractListModel(parent), parentEvent(event), sentences(const_cast<std::vector<Sentence>*>(event->getSentences())) //todo: fix this monster
 {}
 
 DialogItemModel::~DialogItemModel()

@@ -105,9 +105,9 @@ void ActionVisitorCorrectMusicPlaylist::visitActionAudioSetMusic(ActionAudioSetM
 
 void ActionVisitorCorrectSounds::visitActionAudioSetSounds(ActionAudioSetSounds* action) 
 {
-	for (std::pair <const QString, Sound>& sound : action->sounds)
-		if (sound.second.soundFilePath == oldAssetName_)
-			sound.second.soundFilePath = newAssetName_;
+	for (Sound& sound : action->sounds_)
+		if (sound.soundFilePath == oldAssetName_)
+			sound.soundFilePath = newAssetName_;
 }
 
 void ActionVisitorCorrectBackgroundAssetImage::visitActionSetBackground(ActionSetBackground* action) 

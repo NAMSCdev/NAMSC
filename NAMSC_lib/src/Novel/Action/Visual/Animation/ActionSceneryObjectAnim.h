@@ -29,11 +29,20 @@ public:
 	{
 	}
 
-	ActionSceneryObjectAnim(const ActionSceneryObjectAnim& obj)            noexcept = delete;
-	ActionSceneryObjectAnim(ActionSceneryObjectAnim&& obj)                 noexcept = delete;
-	ActionSceneryObjectAnim& operator=(const ActionSceneryObjectAnim& obj) noexcept = delete;
-	bool operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const    noexcept = delete;
-	bool operator!=(const ActionSceneryObjectAnim<AnimNode>& obj) const    noexcept = delete;
+	bool operator==(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept
+	{
+		if (this == &obj)
+			return true;
+
+		return assetAnimName_             == obj.assetAnimName_             &&
+			   priority                   == obj.priority                   &&
+			   startDelay                 == obj.startDelay                 &&
+			   speed                      == obj.speed                      &&
+			   timesPlayed                == obj.timesPlayed                &&
+			   bFinishAnimationAtEventEnd == obj.bFinishAnimationAtEventEnd;
+	}
+
+	bool operator!=(const ActionSceneryObjectAnim<AnimNode>& obj) const noexcept = default;
 	//Makes it abstract
 	virtual ~ActionSceneryObjectAnim() = 0;
 
@@ -41,8 +50,8 @@ public:
 	{
 		using std::swap;
 		swap(this->assetAnimName_, second.assetAnimName_);
-		swap(this->assetAnim_, second.assetAnim_);
-		swap(this->animator_, second.animator_);
+		swap(this->assetAnim_,     second.assetAnim_);
+		swap(this->animator_,      second.animator_);
 	}
 
 	/// \exception Error `sceneryObject_`/`assetAnim_` is invalid
@@ -148,10 +157,10 @@ void swap(ActionSceneryObjectAnim<AnimNode>& first, ActionSceneryObjectAnim<Anim
 	using std::swap;
 	//Static cast, because no check is needed and it's faster
 	swap(static_cast<ActionSceneryObject&>(first), static_cast<ActionSceneryObject&>(second));
-	swap(first.priority, second.priority);
-	swap(first.startDelay, second.startDelay);
-	swap(first.speed, second.speed);
-	swap(first.timesPlayed, second.timesPlayed);
+	swap(first.priority,                   second.priority);
+	swap(first.startDelay,                 second.startDelay);
+	swap(first.speed,                      second.speed);
+	swap(first.timesPlayed,                second.timesPlayed);
 	swap(first.bFinishAnimationAtEventEnd, second.bFinishAnimationAtEventEnd);
 	first.swapPrivate(second);
 }

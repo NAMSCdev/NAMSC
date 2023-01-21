@@ -16,11 +16,13 @@ public:
 	/// \param A text to be displayed during Choice selection screen
 	/// \exception One of the Actions or the Choices or the `text` contains an Error 
 	EventChoice(Scene* const parentScene, const QString& label, const Translation& menuText = Translation());
-	EventChoice(const EventChoice& obj)            noexcept = delete;
+	EventChoice(const EventChoice& obj)            noexcept;
 	EventChoice(EventChoice&& obj)                 noexcept;
-	EventChoice& operator=(const EventChoice& obj) noexcept = delete;
-	bool operator==(const EventChoice& obj) const  noexcept = delete;
-	bool operator!=(const EventChoice& obj) const  noexcept = delete;
+	///This one needs to be optimized at the cost of strong exception safety, as it is frequently assigned during gameplay (so the performance is a priority here)
+	///No swap trick to avoid containers reallocation
+	EventChoice& operator=(const EventChoice& obj) noexcept;
+	bool operator==(const EventChoice& obj) const  noexcept;
+	bool operator!=(const EventChoice& obj) const  noexcept = default;
 
 	/// \exception Error Invalid Action in `actions_` / invalid Choice in `choices` / invalid `text`
 	/// \return Whether an Error has occurred
@@ -35,10 +37,29 @@ public:
 	Translation*       getMenuText()              noexcept;
 	void setMenuText(const Translation& menuText) noexcept;
 
+	const std::vector<Choice>* getChoices() const noexcept;
+	/// \exception Error Tried to get a Choice past the `choices_` container's size
+	const Choice* getChoice(uint index)     const;
+	/// \exception Error Tried to get a Choice past the `choices_` container's size
+	Choice* getChoice(uint index);
+	const std::vector<Choice>* setChoices(const std::vector<Choice>& choices) noexcept;
+	const std::vector<Choice>* setChoices(std::vector<Choice>&& choices)      noexcept;
+	/// \exception Error Tried to insert a Choice past the `choices_` container's size
+	Choice* insertChoice(uint index, const Choice& choice);
+	/// \exception Error Tried to insert a Choice past the `choices_` container's size
+	Choice* insertChoice(uint index, Choice&& choice);
+	/// \exception Error Tried to reinsert a Choice past the `choices_` container's size
+	Choice* reinsertChoice(uint index, uint newIndex);
+	Choice* addChoice(const Choice& choice);
+	Choice* addChoice(Choice&& choice);
+	/// \exception Error Tried to remove a Choice past the `choices_` container's size
+	bool removeChoice(uint index);
+	void clearChoices() noexcept;
+
 	void acceptVisitor(EventVisitor* visitor) override;
 
 	/// \todo make it private and create getters/setters
-	std::vector<Choice> choices;
+	std::vector<Choice> choices_;
 
 	//todo: do not botch
 	QString getComponentSubTypeName()    const noexcept override { return "Choice"; }

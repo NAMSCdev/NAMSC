@@ -4,7 +4,7 @@
 #include "Novel/Event/EventChoice.h"
 
 ChoiceItemModel::ChoiceItemModel(EventChoice* parentEvent, GraphView* graph, QObject *parent)
-	: QAbstractTableModel(parent), parentEvent(parentEvent), choices(&parentEvent->choices), graph(graph)
+	: QAbstractTableModel(parent), parentEvent(parentEvent), choices(const_cast<std::vector<Choice>*>(parentEvent->getChoices())), graph(graph) //todo: fix this monster
 {
 	setHeaderData(Name, Qt::Horizontal, tr("Name"));
 }
@@ -36,7 +36,7 @@ QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 		switch (index.column())
 		{
 		case Name:
-			return choices->at(index.row()).name;
+			return "Choices no longer have names";
 		case Text:
 			return choices->at(index.row()).text.text();
 		case JumpToScene:
@@ -65,7 +65,7 @@ bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, i
 		switch (index.column())
 		{
 		case Name:
-			affectedRow.name = value.toString();
+			//affectedRow.name = value.toString();
 			break;
 		case Text:
 			affectedRow.text.setTranslation(NovelSettings::getInstance().language, value.toString());

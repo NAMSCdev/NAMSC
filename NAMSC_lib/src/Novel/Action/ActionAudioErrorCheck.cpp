@@ -40,8 +40,8 @@ bool ActionAudioSetSounds::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionAudio::errorCheck(bComprehensive);
 
-	for (const std::pair<const QString, Sound>& sound : sounds)
-		bError |= sound.second.errorCheck(bComprehensive);
+	for (const Sound& sound : sounds_)
+		bError |= sound.errorCheck(bComprehensive);
 
 	//auto errorChecker = [this](bool bComprehensive)
 	//{

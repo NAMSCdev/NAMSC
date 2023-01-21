@@ -34,7 +34,7 @@ bool Scene::errorCheck(bool bComprehensive) const
 	//{
 	//};
 
-	for (const std::unique_ptr<Event>& event : events_)
+	for (const std::shared_ptr<Event>& event : events_)
 		bError |= event->errorCheck(bComprehensive);
 
 	//bError |= NovelLib::catchExceptions(errorChecker, bComprehensive);

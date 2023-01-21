@@ -26,20 +26,18 @@ ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(Event* const parentEven
 	errorCheck(true);
 }
 
-//deleted
-//ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj) noexcept
-//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectAnimMove::operator==(const ActionSceneryObjectAnimMove& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionSceneryObjectAnim::operator==(obj);
-//}
+bool ActionSceneryObjectAnimMove::operator==(const ActionSceneryObjectAnimMove& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionSceneryObjectAnim::operator==(obj);
+}
 
 void ActionSceneryObjectAnimMove::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimMove* const assetAnimMove, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
@@ -68,15 +66,14 @@ ActionSceneryObjectAnimMove::ActionSceneryObjectAnimMove(ActionSceneryObjectAnim
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectAnimMove& ActionSceneryObjectAnimMove::operator=(ActionSceneryObjectAnimMove obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectAnimMove& ActionSceneryObjectAnimMove::operator=(ActionSceneryObjectAnimMove obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSceneryObjectAnimMove::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble2D>* assetAnim) noexcept
 {

@@ -12,7 +12,7 @@ public:
 	/// \exception Error Could not find/open/read the Resource file
 	Asset(const QString& name = "", uint size = 0, uint pos = 0, const QString& path = "");
 	Asset(const Asset& obj)                 noexcept = delete;
-	Asset(Asset&& obj)                      noexcept = default;
+	Asset(Asset&& obj)                      noexcept   = default;
 	Asset& operator=(const Asset& obj)      noexcept = delete;
 	bool operator==(const Asset& obj) const noexcept = delete;
 	bool operator!=(const Asset& obj) const noexcept = delete;

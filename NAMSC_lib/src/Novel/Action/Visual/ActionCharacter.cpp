@@ -24,15 +24,13 @@ ActionCharacter::ActionCharacter(Event* const parentEvent, const QString& charac
 {
 }
 
-//deleted
-//bool ActionCharacter::operator==(const ActionCharacter& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return Action::operator==(obj)              &&
-//		   characterName_ == obj.characterName_;// &&
-//		   //character_     == obj.character_;
-//}
+bool ActionCharacter::operator==(const ActionCharacter& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return characterName_ == obj.characterName_;// &&
+		   //character_     == obj.character_;
+}
 
 void ActionCharacter::serializableLoad(QDataStream& dataStream)
 {

@@ -10,7 +10,7 @@ class ActionSceneryObjectAnimFade : public ActionSceneryObjectAnim<AnimNodeDoubl
 	/// Swap trick
 	friend void swap(ActionSceneryObjectAnimFade& first, ActionSceneryObjectAnimFade& second) noexcept;
 public:
-	explicit ActionSceneryObjectAnimFade(Event* const parentEvent)                 noexcept;
+	explicit ActionSceneryObjectAnimFade(Event* const parentEvent) noexcept;
 	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param assetAnim Copies the AssetAnim pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param priority Animations can be queued, this is the priority in the queue (lower number equals higher priority)
@@ -22,12 +22,11 @@ public:
 	/// \param bAppear Whether to appear or disappear
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName`
 	ActionSceneryObjectAnimFade(Event* const parentEvent, const QString& sceneryObjectName, uint priority = 0, uint startDelay = 0, bool bFinishAnimationAtEventEnd = false, uint duration = 100, bool bAppear = true, SceneryObject* sceneryObject = nullptr, AssetAnim<AnimNodeDouble1D>* assetAnim = nullptr);
-	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj)            noexcept = delete;
-	ActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade&& obj)                 noexcept;
-	ActionSceneryObjectAnimFade& operator=(const ActionSceneryObjectAnimFade& obj) noexcept = delete;
-	//ActionSceneryObjectAnimFade& operator=(ActionSceneryObjectAnimFade obj)        noexcept;
-	bool operator==(const ActionSceneryObjectAnimFade& obj) const                  noexcept = delete;
-	bool operator!=(const ActionSceneryObjectAnimFade& obj) const                  noexcept = delete;
+	ActionSceneryObjectAnimFade(const ActionSceneryObjectAnimFade& obj)     noexcept;
+	ActionSceneryObjectAnimFade(ActionSceneryObjectAnimFade&& obj)          noexcept;
+	ActionSceneryObjectAnimFade& operator=(ActionSceneryObjectAnimFade obj) noexcept;
+	bool operator==(const ActionSceneryObjectAnimFade& obj) const           noexcept;
+	bool operator!=(const ActionSceneryObjectAnimFade& obj) const           noexcept = default;
 
 	/// \exception Error `sceneryObject_` is invalid
 	/// \return Whether an Error has occurred
@@ -40,7 +39,7 @@ public:
 
 	void acceptVisitor(ActionVisitor* visitor) override;
 
-	/// Inherited via ActionSceneryObjectAnim, but not needed at all, as this type of Animation is special and does not need any AssetAnim
+	/// Inherited vian ActionSceneryObjectAnim, but not needed at all, as this type of Animation is special and does not need any AssetAnim
 	void setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble1D>* assetAnim = nullptr) noexcept override;
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes

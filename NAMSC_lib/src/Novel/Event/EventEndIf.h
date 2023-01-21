@@ -11,11 +11,11 @@ public:
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or there is no matching EventIf or its index is after this EventEndIf
 	EventEndIf(Scene* const parentScene, const QString& label, EventIf* const partner = nullptr);
-	EventEndIf(const EventEndIf& obj)             noexcept = delete;
+	EventEndIf(const EventEndIf& obj)             noexcept;
 	EventEndIf(EventEndIf&& obj)                  noexcept;
-	EventEndIf& operator=(const EventEndIf& obj)  noexcept = delete;
-	bool operator==(const EventEndIf& obj) const  noexcept = delete;
-	bool operator!=(const EventEndIf& obj) const  noexcept = delete;
+	EventEndIf& operator=(EventEndIf obj)         noexcept;
+	bool operator==(const EventEndIf& obj) const  noexcept;
+	bool operator!=(const EventEndIf& obj) const  noexcept = default;
 
 	/// \exception Error Invalid Action in `actions_` / invalid `partner_`
 	/// \return Whether an Error has occurred

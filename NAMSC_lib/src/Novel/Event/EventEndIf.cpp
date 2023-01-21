@@ -26,6 +26,21 @@ EventEndIf::EventEndIf(Scene* const parentScene, const QString& label, EventIf* 
 	errorCheck(true);
 }
 
+EventEndIf::EventEndIf(const EventEndIf& obj) noexcept
+	: Event(obj.parentScene, obj.label, obj.actions_),
+	partner_(obj.partner_)
+{
+}
+
+bool EventEndIf::operator==(const EventEndIf& obj) const noexcept
+{
+	if (this == &obj)
+		return true;
+
+	return actions_ == obj.actions_ && 
+		   partner_ == obj.partner_;
+}
+
 void EventEndIf::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const EventIf* const partner)> onRun) noexcept
 { 
 	onRun_ = onRun;
@@ -36,7 +51,7 @@ void EventEndIf::serializableLoad(QDataStream& dataStream)
 	Event::serializableLoad(dataStream);
 	uint index;
 	dataStream >> index;
-	partner_ = dynamic_cast<EventIf*>(parentScene->getEvent(index));
+	//partner_ = dynamic_cast<EventIf*>(parentScene->getEvent(index));
 
 	errorCheck();
 }
@@ -53,6 +68,15 @@ EventEndIf::EventEndIf(EventEndIf&& obj) noexcept
 	: Event(obj.parentScene)
 {
 	swap(*this, obj);
+}
+
+EventEndIf& EventEndIf::operator=(EventEndIf obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	std::swap(*this, obj);
+
+	return *this;
 }
 
 void EventEndIf::acceptVisitor(EventVisitor* visitor) 
