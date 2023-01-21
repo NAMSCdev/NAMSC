@@ -187,6 +187,9 @@
     <ClCompile Include="EventTreeItem.cpp">
       <Filter>Source Files\BottomPanel</Filter>
     </ClCompile>
+    <ClCompile Include="SceneryObjectOnSceneProperties.cpp">
+      <Filter>Source Files\Properties\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
@@ -255,6 +258,9 @@
     <QtMoc Include="EventTreeItemModel.h">
       <Filter>Header Files\BottomPanel</Filter>
     </QtMoc>
+    <QtMoc Include="SceneryObjectOnSceneProperties.h">
+      <Filter>Header Files\Properties\Objects</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphNodeBody.h">
@@ -308,6 +314,9 @@
       <Filter>Form Files\Properties</Filter>
     </QtUic>
     <QtUic Include="JumpEventProperties.ui">
+      <Filter>Form Files\Properties</Filter>
+    </QtUic>
+    <QtUic Include="SceneryObjectOnSceneProperties.ui">
       <Filter>Form Files\Properties</Filter>
     </QtUic>
   </ItemGroup>

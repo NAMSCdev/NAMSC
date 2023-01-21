@@ -17,6 +17,7 @@ ChoiceEventProperties::ChoiceEventProperties(EventChoice* choices, GraphView* gr
 
 	ui.choiceEventCollapseButton->setContent(ui.choiceEventContent);
 	ui.choiceEventCollapseButton->setText(tr("Choice event properties"));
+	if (expanded) ui.choiceEventCollapseButton->toggle();
 
 	prepareDataInUi();
 	prepareConnections();
@@ -36,7 +37,7 @@ void ChoiceEventProperties::contextMenuEvent(QContextMenuEvent* event)
 
 void ChoiceEventProperties::prepareConnections()
 {
-	// todo eventually remove
+	connect(ui.choiceEventCollapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
 }
 
 void ChoiceEventProperties::prepareDataInUi()

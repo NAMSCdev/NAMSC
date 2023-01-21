@@ -22,6 +22,7 @@ public slots:
 
 	signals:
 	void nodeDoubleClicked(GraphNode* node);
+	void nodeDeleted();
 
 protected:
 	void keyPressEvent(QKeyEvent* event) override;

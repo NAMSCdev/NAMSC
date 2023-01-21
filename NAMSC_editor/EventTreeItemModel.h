@@ -32,6 +32,7 @@ public Q_SLOTS:
     void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
     void nodeSelectionChanged(GraphNode* node);
     void sceneUpdated(Scene* scene);
+    void sceneDeleted();
 
 signals:
     void propertyTabChangeRequested(void* object, PropertyTypes dataType);

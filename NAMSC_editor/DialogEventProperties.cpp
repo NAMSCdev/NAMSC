@@ -12,6 +12,7 @@ DialogEventProperties::DialogEventProperties(EventDialogue* dialogue, QWidget *p
 
 	ui.dialogEventCollapseButton->setContent(ui.dialogEventPropertiesContent);
 	ui.dialogEventCollapseButton->setText(tr("Dialog event properties"));
+	if (expanded) ui.dialogEventCollapseButton->toggle();
 
 	prepareDataInUi();
 	prepareConnections();
@@ -37,6 +38,8 @@ void DialogEventProperties::mousePressEvent(QMouseEvent* event)
 
 void DialogEventProperties::prepareConnections()
 {
+	connect(ui.dialogEventCollapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
+
 	connect(ui.dialogListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [&](const QItemSelection& selected, const QItemSelection& deselected)
 	{
 			if (selected.isEmpty()) {

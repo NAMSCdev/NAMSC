@@ -268,6 +268,8 @@ void GraphView::removeNode()
         }
     }
 
+    emit nodeDeleted();
+
     Novel::getInstance().removeScene(selectedNode->getLabel());
     scene()->removeItem(selectedNode);
 }

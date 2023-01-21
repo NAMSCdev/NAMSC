@@ -41,6 +41,7 @@ private:
     void supportedFormats();
     QFileSystemModel* model;
     CustomSortFilterProxyModel* proxyFileFilter;
+    SceneWidget* sceneWidget;
 
     void debugConstructorActions();
 

@@ -43,7 +43,12 @@ void CharacterTree::addAssetToCharacters(QString relativePath, QString name, Tre
 
 void CharacterTree::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-	if (selectedItems().size() > 0) {
+	if (selectedItems().isEmpty()) 
+	{
+		emit selectedCharacterChanged("");
+	}
+	else
+	{
 		emit selectedCharacterChanged(selectedItems().first()->text(0));
 	}
 	QTreeWidget::selectionChanged(selected, deselected);
@@ -63,7 +68,7 @@ void CharacterTree::contextMenuEvent(QContextMenuEvent* event)
 
 void CharacterTree::mousePressEvent(QMouseEvent* event)
 {
-	// clearSelection(); // todo deselection in preview
+	clearSelection();
 	QTreeWidget::mousePressEvent(event);
 }
 

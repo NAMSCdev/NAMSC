@@ -8,6 +8,7 @@ SceneryObjectTreeProperties::SceneryObjectTreeProperties(SceneryObject* sceneryO
 	ui.sceneryObjectCollapseButton->setContent(ui.sceneryObjectTreeItemContent);
 
 	ui.sceneryObjectCollapseButton->setText("Object properties");
+	if (expanded) ui.sceneryObjectCollapseButton->toggle();
 
 	prepareDataInUi();
 	prepareConnections();
@@ -18,6 +19,8 @@ SceneryObjectTreeProperties::~SceneryObjectTreeProperties()
 
 void SceneryObjectTreeProperties::prepareConnections()
 {
+	connect(ui.sceneryObjectCollapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
+
 	connect(ui.scaleXDoubleSpinBox, &QDoubleSpinBox::valueChanged, this, &SceneryObjectTreeProperties::updateScaleX);
 	connect(ui.scaleYDoubleSpinBox, &QDoubleSpinBox::valueChanged, this, &SceneryObjectTreeProperties::updateScaleY);
 

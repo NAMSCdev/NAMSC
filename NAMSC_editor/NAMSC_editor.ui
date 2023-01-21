@@ -349,7 +349,7 @@
        <property name="handleWidth">
         <number>5</number>
        </property>
-       <widget class="QStackedWidget" name="middlePanelEditorStack">
+       <widget class="QTabWidget" name="middlePanelEditorStack">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -359,16 +359,16 @@
           <verstretch>3</verstretch>
          </sizepolicy>
         </property>
+        <property name="tabPosition">
+         <enum>QTabWidget::North</enum>
+        </property>
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="graphViewPage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QWidget" name="middlePanelEditorStackPage1" native="true">
+         <attribute name="title">
+          <string>Graph editor</string>
+         </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <property name="spacing">
            <number>0</number>
@@ -397,13 +397,10 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="sceneViewPage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>1</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QWidget" name="middlePanelEditorStackPage2" native="true">
+         <attribute name="title">
+          <string>Scene editor</string>
+         </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <property name="spacing">
            <number>0</number>

@@ -20,6 +20,8 @@ private:
 
 	Ui::JumpEventPropertiesClass ui;
 
+	inline static bool expanded = false;
+
 	void prepareConnections();
 	void prepareDataInUi();
 

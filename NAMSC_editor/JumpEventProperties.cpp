@@ -7,6 +7,7 @@ JumpEventProperties::JumpEventProperties(EventJump* jump, GraphView* graph, QWid
 
 	ui.jumpEventCollapseButton->setContent(ui.jumpEventContent);
 	ui.jumpEventCollapseButton->setText(tr("Jump event properties"));
+	if (expanded) ui.jumpEventCollapseButton->toggle();
 
 	prepareDataInUi();
 	prepareConnections();
@@ -17,6 +18,8 @@ JumpEventProperties::~JumpEventProperties()
 
 void JumpEventProperties::prepareConnections()
 {
+	connect(ui.jumpEventCollapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
+
 	// If we want to check there, then instead of textChanged -> editingFinished
 	connect(ui.jumpToSceneLineEdit, &QLineEdit::textChanged, this, &JumpEventProperties::updateJumpToScene);
 	connect(ui.conditionLineEdit, &QLineEdit::textChanged, this, &JumpEventProperties::updateCondition);

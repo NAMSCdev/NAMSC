@@ -14,6 +14,7 @@
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
+#include "SceneryObjectOnSceneProperties.h"
 #include "Novel\Data\Asset\AssetManager.h"
 #include "Novel/Event/EventDialogue.h"
 
@@ -103,6 +104,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
+    delete ui.sceneView;
+    ui.sceneView = Novel::getInstance().createSceneWidget();
+    sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
+    ui.middlePanelEditorStackPage2->layout()->addWidget(sceneWidget);
+    sceneWidget->switchToPreview();
+
     scene = new QGraphicsScene(this);
     scene->setSceneRect(ui.graphView->rect());
 
@@ -122,6 +129,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
+    connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
+        {
+            sceneWidget->clearSceneryObjectWidgets();
+            Novel::getInstance().getScene(node->getLabel())->scenery.render(sceneWidget);
+            ui.middlePanelEditorStack->setCurrentIndex(1);
+        });
 
  //   Novel& novel = Novel::getInstance();
  //   novel.newState(0);
@@ -237,6 +250,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             ui.propertiesLayout->addWidget(properties);
             static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
             connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+            connect(ui.graphView, &GraphView::nodeDeleted, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneDeleted);
         }
         break;
         case PropertyTypes::ObjectTreeItem:
@@ -261,6 +275,10 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             break;
         case PropertyTypes::JumpEventItem:
             ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object), ui.graphView));
+            break;
+        case PropertyTypes::ObjectOnScene:
+            ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
+            ui.propertiesLayout->addWidget(new SceneryObjectOnSceneProperties(static_cast<SceneryObject*>(object)));
             break;
         }
 
@@ -319,6 +337,20 @@ void NAMSC_editor::debugConstructorActions()
     //node->disconnectFrom(node2->getLabel());
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+
+
+    connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
+        {
+            if (item->type() == TreeWidgetItemTypes::ImageObject)
+            {
+                item->sceneryObject->ensureResourcesAreLoaded();
+                sceneWidget->addSceneryObjectWidget(*item->sceneryObject);
+            }
+            else
+            {
+                qDebug() << "Tried to add different asset type than an image";
+            }
+        });
 }
 
 void NAMSC_editor::createDanglingContextMenuActions()
