@@ -18,25 +18,21 @@ class Action : public NovelFlowInterface
 	friend void swap(Action& first, Action& second) noexcept;
 public:
 	explicit Action(Event* const parentEvent) noexcept;
-	Action(const Action& obj)                 noexcept = delete;
-	Action(Action&& obj)                      noexcept;
-	Action& operator=(const Action& obj)      noexcept = delete;	
-	bool operator==(const Action& obj) const  noexcept = delete;
-	bool operator!=(const Action& obj) const  noexcept = delete;
+	Action(Action&& action)                   noexcept;
 	// The destructor needs to be virtual, so the proper destructor will always be called when destroying an Action pointer
 	virtual ~Action() = 0;
 
 	/// \return Whether an Error has occurred
 	virtual bool errorCheck(bool bComprehensive = false) const override;
 
-	virtual void run() override;
+	virtual void run()    override;
 	/// Some Actions are designed to update things and should be called frequently until the end of the Event
 	virtual void update() override;
-	virtual void end() override;
+	virtual void end()    override;
 
 	/// Some Actions need to access the data, that is a part of the Save
 	/// Must be called after the Save is loaded
-	virtual void syncWithSave() noexcept override {}
+	virtual void syncWithSave() override;
 
 	virtual void acceptVisitor(ActionVisitor* visitor) = 0;
 

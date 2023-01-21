@@ -16,29 +16,25 @@ void Event::run()
 
 	scenery.render(sceneWidget);
 
-	AssetImage* assetImage = scenery.getBackgroundAssetImage();
-	if (assetImage)
-		emit novel.pendChangeBackground(assetImage->getImage());
-
-	for (std::unique_ptr<Action>& action : actions_)
+	for (std::shared_ptr<Action>& action : actions_)
 		action->run();
 }
 
 void Event::end()
 {
-	for (std::unique_ptr<Action>& action : actions_)
+	for (std::shared_ptr<Action>& action : actions_)
 		action->end();
 }
 
 void Event::update()
 {
-	for (std::unique_ptr<Action>& action : actions_)
+	for (std::shared_ptr<Action>& action : actions_)
 		action->update();
 }
 
-void Event::syncWithSave() noexcept
+void Event::syncWithSave()
 {
-	for (std::unique_ptr<Action>& action : actions_)
+	for (std::shared_ptr<Action>& action : actions_)
 		action->syncWithSave();
 }
 
@@ -48,12 +44,28 @@ void Choice::run()
 
 void EventChoice::run()
 {
+	Novel& novel = Novel::getInstance();
+
 	Event::run();
+
+	if (!choices_.empty())
+		emit novel.pendEventChoiceDisplay(choices_);
 }
 
 void EventDialogue::run()
 {
+	Novel& novel             = Novel::getInstance();
+	SceneWidget* sceneWidget = novel.getSceneWidget();
+	QGraphicsScene* scene    = nullptr;
+	if (sceneWidget)
+		scene = sceneWidget->scene();
+	if (!scene)
+		return;
+
 	Event::run();
+	
+	if (!sentences_.empty())
+		emit novel.pendEventDialogueDisplay(sentences_, NovelState::getCurrentlyLoadedState()->sentenceID);
 }
 
 void EventInput::run()
@@ -61,7 +73,7 @@ void EventInput::run()
 	Event::run();
 }
 
-void EventInput::syncWithSave() noexcept
+void EventInput::syncWithSave()
 {
 }
 

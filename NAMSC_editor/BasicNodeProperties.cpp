@@ -60,12 +60,12 @@ void BasicNodeProperties::updateLabelInNode()
 				switch (ev->getComponentEventType())
 				{
 				case EventSubType::EVENT_CHOICE:
-					for (auto& choice : dynamic_cast<EventChoice*>(ev.get())->choices) {
-						if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) choice.jumpToSceneName = lineEditText;
+					for (auto& choice : *static_cast<EventChoice*>(ev.get())->getChoices()) {
+						if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) const_cast<Choice&>(choice).jumpToSceneName = lineEditText;
 					}
 					break;
 				case EventSubType::EVENT_JUMP:
-					auto evj = dynamic_cast<EventJump*>(ev.get());
+					auto evj = static_cast<EventJump*>(ev.get());
 					if (evj->jumpToSceneName == currentlySelectedNode->getLabel()) evj->jumpToSceneName = lineEditText;
 					break;
 				}
@@ -79,12 +79,12 @@ void BasicNodeProperties::updateLabelInNode()
 					switch (ev->getComponentEventType())
 					{
 					case EventSubType::EVENT_CHOICE:
-						for (auto& choice : dynamic_cast<EventChoice*>(ev.get())->choices) {
-							if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) choice.jumpToSceneName = lineEditText;
+						for (auto& choice : *static_cast<EventChoice*>(ev.get())->getChoices()) {
+							if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) const_cast<Choice&>(choice).jumpToSceneName = lineEditText; //todo: fix this monster
 						}
 						break;
 					case EventSubType::EVENT_JUMP:
-						auto evj = dynamic_cast<EventJump*>(ev.get());
+						auto evj = static_cast<EventJump*>(ev.get());
 						if (evj->jumpToSceneName == currentlySelectedNode->getLabel()) evj->jumpToSceneName = lineEditText;
 						break;
 					}

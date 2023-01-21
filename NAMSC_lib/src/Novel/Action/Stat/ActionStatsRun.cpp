@@ -3,7 +3,7 @@
 #include "Novel/Data/Save/NovelState.h"
 #include "Novel/Data/Scene.h"
 
-void ActionStat::syncWithSave() noexcept
+void ActionStat::syncWithSave()
 {
 	stat_ = NovelState::getCurrentlyLoadedState()->getStat(statName_);
 	if (stat_ == nullptr)

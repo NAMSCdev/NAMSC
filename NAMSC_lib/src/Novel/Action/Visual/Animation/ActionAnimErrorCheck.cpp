@@ -35,7 +35,6 @@ bool ActionSceneryObjectAnimFade::errorCheck(bool bComprehensive) const
 	return bError;
 }
 
-
 bool ActionSceneryObjectAnimMove::errorCheck(bool bComprehensive) const
 {
 	bool bError = ActionSceneryObjectAnim::errorCheck(bComprehensive);
@@ -65,7 +64,6 @@ bool ActionSceneryObjectAnimRotate::errorCheck(bool bComprehensive) const
 
 	return bError;
 }
-
 
 bool ActionSceneryObjectAnimScale::errorCheck(bool bComprehensive) const
 {

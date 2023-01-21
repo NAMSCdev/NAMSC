@@ -10,15 +10,14 @@ class ActionAudioSetMusic final : public ActionAudio
 	/// Swap trick
 	friend void swap(ActionAudioSetMusic& first, ActionAudioSetMusic& second) noexcept;
 public:
-	explicit ActionAudioSetMusic(Event* const parentEvent)         noexcept;
+	explicit ActionAudioSetMusic(Event* const parentEvent)  noexcept;
 	/// \exception Error Files in `musicPlaylist_.audioFilesPaths_` couldn't be found/read
 	ActionAudioSetMusic(Event* const parentEvent, const AudioSettings& audioSettings, const MusicPlaylist& playlist = MusicPlaylist());
-	ActionAudioSetMusic(const ActionAudioSetMusic& obj)            noexcept = delete;
-	ActionAudioSetMusic(ActionAudioSetMusic&& obj)                 noexcept;
-	ActionAudioSetMusic& operator=(const ActionAudioSetMusic& obj) noexcept = delete;
-	//ActionAudioSetMusic& operator=(ActionAudioSetMusic obj)        noexcept;
-	bool operator==(const ActionAudioSetMusic& obj) const          noexcept = delete;
-	bool operator!=(const ActionAudioSetMusic& obj) const          noexcept = delete;
+	ActionAudioSetMusic(const ActionAudioSetMusic& obj)     noexcept;
+	ActionAudioSetMusic(ActionAudioSetMusic&& obj)          noexcept;
+	ActionAudioSetMusic& operator=(ActionAudioSetMusic obj) noexcept;
+	bool operator==(const ActionAudioSetMusic& obj) const   noexcept;
+	bool operator!=(const ActionAudioSetMusic& obj) const   noexcept = default;
 
 	/// \exception Error Paths in `musicPlaylist_.audioFilesPaths_` are invalid
 	/// \return Whether an Error has occurred

@@ -17,7 +17,7 @@ public:
 
 	/// Some NovelFlowInterfaces need to access the data, that is a part of the Save
 	/// Must be called after the Save is loaded
-	virtual void syncWithSave() noexcept = 0;
+	virtual void syncWithSave() = 0;
 
 protected:
 	virtual void ensureResourcesAreLoaded() = 0;

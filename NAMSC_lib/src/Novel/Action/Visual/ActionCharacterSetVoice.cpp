@@ -31,24 +31,22 @@ ActionCharacterSetVoice::ActionCharacterSetVoice(Event* const parentEvent, const
 	errorCheck(true);
 }
 
-//deleted
-//ActionCharacterSetVoice::ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept
-//	: ActionCharacter(obj.parentEvent, obj.characterName_, obj.character_),
-//	voiceName_(obj.voiceName_),
-//	voice_(obj.voice_), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionCharacterSetVoice::ActionCharacterSetVoice(const ActionCharacterSetVoice& obj) noexcept
+	: ActionCharacter(obj.parentEvent, obj.characterName_, obj.character_),
+	voiceName_(obj.voiceName_),
+	voice_(obj.voice_), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionCharacterSetVoice::operator==(const ActionCharacterSetVoice& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionCharacter::operator==(obj) &&
-//		   voiceName_ == obj.voiceName_;//     &&
-//		   //voice_     == obj.voice_;
-//}
+bool ActionCharacterSetVoice::operator==(const ActionCharacterSetVoice& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionCharacter::operator==(obj) &&
+		   voiceName_ == obj.voiceName_;//     &&
+		   //voice_     == obj.voice_;
+}
 
 void ActionCharacterSetVoice::setOnRunListener(std::function<void(const Event* const parentEvent, const Character* const character, const Voice* const voice)> onRun) noexcept
 {
@@ -79,15 +77,14 @@ ActionCharacterSetVoice::ActionCharacterSetVoice(ActionCharacterSetVoice&& obj) 
 	swap(*this, obj);
 }
 
-//deleted
-//ActionCharacterSetVoice& ActionCharacterSetVoice::operator=(ActionCharacterSetVoice obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionCharacterSetVoice& ActionCharacterSetVoice::operator=(ActionCharacterSetVoice obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionCharacterSetVoice::acceptVisitor(ActionVisitor* visitor)
 {

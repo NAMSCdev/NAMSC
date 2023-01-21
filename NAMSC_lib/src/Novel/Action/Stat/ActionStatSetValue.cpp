@@ -19,31 +19,29 @@ void swap(ActionStatSetValue& first, ActionStatSetValue& second) noexcept
 	swap(first.onRun_,     second.onRun_);
 }
 
-ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, const QString& statName, const QString& expression, Stat* stat)
+ActionStatSetValue::ActionStatSetValue(Event* const parentEvent, const QString& statName, const QString& expression, std::shared_ptr<Stat> stat)
 	: ActionStat(parentEvent, statName, stat), 
 	expression(expression)
 {
 	errorCheck(true);
 }
 
-//deleted
-//ActionStatSetValue::ActionStatSetValue(const ActionStatSetValue& obj) noexcept
-//	: ActionStat(obj.parentEvent, obj.statName_, obj.stat_), 
-//	expression(obj.expression), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionStatSetValue::ActionStatSetValue(const ActionStatSetValue& obj) noexcept
+	: ActionStat(obj.parentEvent, obj.statName_, obj.stat_), 
+	expression(obj.expression), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionStatSetValue::operator==(const ActionStatSetValue& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionStat::operator==(obj)  &&
-//		   expression == obj.expression;
-//}
+bool ActionStatSetValue::operator==(const ActionStatSetValue& obj) const noexcept
+{
+	if (this == &obj) return true;
 
-void ActionStatSetValue::setOnRunListener(std::function<void(const Event* const parentEvent, const Stat* const stat, const QString& expression)> onRun) noexcept
+	return ActionStat::operator==(obj)  &&
+		   expression == obj.expression;
+}
+
+void ActionStatSetValue::setOnRunListener(std::function<void(const Event* const parentEvent, const std::shared_ptr<Stat> stat, const QString& expression)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
@@ -70,15 +68,14 @@ ActionStatSetValue::ActionStatSetValue(ActionStatSetValue&& obj) noexcept
 	swap(*this, obj);
 }
 
-//deleted
-//ActionStatSetValue& ActionStatSetValue::operator=(ActionStatSetValue obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionStatSetValue& ActionStatSetValue::operator=(ActionStatSetValue obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionStatSetValue::acceptVisitor(ActionVisitor* visitor)
 {

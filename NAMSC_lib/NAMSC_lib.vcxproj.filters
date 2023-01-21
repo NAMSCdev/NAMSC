@@ -506,6 +506,12 @@
     <ClInclude Include="src\Novel\SceneComponent.h">
       <Filter>Header Files\Novel</Filter>
     </ClInclude>
+    <ClInclude Include="src\Novel\Widget\DisplayNameWidget.h">
+      <Filter>Header Files\Novel\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Novel\Widget\DisplayTextWidget.h">
+      <Filter>Header Files\Novel\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Novel\Action\Stat\ActionStat.cpp">
@@ -625,9 +631,6 @@
     <ClCompile Include="src\Novel\Action\Visual\ActionCharacter.cpp">
       <Filter>Source Files\Definition\Novel\Action\Visual</Filter>
     </ClCompile>
-    <ClCompile Include="src\Exceptions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Serialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -708,9 +711,6 @@
     </ClCompile>
     <ClCompile Include="src\Novel\Data\Asset\AssetIO.cpp">
       <Filter>Source Files\Novel\Data\Asset</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Novel\Data\Asset\Asset.cpp">
-      <Filter>Source Files\Definition\Novel\Action\Visual\Type</Filter>
     </ClCompile>
     <ClCompile Include="src\Novel\Data\Save\Save.cpp">
       <Filter>Source Files\Novel\Data\Save</Filter>
@@ -802,6 +802,24 @@
     <ClCompile Include="src\Helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Novel\Widget\TextWidget.cpp">
+      <Filter>Source Files\Novel\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Widget\ChoiceWidget.cpp">
+      <Filter>Source Files\Novel\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Widget\DisplayNameWidget.cpp">
+      <Filter>Source Files\Novel\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Widget\DisplayTextWidget.cpp">
+      <Filter>Source Files\Novel\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Asset\Asset.cpp">
+      <Filter>Source Files\Definition\Novel\Data\Asset</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\Novel\Widget\SceneWidget.h">
@@ -811,6 +829,12 @@
       <Filter>Header Files\Novel\Data</Filter>
     </QtMoc>
     <QtMoc Include="src\Novel\Widget\SceneryObjectWidget.h">
+      <Filter>Header Files\Novel\Widget</Filter>
+    </QtMoc>
+    <QtMoc Include="src\Novel\Widget\TextWidget.h">
+      <Filter>Header Files\Novel\Widget</Filter>
+    </QtMoc>
+    <QtMoc Include="src\Novel\Widget\ChoiceWidget.h">
       <Filter>Header Files\Novel\Widget</Filter>
     </QtMoc>
   </ItemGroup>

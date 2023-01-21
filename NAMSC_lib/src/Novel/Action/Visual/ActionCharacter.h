@@ -12,11 +12,8 @@ public:
 	/// \param character Copies the Character pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Couldn't find the Character named `characterName_`
 	explicit ActionCharacter(Event* const parentEvent, const QString& characterName = "", Character* character = nullptr);
-	ActionCharacter(const ActionCharacter& obj)            noexcept = delete; 
-	ActionCharacter(ActionCharacter&& obj)                 noexcept = delete;
-	ActionCharacter& operator=(const ActionCharacter &obj) noexcept = delete;
-	bool operator==(const ActionCharacter& obj) const      noexcept = delete;
-	bool operator!=(const ActionCharacter& obj) const      noexcept = delete;
+	bool operator==(const ActionCharacter& obj) const noexcept;
+	bool operator!=(const ActionCharacter& obj) const noexcept = default;
 	//Makes it abstract
 	virtual ~ActionCharacter() = 0;
 

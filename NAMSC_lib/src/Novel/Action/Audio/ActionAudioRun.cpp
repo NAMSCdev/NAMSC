@@ -18,5 +18,5 @@ void ActionAudioSetSounds::run()
 	ActionAudio::run();
 
 	//TODO: pointer to the changed object
-	onRun_(parentEvent, &sounds);
+	onRun_(parentEvent, &sounds_);
 }

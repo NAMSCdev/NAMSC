@@ -12,11 +12,8 @@ public:
 	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName_`
 	explicit ActionSceneryObject(Event* const parentEvent, const QString& sceneryObjectName = "", SceneryObject* sceneryObject = nullptr);
-	ActionSceneryObject(const ActionSceneryObject& obj)            noexcept = delete;
-	ActionSceneryObject(ActionSceneryObject&& obj)                 noexcept = delete;
-	ActionSceneryObject& operator=(const ActionSceneryObject& obj) noexcept = delete;
-	bool operator==(const ActionSceneryObject& obj) const          noexcept = delete;
-	bool operator!=(const ActionSceneryObject& obj) const          noexcept = delete;
+	bool operator==(const ActionSceneryObject& obj) const noexcept;
+	bool operator!=(const ActionSceneryObject& obj) const noexcept = default;
 	//Makes it abstract
 	virtual ~ActionSceneryObject() = 0;
 

@@ -32,17 +32,53 @@ void swap(EventInput& first, EventInput& second) noexcept
 
 EventInput::EventInput(Scene* const parentScene, const QString& label, const QString& inputStatName, bool bDigitsOnly, const long long digitsOnly_min, const long long digitsOnly_max, uint minCharacters, const QString& regex, bool bLogicalExpression, const QString& logicalExpression, int logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName)
 	: Event(parentScene, label), 
-	minCharacters(minCharacters), 
-	regex(regex), 
 	inputStatName_(inputStatName),
 	bDigitsOnly(bDigitsOnly),
-	digitsOnly_min(digitsOnly_min), 
+	digitsOnly_min(digitsOnly_min),
 	digitsOnly_max(digitsOnly_max),
+	minCharacters(minCharacters), 
+	regex(regex), 
 	bLogicalExpression(bLogicalExpression),
 	logicalExpression(logicalExpression),
 	logicalExpression_tries(logicalExpression_tries), 
 	logicalExpression_failureJumpToSceneName(logicalExpression_failureJumpToSceneName)
 {
+}
+
+EventInput::EventInput(const EventInput& obj) noexcept
+	: Event(obj.parentScene, obj.label, obj.actions_),
+	inputStatName_(obj.inputStatName_),
+	bDigitsOnly(obj.bDigitsOnly),
+	digitsOnly_min(obj.digitsOnly_min),
+	digitsOnly_max(obj.digitsOnly_max),
+	minCharacters(obj.minCharacters),
+	regex(obj.regex),
+	bLogicalExpression(obj.bLogicalExpression),
+	logicalExpression(obj.logicalExpression),
+	logicalExpression_tries(obj.logicalExpression_tries),
+	logicalExpression_failureJumpToSceneName(obj.logicalExpression_failureJumpToSceneName),
+	onSuccess_(obj.onSuccess_),
+	onFailure_(obj.onFailure_),
+	onReject_(obj.onReject_)
+{
+}
+
+bool EventInput::operator==(const EventInput& obj) const noexcept
+{
+	if (this == &obj)
+		return true;
+
+	return actions_                                 == obj.actions_                                 &&
+		   inputStatName_                           == obj.inputStatName_                           &&
+	       bDigitsOnly                              == obj.bDigitsOnly                              &&
+	       digitsOnly_min                           == obj.digitsOnly_min                           &&
+	       digitsOnly_max                           == obj.digitsOnly_max                           &&
+	       minCharacters                            == obj.minCharacters                            &&
+	       regex                                    == obj.regex                                    &&
+	       bLogicalExpression                       == obj.bLogicalExpression                       &&
+	       logicalExpression                        == obj.logicalExpression                        &&
+	       logicalExpression_tries                  == obj.logicalExpression_tries                  &&
+	       logicalExpression_failureJumpToSceneName == obj.logicalExpression_failureJumpToSceneName;
 }
 
 void EventInput::setOnSuccessListener(std::function<void(const Scene* const parentScene, const QString& label, const Stat* const inputStat, const uint& minCharacters, const QString& regex, const QString& inputStatName, const bool& bDigitsOnly, const long long& digitsOnly_min, const long long& digitsOnly_max, const bool& bLogicalExpression, const QString& logicalExpression, const int& logicalExpression_tries, const QString& logicalExpression_failureJumpToSceneName)> onSuccess) noexcept
@@ -80,6 +116,15 @@ EventInput::EventInput(EventInput&& obj) noexcept
 	: Event(obj.parentScene)
 {
 	swap(*this, obj);
+}
+
+EventInput& EventInput::operator=(EventInput obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
 }
 
 QString EventInput::getInputStatName() const noexcept

@@ -18,7 +18,7 @@ void ObjectsTree::addAssetToObjects(QString relativePath, QString name, TreeWidg
 	ObjectTreeWidgetItem* tempTreeItem;
 
 	if (type == TreeWidgetItemTypes::ImageObject) {
-		Novel::getInstance().setDefaultSceneryObject(name, SceneryObject(name, path));
+		Novel::getInstance().setDefaultSceneryObject(std::move(SceneryObject(name, relativePath)));
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);

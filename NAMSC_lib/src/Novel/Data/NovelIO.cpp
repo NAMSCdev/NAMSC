@@ -187,7 +187,7 @@ void Novel::loadScenes()
 		Scene scene;
 		dataStream >> scene;
 		QString sceneName = scene.name;
-		addScene(sceneName, std::move(scene));
+		addScene(std::move(scene));
 	}
 }
 

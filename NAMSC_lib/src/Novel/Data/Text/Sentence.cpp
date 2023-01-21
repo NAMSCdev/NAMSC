@@ -14,7 +14,7 @@ Sentence::Sentence(Event* const parentEvent)
 void swap(Sentence& first, Sentence& second) noexcept
 {
 	using std::swap;
-	swap(first.text,                   second.text);
+	swap(first.translation,            second.translation);
 	swap(first.displayedName,          second.displayedName);
 	swap(first.characterName_,         second.characterName_);
 	swap(first.voiceName_,             second.voiceName_);
@@ -28,9 +28,9 @@ void swap(Sentence& first, Sentence& second) noexcept
 	swap(first.assetImage_,            second.assetImage_);
 }
 
-Sentence::Sentence(Event* const parentEvent, const Translation& text, const QString& displayedName, const QString& characterName, const QString& voiceName, const QString& assetImageName, double cpsMultiplier, uint cpsOverwrite, bool bEndWithInput, uint waitBeforeContinueTime, Character* character, Voice* voice, AssetImage* assetImage)
+Sentence::Sentence(Event* const parentEvent, const Translation& translation, const QString& displayedName, const QString& characterName, const QString& voiceName, const QString& assetImageName, double cpsMultiplier, uint cpsOverwrite, bool bEndWithInput, uint waitBeforeContinueTime, Character* character, Voice* voice, AssetImage* assetImage)
 	: parentEvent(parentEvent), 
-	text(text), 
+	translation(translation),
 	displayedName(displayedName), 
 	characterName_(characterName), 
 	voiceName_(voiceName), 
@@ -48,7 +48,7 @@ Sentence::Sentence(Event* const parentEvent, const Translation& text, const QStr
 
 Sentence::Sentence(const Sentence& obj) noexcept
 	: parentEvent(obj.parentEvent),
-	text(obj.text),
+	translation(obj.translation),
 	displayedName(obj.displayedName),
 	characterName_(obj.characterName_),
 	voiceName_(obj.voiceName_),
@@ -67,7 +67,7 @@ bool Sentence::operator==(const Sentence& obj) const noexcept
 {
 	if (this == &obj) return true;
 
-	return text                   == obj.text                   &&
+	return translation            == obj.translation            &&
 		   displayedName          == obj.displayedName          &&
 		   characterName_         == obj.characterName_         &&
 		   voiceName_             == obj.voiceName_             &&
@@ -80,14 +80,14 @@ bool Sentence::operator==(const Sentence& obj) const noexcept
 
 void Sentence::serializableLoad(QDataStream& dataStream)
 {
-	dataStream >> text >> displayedName >> characterName_ >> voiceName_ >> assetImageName_ >> cpsMultiplier >> cpsOverwrite >> bEndWithInput >> waitBeforeContinueTime;
+	dataStream >> translation >> displayedName >> characterName_ >> voiceName_ >> assetImageName_ >> cpsMultiplier >> cpsOverwrite >> bEndWithInput >> waitBeforeContinueTime;
 
 	//voice_ = Novel::getInstance().getVoice(voiceName_);
 }
 
 void Sentence::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << text << displayedName << characterName_ << voiceName_ << assetImageName_ << cpsMultiplier << cpsOverwrite << bEndWithInput << waitBeforeContinueTime;
+	dataStream << translation << displayedName << characterName_ << voiceName_ << assetImageName_ << cpsMultiplier << cpsOverwrite << bEndWithInput << waitBeforeContinueTime;
 }
 
 //  MEMBER_FIELD_SECTION_CHANGE END

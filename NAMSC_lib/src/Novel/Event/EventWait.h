@@ -12,11 +12,11 @@ public:
 	/// \param waitTime In milliseconds
 	/// \exception One of the Actions contains an Error
 	EventWait(Scene* const parentScene, const QString& label, uint waitTime = 1000);
-	EventWait(const EventWait& obj)             noexcept = delete;
-	EventWait(EventWait&& obj)                  noexcept;
-	EventWait& operator=(const EventWait& obj)  noexcept = delete;
-	bool operator==(const EventWait& obj) const noexcept = delete;
-	bool operator!=(const EventWait& obj) const noexcept = delete;
+	EventWait(const EventWait& obj)              noexcept;
+	EventWait(EventWait&& obj)                   noexcept;
+	EventWait& operator=(EventWait obj)          noexcept;
+	bool operator==(const EventWait& obj)  const noexcept;
+	bool operator!=(const EventWait& obj)  const noexcept = default;
 
 	/// \exception Error invalid Action in `actions_`
 	/// \return Whether an Error has occurred

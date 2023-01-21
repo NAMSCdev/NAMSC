@@ -65,7 +65,7 @@ bool Sentence::errorCheck(bool bComprehensive) const
 		//}
 	};
 
-	if (NovelLib::catchExceptions(errorChecker, bComprehensive) || text.errorCheck(bComprehensive))
+	if (NovelLib::catchExceptions(errorChecker, bComprehensive) || translation.errorCheck(bComprehensive))
 		qDebug() << "An Error occurred in Sentence::errorCheck of Scene \"" + parentEvent->parentScene->name + "\" Event" << parentEvent->getIndex();
 
 	return bError;

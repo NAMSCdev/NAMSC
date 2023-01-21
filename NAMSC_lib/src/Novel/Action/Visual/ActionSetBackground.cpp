@@ -35,27 +35,23 @@ ActionSetBackground::ActionSetBackground(Event* const parentEvent, const QString
 	errorCheck(true);
 }
 
-//deleted
-//ActionSetBackground::ActionSetBackground(const ActionSetBackground& obj) noexcept
-//	: Action(obj.parentEvent), assetImageName_(obj.assetImageName_), 
-//	assetImage_(obj.assetImage_),
-//	transitionType(obj.transitionType), 
-//	transitionTime(obj.transitionTime), 
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSetBackground::ActionSetBackground(const ActionSetBackground& obj) noexcept
+	: Action(obj.parentEvent), assetImageName_(obj.assetImageName_), 
+	assetImage_(obj.assetImage_),
+	transitionType(obj.transitionType), 
+	transitionTime(obj.transitionTime), 
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSetBackground::operator==(const ActionSetBackground& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return Action::operator==(obj) &&
-//		   assetImageName_ == obj.assetImageName_ &&
-//		   //assetImage_     == obj.assetImage_     &&
-//		   transitionType == obj.transitionType &&
-//		   transitionTime == obj.transitionTime;
-//}
+bool ActionSetBackground::operator==(const ActionSetBackground& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return assetImageName_ == obj.assetImageName_ &&
+		   transitionType  == obj.transitionType  &&
+		   transitionTime  == obj.transitionTime;
+}
 
 void ActionSetBackground::setOnRunListener(std::function<void(const Event* const parentEvent, const QImage* const background, const ActionSetBackground::TransitionType& transitionType, const uint& transitionTime)> onRun) noexcept
 {
@@ -86,15 +82,14 @@ ActionSetBackground::ActionSetBackground(ActionSetBackground&& obj) noexcept
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSetBackground& ActionSetBackground::operator=(ActionSetBackground obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSetBackground& ActionSetBackground::operator=(ActionSetBackground obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSetBackground::acceptVisitor(ActionVisitor* visitor) 
 {

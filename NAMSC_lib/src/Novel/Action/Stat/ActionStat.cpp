@@ -17,11 +17,19 @@ void swap(ActionStat& first, ActionStat& second) noexcept
 	swap(first.stat_,     second.stat_);
 }
 
-ActionStat::ActionStat(Event* const parentEvent, const QString& statName, Stat* stat)
+ActionStat::ActionStat(Event* const parentEvent, const QString& statName, std::shared_ptr<Stat> stat)
 	: Action(parentEvent), 
 	statName_(statName), 
 	stat_(stat)
 {
+}
+
+bool ActionStat::operator==(const ActionStat& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return statName_ == obj.statName_;//&&
+		   //stat_     == obj.stat_;
 }
 
 void ActionStat::serializableLoad(QDataStream& dataStream)
@@ -36,16 +44,6 @@ void ActionStat::serializableSave(QDataStream& dataStream) const
 	dataStream << statName_;
 }
 
-//deleted
-//bool ActionStat::operator==(const ActionStat& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return Action::operator==(obj)    &&
-//		   statName_ == obj.statName_;//&&
-//		   //stat_     == obj.stat_;
-//}
-
 //  MEMBER_FIELD_SECTION_CHANGE END
 
 QString ActionStat::getStatName() const noexcept
@@ -53,17 +51,17 @@ QString ActionStat::getStatName() const noexcept
 	return statName_;
 }
 
-const Stat* ActionStat::getStat() const noexcept
+const std::shared_ptr<Stat> ActionStat::getStat() const noexcept
 {
 	return stat_;
 }
 
-Stat* ActionStat::getStat() noexcept
+std::shared_ptr<Stat> ActionStat::getStat() noexcept
 { 
 	return stat_; 
 }
 
-void ActionStat::setStat(const QString& statName, Stat* stat) noexcept
+void ActionStat::setStat(const QString& statName, std::shared_ptr<Stat> stat) noexcept
 {
 	if (stat)
 	{

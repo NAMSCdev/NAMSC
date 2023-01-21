@@ -16,14 +16,14 @@ class Scene final : public SceneComponent, public NovelFlowInterface
 	/// Swap trick
 	friend void swap(Scene& first, Scene& second) noexcept;
 public:
-	Scene()                                  noexcept = default;
+	Scene()                                 noexcept = default;
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
 	explicit Scene(const QString& name, const QString& chapterName = ""/*, const Scenery& scenery = Scenery(),*/);
-	Scene(Scene&& obj)                       noexcept;
-	Scene& operator=(const Scene &obj)       noexcept = delete;
-	bool operator==(const Scene& obj) const  noexcept = delete;
-	bool operator!=(const Scene& obj) const  noexcept = delete;
-
+	Scene(const Scene& obj)                 noexcept;
+	Scene(Scene&& obj)                      noexcept;
+	Scene& operator=(const Scene& obj)      noexcept;
+	bool operator==(const Scene& obj) const noexcept;
+	bool operator!=(const Scene& obj) const noexcept = default;
 	/// Checks if the Scene's Events can load Definitions and Resources associated with them and don't have any other Errors, which would halt the Novel execution
 	/// \exception Error A detailed Exception is thrown, if the proper QtMessageHandler is installed. Error might occur in any of the contained data as it is called top-down, so it's too long to list it here, instead check other data structures if interested
 	/// \return Whether an Error has occurred
@@ -39,27 +39,38 @@ public:
 	/// \exception Crititcal Tried to end an Event past the `events_` container's size
 	void end() override;
 
-	void syncWithSave() noexcept override;
+	void syncWithSave() override;
 
-	const std::vector<std::unique_ptr<Event>>* getEvents() const noexcept;
-	/// \exception Error Tried to get an Event past the `events` container's size
-	const Event* getEvent(uint eventIndex) const;
-	/// \exception Error Tried to get an Event past the `events` container's size
-	Event*       getEvent(uint eventIndex);
-	/// Takes ownership of the Event and manages its destruction
-	void addEvent(Event* event);
-	/// Takes ownership of the Event and manages its destruction
-	/// \exception Error Tried to insert a new Event past the `events` container's size
-	bool insertEvent(uint eventIndex, Event* event);
-	/// \exception Error Tried to remove an Event past the `events` container's size
-	bool removeEvent(uint eventIndex);
+	const std::vector<std::shared_ptr<Event>>* getEvents() const noexcept;
+	/// \exception Error Tried to get an Event past the `events_` container's size
+	const std::shared_ptr<Event> getEvent(uint index) const;
+	/// \exception Error Tried to get an Event past the `events_` container's size
+	std::shared_ptr<Event>       getEvent(uint index);
+	/// \exception Error Could not find an Event with this name
+	const std::shared_ptr<Event> getEvent(const QString& name) const;
+	/// \exception Error Could not find an Event with this name
+	std::shared_ptr<Event>       getEvent(const QString& name);
+	/// \exception Error Could not find an Event with this name
+	const std::vector<std::shared_ptr<Event>>* setEvents(std::vector<std::shared_ptr<Event>>&& events) noexcept;
+	std::shared_ptr<Event> addEvent(Event* event) noexcept;
+	std::shared_ptr<Event> addEvent(std::shared_ptr<Event>&& event) noexcept;
+	/// \exception Error Tried to insert a new Event past the `events_` container's size
+	std::shared_ptr<Event> insertEvent(uint index, Event* event);
+	/// \exception Error Tried to insert a new Event past the `events_` container's size
+	std::shared_ptr<Event> insertEvent(uint index, std::shared_ptr<Event>&& event);
+	/// \exception Error Tried to reinsert a new Event past the `events_` container's size
+	std::shared_ptr<Event> reinsertEvent(uint index, uint newIndex);
+	/// \exception Error Tried to remove an Event past the `events_` container's size
+	bool removeEvent(uint index);
+	/// \exception Error Could not find an Event with this name
+	bool removeEvent(const QString& name);
 	void clearEvents() noexcept;
 
 	/// Automatically assigned upon creation or changed by the Editor User
 	QString	name                = "";
 
 	/// Currently displayed media of the Scene
-	Scenery	scenery;
+	Scenery	scenery             = Scenery(this);
 
 	//todo: do not botch
     QString getComponentTypeName()        const noexcept override { return "Scene"; }
@@ -72,7 +83,7 @@ private:
 	QString        chapterName_ = "";
 	const Chapter* chapter_     = nullptr;
 
-	std::vector<std::unique_ptr<Event>> events_;
+	std::vector<std::shared_ptr<Event>> events_;
 
 public:
 	//---SERIALIZATION---

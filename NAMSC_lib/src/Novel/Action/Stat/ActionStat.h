@@ -10,12 +10,9 @@ class ActionStat : public Action
 	friend void swap(ActionStat& first, ActionStat& second) noexcept;
 public:
 	/// \exception Error Couldn't find the Stat named `statName`
-	explicit ActionStat(Event* const parentEvent, const QString& statName = "", Stat* stat = nullptr);
-	ActionStat(const ActionStat& obj)             noexcept = delete;
-	ActionStat(ActionStat&& obj)                  noexcept = delete;
-	ActionStat& operator=(const ActionStat& obj)  noexcept = delete;
-	bool operator==(const ActionStat& obj) const  noexcept = delete;
-	bool operator!=(const ActionStat& obj) const  noexcept = delete;
+	explicit ActionStat(Event* const parentEvent, const QString& statName = "", std::shared_ptr<Stat> stat = std::shared_ptr<Stat>());
+	bool operator==(const ActionStat& obj) const noexcept;
+	bool operator!=(const ActionStat& obj) const noexcept = default;
 	//Makes it abstract
 	virtual ~ActionStat() = 0;
 
@@ -26,16 +23,16 @@ public:
 	/// Connects the Stat pointer to the actual Stat in the NovelState
 	/// Must be called after the Save is loaded
 	/// \exception Error Couldn't find the Stat named `statName_` in the current NovelState (`Novel::save`)
-	void syncWithSave() noexcept override;
+	void syncWithSave() override;
 
 	QString getStatName() const noexcept;
-	const Stat* getStat() const noexcept;
-	Stat*       getStat()       noexcept;
-	void setStat(const QString& statName, Stat* stat = nullptr) noexcept;
+	const std::shared_ptr<Stat> getStat() const noexcept;
+	std::shared_ptr<Stat>       getStat()       noexcept;
+	void setStat(const QString& statName, std::shared_ptr<Stat> stat = std::shared_ptr<Stat>()) noexcept;
 
 protected:
 	QString statName_ = "";
-	Stat*   stat_     = nullptr;
+	std::shared_ptr<Stat> stat_;
 
 public:
 	//---SERIALIZATION---

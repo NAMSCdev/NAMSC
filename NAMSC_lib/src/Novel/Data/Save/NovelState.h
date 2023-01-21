@@ -40,12 +40,18 @@ public:
     void update(uint elapsedTime);
 
     const std::unordered_map<QString, std::shared_ptr<Stat>>* getStats() const noexcept;
-    const Stat* getStat(const QString& statName) const;
-    Stat*       getStat(const QString& statName);
-    /// Takes ownership of the `stat`
-    Stat* addStat(Stat*&& stat);
-    Stat* renameStat(const QString& oldName, const QString& newName);
-    bool removeStat(const QString& statName);
+    /// \exception Error Could not find a Stat with this name
+    const std::shared_ptr<Stat> getStat(const QString& name) const;
+    /// \exception Error Could not find a Stat with this name
+    std::shared_ptr<Stat> getStat(const QString& name);
+    const std::unordered_map<QString, std::shared_ptr<Stat>>* setStats(const std::unordered_map<QString, std::shared_ptr<Stat>>& stats) noexcept;
+    const std::unordered_map<QString, std::shared_ptr<Stat>>* setStats(std::unordered_map<QString, std::shared_ptr<Stat>>&& stats)      noexcept;
+    std::shared_ptr<Stat> setStat(Stat* stat) noexcept;
+    std::shared_ptr<Stat> setStat(const std::shared_ptr<Stat>& stat) noexcept;
+    /// \exception Error Could not find a Stat with `oldName`
+    std::shared_ptr<Stat> renameStat(const QString& oldName, const QString& newName);
+    /// \exception Error Could not find a Stat with this name
+    bool removeStat(const QString& name);
     void clearStats() noexcept;
 
     QDate saveDate    = QDate::currentDate();
@@ -54,7 +60,7 @@ public:
 
     //[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
     /// Current Media
-    Scenery scenery;
+    Scenery scenery   = Scenery(nullptr);
 
     int saveSlot      = -1;
 

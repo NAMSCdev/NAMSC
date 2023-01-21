@@ -209,7 +209,7 @@ void GraphView::createNode()
     {
         Scene s;
         s.name = name;
-        Novel::getInstance().addScene(name, std::move(s));
+        Novel::getInstance().addScene(std::move(s));
 
         GraphNode* node = new GraphNode(roundedPos);
         node->setLabel(name);
@@ -234,12 +234,13 @@ void GraphView::removeNode()
             switch (ev->getComponentEventType())
             {
             case EventSubType::EVENT_CHOICE:
-                for (auto& choice : dynamic_cast<EventChoice*>(ev.get())->choices) {
-                    if (choice.jumpToSceneName == selectedNode->getLabel()) choice.jumpToSceneName = "";
+                for (auto& choice : *static_cast<EventChoice*>(ev.get())->getChoices()) {
+                    if (choice.jumpToSceneName == selectedNode->getLabel()) 
+                        const_cast<Choice&>(choice).jumpToSceneName = ""; //todo: refactorthis monster later
                 }
                 break;
             case EventSubType::EVENT_JUMP:
-                auto evj = dynamic_cast<EventJump*>(ev.get());
+                auto evj = static_cast<EventJump*>(ev.get());
                 if (evj->jumpToSceneName == selectedNode->getLabel()) evj->jumpToSceneName = "";
                 break;
             }
@@ -299,7 +300,7 @@ void GraphView::serializableLoad(QDataStream& dataStream)
 
                 else if (auto evc = dynamic_cast<EventChoice*>(ev.get()))
                 {
-	                for (const auto& choice : evc->choices) node->connectToNode(choice.jumpToSceneName);
+	                for (const auto& choice : *evc->getChoices()) node->connectToNode(choice.jumpToSceneName);
                 }
                 // todo check if names of the nodes exist, though it should work anyway
 		    }
