@@ -62,13 +62,13 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     novel.loadNovel(0, true);
 
 #ifdef DEBUG
-    assetManager.addAssetImageSceneryBackground("testBackground", 0, 0, "C:\\Users\\Murloc\\Downloads\\pies.png");
-    assetManager.addAssetImageSceneryBackground("testBackground2", 0, 0, "C:\\Users\\Murloc\\Downloads\\pies.jpg");
-    assetManager.addAssetImageSceneryBackground("testBackgroundRed", 0, 0, "C:\\Users\\Murloc\\Downloads\\piesRed.png");
-    assetManager.addAssetImageSceneryObject("kotImage", 0, 0, "C:\\Users\\Murloc\\Downloads\\kot.png");
-    assetManager.addAssetImageSceneryObject("flamigno", 0, 0, "C:\\Users\\Murloc\\Downloads\\potwor.png");
-    assetManager.addAssetImageSceneryObject("flamignoAngry", 0, 0, "C:\\Users\\Murloc\\Downloads\\potworNegative.png");
-    assetManager.addAssetImageSceneryObject("felicja", 0, 0, "C:\\Users\\Murloc\\Downloads\\felicja.png");
+    assetManager.addAssetImageSceneryBackground("testBackground",    0, 0, "resources\\Background\\pies.png");
+    assetManager.addAssetImageSceneryBackground("testBackground2",   0, 0, "resources\\Background\\pies.jpg");
+    assetManager.addAssetImageSceneryBackground("testBackgroundRed", 0, 0, "resources\\Background\\piesRed.png");
+    assetManager.addAssetImageSceneryObject("kotImage",              0, 0, "resources\\Sprite\\kot.png");
+    assetManager.addAssetImageSceneryObject("flamigno",              0, 0, "resources\\Sprite\\potwor.png");
+    assetManager.addAssetImageSceneryObject("flamignoAngry",         0, 0, "resources\\Sprite\\potworNegative.png");
+    assetManager.addAssetImageSceneryObject("felicja",               0, 0, "resources\\Sprite\\felicja.png");
 
     Scene* scene1 = novel.addScene(Scene("start", ""));
     Scenery scenery1(scene1);

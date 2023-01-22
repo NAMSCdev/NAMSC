@@ -61,7 +61,7 @@ void TextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option
 	painter->setBrush(QColor(50, 48, 47, 185));
 	painter->drawRoundedRect(0, 0, rect().width(), rect().height(), 6, 6);
 	if (!bNarrate_)
-		painter->drawLine(QPointF(0, 48 + 16), QPointF(rect().width(), 48 + 8 + 16));
+		painter->drawLine(QPointF(0, 68), QPointF(rect().width(), 68));
 }
 
 void TextWidget::mouseClicked()
