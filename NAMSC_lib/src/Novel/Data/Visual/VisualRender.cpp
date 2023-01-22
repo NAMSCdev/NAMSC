@@ -12,6 +12,17 @@ void Scenery::render(SceneWidget* sceneWidget) const
 		if (backgroundAssetImage_)
 			emit novel.pendBackgroundDisplay(backgroundAssetImage_->getImage());
 
+		sceneWidget->clearSceneryObjectWidgets();
+		auto renderSceneryObject = [&sceneWidget](SceneryObject& sceneryObject)
+		{
+			AssetImage* sprite = sceneryObject.getAssetImage();
+			if (sprite && sprite->isLoaded())
+				sceneWidget->addSceneryObjectWidget(sceneryObject);
+		};
+
+		for (SceneryObject& displayedSceneryObject : displayedSceneryObjects_)
+			renderSceneryObject(displayedSceneryObject);
+
 		emit novel.pendSceneryObjectsDisplay(displayedSceneryObjects_);
 
 		emit novel.pendCharactersDisplay(displayedCharacters_);
