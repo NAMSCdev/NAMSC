@@ -356,18 +356,18 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             auto* sceneryObjectOnSceneProperties = new SceneryObjectOnSceneProperties(static_cast<SceneryObject*>(object));
             ui.propertiesLayout->addWidget(objectPropertyPack);
             ui.propertiesLayout->addWidget(sceneryObjectOnSceneProperties);
-            connect(objectPropertyPack->getSceneryObjectTreeProperties(), &SceneryObjectTreeProperties::parametersChanged, this, [&]
+            connect(objectPropertyPack->getSceneryObjectTreeProperties(), &SceneryObjectTreeProperties::parametersChanged, this, [=]
                 {
                     uint index = std::ranges::find_if(sceneWidget->getSceneryObjectWidgets()->begin(), sceneWidget->getSceneryObjectWidgets()->end(), [&](SceneryObjectWidget* elem) { return elem->getName() == static_cast<SceneryObject*>(object)->name; }) - sceneWidget->getSceneryObjectWidgets()->cbegin();
 					sceneWidget->removeSceneryObjectWidget(index);
 					sceneWidget->insertSceneryObjectWidget(index, *static_cast<SceneryObject*>(object));
                 });
-            connect(sceneryObjectOnSceneProperties, &SceneryObjectOnSceneProperties::parametersChanged, this, [&]
+            connect(sceneryObjectOnSceneProperties, &SceneryObjectOnSceneProperties::parametersChanged, this, [=]
                 {
-                    uint index = std::ranges::find_if(sceneWidget->getSceneryObjectWidgets()->begin(), sceneWidget->getSceneryObjectWidgets()->end(), [&](SceneryObjectWidget* elem) { return elem->getName() == static_cast<SceneryObject*>(object)->name; }) - sceneWidget->getSceneryObjectWidgets()->cbegin();
+                    uint index = std::ranges::find_if(sceneWidget->getSceneryObjectWidgets()->begin(), sceneWidget->getSceneryObjectWidgets()->end(), [=](SceneryObjectWidget* elem) { return elem->getName() == static_cast<SceneryObject*>(object)->name; }) - sceneWidget->getSceneryObjectWidgets()->cbegin();
             sceneWidget->removeSceneryObjectWidget(index);
             sceneWidget->insertSceneryObjectWidget(index, *static_cast<SceneryObject*>(object));
-                });
+                }); // todo OBJECT DOES NOT EXIST IN THE CONNECT CONTEXT
             break;
         }
 
