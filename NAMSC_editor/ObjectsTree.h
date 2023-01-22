@@ -25,6 +25,7 @@ public slots:
 	// to czy item zawiera wskaznik na dzwiek lub grafike mozna sprawdzic object->type() == "TreeWidgetItemTypes.h" lub po nullptr
 	// chwilowo nie ma pola dla dzwieku wiec sugeruje sprawdzanie po typie
 	void selectedObjectChanged(QString sceneryObjectName);
+	void setObjectAsSceneBackground(ObjectTreeWidgetItem* object);
 
 protected:
 	void selectionChanged(const QItemSelection& selected, const QItemSelection& deselected) override;
@@ -38,6 +39,7 @@ private:
 
 	QAction* addObjectToSceneAction;
 	QAction* removeObjectFromTreeAction; // TODO add remove object from ObjectTree
+	QAction* setObjectAsSceneBackgroundAction;
 
 	void createContextMenu();
 };
