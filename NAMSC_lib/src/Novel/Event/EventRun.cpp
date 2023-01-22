@@ -8,7 +8,7 @@ void Event::run()
 	if (!sceneWidget)
 		return;
 
-	emit pendSceneClear();
+	//emit pendSceneClear();
 	ensureResourcesAreLoaded();
 
 	scenery.render(sceneWidget);

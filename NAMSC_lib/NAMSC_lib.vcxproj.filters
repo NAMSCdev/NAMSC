@@ -751,9 +751,6 @@
     <ClCompile Include="src\Novel\Data\Visual\VisualUpdate.cpp">
       <Filter>Source Files\Novel\Data\Visual</Filter>
     </ClCompile>
-    <ClCompile Include="src\Novel\Data\Visual\VisualRender.cpp">
-      <Filter>Source Files\Novel\Data\Visual</Filter>
-    </ClCompile>
     <ClCompile Include="src\Novel\Event\EventRun.cpp">
       <Filter>Source Files\Novel\Event</Filter>
     </ClCompile>
@@ -822,6 +819,9 @@
     </ClCompile>
     <ClCompile Include="src\Novel\Widget\ChoiceTextWidget.cpp">
       <Filter>Source Files\Novel\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Novel\Data\Visual\VisualRender.cpp">
+      <Filter>Source Files\Novel\Data\Visual</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

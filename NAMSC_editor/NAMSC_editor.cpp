@@ -517,6 +517,18 @@ void NAMSC_editor::debugConstructorActions()
 
    //Novel::getInstance().loadNovel(0, false);
 
+    connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
+        {
+            if (item->type() == TreeWidgetItemTypes::ImageObject)
+            {
+                item->sceneryObject->ensureResourcesAreLoaded();
+                sceneWidget->addSceneryObjectWidget(*item->sceneryObject, 0);
+            }
+            else
+            {
+                qDebug() << "Tried to add different asset type than an image";
+            }
+        });
 }
 
 void NAMSC_editor::createDanglingContextMenuActions()

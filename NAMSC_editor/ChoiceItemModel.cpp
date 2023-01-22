@@ -38,7 +38,7 @@ QVariant ChoiceItemModel::data(const QModelIndex& index, int role) const
 		case Name:
 			return "Choices no longer have names";
 		case Text:
-			return choices->at(index.row()).text.text();
+			return choices->at(index.row()).translation.text();
 		case JumpToScene:
 			return choices->at(index.row()).jumpToSceneName;
 		case Condition:
@@ -68,7 +68,7 @@ bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, i
 			//affectedRow.name = value.toString();
 			break;
 		case Text:
-			affectedRow.text.setTranslation(NovelSettings::getInstance().language, value.toString());
+			affectedRow.translation.setTranslation(NovelSettings::getInstance().language, value.toString());
 			break;
 		case JumpToScene:
 			if (affectedRow.jumpToSceneName != value.toString()) {
