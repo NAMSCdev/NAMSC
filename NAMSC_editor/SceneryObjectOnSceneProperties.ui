@@ -71,7 +71,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="xPositionSpinBox"/>
+       <widget class="QSpinBox" name="xPositionSpinBox">
+        <property name="minimum">
+         <number>-10000</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="yPositionLabel">
@@ -81,7 +88,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="yPositionSpinBox"/>
+       <widget class="QSpinBox" name="yPositionSpinBox">
+        <property name="minimum">
+         <number>-10000</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -18,7 +18,13 @@ void ObjectsTree::addAssetToObjects(QString relativePath, QString name, TreeWidg
 	ObjectTreeWidgetItem* tempTreeItem;
 
 	if (type == TreeWidgetItemTypes::ImageObject) {
-		Novel::getInstance().setDefaultSceneryObject(std::move(SceneryObject(name, relativePath)));
+		AssetManager::getInstance().addAssetImageSceneryBackground(relativePath, 0, 0, relativePath);
+		AssetManager::getInstance().addAssetImageSceneryObject(relativePath, 0, 0, relativePath);
+
+		SceneryObject tempSceneryObject;
+		tempSceneryObject.name = name;
+		tempSceneryObject.setAssetImage(relativePath);
+		Novel::getInstance().setDefaultSceneryObject(tempSceneryObject);
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);
@@ -56,6 +62,7 @@ void ObjectsTree::contextMenuEvent(QContextMenuEvent* context_menu_event)
 
 		QMenu menu(this);
 		menu.addAction(addObjectToSceneAction);
+		menu.addAction(setObjectAsSceneBackgroundAction);
 		menu.exec(context_menu_event->globalPos());
 	}
 	//QTreeWidget::contextMenuEvent(context_menu_event);
@@ -71,9 +78,17 @@ void ObjectsTree::createContextMenu()
 {
 	addObjectToSceneAction = new QAction(tr("Add object to scene"), this);
 	addObjectToSceneAction->setStatusTip(tr("Object will be added to the currently edited scene"));
-	
+
 	connect(addObjectToSceneAction, &QAction::triggered, this, [&]
 		{
 			emit addObjectToScene(dynamic_cast<ObjectTreeWidgetItem*>(this->currentItem()));
+		});
+
+	setObjectAsSceneBackgroundAction = new QAction(tr("Set object as scene background"));
+	setObjectAsSceneBackgroundAction->setStatusTip(tr("Object will be set as the background on the currently edited scene"));
+
+	connect(setObjectAsSceneBackgroundAction, &QAction::triggered, this, [&]
+		{
+			emit setObjectAsSceneBackground(dynamic_cast<ObjectTreeWidgetItem*>(this->currentItem()));
 		});
 }

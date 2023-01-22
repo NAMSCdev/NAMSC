@@ -70,20 +70,20 @@ void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     {
     case QtDebugMsg:
 #ifdef DEBUG
-        QMessageBox::information(nullptr, category, message);
+        //QMessageBox::information(nullptr, category, message);
 #endif
         break;
 
     default:
     case QtInfoMsg:
     case QtWarningMsg:
-        QMessageBox::warning(nullptr, category, message);
+        //QMessageBox::warning(nullptr, category, message);
         break;
 
     case QtCriticalMsg:
     case QtFatalMsg:
-        QMessageBox::critical(nullptr, category, message);
-        throw NovelLib::NovelException(msg);
+        //QMessageBox::critical(nullptr, category, message);
+        //throw NovelLib::NovelException(msg);
         break;
     }
 }
@@ -97,7 +97,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     // Prepare ui
     ui.setupUi(this);
-    //qInstallMessageHandler(errorMessageHandler); // Causes editor to crash -> Retrieving non existing element from a map returns null and is used to check if a key is already used. Also there seems to be an issue with quick dialog boxes, which also return some warning from qt but work anyway.
+    qInstallMessageHandler(errorMessageHandler); // Causes editor to crash -> Retrieving non existing element from a map returns null and is used to check if a key is already used. Also there seems to be an issue with quick dialog boxes, which also return some warning from qt but work anyway.
 
     ui.mainSplitter->setSizes({ 20, 60, 20 });
     ui.middlePanel->setStretchFactor(0, 70);
@@ -107,7 +107,15 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     delete ui.sceneView;
     ui.sceneView = Novel::getInstance().createSceneWidget();
+
     sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
+
+	sceneWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sceneWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sceneWidget->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    sceneWidget->scene()->setSceneRect(sceneWidget->rect());
+    //sceneWidget->fitInView(sceneWidget->scene()->sceneRect(), Qt::IgnoreAspectRatio);
+
     ui.middlePanelEditorStackPage2->layout()->addWidget(sceneWidget);
     sceneWidget->switchToPreview();
 
@@ -131,6 +139,11 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
+
+    //connect(ui.middlePanel, &QSplitter::splitterMoved, this, [&]
+    //    {
+    //        sceneWidget->fitInView(sceneWidget->sceneRect(), Qt::IgnoreAspectRatio);
+    //    });
 
 	//Novel::getInstance().saveNovel(0);
  //   saveEditor();
@@ -169,14 +182,41 @@ void NAMSC_editor::prepareSceneEditor()
             {
                 if (auto ev = currentlySelectedEvent.lock())
                 {
-                    sceneWidget->clearSceneryObjectWidgets();
-                    ev->scenery.addDisplayedSceneryObject(*item->sceneryObject); // should make a copy
+                    //sceneWidget->clearSceneryObjectWidgets();
+                    SceneryObject tempSceneryObject = *item->sceneryObject;
+                    for (uint i = 0; i != UINT32_MAX; ++i)
+                    {
+                        QString check = tempSceneryObject.name + QString::number(i);
+                        if (!isInSceneryObjects(check))
+                        {
+                            tempSceneryObject.name = check;
+                            break;
+                        }
+                    }
+                    ev->scenery.addDisplayedSceneryObject(tempSceneryObject); // should make a copy
                     ev->run();
                 }
             }
             else
             {
                 qDebug() << "Tried to add different asset type than an image";
+            }
+        });
+
+    // Setting background from objectsTree
+    connect(ui.objectsTree, &ObjectsTree::setObjectAsSceneBackground, sceneWidget, [&](ObjectTreeWidgetItem* item)
+        {
+            if (item->type() == TreeWidgetItemTypes::ImageObject)
+            {
+                if (auto ev = currentlySelectedEvent.lock())
+                {
+                    ev->scenery.setBackgroundAssetImage(item->sceneryObject->getAssetImageName());
+                    ev->run();
+                }
+            }
+            else
+            {
+                qDebug() << "Tried to set as background different asset type than an image";
             }
         });
 
@@ -187,8 +227,18 @@ void NAMSC_editor::prepareSceneEditor()
             {
                 if (auto ev = currentlySelectedEvent.lock())
                 {
-                    sceneWidget->clearSceneryObjectWidgets();
-                    ev->scenery.addDisplayedCharacter(*item->character); // should make a copy
+                    //sceneWidget->clearSceneryObjectWidgets();
+                    Character tempCharacter = *item->character;
+                    for (uint i = 0; i != UINT32_MAX; ++i)
+                    {
+                        QString check = tempCharacter.name + QString::number(i);
+                        if (!isInCharacters(check))
+                        {
+                            tempCharacter.name = check;
+                            break;
+                        }
+                    }
+                    ev->scenery.addDisplayedCharacter(tempCharacter); // should make a copy
                     ev->run();
                 }
             }
@@ -244,14 +294,18 @@ void NAMSC_editor::prepareSceneEditor()
 
     // Position update
     connect(sceneWidget, &SceneWidget::sceneryObjectPositionChanged, this, [&](const QString& name, const QPointF& pos)
-    {
-	  if (auto ev = currentlySelectedEvent.lock())
-	  {
-		  if (auto elem = ev->scenery.getDisplayedCharacter(name)) elem->pos = pos.toPoint();
-		  else if (auto elem = ev->scenery.getDisplayedSceneryObject(name)) elem->pos = pos.toPoint();
-		  else qDebug() << "No sceneryObject or character to change position";
-	  }
+        {
+            /*if (auto ev = currentlySelectedEvent.lock())
+            {
+                if (auto elem = ev->scenery.getDisplayedCharacter(name)) elem->pos = pos.toPoint();
+                else if (auto elem = ev->scenery.getDisplayedSceneryObject(name)) elem->pos = pos.toPoint();
+                else qDebug() << "No sceneryObject or character to change position";
+            }*/
+            if (isInCharacters(name)) currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name)->pos = pos.toPoint();
+            if (isInSceneryObjects(name)) currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name)->pos = pos.toPoint();
+            else qDebug() << "No sceneryObject or character to change position";
     });
+
 }
 
 void NAMSC_editor::prepareSwitchboard()
@@ -278,13 +332,21 @@ void NAMSC_editor::prepareSwitchboard()
     // Connect selection from scene editor to switchboard
     connect(sceneWidget, &SceneWidget::sceneryObjectSelectionChanged, &switchboard, [&](const QString& name, bool selected)
         {
-            if (auto elem = currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name)) 
+            /*if (auto elem = currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name))
             {
                 switchboard.objectOnSceneSelectionChanged(elem, selected);
             }
             else if (auto elem = currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name))
             {
                 switchboard.objectOnSceneSelectionChanged(elem, selected);
+            }*/
+            if (isInCharacters(name))
+            {
+                switchboard.objectOnSceneSelectionChanged(currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name), selected);
+            }
+            else if (isInSceneryObjects(name))
+            {
+                switchboard.objectOnSceneSelectionChanged(currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name), selected);
             }
         });
 
@@ -491,6 +553,29 @@ void NAMSC_editor::createDanglingContextMenuActions()
             }
         });
 
+    sceneWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(sceneWidget, &SceneWidget::customContextMenuRequested, this, &NAMSC_editor::invokeSceneEditorContextMenu);
+
+    removeObjectFromSceneEditorAction = new QAction(tr("Remove from scene"), sceneWidget);
+
+    connect(removeObjectFromSceneEditorAction, &QAction::triggered, sceneWidget, [&]
+        {
+            if (!sceneWidget->scene()->selectedItems().isEmpty())
+            {
+                if (auto sceneryObject = dynamic_cast<SceneryObjectWidget*>(sceneWidget->scene()->selectedItems().first())) {
+                    if (isInCharacters(sceneryObject->getName()) && currentlySelectedEvent.use_count())
+                    {
+                        currentlySelectedEvent.lock()->scenery.removeDisplayedCharacter(sceneryObject->getName());
+                        currentlySelectedEvent.lock()->run();
+                    }
+                    else if (isInSceneryObjects(sceneryObject->getName()) && currentlySelectedEvent.use_count())
+                    {
+                        currentlySelectedEvent.lock()->scenery.removeDisplayedSceneryObject(sceneryObject->getName());
+                        currentlySelectedEvent.lock()->run();
+                    }
+                }
+            }
+        });
 }
 
 void NAMSC_editor::invokeEventsContextMenu(const QPoint& pos)
@@ -500,6 +585,15 @@ void NAMSC_editor::invokeEventsContextMenu(const QPoint& pos)
     menu.addAction(addChoiceEventAction);
     menu.addAction(addJumpEventAction);
     menu.exec(ui.eventsTree->mapToGlobal(pos));
+}
+
+void NAMSC_editor::invokeSceneEditorContextMenu(const QPoint& pos)
+{
+    QMenu menu(sceneWidget);
+    menu.addAction(removeObjectFromSceneEditorAction);
+    if (sceneWidget->scene()->selectedItems().isEmpty()) removeObjectFromSceneEditorAction->setDisabled(true);
+    else removeObjectFromSceneEditorAction->setEnabled(true);
+    menu.exec(sceneWidget->mapToGlobal(pos));
 }
 
 void NAMSC_editor::loadGraph(GraphView* graph)
