@@ -12,6 +12,9 @@ public:
 	SceneryObjectOnSceneProperties(SceneryObject* sceneryObject, QWidget *parent = nullptr);
 	~SceneryObjectOnSceneProperties();
 
+	signals:
+		void parametersChanged();
+
 private:
 	Ui::SceneryObjectOnScenePropertiesClass ui;
 

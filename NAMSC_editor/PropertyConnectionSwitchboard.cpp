@@ -22,3 +22,9 @@ void PropertyConnectionSwitchboard::characterSelectionChanged(QString characterN
 {
 	emit characterSelectionChangedSignal(Novel::getInstance().getDefaultCharacter(characterName));
 }
+
+void PropertyConnectionSwitchboard::objectOnSceneSelectionChanged(SceneryObject* obj, bool selected)
+{
+	if (selected) emit objectOnSceneSelectionChangedSignal(obj);
+	else emit objectOnSceneSelectionChangedSignal(nullptr);
+}

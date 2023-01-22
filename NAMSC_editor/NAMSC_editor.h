@@ -29,6 +29,8 @@ public slots:
 private:
     Ui::NAMSC_editorClass ui;
 
+    static std::weak_ptr<Event> currentlySelectedEvent;
+
     PropertyConnectionSwitchboard switchboard;
     QGraphicsScene* scene; // todo remove?
     GraphNode* node;
@@ -38,6 +40,7 @@ private:
     QList<QMimeType> supportedAudioFormats;
     void prepareAssetsTree();
     void prepareEventsTree();
+    void prepareSceneEditor();
     void supportedFormats();
     QFileSystemModel* model;
     CustomSortFilterProxyModel* proxyFileFilter;

@@ -33,9 +33,11 @@ void SceneryObjectOnSceneProperties::prepareDataInUi()
 void SceneryObjectOnSceneProperties::updatePosX(int val)
 {
 	sceneryObject->pos.setX(val);
+	emit parametersChanged();
 }
 
 void SceneryObjectOnSceneProperties::updatePosY(int val)
 {
 	sceneryObject->pos.setY(val);
+	emit parametersChanged();
 }

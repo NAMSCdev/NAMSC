@@ -50,6 +50,11 @@ const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index) con
 	return sceneryObjectWidgets_[index];
 }
 
+const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(const QString& name) const
+{
+	return *std::ranges::find_if(sceneryObjectWidgets_, [&](const SceneryObjectWidget* elem) { return elem->getName() == name; });
+}
+
 SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index)
 {
 	return sceneryObjectWidgets_[index];
@@ -64,6 +69,9 @@ void SceneWidget::addSceneryObjectWidget(const SceneryObject& sceneryObject, int
 	sceneryObjectWidgets_.push_back(sceneryObjectWidget);
 	scene()->addItem(sceneryObjectWidget);
 	//sceneryObjectWidget->setZValue(scene()->items().size() - 1);
+
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectPositionChanged, this, &SceneWidget::sceneryObjectPositionChangedPass);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectSelectionChanged, this, &SceneWidget::sceneryObjectSelectionChangedPass);
 }
 
 bool SceneWidget::insertSceneryObjectWidget(size_t index, const SceneryObject& sceneryObject)
@@ -199,4 +207,14 @@ void SceneWidget::displayBackground(const QImage* img)
 	//No resize needed, since it is cached
 	QBrush brush(*img/*->scaled(size())*/);
 	scene()->setBackgroundBrush(brush);
+}
+
+void SceneWidget::sceneryObjectPositionChangedPass(const QString& name, const QPointF& pos)
+{
+	emit sceneryObjectPositionChanged(name, pos);
+}
+
+void SceneWidget::sceneryObjectSelectionChangedPass(const QString& name, bool selected)
+{
+	emit sceneryObjectSelectionChanged(name, selected);
 }
