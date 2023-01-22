@@ -6,6 +6,7 @@ void Event::run()
 	Novel&          novel       = Novel::getInstance();
 	SceneWidget*    sceneWidget = novel.getSceneWidget();
 	QGraphicsScene* scene       = nullptr;
+
 	if (sceneWidget)
 		scene = sceneWidget->scene();
 	if (!scene)
@@ -40,6 +41,8 @@ void Event::syncWithSave()
 
 void Choice::run()
 {
+	parentEvent->end();
+	EventJump(parentEvent->parentScene, "", jumpToSceneName).run();
 }
 
 void EventChoice::run()
@@ -49,20 +52,21 @@ void EventChoice::run()
 	Event::run();
 
 	if (!choices_.empty())
-		emit novel.pendEventChoiceDisplay(choices_);
+		emit novel.pendEventChoiceDisplay(menuText_.text(), choices_);
 }
 
 void EventDialogue::run()
 {
+	Event::run();
+
 	Novel& novel             = Novel::getInstance();
 	SceneWidget* sceneWidget = novel.getSceneWidget();
 	QGraphicsScene* scene    = nullptr;
+
 	if (sceneWidget)
 		scene = sceneWidget->scene();
 	if (!scene)
 		return;
-
-	Event::run();
 	
 	if (!sentences_.empty())
 		emit novel.pendEventDialogueDisplay(sentences_, NovelState::getCurrentlyLoadedState()->sentenceID);
@@ -89,7 +93,13 @@ void EventEndIf::run()
 
 void EventJump::run()
 {
-	Event::run();
+	Novel&      novel = Novel::getInstance();
+	NovelState* save  = NovelState::getCurrentlyLoadedState();
+
+	save->eventID     = 0;
+	save->sentenceID  = 0;
+	save->sceneName   = jumpToSceneName;
+	novel.run();
 }
 
 void EventWait::run()

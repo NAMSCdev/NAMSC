@@ -4,9 +4,6 @@ bool Novel::errorCheck(bool bComprehensive) const
 {
 	bool bError = false;
 
-	for (const std::pair<const QString, Voice>& voice : voices_)
-		bError |= voice.second.errorCheck(bComprehensive);
-
 	for (const std::pair<const QString, SceneryObject>& defaultSceneryObject : sceneryObjectDefaults_)
 		bError |= defaultSceneryObject.second.errorCheck(bComprehensive);
 
@@ -15,6 +12,9 @@ bool Novel::errorCheck(bool bComprehensive) const
 
 	for (const std::pair<const QString, Scene>& scene : scenes_)
 		bError |= scene.second.errorCheck(bComprehensive);
+
+	for (const std::pair<const QString, Voice>& voice : voices_)
+		bError |= voice.second.errorCheck(bComprehensive);
 
 	bError |= stateAtSceneBeginning_.errorCheck();
 	bError |= state_.errorCheck();

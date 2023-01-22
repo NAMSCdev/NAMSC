@@ -1,37 +1,32 @@
 ﻿#include "Novel/Data/Novel.h"
 
+#include "Novel/Event/EventChoice.h"
+
 void Novel::run()
 {
-	if (!scenes_.contains(state_.sceneName))
-	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to run a Scene \"" + state_.sceneName + "\" that does not exist!";
-		return;
-	}
-
 	getScene(state_.sceneName)->run();
 }
 
 void Novel::update()
 {
-	if (!scenes_.contains(state_.sceneName))
-	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to update a Scene \"" + state_.sceneName + "\" that does not exist!";
-		return;
-	}
-
 	getScene(state_.sceneName)->update();
+}
+
+void Novel::choiceRun(uint choiceID)
+{
+	//Safety check first
+	Scene*       scene       = getScene(state_.sceneName);
+	EventChoice* eventChoice = dynamic_cast<EventChoice*>(scene->getEvent(state_.eventID).get());
+
+	if (!eventChoice)
+		qCritical() << NovelLib::ErrorType::Critical << "Tried to run a Choice, while the current Event is not of an EventChoice type";
+
+	eventChoice->getChoice(choiceID)->run();
 }
 
 void Novel::end()
 {
-	if (!scenes_.contains(state_.sceneName))
-	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "The save is corrupted. It tries to end a Scene \"" + state_.sceneName + "\" that does not exist!";
-		return;
-	}
-
-	for (std::pair<const QString, Scene>& scene : scenes_)
-		scene.second.end();
+	getScene(state_.sceneName)->end();
 }
 
 void Novel::syncWithSave()
@@ -49,15 +44,8 @@ void Novel::syncWithSave()
 void Scene::run()
 {
 	const NovelState* currentState = NovelState::getCurrentlyLoadedState();
-	uint eventID = currentState->eventID;
 
-	if (eventID >= events_.size())
-	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to run an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
-		return;
-	}
-
-	events_[eventID]->run();
+	getEvent(currentState->eventID)->run();
 }
 
 void Scene::update()
@@ -76,16 +64,20 @@ void Scene::update()
 
 void Scene::end()
 {
-	const NovelState* currentState = NovelState::getCurrentlyLoadedState();
-	uint eventID = currentState->eventID;
+	NovelState* currentState = NovelState::getCurrentlyLoadedState();
 
-	if (eventID >= events_.size())
+	QString currentScene = currentState->sceneName;
+	if (currentState->eventID >= events_.size())
 	{
-		qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
+		qCritical() << NovelLib::ErrorType::SaveCritical << "Tried to end an Event past the `events_` container's size (" << currentState->eventID << ">=" << events_.size() << ") in a Scene \"" + name + '\"';
 		return;
 	}
 
-	events_[eventID]->end();
+	if ((currentState->eventID + 1) < events_.size())
+	{
+		++currentState->eventID;
+		run();
+	}
 }
 
 void Scene::syncWithSave()

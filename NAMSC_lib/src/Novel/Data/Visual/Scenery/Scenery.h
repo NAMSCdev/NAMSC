@@ -33,7 +33,7 @@ public:
 	/// \todo Manage Sounds
 	void update(uint elapsedTime);
 
-	void render(SceneWidget* sceneWidget);
+	void render(SceneWidget* sceneWidget) const;
 
 	/// Ensures Assets and Sounds are loaded and if not - loads them
 	void ensureResourcesAreLoaded();

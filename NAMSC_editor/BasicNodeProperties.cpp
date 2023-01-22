@@ -4,7 +4,6 @@
 #include <qmessagebox.h>
 
 #include "Novel/Data/Novel.h"
-#include "Novel/Event/EventChoice.h"
 
 BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
 	: QFrame(parent), currentlySelectedNode(node)
@@ -40,67 +39,30 @@ void BasicNodeProperties::updateConnections(bool b)
 void BasicNodeProperties::selectedNodeChanged()
 {
 	updateConnections(instantTextChangeUpdate);
-	ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel());
+	//if (scene->selectedItems().isEmpty())
+	//{
+	//	ui.nodeNameLineEdit->setText("");
+	//	ui.nodeNameLineEdit->setEnabled(false);
+	//}
+	//else {
+		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel());
+	//}
 }
 
 void BasicNodeProperties::updateLabelInNode()
 {
 	QString lineEditText = ui.nodeNameLineEdit->text();
-	if (currentlySelectedNode->getLabel() != lineEditText) {
-		// Scene rename below
-		if (Novel::getInstance().renameScene(currentlySelectedNode->getLabel(), lineEditText) == nullptr)
-		{
-			QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
-			ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
-			return;
-		}
-		else
-		{
-			// todo move this or similar to lib -> void renameSceneJumpsFor(QString scene, QString oldJumpToSceneName, QString newJumpToSceneName);
-			// Update self jumps
-			for (auto& ev : *Novel::getInstance().getScene(lineEditText)->getEvents())
-			{
-				switch (ev->getComponentEventType())
-				{
-				case EventSubType::EVENT_CHOICE:
-					for (auto& choice : *static_cast<EventChoice*>(ev.get())->getChoices()) {
-						if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) const_cast<Choice&>(choice).jumpToSceneName = lineEditText;
-					}
-					break;
-				case EventSubType::EVENT_JUMP:
-					auto evj = static_cast<EventJump*>(ev.get());
-					if (evj->jumpToSceneName == currentlySelectedNode->getLabel()) evj->jumpToSceneName = lineEditText;
-					break;
-				}
-			}
 
-			// Update jumps from other scenes to this
-			for (auto& conn : currentlySelectedNode->getConnectionPoints(GraphConnectionType::In))
-			{
-				for (auto& ev : *Novel::getInstance().getScene(conn->getSourceNodeName())->getEvents())
-				{
-					switch (ev->getComponentEventType())
-					{
-					case EventSubType::EVENT_CHOICE:
-						for (auto& choice : *static_cast<EventChoice*>(ev.get())->getChoices()) {
-							if (choice.jumpToSceneName == currentlySelectedNode->getLabel()) const_cast<Choice&>(choice).jumpToSceneName = lineEditText; //todo: fix this monster
-						}
-						break;
-					case EventSubType::EVENT_JUMP:
-						auto evj = static_cast<EventJump*>(ev.get());
-						if (evj->jumpToSceneName == currentlySelectedNode->getLabel()) evj->jumpToSceneName = lineEditText;
-						break;
-					}
-				}
-				
-			}
-
-
-
-			currentlySelectedNode->setLabel(lineEditText);
-			currentlySelectedNode->update();
-			emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
-
-		}
+	if (Novel::getInstance().getScene(lineEditText) != nullptr)
+	{
+		QMessageBox(QMessageBox::Critical, tr("Invalid scene name"), tr("Scene with this name already exists, please provide another name."), QMessageBox::Ok).exec();
+		ui.nodeNameLineEdit->setText(currentlySelectedNode->getLabel()); // Revert change
+		return;
 	}
-}
+    QString oldName = Novel::getInstance().getScene(currentlySelectedNode->getLabel())->getComponentName();
+	//Novel::getInstance().getScene(currentlySelectedNode->getLabel())->name = lineEditText; // todo remember to change key
+    Novel::getInstance().renameScene(oldName, lineEditText);
+	currentlySelectedNode->setLabel(lineEditText);
+    currentlySelectedNode->update();
+    emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
+}	

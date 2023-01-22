@@ -17,6 +17,11 @@ Translation::Translation(const std::unordered_map<QString, QString>& translation
 {
 }
 
+Translation::Translation(std::unordered_map<QString, QString>&& translations)
+	: translations_(std::move(translations))
+{
+}
+
 //defaulted
 //Translation::Translation(const Translation& obj) noexcept
 //	: translations_(obj.translations_)
@@ -82,10 +87,10 @@ void Translation::defaultLanguageChangeFix(const QString& oldDefaultLanguage)
 		return;
 
 	if (oldDefaultLanguage == NovelSettings::getInstance().defaultLanguage)
-		qInfo() << "Copying old defaultLanguage Translation text to the new defaultLanguage. Possible inconsistency: languages should differ, but to fill the empty space, we copy the very probably wrong one, so any text can be displayed at all";
+		qInfo() << "Copying old defaultLanguage Translation translation to the new defaultLanguage. Possible inconsistency: languages should differ, but to fill the empty space, we copy the very probably wrong one, so any text can be displayed at all";
 }
 
-const QString Translation::text(const QString language) noexcept
+QString Translation::text(const QString language) const noexcept
 {
 	if (translations_.contains(language))
 		return translations_.at(language);

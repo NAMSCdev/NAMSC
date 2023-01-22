@@ -86,12 +86,11 @@ public:
 	bool errorCheck(bool bComprehensive) const;
 
 	/// Sets a function pointer that is called (if not nullptr) after the Choice's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
-	void setOnRunListener(std::function<void(const Translation* const text, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& displayOptions)> onRun) noexcept;
+	void setOnRunListener(std::function<void(const Translation* const translation, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& displayOptions)> onRun) noexcept;
 
 	EventChoice* const parentEvent;
 
-	Translation text;
-
+	Translation translation;
 	QString jumpToSceneName = "";
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
@@ -102,7 +101,7 @@ public:
 
 private:
 	/// A function pointer that is called (if not nullptr) after the Choice's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
-	std::function<void(const Translation* const text, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& displayOptions)> onRun_ = nullptr;
+	std::function<void(const Translation* const translation, const QString& jumpToSceneName, const QString& condition, const ChoiceDisplayOptions& displayOptions)> onRun_ = nullptr;
 
 public:
 	//---SERIALIZATION---

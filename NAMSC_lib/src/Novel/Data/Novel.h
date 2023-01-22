@@ -102,7 +102,8 @@ public:
 	/// \exception Error Could not find a Scene with this name
 	Scene*       getScene(const QString& name);
 	const std::unordered_map<QString, Scene>* setScenes(std::unordered_map<QString, Scene>&& scenes) noexcept;
-	Scene* addScene(Scene&& scene) noexcept;
+	Scene* addScene(const Scene& scene) noexcept;
+	Scene* addScene(Scene&& scene)      noexcept;
 	/// \exception Error Could not find a Scene with `oldName`
 	Scene* renameScene(const QString& oldName, const QString& newName);
 	/// \exception Error Could not find a Scene with this name
@@ -140,6 +141,7 @@ public:
 public slots:
 	void run()    override;
 	void update() override;
+	void choiceRun(uint choiceID);
 	//Not a slot, but closely related to these above, so we place it here for clarity
 public:
 	void end()    override;
@@ -149,8 +151,8 @@ signals:
 	void pendSceneryObjectsDisplay(const std::vector<SceneryObject>& sceneryObjects);
 	void pendCharactersDisplay(const std::vector<Character>& characters);
 	void pendEventDialogueDisplay(const std::vector<Sentence>& sentences, uint sentenceReadIndex);
-	void pendEventChoiceDisplay(const std::vector<Choice>& choices);
-
+  void pendEventChoiceDisplay(const QString& menuText, const std::vector<Choice>& choices);
+  
 private:
 	//Nothing can create the Novel, but its methods
 	Novel() = default;

@@ -147,9 +147,9 @@ bool Scene::operator==(const Scene& obj) const noexcept
 void Scene::serializableLoad(QDataStream& dataStream)
 {
     dataStream >> name >> chapterName_ >> scenery;
-    size_t size;
+    uint size;
     dataStream >> size;
-    for (size_t i = 0u; i != size; ++i)
+    for (uint i = 0u; i != size; ++i)
     {
         //TODO: Create an abstract factory for this
         Event* event = nullptr;

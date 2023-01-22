@@ -14,7 +14,7 @@ void swap(Character& first, Character& second) noexcept
 	swap(first.defaultVoice_,     second.defaultVoice_);
 }
 
-Character::Character(const QString& name, const QString& assetImageName, bool bMirrored, const QPoint pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName, AssetImage* assetImage, Voice* defaultVoice)
+Character::Character(const QString& name, const QString& assetImageName, bool bMirrored, const QPointF pos, const QSizeF scale, double rotationDegree, const QVarLengthArray<double, 4>& colorMultiplier, double alphaMultiplier, bool bVisible, const QString& defaultVoiceName, AssetImage* assetImage, Voice* defaultVoice)
 	: SceneryObject(name, assetImageName, bMirrored, pos, scale, rotationDegree, colorMultiplier, alphaMultiplier, bVisible, assetImage),
 	defaultVoiceName_(defaultVoiceName),
 	defaultVoice_(defaultVoice)

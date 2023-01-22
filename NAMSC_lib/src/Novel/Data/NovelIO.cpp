@@ -85,7 +85,7 @@ void Novel::saveChapters()
 	QDir chaptersDir = QDir::currentPath();
 	chaptersDir.mkpath("game\\Chapters");
 
-	for (const std::pair<QString, Chapter>& defaultChapterPair : chapters_)
+	for (const std::pair<const QString, Chapter>& defaultChapterPair : chapters_)
 	{
 		const Chapter& defaultChapter = defaultChapterPair.second;
 		QFile serializedFile(chaptersDir.path() + "\\game\\Chapters\\" + defaultChapter.name);
@@ -196,7 +196,7 @@ void Novel::saveScenes()
 	QDir scenesDir = QDir::currentPath();
 	scenesDir.mkpath("game\\Scenes");
 
-	for (const auto& scenePair : scenes_)
+	for (const std::pair<const QString, Scene>& scenePair : scenes_)
 	{
 		const Scene& scene = scenePair.second;
 		QFile serializedFile(scenesDir.path() + "\\game\\Scenes\\" + scene.name);
@@ -227,7 +227,7 @@ void Novel::saveVoices()
 	QDir voicesDir = QDir::currentPath();
 	voicesDir.mkpath("game\\Voices");
 
-	for (const auto& voicePair : voices_)
+	for (const std::pair<const QString, Voice>& voicePair : voices_)
 	{
 		const Voice& voice = voicePair.second;
 		QFile serializedFile(voicesDir.path() + "\\game\\Voices\\" + voice.name);
