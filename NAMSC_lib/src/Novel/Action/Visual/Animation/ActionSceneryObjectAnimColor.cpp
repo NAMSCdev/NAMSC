@@ -26,21 +26,19 @@ ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(Event* const parentEv
 	errorCheck(true);
 }
 
-//deleted
-//ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor& obj) noexcept 
-//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(const ActionSceneryObjectAnimColor& obj) noexcept 
+	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectAnimColor::operator==(const ActionSceneryObjectAnimColor& obj) const noexcept
-//{
-//	if (this == &obj) 
-//		return true;
-//
-//	return ActionSceneryObjectAnim::operator==(obj);
-//}
+bool ActionSceneryObjectAnimColor::operator==(const ActionSceneryObjectAnimColor& obj) const noexcept
+{
+	if (this == &obj) 
+		return true;
+
+	return ActionSceneryObjectAnim::operator==(obj);
+}
 
 void ActionSceneryObjectAnimColor::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimColor* const assetAnimColor, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
@@ -69,15 +67,14 @@ ActionSceneryObjectAnimColor::ActionSceneryObjectAnimColor(ActionSceneryObjectAn
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectAnimColor& ActionSceneryObjectAnimColor::operator=(ActionSceneryObjectAnimColor obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectAnimColor& ActionSceneryObjectAnimColor::operator=(ActionSceneryObjectAnimColor obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSceneryObjectAnimColor::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble4D>* assetAnim) noexcept
 {

@@ -132,6 +132,7 @@
     <QtMoc Include="src\Novel\Widget\SceneWidget.h" />
     <QtMoc Include="src\Novel\Widget\TextWidget.h" />
     <QtMoc Include="src\Novel\Widget\ChoiceWidget.h" />
+    <QtMoc Include="src\Novel\Widget\ChoiceTextWidget.h" />
     <ClInclude Include="src\Novel\Widget\DisplayNameWidget.h" />
     <ClInclude Include="src\Novel\Widget\DisplayTextWidget.h" />
     <ClInclude Include="src\Serialization.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="src\Novel\Event\EventRun.cpp" />
     <ClCompile Include="src\Novel\Event\EventWait.cpp" />
     <ClCompile Include="src\Novel\SceneComponent.cpp" />
+    <ClCompile Include="src\Novel\Widget\ChoiceTextWidget.cpp" />
     <ClCompile Include="src\Novel\Widget\ChoiceWidget.cpp" />
     <ClCompile Include="src\Novel\Widget\DisplayNameWidget.cpp" />
     <ClCompile Include="src\Novel\Widget\DisplayTextWidget.cpp" />

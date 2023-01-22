@@ -87,7 +87,7 @@ void Translation::defaultLanguageChangeFix(const QString& oldDefaultLanguage)
 		return;
 
 	if (oldDefaultLanguage == NovelSettings::getInstance().defaultLanguage)
-		qInfo() << "Copying old defaultLanguage Translation text to the new defaultLanguage. Possible inconsistency: languages should differ, but to fill the empty space, we copy the very probably wrong one, so any text can be displayed at all";
+		qInfo() << "Copying old defaultLanguage Translation translation to the new defaultLanguage. Possible inconsistency: languages should differ, but to fill the empty space, we copy the very probably wrong one, so any text can be displayed at all";
 }
 
 QString Translation::text(const QString language) const noexcept

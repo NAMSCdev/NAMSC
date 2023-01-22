@@ -4,7 +4,7 @@
 class DisplayTextWidget : public QGraphicsWidget
 {
 public:
-	DisplayTextWidget(const QString& text);
+	explicit DisplayTextWidget(const QString& text);
 	DisplayTextWidget(const DisplayTextWidget&)            = delete;
 	DisplayTextWidget& operator=(const DisplayTextWidget&) = delete;
 
@@ -13,6 +13,5 @@ public:
 	QString text;
 
 private:
-	QFont   font_   = QFont("Fantasque Sans Mono", 24);
-	int     height_ = 0;
+	QFont font_ = QFont("Fantasque Sans Mono", 24);
 };

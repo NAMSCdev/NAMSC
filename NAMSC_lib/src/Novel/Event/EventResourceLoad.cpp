@@ -3,7 +3,7 @@
 
 void Event::ensureResourcesAreLoaded()
 {
-	for (std::unique_ptr<Action>& action : actions_)
+	for (std::shared_ptr<Action>& action : actions_)
 		action->ensureResourcesAreLoaded();
 
 	scenery.ensureResourcesAreLoaded();

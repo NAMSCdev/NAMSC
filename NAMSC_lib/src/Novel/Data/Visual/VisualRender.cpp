@@ -3,7 +3,7 @@
 #include "Novel/Data/Novel.h"
 #include "Novel/Widget/SceneWidget.h"
 
-void Scenery::render(SceneWidget* sceneWidget)
+void Scenery::render(SceneWidget* sceneWidget) const
 {
 	if (sceneWidget)
 	{

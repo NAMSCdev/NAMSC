@@ -12,9 +12,7 @@ DisplayTextWidget::DisplayTextWidget(const QString& text)
 {
 	font_.setStyleHint(QFont::Helvetica, QFont::PreferAntialias);
 	QFontMetrics metrics(font_);
-	height_        = metrics.height();
-	int lineHeight = metrics.lineSpacing();
-	setMinimumSize(WIDTH, height_ + lineHeight * ADDITIONAL_LINES);
+	setMinimumSize(WIDTH, metrics.height() + metrics.lineSpacing() * ADDITIONAL_LINES);
 }
 
 void DisplayTextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -22,9 +20,5 @@ void DisplayTextWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem*
 	painter->setPen(QColor(225, 209, 168, 235));
 	painter->setRenderHint(QPainter::Antialiasing);
 	painter->setFont(font_);
-
-	QTextOption options;
-	options.setAlignment(Qt::AlignVCenter);
-
-	painter->drawText(QRectF(8,0, WIDTH - 8, rect().height()), text);
+	painter->drawText(QRectF(8.0, 0.0, rect().width() - 8.0, rect().height()), text);
 }

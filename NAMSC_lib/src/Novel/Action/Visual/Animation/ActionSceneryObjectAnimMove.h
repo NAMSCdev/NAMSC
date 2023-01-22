@@ -12,7 +12,7 @@ class ActionSceneryObjectAnimMove final : public ActionSceneryObjectAnim<AnimNod
 	/// Swap trick
 	friend void swap(ActionSceneryObjectAnimMove& first, ActionSceneryObjectAnimMove& second) noexcept;
 public:
-	explicit ActionSceneryObjectAnimMove(Event* const parentEvent)                 noexcept;
+	explicit ActionSceneryObjectAnimMove(Event* const parentEvent) noexcept;
 	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param assetAnim Copies the AssetAnim pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param priority Animations can be queued, this is the priority in the queue (lower number equals higher priority)
@@ -22,12 +22,11 @@ public:
 	/// \param timesPlayed `-1` means infinite times
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName` or couldn't find the **move** AssetAnim named `assetAnimName`
 	ActionSceneryObjectAnimMove(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetAnimName = "", uint priority = 0, uint startDelay = 0, double speed = 1.0, int timesPlayed = 1, bool bFinishAnimationAtEventEnd = false, SceneryObject* sceneryObject = nullptr, AssetAnim<AnimNodeDouble2D>* assetAnim = nullptr);
-	ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj)            noexcept = delete;
-	ActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove&& obj)                 noexcept;
-	ActionSceneryObjectAnimMove& operator=(const ActionSceneryObjectAnimMove& obj) noexcept = delete;
-	//ActionSceneryObjectAnimMove& operator=(ActionSceneryObjectAnimMove obj)        noexcept;
-	bool operator==(const ActionSceneryObjectAnimMove& obj) const                  noexcept = delete;
-	bool operator!=(const ActionSceneryObjectAnimMove& obj) const                  noexcept = delete;
+	ActionSceneryObjectAnimMove(const ActionSceneryObjectAnimMove& obj)     noexcept;
+	ActionSceneryObjectAnimMove(ActionSceneryObjectAnimMove&& obj)          noexcept;
+	ActionSceneryObjectAnimMove& operator=(ActionSceneryObjectAnimMove obj) noexcept;
+	bool operator==(const ActionSceneryObjectAnimMove& obj) const           noexcept;
+	bool operator!=(const ActionSceneryObjectAnimMove& obj) const           noexcept = default;
 
 	/// \exception Error `sceneryObject_`/`assetAnim_` is invalid
 	/// \return Whether an Error has occurred

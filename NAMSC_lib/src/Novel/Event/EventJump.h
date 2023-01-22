@@ -13,11 +13,11 @@ public:
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or the `jumpToSceneName` points to a deleted Scene or the `condition` is not structured properly
 	EventJump(Scene* const parentScene, const QString& label, const QString& jumpToSceneName = "", const QString& condition = "");
-	EventJump(const EventJump& obj)             noexcept = delete;
-	EventJump(EventJump&& obj)                  noexcept;
-	EventJump& operator=(const EventJump& obj)  noexcept = delete;
-	bool operator==(const EventJump& obj) const noexcept = delete;
-	bool operator!=(const EventJump& obj) const noexcept = delete;
+	EventJump(const EventJump& obj)              noexcept;
+	EventJump(EventJump&& obj)                   noexcept;
+	EventJump& operator=(EventJump obj)          noexcept;
+	bool operator==(const EventJump& obj)  const noexcept;
+	bool operator!=(const EventJump& obj)  const noexcept = default;
 
 	/// \exception Error invalid Action in `actions_` / invalid `regex` / invalid `Stat` / invalid `logicalExpression`
 	/// \return Whether an Error has occurred

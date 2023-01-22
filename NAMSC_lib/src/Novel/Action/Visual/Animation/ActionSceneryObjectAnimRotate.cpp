@@ -26,20 +26,18 @@ ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(Event* const parent
 	errorCheck(true);
 }
 
-//deleted	
-//ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(const ActionSceneryObjectAnimRotate& obj) noexcept
-//	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
-//	onRun_(obj.onRun_)
-//{
-//}
+ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(const ActionSceneryObjectAnimRotate& obj) noexcept
+	: ActionSceneryObjectAnim(obj.parentEvent, obj.sceneryObjectName_, obj.assetAnimName_, obj.priority, obj.startDelay, obj.speed, obj.timesPlayed, obj.bFinishAnimationAtEventEnd, obj.sceneryObject_, obj.assetAnim_),
+	onRun_(obj.onRun_)
+{
+}
 
-//deleted
-//bool ActionSceneryObjectAnimRotate::operator==(const ActionSceneryObjectAnimRotate& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return ActionSceneryObjectAnim::operator==(obj);
-//}
+bool ActionSceneryObjectAnimRotate::operator==(const ActionSceneryObjectAnimRotate& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return ActionSceneryObjectAnim::operator==(obj);
+}
 
 void ActionSceneryObjectAnimRotate::setOnRunListener(std::function<void(const Event* const parentEvent, const SceneryObject* const parentSceneryObject, const AssetAnimRotate* const assetAnimRotate, const uint& priority, const uint& startDelay, const double& speed, const int& timesPlayed, const bool& bFinishAnimationAtEventEnd)> onRun) noexcept
 {
@@ -68,15 +66,14 @@ ActionSceneryObjectAnimRotate::ActionSceneryObjectAnimRotate(ActionSceneryObject
 	swap(*this, obj);
 }
 
-//deleted
-//ActionSceneryObjectAnimRotate& ActionSceneryObjectAnimRotate::operator=(ActionSceneryObjectAnimRotate obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	swap(*this, obj);
-//
-//	return *this;
-//}
+ActionSceneryObjectAnimRotate& ActionSceneryObjectAnimRotate::operator=(ActionSceneryObjectAnimRotate obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void ActionSceneryObjectAnimRotate::setAssetAnim(const QString& assetAnimName, AssetAnim<AnimNodeDouble1D>* assetAnim) noexcept
 {

@@ -11,8 +11,7 @@ DisplayNameWidget::DisplayNameWidget(const QString& text)
 {
 	font_.setStyleHint(QFont::Helvetica, QFont::PreferAntialias);
 	QFontMetrics metrics(font_);
-	height_ = metrics.height();
-	setMinimumSize(WIDTH, height_);
+	setMinimumSize(WIDTH, metrics.height());
 }
 
 void DisplayNameWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -24,5 +23,5 @@ void DisplayNameWidget::paint(QPainter* painter, const QStyleOptionGraphicsItem*
 	QTextOption options;
 	options.setAlignment(Qt::AlignVCenter);
 
-	painter->drawText(QRectF(0, 0, WIDTH, height_), text, options);
+	painter->drawText(QRectF(0, 0, rect().width(), rect().height()), text, options);
 }

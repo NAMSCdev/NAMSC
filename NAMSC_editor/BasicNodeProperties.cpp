@@ -65,4 +65,4 @@ void BasicNodeProperties::updateLabelInNode()
 	currentlySelectedNode->setLabel(lineEditText);
     currentlySelectedNode->update();
     emit sceneUpdated(Novel::getInstance().getScene(lineEditText));
-}
+}	

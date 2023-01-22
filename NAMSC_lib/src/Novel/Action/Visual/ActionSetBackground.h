@@ -20,17 +20,16 @@ public:
 		SweepRight	//[optional]
 	};
 
-	explicit ActionSetBackground(Event* const parentEvent)         noexcept;
+	explicit ActionSetBackground(Event* const parentEvent) noexcept;
 	/// \param transitionTime In milliseconds
 	/// \param assetImage Copies the AssetImage pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error Couldn't find the AssetImage named `assetImageName`
 	ActionSetBackground(Event* const parentEvent, const QString& assetImageName, const TransitionType transitionType, uint transitionTime, AssetImage* assetImage = nullptr);
-	ActionSetBackground(const ActionSetBackground& obj)            noexcept = delete;
-	ActionSetBackground(ActionSetBackground&& obj)                 noexcept;
-	ActionSetBackground& operator=(const ActionSetBackground& obj) noexcept = delete;
-	//ActionSetBackground& operator=(ActionSetBackground obj)        noexcept;
-	bool operator==(const ActionSetBackground& obj) const          noexcept = delete;
-	bool operator!=(const ActionSetBackground& obj) const          noexcept = delete;
+	ActionSetBackground(const ActionSetBackground& obj)     noexcept;
+	ActionSetBackground(ActionSetBackground&& obj)          noexcept;
+	ActionSetBackground& operator=(ActionSetBackground obj) noexcept;
+	bool operator==(const ActionSetBackground& obj) const   noexcept;
+	bool operator!=(const ActionSetBackground& obj) const   noexcept = default;
 
 	/// \exception Error 'assetImage_` is invalid
 	/// \return Whether an Error has occurred

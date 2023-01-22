@@ -21,7 +21,7 @@ template<typename AnimNode>
 class AssetAnim final : public AssetAnimBase
 {
 public:
-	AssetAnim()                            = default;
+	AssetAnim() = default;
 	/// \exception Error Could not find/open/read the Resource file or one of the AnimNode in `animNodes_` has a duplicate `timeStamp'
 	AssetAnim(const QString& name, uint size, uint pos = 0, const QString& path = "", bool bErrorCheck = true)
 		: AssetAnimBase(name, size, pos, path)
@@ -29,7 +29,7 @@ public:
 		if (bErrorCheck)
 			errorCheck(true);
 	}
-	AssetAnim(const AssetAnim& obj) = delete;
+	AssetAnim(const AssetAnim& obj)        = delete;
 	AssetAnim(AssetAnim&& obj)             = default;
 	AssetAnim& operator=(const AssetAnim&) = default;
 

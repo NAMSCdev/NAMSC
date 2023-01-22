@@ -21,14 +21,12 @@ ActionAudio::ActionAudio(Event* const parentEvent, const AudioSettings& audioSet
 {
 }
 
-//deleted
-//bool ActionAudio::operator==(const ActionAudio& obj) const noexcept
-//{
-//	if (this == &obj) return true;
-//
-//	return Action::operator==(obj)             &&
-//		   audioSettings_ == obj.audioSettings_;
-//}
+bool ActionAudio::operator==(const ActionAudio& obj) const noexcept
+{
+	if (this == &obj) return true;
+
+	return audioSettings_ == obj.audioSettings_;
+}
 
 void ActionAudio::serializableLoad(QDataStream& dataStream)
 {

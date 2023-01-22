@@ -12,17 +12,16 @@ class ActionSceneryObjectSetImage final : public ActionSceneryObject
 	/// Swap trick
 	friend void swap(ActionSceneryObjectSetImage& first, ActionSceneryObjectSetImage& second) noexcept;
 public:
-	explicit ActionSceneryObjectSetImage(Event* const parentEvent)                 noexcept;
+	explicit ActionSceneryObjectSetImage(Event* const parentEvent) noexcept;
 	/// \param sceneryObject Copies the SceneryObject pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization 
 	/// \param assetImage Copies the AssetImage pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error Couldn't find the SceneryObject named `sceneryObjectName` or couldn't find/read the AssetImage named `assetImageName`
 	ActionSceneryObjectSetImage(Event* const parentEvent, const QString& sceneryObjectName, const QString& assetImageName = "", SceneryObject* sceneryObject = nullptr, AssetImage* assetImage = nullptr);
-	ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj)            noexcept = delete;
-	ActionSceneryObjectSetImage(ActionSceneryObjectSetImage&& obj)                 noexcept;
-	ActionSceneryObjectSetImage& operator=(const ActionSceneryObjectSetImage& obj) noexcept = delete;
-	//ActionSceneryObjectSetImage& operator=(ActionSceneryObjectSetImage obj)        noexcept;
-	bool operator==(const ActionSceneryObjectSetImage& obj) const                  noexcept = delete;
-	bool operator!=(const ActionSceneryObjectSetImage& obj) const                  noexcept = delete;
+	ActionSceneryObjectSetImage(const ActionSceneryObjectSetImage& obj)     noexcept;
+	ActionSceneryObjectSetImage(ActionSceneryObjectSetImage&& obj)          noexcept;
+	ActionSceneryObjectSetImage& operator=(ActionSceneryObjectSetImage obj) noexcept;
+	bool operator==(const ActionSceneryObjectSetImage& obj) const           noexcept;
+	bool operator!=(const ActionSceneryObjectSetImage& obj) const           noexcept = default;
 
 	/// \exception Error `sceneryObject_`/`imageAsset_` is invalid
 	/// \return Whether an Error has occurred

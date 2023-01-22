@@ -9,7 +9,7 @@ class SceneWidget : public QGraphicsView
 {
 	Q_OBJECT
 public:
-	SceneWidget(QWidget* parent = nullptr);
+	explicit SceneWidget(QWidget* parent = nullptr);
 	SceneWidget(const SceneWidget&)            = delete;
 	SceneWidget& operator=(const SceneWidget&) = delete;
 
@@ -24,24 +24,26 @@ public:
 	bool removeSceneryObjectWidget(size_t index);
 	void clearSceneryObjectWidgets() noexcept;
 
-	void resizeEvent(QResizeEvent* event) override;
 	void drawBackground(QPainter* painter, const QRectF& rect) override;
-	void wheelEvent(QWheelEvent* event) override;
-	void mousePressEvent(QMouseEvent* event) override;
 
 public slots:
 	void displayBackground(const QImage* img);
-	void displayEventChoice(const std::vector<Choice>& choices);
+	void displayEventChoice(const QString& menuText, const std::vector<Choice>& choices);
 	void displayEventDialogue(const std::vector<Sentence>& sentences, uint sentenceReadIndex = 0u);
 	void displaySceneryObjects(const std::vector<SceneryObject>& sceneryObjects);
 	void displayCharacters(const std::vector<Character>& characters);
 
 signals:
 	void pendNovelEnd();
-	void pendChoiceRun(uint choice);
+	void pendChoiceRun(uint choiceID);
 	void LPMClicked();
 
 private:
+	void resizeEvent(QResizeEvent* event)          override;
+	void wheelEvent(QWheelEvent* event)            override;
+	void mousePressEvent(QMouseEvent* event)       override;
+	void mouseDoubleClickEvent(QMouseEvent* event) override;
+
 	std::vector<SceneryObjectWidget*> sceneryObjectWidgets_;
 
 	QTransform transformMatrix_;

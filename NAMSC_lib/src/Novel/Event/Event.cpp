@@ -2,6 +2,7 @@
 
 #include "Novel/Action/ActionAll.h"
 #include "Novel/Data/Scene.h"
+#include "Helpers.h"
 
 Event::~Event() = default;
 
@@ -11,15 +12,73 @@ Event::~Event() = default;
 void swap(Event& first, Event& second) noexcept
 {
 	using std::swap;
-	swap(first.label, second.label);
-	swap(first.scenery, second.scenery);
+	swap(first.label,    second.label);
+	swap(first.scenery,  second.scenery);
 	swap(first.actions_, second.actions_);
 }
 
-Event::Event(Scene* const parentScene, const QString& label)
-	: parentScene(parentScene), 
-	label(label)
+Event::Event(Scene* const parentScene, const QString& label, const std::vector<std::shared_ptr<Action>>& actions)
+	: parentScene(parentScene),
+	label(label),
+	scenery(parentScene)
 {
+	for (const std::shared_ptr<Action>& action : actions)
+	{
+		//TODO: create abstract factory for this
+		Action* clone = nullptr;
+		switch (action->getType())
+		{
+		case NovelLib::SerializationID::ActionAudioSetMusic:
+			clone = new ActionAudioSetMusic(this);
+			*static_cast<ActionAudioSetMusic*>(clone) = *(static_cast<ActionAudioSetMusic*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionAudioSetSounds:
+			clone = new ActionAudioSetSounds(this);
+			*static_cast<ActionAudioSetSounds*>(clone) = *(static_cast<ActionAudioSetSounds*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionStatSetValue:
+			clone = new ActionStatSetValue(this);
+			*static_cast<ActionStatSetValue*>(clone) = *(static_cast<ActionStatSetValue*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectAnimColor:
+			clone = new ActionSceneryObjectAnimColor(this);
+			*static_cast<ActionSceneryObjectAnimColor*>(clone) = *(static_cast<ActionSceneryObjectAnimColor*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectAnimMove:
+			clone = new ActionSceneryObjectAnimMove(this);
+			*static_cast<ActionSceneryObjectAnimMove*>(clone) = *(static_cast<ActionSceneryObjectAnimMove*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectAnimRotate:
+			clone = new ActionSceneryObjectAnimRotate(this);
+			*static_cast<ActionSceneryObjectAnimRotate*>(clone) = *(static_cast<ActionSceneryObjectAnimRotate*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectAnimScale:
+			clone = new ActionSceneryObjectAnimScale(this);
+			*static_cast<ActionSceneryObjectAnimScale*>(clone) = *(static_cast<ActionSceneryObjectAnimScale*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectAnimFade:
+			clone = new ActionSceneryObjectAnimFade(this);
+			*static_cast<ActionSceneryObjectAnimFade*>(clone) = *(static_cast<ActionSceneryObjectAnimFade*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionCharacterSetVoice:
+			clone = new ActionCharacterSetVoice(this);
+			*static_cast<ActionCharacterSetVoice*>(clone) = *(static_cast<ActionCharacterSetVoice*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSceneryObjectSetImage:
+			clone = new ActionSceneryObjectSetImage(this);
+			*static_cast<ActionSceneryObjectSetImage*>(clone) = *(static_cast<ActionSceneryObjectSetImage*>(action.get()));
+			break;
+		case NovelLib::SerializationID::ActionSetBackground:
+			clone = new ActionSetBackground(this);
+			*static_cast<ActionSetBackground*>(clone) = *(static_cast<ActionSetBackground*>(action.get()));
+			break;
+		default:
+			qCritical() << NovelLib::ErrorType::General << "Invalid Action's type" << static_cast<int>(action->getType());
+			continue;
+			break;
+		}
+		actions_.emplace_back(clone);
+	}
 }
 
 void Event::serializableLoad(QDataStream& dataStream)
@@ -33,7 +92,8 @@ void Event::serializableLoad(QDataStream& dataStream)
 		NovelLib::SerializationID type;
 		dataStream >> type;
 
-		Action* action;
+		//TODO: create abstract factory for this
+		Action* action = nullptr;
 		switch (type)
 		{
 		case NovelLib::SerializationID::ActionAudioSetMusic:
@@ -70,7 +130,8 @@ void Event::serializableLoad(QDataStream& dataStream)
 			action = new ActionSetBackground(this);
 			break;
 		default:
-			qCritical() << NovelLib::ErrorType::General << "Invalid Action's Type" << static_cast<int>(type);
+			qCritical() << NovelLib::ErrorType::General << "Invalid Action's type" << static_cast<int>(type);
+			continue;
 			break;
 		}
 		dataStream >> *action;
@@ -81,7 +142,7 @@ void Event::serializableLoad(QDataStream& dataStream)
 void Event::serializableSave(QDataStream& dataStream) const
 {
 	dataStream << getType() << label;
-	for (const std::unique_ptr<Action>& action : actions_)
+	for (const std::shared_ptr<Action>& action : actions_)
 		dataStream << *action;
 }
 
@@ -95,63 +156,63 @@ Event::Event(Event&& obj) noexcept
 
 uint Event::getIndex() const
 {
-	const std::vector<std::unique_ptr<Event>>* events = parentScene->getEvents();
-	return std::find_if(events->cbegin(), events->cend(), [&](const std::unique_ptr<Event>& obj) { return this == obj.get(); }) - events->cbegin();
+	const std::vector<std::shared_ptr<Event>>* events = parentScene->getEvents();
+	return std::find_if(events->cbegin(), events->cend(), [this](const std::shared_ptr<Event>& obj) { return (obj && (this == obj.get())); }) - events->cbegin();
 }
 
-const std::vector<std::unique_ptr<Action>>* Event::getActions() const noexcept
+const std::vector<std::shared_ptr<Action>>* Event::getActions() const noexcept
 {
 	return &actions_;
 }
 
-const Action* Event::getAction(uint actionIndex) const
+const std::shared_ptr<Action> Event::getAction(uint index) const
 {
-#define getActionBody                   \
-    if (actionIndex >= actions_.size()) \
-    {                                   \
-        qCritical() << NovelLib::ErrorType::General << "Tried to get an Action past the `actions_` container's size (" + QString::number(actionIndex) + " >= " + QString::number(actions_.size()) + ") in an Event \"" + label + "\", Scene \"" + parentScene->name + '\"'; \
-        return nullptr;                 \
-    }                                   \
-                                        \
-    return actions_[actionIndex].get();
-	getActionBody
+	return *NovelLib::Helpers::listGet(actions_, index, "Action", NovelLib::ErrorType::ActionMissing, "Event", QString::number(getIndex()), "Scene", parentScene->name);
 }
 
-Action* Event::getAction(uint actionIndex)
+std::shared_ptr<Action> Event::getAction(uint index)
 {
-	getActionBody
-#undef getActionBody
+	return *NovelLib::Helpers::listGet(actions_, index, "Action", NovelLib::ErrorType::ActionMissing, "Event", QString::number(getIndex()), "Scene", parentScene->name);
 }
 
-void Event::addAction(Action* action)
+const std::vector<std::shared_ptr<Action>>* Event::setActions(const std::vector<std::shared_ptr<Action>>& actions) noexcept
 {
-	actions_.emplace_back(action);
+	return &(actions_ = std::move(actions));
 }
 
-bool Event::insertAction(uint actionIndex, Action* action)
+const std::vector<std::shared_ptr<Action>>* Event::setActions(std::vector<std::shared_ptr<Action>>&& actions) noexcept
 {
-	if (actionIndex > actions_.size())
-	{
-		qCritical() << NovelLib::ErrorType::General << "Tried to insert a new Action past the `actions_` container's size (" + QString::number(actionIndex) + " > " + QString::number(actions_.size()) + ") in an Event \"" + label + "\", Scene \"" + parentScene->name + '\"';
-		return false;
-	}
-
-	actions_.emplace(actions_.begin() + actionIndex, action);
-
-	return true;
+	return &(actions_ = std::move(actions));
 }
 
-bool Event::removeAction(uint actionIndex)
+std::shared_ptr<Action> Event::addAction(Action* action)
 {
-	if (actionIndex >= actions_.size())
-	{
-		qCritical() << NovelLib::ErrorType::General << "Tried to remove an Action past the `actions_` container's size (" + QString::number(actionIndex) + " >= " + QString::number(actions_.size()) + ") in an Event \"" + label + "\", Scene \"" + parentScene->name + '\"';
-		return false;
-	}
+	return *NovelLib::Helpers::listAdd(actions_, std::move(std::shared_ptr<Action>(action)), "Action", NovelLib::ErrorType::ActionInvalid, "Event", QString::number(getIndex()), "Scene", parentScene->name);
+}
 
-	actions_.erase(actions_.begin() + actionIndex);
+std::shared_ptr<Action> Event::addAction(std::shared_ptr<Action>&& action)
+{
+	return *NovelLib::Helpers::listAdd(actions_, std::move(action), "Action", NovelLib::ErrorType::ActionInvalid, "Event", QString::number(getIndex()), "Scene", parentScene->name);
+}
 
-	return true;
+std::shared_ptr<Action> Event::insertAction(uint index, Action* action)
+{
+	return *NovelLib::Helpers::listInsert(actions_, index, std::move(std::shared_ptr<Action>(action)), "Action", NovelLib::ErrorType::ActionInvalid, "Event", QString::number(getIndex()), "Scene", parentScene->name);
+}
+
+std::shared_ptr<Action> Event::insertAction(uint index, std::shared_ptr<Action>&& action)
+{
+	return *NovelLib::Helpers::listInsert(actions_, index, std::move(action), "Action", NovelLib::ErrorType::ActionInvalid, "Event", QString::number(getIndex()), "Scene", parentScene->name);
+}
+
+std::shared_ptr<Action> Event::reinsertAction(uint index, uint newIndex)
+{
+	return *NovelLib::Helpers::listReinsert(actions_, index, newIndex, "Action", NovelLib::ErrorType::ActionMissing, NovelLib::ErrorType::ActionInvalid, "Event", QString::number(getIndex()), "Scene", parentScene->name);
+}
+
+bool Event::removeAction(uint index)
+{
+	return NovelLib::Helpers::listRemove(actions_, index, "Action", NovelLib::ErrorType::ActionMissing, "Event", QString::number(getIndex()), "Scene", parentScene->name);
 }
 
 void Event::clearActions() noexcept

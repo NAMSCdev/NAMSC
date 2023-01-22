@@ -32,21 +32,26 @@ public slots:
 	void mouseClicked();
 
 private:
-	std::vector<std::pair<QString, QString>> text_;
-	QGraphicsLinearLayout* layout      = nullptr;
+	std::vector<QString> names_,
+						 text_;
+
+	QGraphicsLinearLayout* layout_     = nullptr;
 	DisplayNameWidget*     nameWidget_ = nullptr;
 	DisplayTextWidget*     textWidget_ = nullptr;
 
-	uint sentenceReadIndex_ = 0u,
-		 cps_               = 40u;
+	uint sentenceReadIndex_ = 0u;
+	std::vector<uint> cpsList_;
+	std::vector<uint> lengths_;
 
-	QStringView   cpsView_;
 	QElapsedTimer cpsTimer_;
 	QTimer        cpsCallTimer_;
 
 	QPen drawPen_;
 
-	bool bNarrate_          = false,
-		 bPreview_          = false;
+	double clickTimePoint_ = 0.0;
+	std::vector<double> requiredTimes_;
 
+	bool bNarrate_ = false,
+		 bSkip_    = false,
+		 bPreview_ = false;
 };

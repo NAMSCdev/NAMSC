@@ -23,17 +23,29 @@ public:
 	void saveAllAssetsDefinitions();
 
 	/// \return Pointer to the **color** AssetAnim or nullptr if it wasn't found
-	AssetAnimColor* getAssetAnimColor(const QString&          name);
+	const AssetAnimColor* getAssetAnimColor(const QString&          name) const;
+	/// \return Pointer to the **color** AssetAnim or nullptr if it wasn't found
+	AssetAnimColor* getAssetAnimColor(const QString&                name);
 	/// \return Pointer to the **move** AssetAnim or nullptr if it wasn't found
-	AssetAnimMove* getAssetAnimMove(const QString&            name);
+	const AssetAnimMove* getAssetAnimMove(const QString&            name) const;
+	/// \return Pointer to the **move** AssetAnim or nullptr if it wasn't found
+	AssetAnimMove* getAssetAnimMove(const QString&                  name);
 	/// \return Pointer to the **rotate** AssetAnim or nullptr if it wasn't found
-	AssetAnimRotate* getAssetAnimRotate(const QString&        name);
+	const AssetAnimRotate* getAssetAnimRotate(const QString&        name) const;
+	/// \return Pointer to the **rotate** AssetAnim or nullptr if it wasn't found
+	AssetAnimRotate* getAssetAnimRotate(const QString&              name);
+	/// \return Pointer to the **rotate** AssetAnim or nullptr if it wasn't found
+	const AssetAnimScale* getAssetAnimScale(const QString&         name) const;
 	/// \return Pointer to the **scale** AssetAnim or nullptr if it wasn't found
-	AssetAnimScale* getAssetAnimScale(const QString&          name);
+	AssetAnimScale* getAssetAnimScale(const QString&                name);
 	/// \return Pointer to the **background** AssetImage or nullptr if it wasn't found
-	AssetImage* getAssetImageSceneryBackground(const QString& name);
+	const AssetImage* getAssetImageSceneryBackground(const QString& name) const;
+	/// \return Pointer to the **background** AssetImage or nullptr if it wasn't found
+	AssetImage* getAssetImageSceneryBackground(const QString&       name);
 	/// \return Pointer to the **sprite** AssetImage or nullptr if it wasn't found
-	AssetImage* getAssetImageSceneryObject(const QString&     name);
+	const AssetImage* getAssetImageSceneryObject(const QString&     name) const;
+	/// \return Pointer to the **sprite** AssetImage or nullptr if it wasn't found
+	AssetImage* getAssetImageSceneryObject(const QString&           name);
 
 	/// \exception Error `name` is not unique within the `colorAnims` container 
 	AssetAnimColor* addAssetAnimColor(const QString&          name, uint size, uint pos = 0, const QString& path = "");

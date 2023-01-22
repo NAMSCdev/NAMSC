@@ -27,10 +27,22 @@ EventJump::EventJump(Scene* const parentScene, const QString& label, const QStri
 	errorCheck(true);
 }
 
-EventJump::EventJump(EventJump&& obj) noexcept
-	: Event(obj.parentScene)
+EventJump::EventJump(const EventJump& obj) noexcept
+	: Event(obj.parentScene, obj.label, obj.actions_),
+	jumpToSceneName(obj.jumpToSceneName),
+	condition(obj.condition),
+	onRun_(obj.onRun_)
 {
-	swap(*this, obj);
+}
+
+bool EventJump::operator==(const EventJump& obj) const noexcept
+{
+	if (this == &obj)
+		return true;
+
+	return actions_        == obj.actions_        &&
+		   jumpToSceneName == obj.jumpToSceneName &&
+		   condition       == obj.condition;
 }
 
 void EventJump::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const QString& jumpToSceneName, const QString& condition)> onRun) noexcept
@@ -53,6 +65,21 @@ void EventJump::serializableSave(QDataStream& dataStream) const
 }
 
 //  MEMBER_FIELD_SECTION_CHANGE END
+
+EventJump::EventJump(EventJump&& obj) noexcept
+	: Event(obj.parentScene)
+{
+	swap(*this, obj);
+}
+
+EventJump& EventJump::operator=(EventJump obj) noexcept
+{
+	if (this == &obj) return *this;
+
+	swap(*this, obj);
+
+	return *this;
+}
 
 void EventJump::acceptVisitor(EventVisitor* visitor) 
 {

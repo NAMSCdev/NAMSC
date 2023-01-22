@@ -68,3 +68,7 @@ void Action::update()
 void Action::end() 
 {
 }
+
+void Action::syncWithSave()
+{
+}

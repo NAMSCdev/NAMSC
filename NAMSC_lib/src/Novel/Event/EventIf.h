@@ -11,11 +11,11 @@ public:
 	/// \param label Displayed in the Editor to distinquish important Events
 	/// \exception One of the Actions contains an Error or the `condition` couldn't be parsed
 	EventIf(Scene* const parentScene, const QString& label, const QString& condition = "");
-	EventIf(const EventIf& obj)                noexcept = delete;
+	EventIf(const EventIf& obj)                noexcept;
 	EventIf(EventIf&& obj)                     noexcept;
-	EventIf& operator=(const EventIf& obj)     noexcept = delete;
-	bool operator==(const EventIf& obj) const  noexcept = delete;
-	bool operator!=(const EventIf& obj) const  noexcept = delete;
+	EventIf& operator=(EventIf obj)            noexcept;
+	bool operator==(const EventIf& obj) const  noexcept;
+	bool operator!=(const EventIf& obj) const  noexcept = default;
 
 	/// \exception Error One of the Actions is invalid / `condition` is invalid
 	/// \return Whether an Error has occurred

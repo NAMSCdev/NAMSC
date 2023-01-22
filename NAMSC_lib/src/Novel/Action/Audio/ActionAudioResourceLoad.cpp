@@ -2,6 +2,6 @@
 
 void ActionAudioSetSounds::ensureResourcesAreLoaded()
 {
-	for (std::pair<const QString, Sound>& sound : sounds)
-		sound.second.load();
+	for (Sound& sound : sounds_)
+		sound.load();
 }

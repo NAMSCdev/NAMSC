@@ -9,6 +9,11 @@
 #include "Novel/Data/Visual/Animation/AnimatorSceneryObjectScale.h"
 #include "Helpers.h"
 
+Scenery::Scenery(const Scene* const parentScene) noexcept
+	: parentScene(parentScene)
+{
+}
+
 //If you add/remove a member field, remember to update these
 //  MEMBER_FIELD_SECTION_CHANGE BEGIN
 
@@ -23,8 +28,9 @@ void swap(Scenery& first, Scenery& second) noexcept
 	swap(first.backgroundAssetImage_,     second.backgroundAssetImage_);
 }
 
-Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::vector<Character>& displayedCharacters, const std::vector<SceneryObject>& displayedSceneryObjects, const std::vector<Sound>& sounds, AssetImage* backgroundAssetImage)
-	: backgroundAssetImageName_(backgroundAssetImageName),
+Scenery::Scenery(const Scene* const parentScene, const QString& backgroundAssetImageName, const MusicPlaylist& musicPlaylist, const std::vector<Character>& displayedCharacters, const std::vector<SceneryObject>& displayedSceneryObjects, const std::vector<Sound>& sounds, AssetImage* backgroundAssetImage)
+	: parentScene(parentScene),
+	backgroundAssetImageName_(backgroundAssetImageName),
 	musicPlaylist(musicPlaylist), 
 	displayedCharacters_(displayedCharacters), 
 	displayedSceneryObjects_(displayedSceneryObjects), 
@@ -36,31 +42,31 @@ Scenery::Scenery(const QString& backgroundAssetImageName, const MusicPlaylist& m
 	errorCheck(true);
 }
 
-//defaulted
-//Scenery::Scenery(const Scenery& obj) noexcept
-//	: backgroundAssetImageName_(obj.backgroundAssetImageName_),
-//	musicPlaylist(obj.musicPlaylist),
-//	displayedCharacters_(obj.displayedCharacters_),
-//	displayedSceneryObjects_(obj.displayedSceneryObjects_),
-//	sounds_(obj.sounds_),
-//	backgroundAssetImage_(obj.backgroundAssetImage_)
-//{
-//}
+Scenery::Scenery(const Scenery& obj) noexcept
+	: parentScene(obj.parentScene),
+	backgroundAssetImageName_(obj.backgroundAssetImageName_),
+	musicPlaylist(obj.musicPlaylist),
+	displayedCharacters_(obj.displayedCharacters_),
+	displayedSceneryObjects_(obj.displayedSceneryObjects_),
+	sounds_(obj.sounds_),
+	backgroundAssetImage_(obj.backgroundAssetImage_)
+{
+}
 
-//defaulted
-//Scenery& Scenery::operator=(const Scenery& obj) noexcept
-//{
-//	if (this == &obj) return *this;
-//
-//	backgroundAssetImageName_ = obj.backgroundAssetImageName_;
-//	backgroundAssetImage_     = obj.backgroundAssetImage_;
-//	musicPlaylist             = obj.musicPlaylist;
-//	displayedCharacters_      = obj.displayedCharacters_;
-//	displayedSceneryObjects_  = obj.displayedSceneryObjects_;
-//	sounds_                   = obj.sounds_;
-//
-//	return *this; 
-//}
+Scenery& Scenery::operator=(const Scenery& obj) noexcept
+{
+	if (this == &obj)
+		return *this;
+
+	backgroundAssetImageName_ = obj.backgroundAssetImageName_;
+	musicPlaylist             = obj.musicPlaylist;
+	displayedCharacters_      = obj.displayedCharacters_;
+	displayedSceneryObjects_  = obj.displayedSceneryObjects_;
+	sounds_                   = obj.sounds_;
+	backgroundAssetImage_     = obj.backgroundAssetImage_;
+
+	return *this;
+}
 
 bool Scenery::operator==(const Scenery& obj) const noexcept
 {
@@ -117,12 +123,11 @@ void Scenery::serializableSave(QDataStream& dataStream) const
 
 //  MEMBER_FIELD_SECTION_CHANGE END
 
-//defaulted
-//Scenery::Scenery(Scenery&& obj) noexcept
-//	: Scenery()
-//{
-//	swap(*this, obj);
-//}
+Scenery::Scenery(Scenery&& obj) noexcept
+	: Scenery(obj.parentScene)
+{
+	swap(*this, obj);
+}
 
 void Scenery::addAnimator(AnimatorSceneryObjectColor&& animatorColor)
 {
@@ -200,39 +205,69 @@ const std::vector<Character>* Scenery::getDisplayedCharacters() const noexcept
 	return &displayedCharacters_;
 }
 
+const Character* Scenery::getDisplayedCharacter(uint index) const
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedCharacters_, index, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+Character* Scenery::getDisplayedCharacter(uint index)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedCharacters_, index, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
 const Character* Scenery::getDisplayedCharacter(const QString& characterName) const
 {
-	return NovelLib::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 Character* Scenery::getDisplayedCharacter(const QString& characterName)
 {
-	return NovelLib::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
-void Scenery::setDisplayedCharacters(const std::vector<Character>& characters) noexcept
+const std::vector<Character>* Scenery::setDisplayedCharacters(const std::vector<Character>& characters) noexcept
 {
-	displayedCharacters_ = characters;
+	return &(displayedCharacters_ = characters);
+}
+
+const std::vector<Character>* Scenery::setDisplayedCharacters(std::vector<Character>&& characters) noexcept
+{
+	return &(displayedCharacters_ = std::move(characters));
 }
 
 Character* Scenery::insertDisplayedCharacter(uint index, const Character& character)
 {
-	return NovelLib::listInsert(displayedCharacters_, index, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listInsert(displayedCharacters_, index, character, "Character", NovelLib::ErrorType::CharacterInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+Character* Scenery::insertDisplayedCharacter(uint index, Character&& character)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listInsert(displayedCharacters_, index, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+Character* Scenery::reinsertDisplayedCharacter(uint index, uint newIndex)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listReinsert(displayedCharacters_, index, newIndex, "Character", NovelLib::ErrorType::CharacterMissing, NovelLib::ErrorType::CharacterInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 Character* Scenery::addDisplayedCharacter(const Character& character)
 {
-	return NovelLib::listAdd(displayedCharacters_, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(displayedCharacters_, character, "Character", NovelLib::ErrorType::CharacterInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 Character* Scenery::addDisplayedCharacter(Character&& character)
 {
-	return NovelLib::listAdd(displayedCharacters_, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(displayedCharacters_, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 bool Scenery::removeDisplayedCharacter(const QString& characterName)
 {
-	return NovelLib::listRemove(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::listRemove(displayedCharacters_, characterName, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
+}
+
+bool Scenery::removeDisplayedCharacter(uint index)
+{
+	return NovelLib::Helpers::listRemove(displayedCharacters_, index, "Character", NovelLib::ErrorType::CharacterMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
 }
 
 void Scenery::clearDisplayedCharacters() noexcept
@@ -245,39 +280,69 @@ const std::vector<SceneryObject>* Scenery::getDisplayedSceneryObjects() const no
 	return &displayedSceneryObjects_;
 }
 
+const SceneryObject* Scenery::getDisplayedSceneryObject(uint index) const
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedSceneryObjects_, index, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+SceneryObject* Scenery::getDisplayedSceneryObject(uint index)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedSceneryObjects_, index, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
 const SceneryObject* Scenery::getDisplayedSceneryObject(const QString& sceneryObjectName) const
 {
-	return NovelLib::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 SceneryObject* Scenery::getDisplayedSceneryObject(const QString& sceneryObjectName)
 {
-	return NovelLib::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
-void Scenery::setDisplayedSceneryObjects(const std::vector<SceneryObject>& sceneryObjects) noexcept
+const std::vector<SceneryObject>* Scenery::setDisplayedSceneryObjects(const std::vector<SceneryObject>& sceneryObjects) noexcept
 {
-	displayedSceneryObjects_ = sceneryObjects;
+	return &(displayedSceneryObjects_ = sceneryObjects);
+}
+
+const std::vector<SceneryObject>* Scenery::setDisplayedSceneryObjects(std::vector<SceneryObject>&& sceneryObjects) noexcept
+{
+	return &(displayedSceneryObjects_ = std::move(sceneryObjects));
 }
 
 SceneryObject* Scenery::insertDisplayedSceneryObject(uint index, const SceneryObject& sceneryObject)
 {
-	return NovelLib::listInsert(displayedSceneryObjects_, index, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listInsert(displayedSceneryObjects_, index, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+SceneryObject* Scenery::insertDisplayedSceneryObject(uint index, SceneryObject&& sceneryObject)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listInsert(displayedSceneryObjects_, index, std::move(sceneryObject), "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+SceneryObject* Scenery::reinsertDisplayedSceneryObject(uint index, uint newIndex)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listReinsert(displayedSceneryObjects_, index, newIndex, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, NovelLib::ErrorType::SceneryObjectInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 SceneryObject* Scenery::addDisplayedSceneryObject(const SceneryObject& sceneryObject)
 {
-	return NovelLib::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 SceneryObject* Scenery::addDisplayedSceneryObject(SceneryObject&& sceneryObject)
 {
-	return NovelLib::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(displayedSceneryObjects_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 bool Scenery::removeDisplayedSceneryObject(const QString& sceneryObjectName)
 {
-	return NovelLib::listRemove(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::Helpers::listRemove(displayedSceneryObjects_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
+}
+
+bool Scenery::removeDisplayedSceneryObject(uint index)
+{
+	return NovelLib::Helpers::listRemove(displayedSceneryObjects_, index, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
 }
 
 void Scenery::clearDisplayedSceneryObject() noexcept
@@ -290,47 +355,54 @@ const std::vector<Sound>* Scenery::getSounds() const noexcept
 	return &sounds_;
 }
 
+const Sound* Scenery::getSound(uint index) const
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(sounds_, index, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
+Sound* Scenery::getSound(uint index)
+{
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(sounds_, index, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
+}
+
 const Sound* Scenery::getSound(const QString& soundName) const
 {
-	//TODO: Sound errors
-	return NovelLib::listGet(sounds_, soundName, "Sound");
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(sounds_, soundName, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 Sound* Scenery::getSound(const QString& soundName)
 {
-	//TODO: Sound errors
-	return NovelLib::listGet(sounds_, soundName, "Sound");
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listGet(sounds_, soundName, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
-void Scenery::setSounds(const std::vector<Sound>& sounds) noexcept
+const std::vector<Sound>* Scenery::setSounds(const std::vector<Sound>& sounds) noexcept
 {
-	sounds_ = sounds;
+	return &(sounds_ = sounds);
 }
 
-Sound* Scenery::insertSound(uint index, const Sound& sound)
+const std::vector<Sound>* Scenery::setSounds(std::vector<Sound>&& sounds) noexcept
 {
-	//TODO: Sound errors
-	return NovelLib::listInsert(sounds_, index, sound, "Sound");
+	return &(sounds = std::move(sounds));
 }
 
 Sound* Scenery::addSound(const Sound& sound)
 {
-	//TODO: Sound errors
-	return NovelLib::listAdd(sounds_, sound, "Sound");
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(sounds_, sound, "Sound", NovelLib::ErrorType::SoundInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 Sound* Scenery::addSound(Sound&& sound)
 {
-	//return nullptr;
-	//TODO: Sound errors
-	return NovelLib::listAdd(sounds_, std::move(sound), "Sound");
+	return NovelLib::Helpers::itToPtr(NovelLib::Helpers::listAdd(sounds_, std::move(sound), "Sound", NovelLib::ErrorType::SoundInvalid, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : "")));
 }
 
 bool Scenery::removeSound(const QString& soundName)
 {
-	//return true;
-	//TODO: Sound errors
-	return NovelLib::listRemove(sounds_, soundName, "Sound");
+	return NovelLib::Helpers::listRemove(sounds_, soundName, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
+}
+
+bool Scenery::removeSound(uint index)
+{
+	return NovelLib::Helpers::listRemove(sounds_, index, "Sound", NovelLib::ErrorType::SoundMissing, (parentScene ? "Scene" : ""), (parentScene ? parentScene->name : ""));
 }
 
 void Scenery::clearSounds() noexcept

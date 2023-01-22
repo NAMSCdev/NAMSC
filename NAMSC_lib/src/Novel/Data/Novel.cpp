@@ -40,6 +40,7 @@ SceneWidget* Novel::createSceneWidget()
 	connect(this,         &Novel::pendEventChoiceDisplay,    sceneWidget_, &SceneWidget::displayEventChoice);
 	connect(this,         &Novel::pendEventDialogueDisplay,  sceneWidget_, &SceneWidget::displayEventDialogue);
 	connect(sceneWidget_, &SceneWidget::pendNovelEnd,        this,         &Novel::end);
+	connect(sceneWidget_, &SceneWidget::pendChoiceRun,       this,         &Novel::choiceRun);
 
 	return sceneWidget_;
 }
@@ -54,34 +55,44 @@ const std::unordered_map<QString, Chapter>* Novel::getChapters() const noexcept
 	return &chapters_;
 }
 
-const Chapter* Novel::getChapter(const QString& chapterName) const
+const Chapter* Novel::getChapter(const QString& name) const
 {
-	return NovelLib::mapGet(chapters_, chapterName, "Chapter", NovelLib::ErrorType::ChapterMissing);
+	return NovelLib::Helpers::mapGet(chapters_, name, "Chapter", NovelLib::ErrorType::ChapterMissing);
 }
 
-Chapter* Novel::getChapter(const QString& chapterName)
+Chapter* Novel::getChapter(const QString& name)
 {
-	return NovelLib::mapGet(chapters_, chapterName, "Chapter", NovelLib::ErrorType::ChapterMissing);
+	return NovelLib::Helpers::mapGet(chapters_, name, "Chapter", NovelLib::ErrorType::ChapterMissing);
 }
 
-void Novel::setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept
+const std::unordered_map<QString, Chapter>* Novel::setChapters(const std::unordered_map<QString, Chapter>& chapters) noexcept
 {
-	chapters_ = chapters;
+	return &(chapters_ = chapters);
 }
 
-Chapter* Novel::setChapter(const Chapter& chapter)
+const std::unordered_map<QString, Chapter>* Novel::setChapters(std::unordered_map<QString, Chapter>&& chapters) noexcept
 {
- 	return NovelLib::mapSet(chapters_, chapter, "Chapter", NovelLib::ErrorType::ChapterInvalid);
+	return &(chapters_ = std::move(chapters));
+}
+
+Chapter* Novel::setChapter(const Chapter& chapter) noexcept
+{
+ 	return NovelLib::Helpers::mapSet(chapters_, chapter, "Chapter", NovelLib::ErrorType::ChapterInvalid);
+}
+
+Chapter* Novel::setChapter(Chapter&& chapter) noexcept
+{
+	return NovelLib::Helpers::mapSet(chapters_, std::move(chapter), "Chapter", NovelLib::ErrorType::ChapterInvalid);
 }
 
 Chapter* Novel::renameChapter(const QString& oldName, const QString& newName)
 {
-	return NovelLib::mapRename(chapters_, oldName, newName, "Chapter", NovelLib::ErrorType::ChapterMissing, NovelLib::ErrorType::ChapterInvalid);
+	return NovelLib::Helpers::mapRename(chapters_, oldName, newName, "Chapter", NovelLib::ErrorType::ChapterMissing, NovelLib::ErrorType::ChapterInvalid);
 }
 
-bool Novel::removeChapter(const QString& chapterName)
+bool Novel::removeChapter(const QString& name)
 {
-	return NovelLib::mapRemove(chapters_, chapterName, "Chapter", NovelLib::ErrorType::ChapterMissing);
+	return NovelLib::Helpers::mapRemove(chapters_, name, "Chapter", NovelLib::ErrorType::ChapterMissing);
 }
 
 void Novel::clearChapters() noexcept
@@ -89,39 +100,49 @@ void Novel::clearChapters() noexcept
 	chapters_.clear();
 }
 
-const std::unordered_map<QString, Character>* Novel::getCharacterDefaults() const noexcept
+const std::unordered_map<QString, Character>* Novel::getDefaultCharacters() const noexcept
 {
 	return &characterDefaults_;
 }
 
-const Character* Novel::getDefaultCharacter(const QString& characterName) const
+const Character* Novel::getDefaultCharacter(const QString& name) const
 {
-	return NovelLib::mapGet(characterDefaults_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::mapGet(characterDefaults_, name, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
-Character* Novel::getDefaultCharacter(const QString& characterName)
+Character* Novel::getDefaultCharacter(const QString& name)
 {
-	return NovelLib::mapGet(characterDefaults_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::mapGet(characterDefaults_, name, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
-void Novel::setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept
+const std::unordered_map<QString, Character>* Novel::setDefaultCharacters(const std::unordered_map<QString, Character>& characters) noexcept
 {
-	characterDefaults_ = characters;
+	return &(characterDefaults_ = characters);
 }
 
-Character* Novel::setDefaultCharacter(const Character& character)
+const std::unordered_map<QString, Character>* Novel::setDefaultCharacters(std::unordered_map<QString, Character>&& characters) noexcept
 {
-	return NovelLib::mapSet(characterDefaults_, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+	return &(characterDefaults_ = std::move(characters));
+}
+
+Character* Novel::setDefaultCharacter(const Character& character) noexcept
+{
+	return NovelLib::Helpers::mapSet(characterDefaults_, character, "Character", NovelLib::ErrorType::CharacterInvalid);
+}
+
+Character* Novel::setDefaultCharacter(Character&& character) noexcept
+{
+	return NovelLib::Helpers::mapSet(characterDefaults_, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid);
 }
 
 Character* Novel::renameDefaultCharacter(const QString& oldName, const QString& newName)
 {
-	return NovelLib::mapRename(characterDefaults_, oldName, newName, "Character", NovelLib::ErrorType::CharacterMissing, NovelLib::ErrorType::CharacterInvalid);
+	return NovelLib::Helpers::mapRename(characterDefaults_, oldName, newName, "Character", NovelLib::ErrorType::CharacterMissing, NovelLib::ErrorType::CharacterInvalid);
 }
 
-bool Novel::removeDefaultCharacter(const QString& characterName)
+bool Novel::removeDefaultCharacter(const QString& name)
 {
-	return NovelLib::mapRemove(characterDefaults_, characterName, "Character", NovelLib::ErrorType::CharacterMissing);
+	return NovelLib::Helpers::mapRemove(characterDefaults_, name, "Character", NovelLib::ErrorType::CharacterMissing);
 }
 
 void Novel::clearDefaultCharacters() noexcept
@@ -129,39 +150,49 @@ void Novel::clearDefaultCharacters() noexcept
 	characterDefaults_.clear();
 }
 
-const std::unordered_map<QString, SceneryObject>* Novel::getSceneryObjectDefaults() const noexcept
+const std::unordered_map<QString, SceneryObject>* Novel::getDefaultSceneryObjects() const noexcept
 {
 	return &sceneryObjectDefaults_;
 }
 
-const SceneryObject* Novel::getDefaultSceneryObject(const QString& sceneryObjectName) const
+const SceneryObject* Novel::getDefaultSceneryObject(const QString& name) const
 {
-	return NovelLib::mapGet(sceneryObjectDefaults_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::mapGet(sceneryObjectDefaults_, name, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
-SceneryObject* Novel::getDefaultSceneryObject(const QString& sceneryObjectName)
+SceneryObject* Novel::getDefaultSceneryObject(const QString& name)
 {
-	return NovelLib::mapGet(sceneryObjectDefaults_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::mapGet(sceneryObjectDefaults_, name, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
-void Novel::setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept
+const std::unordered_map<QString, SceneryObject>* Novel::setDefaultSceneryObjects(const std::unordered_map<QString, SceneryObject>& sceneryObjects) noexcept
 {
-	sceneryObjectDefaults_ = sceneryObjects;
+	return &(sceneryObjectDefaults_ = sceneryObjects);
 }
 
-SceneryObject* Novel::setDefaultSceneryObject(const SceneryObject& sceneryObject)
+const std::unordered_map<QString, SceneryObject>* Novel::setDefaultSceneryObjects(std::unordered_map<QString, SceneryObject>&& sceneryObjects) noexcept
 {
-	return NovelLib::mapSet(sceneryObjectDefaults_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+	return &(sceneryObjectDefaults_ = std::move(sceneryObjects));
+}
+
+SceneryObject* Novel::setDefaultSceneryObject(const SceneryObject& sceneryObject) noexcept
+{
+	return NovelLib::Helpers::mapSet(sceneryObjectDefaults_, sceneryObject, "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
+}
+
+SceneryObject* Novel::setDefaultSceneryObject(SceneryObject&& sceneryObject) noexcept
+{
+	return NovelLib::Helpers::mapSet(sceneryObjectDefaults_, std::move(sceneryObject), "SceneryObject", NovelLib::ErrorType::SceneryObjectInvalid);
 }
 
 SceneryObject* Novel::renameDefaultSceneryObject(const QString& oldName, const QString& newName)
 {
-	return NovelLib::mapRename(sceneryObjectDefaults_, oldName, newName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, NovelLib::ErrorType::SceneryObjectInvalid);
+	return NovelLib::Helpers::mapRename(sceneryObjectDefaults_, oldName, newName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing, NovelLib::ErrorType::SceneryObjectInvalid);
 }
 
-bool Novel::removeDefaultSceneryObject(const QString& sceneryObjectName)
+bool Novel::removeDefaultSceneryObject(const QString& name)
 {
-	return NovelLib::mapRemove(sceneryObjectDefaults_, sceneryObjectName, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
+	return NovelLib::Helpers::mapRemove(sceneryObjectDefaults_, name, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }
 
 void Novel::clearDefaultSceneryObject() noexcept
@@ -174,34 +205,39 @@ const std::unordered_map<QString, Scene>* Novel::getScenes() const noexcept
 	return &scenes_;
 }
 
-const Scene* Novel::getScene(const QString& sceneName) const
+const Scene* Novel::getScene(const QString& name) const
 {
-	//TODO: Scene errors
-	return NovelLib::mapGet(scenes_, sceneName, "Scene");
+	return NovelLib::Helpers::mapGet(scenes_, name, "Scene", NovelLib::ErrorType::SceneMissing);
 }
 
-Scene* Novel::getScene(const QString& sceneName)
+Scene* Novel::getScene(const QString& name)
 {
-	//TODO: Scene errors
-	return NovelLib::mapGet(scenes_, sceneName, "Scene");
+	return NovelLib::Helpers::mapGet(scenes_, name, "Scene", NovelLib::ErrorType::SceneMissing);
 }
 
-Scene* Novel::addScene(Scene&& scene)
+const std::unordered_map<QString, Scene>* Novel::setScenes(std::unordered_map<QString, Scene>&& scenes) noexcept
 {
-	//TODO: Scene errors
-	return NovelLib::mapSet(scenes_, std::move(scene), "Scene");
+	return &(scenes_ = std::move(scenes));
+}
+
+Scene* Novel::addScene(const Scene& scene) noexcept
+{
+	return NovelLib::Helpers::mapSet(scenes_, scene, "Scene", NovelLib::ErrorType::SceneInvalid);
+}
+
+Scene* Novel::addScene(Scene&& scene) noexcept
+{
+	return NovelLib::Helpers::mapSet(scenes_, std::move(scene), "Scene", NovelLib::ErrorType::SceneInvalid);
 }
 
 Scene* Novel::renameScene(const QString& oldName, const QString& newName)
 {
-	//TODO: Scene errors
-	return NovelLib::mapRename(scenes_, oldName, newName, "Scene");
+	return NovelLib::Helpers::mapRename(scenes_, oldName, newName, "Scene", NovelLib::ErrorType::SceneMissing, NovelLib::ErrorType::SceneInvalid);
 }
 
-bool Novel::removeScene(const QString& sceneName)
+bool Novel::removeScene(const QString& name)
 {
-	//TODO: Scene errors
-	return NovelLib::mapRemove(scenes_, sceneName, "Scene");
+	return NovelLib::Helpers::mapRemove(scenes_, name, "Scene", NovelLib::ErrorType::SceneMissing);
 }
 
 void Novel::clearScenes() noexcept
@@ -213,34 +249,45 @@ const std::unordered_map<QString, Voice>* Novel::getVoices() const noexcept
 {
 	return &voices_;
 }
-const Voice* Novel::getVoice(const QString& voiceName) const
+
+const Voice* Novel::getVoice(const QString& name) const
 {
-	return NovelLib::mapGet(voices_, voiceName, "Voice", NovelLib::ErrorType::VoiceMissing);
+	return NovelLib::Helpers::mapGet(voices_, name, "Voice", NovelLib::ErrorType::VoiceMissing);
 }
 
-Voice* Novel::getVoice(const QString& voiceName)
+Voice* Novel::getVoice(const QString& name)
 {
-	return NovelLib::mapGet(voices_, voiceName, "Voice", NovelLib::ErrorType::VoiceMissing);
+	return NovelLib::Helpers::mapGet(voices_, name, "Voice", NovelLib::ErrorType::VoiceMissing);
 }
 
-void Novel::setVoices(const std::unordered_map<QString, Voice>& voices) noexcept
+const std::unordered_map<QString, Voice>* Novel::setVoices(const std::unordered_map<QString, Voice>& voices) noexcept
 {
-	voices_ = voices;
+	return &(voices_ = voices);
 }
 
-Voice* Novel::setVoice(const Voice& voice)
+const std::unordered_map<QString, Voice>* Novel::setVoices(std::unordered_map<QString, Voice>&& voices) noexcept
 {
-	return NovelLib::mapSet(voices_,  voice, "Voice", NovelLib::ErrorType::VoiceInvalid);
+	return &(voices_ = std::move(voices));
+}
+
+Voice* Novel::setVoice(const Voice& voice) noexcept
+{
+	return NovelLib::Helpers::mapSet(voices_, voice, "Voice", NovelLib::ErrorType::VoiceInvalid);
+}
+
+Voice* Novel::setVoice(Voice&& voice) noexcept
+{
+	return NovelLib::Helpers::mapSet(voices_, std::move(voice), "Voice", NovelLib::ErrorType::VoiceInvalid);
 }
 
 Voice* Novel::renameVoice(const QString& oldName, const QString& newName)
 {
-	return NovelLib::mapRename(voices_, oldName, newName, "Voice", NovelLib::ErrorType::VoiceMissing, NovelLib::ErrorType::VoiceInvalid);
+	return NovelLib::Helpers::mapRename(voices_, oldName, newName, "Voice", NovelLib::ErrorType::VoiceMissing, NovelLib::ErrorType::VoiceInvalid);
 }
 
-bool Novel::removeVoice(const QString& voiceName)
+bool Novel::removeVoice(const QString& name)
 {
-	return NovelLib::mapRemove(voices_, voiceName, "Voice", NovelLib::ErrorType::VoiceMissing);
+	return NovelLib::Helpers::mapRemove(voices_, name, "Voice", NovelLib::ErrorType::VoiceMissing);
 }
 
 void Novel::clearVoices() noexcept

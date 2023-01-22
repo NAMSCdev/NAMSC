@@ -18,7 +18,7 @@ SceneWidget::SceneWidget(QWidget* parent)
 	setScene(new QGraphicsScene());
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	setSceneRect(rect());
+	scene()->setSceneRect(rect());
 	setViewport(new QOpenGLWidget());
 	//todo: support other resolutions I guess
 	transformMatrix_.reset();
@@ -102,7 +102,7 @@ void SceneWidget::clearSceneryObjectWidgets() noexcept
 
 void SceneWidget::resizeEvent(QResizeEvent* event)
 {
-	QGraphicsView::resizeEvent(event);
+	QGraphicsView::resizeEvent(event);	
 	const QSizeF& size = event->size();
 	setSceneRect(QRectF(0.0, 0.0, RESOLUTION_X, RESOLUTION_Y));
 	transformMatrix_.reset();
@@ -129,6 +129,8 @@ void SceneWidget::drawBackground(QPainter* painter, const QRectF& rect)
 void SceneWidget::wheelEvent(QWheelEvent* event)
 {
 	event->ignore();
+	return;
+	//QGraphicsView::wheelEvent(event);
 }
 
 void SceneWidget::mousePressEvent(QMouseEvent* event)
@@ -138,10 +140,17 @@ void SceneWidget::mousePressEvent(QMouseEvent* event)
 		emit LPMClicked();
 }
 
-void SceneWidget::displayEventChoice(const std::vector<Choice>& choices)
+void SceneWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
-	ChoiceWidget* choiceWidget = new ChoiceWidget(scene(), choices, bPreview_);
-	//connect(choiceWidget, &ChoiceWidget::pendNovelEnd, this,         &SceneWidget::pendNovelEnd);
+	QGraphicsView::mouseDoubleClickEvent(event);
+	if (event->button() == Qt::MouseButton::LeftButton)
+		emit LPMClicked();
+}
+
+void SceneWidget::displayEventChoice(const QString& menuText, const std::vector<Choice>& choices)
+{
+	ChoiceWidget* choiceWidget = new ChoiceWidget(scene(), menuText, choices, bPreview_);
+	connect(choiceWidget, &ChoiceWidget::chosen, this, &SceneWidget::pendChoiceRun);
 	//Takes ownership and will delete it later
 	scene()->addItem(choiceWidget);
 }
@@ -149,8 +158,8 @@ void SceneWidget::displayEventChoice(const std::vector<Choice>& choices)
 void SceneWidget::displayEventDialogue(const std::vector<Sentence>& sentences, uint sentenceReadIndex)
 {
 	TextWidget* textWidget = new TextWidget(scene(), sentences, sentenceReadIndex, bPreview_);
-	connect(textWidget, &TextWidget::pendNovelEnd,      this,       &SceneWidget::pendNovelEnd);
-	connect(this,       &SceneWidget::LPMClicked,       textWidget, &TextWidget::mouseClicked);
+	connect(textWidget, &TextWidget::pendNovelEnd,this,       &SceneWidget::pendNovelEnd);
+	connect(this,       &SceneWidget::LPMClicked, textWidget, &TextWidget::mouseClicked);
 	//Takes ownership and will delete it later
 	scene()->addItem(textWidget);
 }

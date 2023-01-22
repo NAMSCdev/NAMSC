@@ -5,7 +5,7 @@
 class DisplayNameWidget final : public QGraphicsWidget
 {
 public:
-	DisplayNameWidget(const QString& text);
+	explicit DisplayNameWidget(const QString& text);
 	DisplayNameWidget(const DisplayNameWidget&)            = delete;
 	DisplayNameWidget& operator=(const DisplayNameWidget&) = delete;
 
@@ -14,6 +14,5 @@ public:
 	QString text;
 
 private:
-	QFont   font_ = QFont("Fantasque Sans Mono", 40, -1, true);
-	int     height_ = 0;
+	QFont font_ = QFont("Fantasque Sans Mono", 40, -1, true);
 };
