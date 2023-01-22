@@ -8,6 +8,7 @@ void Scenery::render(SceneWidget* sceneWidget)
 		//if (backgroundAssetImage_ && backgroundAssetImage_->isLoaded())
 			//sceneWidget->changeBackground(backgroundAssetImage_->getImage());
 
+		sceneWidget->clearSceneryObjectWidgets();
 		auto renderSceneryObject = [&sceneWidget](SceneryObject& sceneryObject)
 		{
 			AssetImage* sprite = sceneryObject.getAssetImage();
