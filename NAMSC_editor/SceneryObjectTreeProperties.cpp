@@ -40,23 +40,23 @@ void SceneryObjectTreeProperties::prepareDataInUi()
 void SceneryObjectTreeProperties::updateScaleX(double x)
 {
 	sceneryObject->scale = QSizeF(x, sceneryObject->scale.height());
-	// todo eventually emit signal to inform about change
+	emit parametersChanged();
 }
 
 void SceneryObjectTreeProperties::updateScaleY(double y)
 {
 	sceneryObject->scale = QSizeF(sceneryObject->scale.width(), y);
-	// todo eventually emit signal to inform about change
+	emit parametersChanged();
 }
 
 void SceneryObjectTreeProperties::updateAlphaMultiplier(double multiplier)
 {
 	sceneryObject->alphaMultiplier = multiplier;
-	// todo eventually emit signal to inform about change
+	emit parametersChanged();
 }
 
 void SceneryObjectTreeProperties::updateRotation(double rotation)
 {
 	sceneryObject->rotationDegree = rotation;
-	// todo eventually emit signal to inform about change
+	emit parametersChanged();
 }

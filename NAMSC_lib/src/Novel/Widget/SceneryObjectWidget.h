@@ -13,6 +13,16 @@ public:
 	void switchToPreview();
 	void switchToDisplay();
 
+	const QString& getName() const noexcept;
+
+	signals:
+		void sceneryObjectPositionChanged(const QString& name, const QPointF& pos);
+		void sceneryObjectSelectionChanged(const QString& name, bool selected);
+
+protected:
+	QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
+
 private:
+	QString name;
 	bool preview_;
 };

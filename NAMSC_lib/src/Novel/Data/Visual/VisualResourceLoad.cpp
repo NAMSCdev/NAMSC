@@ -26,6 +26,6 @@ void Scenery::ensureResourcesAreLoaded()
 		if (!sound.isLoaded())
 			sound.load();
 
-	if (!backgroundAssetImage_->isLoaded())
+	if (backgroundAssetImage_ != nullptr && !backgroundAssetImage_->isLoaded())
 		backgroundAssetImage_->load();
 }

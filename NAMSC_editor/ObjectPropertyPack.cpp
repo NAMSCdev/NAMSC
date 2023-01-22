@@ -20,6 +20,11 @@ ObjectPropertyPack::~ObjectPropertyPack()
 	delete layout;
 }
 
+const SceneryObjectTreeProperties* const ObjectPropertyPack::getSceneryObjectTreeProperties()
+{
+	return sceneryObjectTreeProperties;
+}
+
 void ObjectPropertyPack::initProperties()
 {
 	sceneryObjectTreeProperties = new SceneryObjectTreeProperties(currentlySelectedObject, layout->parentWidget());

@@ -12,6 +12,9 @@ public:
 	SceneryObjectTreeProperties(SceneryObject* sceneryObject, QWidget *parent = nullptr);
 	~SceneryObjectTreeProperties();
 
+	signals:
+		void parametersChanged();
+
 private:
 	void prepareConnections();
 	void prepareDataInUi();
