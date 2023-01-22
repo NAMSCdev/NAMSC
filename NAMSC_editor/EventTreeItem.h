@@ -23,10 +23,13 @@ public:
     QVariant getSubname() const;
     int row() const;
     EventTreeItem* parentItem();
+    Qt::ItemFlags getFlags();
+    void setFlags(Qt::ItemFlags flags);
     SceneComponent* component;
 
 private:
     QList<EventTreeItem*> m_childItems;
     EventTreeItem* m_parentItem;
+    Qt::ItemFlags flags;
 };
 

@@ -207,6 +207,7 @@ void NAMSC_editor::prepareSceneEditor()
                     }
                     ev->scenery.addDisplayedSceneryObject(tempSceneryObject); // should make a copy
                     ev->run();
+					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
                 }
             }
             else
@@ -224,6 +225,7 @@ void NAMSC_editor::prepareSceneEditor()
                 {
                     ev->scenery.setBackgroundAssetImage(item->sceneryObject->getAssetImageName());
                     ev->run();
+					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
                 }
             }
             else
@@ -252,6 +254,7 @@ void NAMSC_editor::prepareSceneEditor()
                     }
                     ev->scenery.addDisplayedCharacter(tempCharacter); // should make a copy
                     ev->run();
+					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
                 }
             }
             else
