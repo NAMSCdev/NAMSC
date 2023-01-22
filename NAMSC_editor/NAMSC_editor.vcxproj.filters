@@ -51,9 +51,6 @@
     <Filter Include="Header Files\Properties\Objects">
       <UniqueIdentifier>{4d9888d1-64ba-4d67-8ae0-fd131c7753d0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\MarkedForDeletion">
-      <UniqueIdentifier>{58311dc6-d5c8-411e-b287-a334623e98c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ProjectConfiguation">
       <UniqueIdentifier>{a817905a-2345-4900-84d6-ee5e4cff091a}</UniqueIdentifier>
     </Filter>
@@ -190,6 +187,9 @@
     <ClCompile Include="SceneryObjectOnSceneProperties.cpp">
       <Filter>Source Files\Properties\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="SceneEditorWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="GraphConnectionPoint.h">
@@ -260,6 +260,9 @@
     </QtMoc>
     <QtMoc Include="SceneryObjectOnSceneProperties.h">
       <Filter>Header Files\Properties\Objects</Filter>
+    </QtMoc>
+    <QtMoc Include="SceneEditorWidget.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

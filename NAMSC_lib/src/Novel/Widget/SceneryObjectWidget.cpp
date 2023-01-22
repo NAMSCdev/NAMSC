@@ -8,6 +8,7 @@ SceneryObjectWidget::SceneryObjectWidget(const SceneryObject& sceneryObject, int
 	{
 		setFlag(ItemIsMovable);
 		setFlag(ItemIsFocusable);
+		setFlag(ItemIsSelectable);
 		setFlag(ItemSendsGeometryChanges);
 	}
 	QImage img = *sceneryObject.getAssetImage()->getImage();
@@ -23,6 +24,7 @@ SceneryObjectWidget::SceneryObjectWidget(const SceneryObject& sceneryObject, int
 	setPos(sceneryObject.pos.x(), sceneryObject.pos.y());
 	setTransformationMode(Qt::SmoothTransformation);
 	setTransform(transformMatrix_);
+	name = sceneryObject.name;
 }
 
 void SceneryObjectWidget::switchToPreview()
@@ -30,6 +32,7 @@ void SceneryObjectWidget::switchToPreview()
 	bPreview_ = true;
 	setFlag(ItemIsMovable);
 	setFlag(ItemIsFocusable);
+	setFlag(ItemIsSelectable);
 	setFlag(ItemSendsGeometryChanges);
 }
 
@@ -38,5 +41,19 @@ void SceneryObjectWidget::switchToDisplay()
 	bPreview_ = false;
 	setFlag(ItemIsMovable,            false);
 	setFlag(ItemIsFocusable,          false);
+	setFlag(ItemIsSelectable,		  false);
 	setFlag(ItemSendsGeometryChanges, false);
+}
+
+const QString& SceneryObjectWidget::getName() const noexcept
+{
+	return name;
+}
+
+QVariant SceneryObjectWidget::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+	if (change == ItemPositionHasChanged) emit sceneryObjectPositionChanged(name, value.toPointF());
+	else if (change == ItemSelectedHasChanged) emit sceneryObjectSelectionChanged(name, value.toBool());
+
+	return QGraphicsPixmapItem::itemChange(change, value);
 }

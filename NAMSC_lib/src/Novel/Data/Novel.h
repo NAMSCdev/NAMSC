@@ -5,6 +5,8 @@
 #include "Novel/Data/NovelSettings.h"
 #include "Novel/Data/Save/NovelState.h"
 #include "Novel/Data/Scene.h"
+#include "Novel/Data/Text/Choice.h"
+#include "Novel/Data/Text/Sentence.h"
 #include "Novel/Data/Text/Voice.h"
 #include "Novel/Data/Visual/Scenery/Character.h"
 #include "Novel/Data/Visual/Scenery/Scenery.h"
@@ -150,6 +152,7 @@ signals:
 	void pendCharactersDisplay(const std::vector<Character>& characters);
 	void pendEventDialogueDisplay(const std::vector<Sentence>& sentences, uint sentenceReadIndex);
 	void pendEventChoiceDisplay(const QString& menuText, const std::vector<Choice>& choices);
+	void pendSceneClear();
 
 private:
 	//Nothing can create the Novel, but its methods

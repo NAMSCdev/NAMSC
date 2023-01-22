@@ -29,6 +29,8 @@ public slots:
 private:
     Ui::NAMSC_editorClass ui;
 
+    static std::weak_ptr<Event> currentlySelectedEvent;
+
     PropertyConnectionSwitchboard switchboard;
     QGraphicsScene* scene; // todo remove?
     GraphNode* node;
@@ -38,6 +40,7 @@ private:
     QList<QMimeType> supportedAudioFormats;
     void prepareAssetsTree();
     void prepareEventsTree();
+    void prepareSceneEditor();
     void supportedFormats();
     QFileSystemModel* model;
     CustomSortFilterProxyModel* proxyFileFilter;
@@ -49,9 +52,38 @@ private:
     QAction* addChoiceEventAction;
     QAction* addJumpEventAction;
 
+    QAction* removeObjectFromSceneEditorAction;
+
     void createDanglingContextMenuActions();
     void invokeEventsContextMenu(const QPoint& pos);
 
+    void invokeSceneEditorContextMenu(const QPoint& pos);
+
     void loadGraph(GraphView* graph);
     void saveGraph(GraphView* graph);
+
+    bool isInCharacters(QString name)
+    {
+        for (auto elem : *currentlySelectedEvent.lock()->scenery.getDisplayedCharacters())
+        {
+            if (elem.name == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool isInSceneryObjects(QString name)
+    {
+        for (auto elem : *currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObjects())
+        {
+            if (elem.name == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 };

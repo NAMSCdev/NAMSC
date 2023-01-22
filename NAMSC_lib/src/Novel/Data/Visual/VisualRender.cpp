@@ -8,9 +8,8 @@ void Scenery::render(SceneWidget* sceneWidget) const
 {
 	if (sceneWidget)
 	{
-		Novel& novel = Novel::getInstance();
-		if (backgroundAssetImage_)
-			emit novel.pendBackgroundDisplay(backgroundAssetImage_->getImage());
+		//if (backgroundAssetImage_ && backgroundAssetImage_->isLoaded())
+			//sceneWidget->changeBackground(backgroundAssetImage_->getImage());
 
 		emit novel.pendSceneryObjectsDisplay(displayedSceneryObjects_);
 

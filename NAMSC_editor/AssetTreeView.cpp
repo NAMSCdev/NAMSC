@@ -11,12 +11,13 @@
 #include <qmessagebox.h>
 
 #include "CustomSortFilterProxyModel.h"
+#include "ProjectConfiguration.h"
 #include "Novel/Data/Novel.h"
 
 
 AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
 {
-    QUrl projectPath = QUrl::fromLocalFile("F:/inzynierka/NAMSC/NAMSC_editor/");
+    QUrl projectPath = QUrl::fromLocalFile(ProjectConfiguration::getInstance()->getProjectPath().path());
     fileModel = new QFileSystemModel;
     QModelIndex rootPath = fileModel->setRootPath(projectPath.toLocalFile());
     proxyFileFilter = new CustomSortFilterProxyModel(this);
@@ -36,6 +37,8 @@ AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
 	        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
 	        if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
 	        {
+                AssetManager::getInstance().addAssetImageSceneryObject(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
+                AssetManager::getInstance().addAssetImageSceneryBackground(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
 	            return true;
 	        }
 	    }

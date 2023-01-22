@@ -12,6 +12,8 @@ public:
 	ObjectPropertyPack(SceneryObject* item);
 	~ObjectPropertyPack();
 
+	const SceneryObjectTreeProperties* const getSceneryObjectTreeProperties();
+
 private:
 	SceneryObject* currentlySelectedObject;
 

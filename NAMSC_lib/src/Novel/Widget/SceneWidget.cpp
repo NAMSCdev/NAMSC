@@ -50,6 +50,11 @@ const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index) con
 	return sceneryObjectWidgets_[index];
 }
 
+const SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(const QString& name) const
+{
+	return *std::ranges::find_if(sceneryObjectWidgets_, [&](const SceneryObjectWidget* elem) { return elem->getName() == name; });
+}
+
 SceneryObjectWidget* SceneWidget::getSceneryObjectWidget(size_t index)
 {
 	return sceneryObjectWidgets_[index];
@@ -64,6 +69,9 @@ void SceneWidget::addSceneryObjectWidget(const SceneryObject& sceneryObject, int
 	sceneryObjectWidgets_.push_back(sceneryObjectWidget);
 	scene()->addItem(sceneryObjectWidget);
 	//sceneryObjectWidget->setZValue(scene()->items().size() - 1);
+
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectPositionChanged, this, &SceneWidget::sceneryObjectPositionChangedPass);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectSelectionChanged, this, &SceneWidget::sceneryObjectSelectionChangedPass);
 }
 
 bool SceneWidget::insertSceneryObjectWidget(size_t index, const SceneryObject& sceneryObject)
@@ -74,12 +82,14 @@ bool SceneWidget::insertSceneryObjectWidget(size_t index, const SceneryObject& s
 		return false;
 	}
 	SceneryObjectWidget* sceneryObjectWidget = new SceneryObjectWidget(sceneryObject, index, bPreview_);
-
+	
+	sceneryObjectWidgets_.insert(sceneryObjectWidgets_.begin() + index, sceneryObjectWidget);
 	scene()->addItem(sceneryObjectWidget);
-	sceneryObjectWidgets_.insert(sceneryObjectWidgets_.begin() + index, std::move(sceneryObjectWidget));
 	//Correct Z-Values after inserting a new element
 	//for (int i = 0; i != sceneryObjectWidgets_.size(); ++i)
 	//	(*(sceneryObjectWidgets_.begin() + i))->setZValue(i);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectPositionChanged, this, &SceneWidget::sceneryObjectPositionChangedPass);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectSelectionChanged, this, &SceneWidget::sceneryObjectSelectionChangedPass);
 	return true;
 }
 
@@ -90,6 +100,7 @@ bool SceneWidget::removeSceneryObjectWidget(size_t index)
 		qCritical() << NovelLib::ErrorType::General << "Tried to remove past \"sceneryObjectWidgets_\" size";
 		return false;
 	}
+	scene()->removeItem(sceneryObjectWidgets_.at(index));
 	sceneryObjectWidgets_.erase(sceneryObjectWidgets_.begin() + index);
 	//Removing an item doesn't need to correct Z-Values
 	return true;
@@ -188,9 +199,25 @@ void SceneWidget::displayCharacters(const std::vector<Character>& characters)
 	update();
 }
 
+void SceneWidget::clearScene()
+{
+	scene()->clear();
+	clearSceneryObjectWidgets();
+}
+
 void SceneWidget::displayBackground(const QImage* img)
 {
 	//No resize needed, since it is cached
 	QBrush brush(*img/*->scaled(size())*/);
 	scene()->setBackgroundBrush(brush);
+}
+
+void SceneWidget::sceneryObjectPositionChangedPass(const QString& name, const QPointF& pos)
+{
+	emit sceneryObjectPositionChanged(name, pos);
+}
+
+void SceneWidget::sceneryObjectSelectionChangedPass(const QString& name, bool selected)
+{
+	emit sceneryObjectSelectionChanged(name, selected);
 }
