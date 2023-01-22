@@ -8,5 +8,6 @@ enum class PropertyTypes
 	ChoiceEventItem,
 	DialogEventItem,
 	JumpEventItem,
-    Scene
+    Scene,
+	ObjectOnScene
 };

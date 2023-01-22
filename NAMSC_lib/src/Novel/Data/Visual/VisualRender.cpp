@@ -1,4 +1,5 @@
 #include "Novel/Data/Visual/Scenery/Scenery.h"
+#include "Novel/Widget/SceneWidget.h"
 
 #include "Novel/Data/Novel.h"
 #include "Novel/Widget/SceneWidget.h"

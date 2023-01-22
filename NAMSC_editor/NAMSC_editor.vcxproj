@@ -135,6 +135,7 @@
     <ClCompile Include="GraphNodePropertiesPack.cpp" />
     <ClCompile Include="ProjectConfiguration.cpp" />
     <ClCompile Include="PropertyConnectionSwitchboard.cpp" />
+    <ClCompile Include="SceneryObjectOnSceneProperties.cpp" />
     <ClCompile Include="SceneryObjectTreeProperties.cpp" />
     <ClCompile Include="SceneryObjectVariant.cpp" />
     <QtRcc Include="NAMSC_editor.qrc" />
@@ -150,6 +151,7 @@
     <ClCompile Include="main.cpp" />
     <None Include="NAMSC_editor.ico" />
     <QtUic Include="NewProjectDialog.ui" />
+    <QtUic Include="SceneryObjectOnSceneProperties.ui" />
     <QtUic Include="SceneryObjectTreeProperties.ui" />
     <ResourceCompile Include="NAMSC_editor.rc" />
   </ItemGroup>
@@ -171,6 +173,7 @@
     <QtMoc Include="SceneryObjectTreeProperties.h" />
     <QtMoc Include="LineEditDelegate.h" />
     <QtMoc Include="JumpEventProperties.h" />
+    <QtMoc Include="SceneryObjectOnSceneProperties.h" />
     <ClInclude Include="SceneryObjectVariant.h" />
     <ClInclude Include="TreeWidgetItemTypes.h" />
     <QtMoc Include="PropertyConnectionSwitchboard.h" />

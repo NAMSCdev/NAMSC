@@ -12,6 +12,7 @@ DialogEventProperties::DialogEventProperties(EventDialogue* dialogue, QWidget *p
 
 	ui.dialogEventCollapseButton->setContent(ui.dialogEventPropertiesContent);
 	ui.dialogEventCollapseButton->setText(tr("Dialog event properties"));
+	if (expanded) ui.dialogEventCollapseButton->toggle();
 
 	prepareDataInUi();
 	prepareConnections();
@@ -31,6 +32,8 @@ void DialogEventProperties::contextMenuEvent(QContextMenuEvent* event)
 
 void DialogEventProperties::prepareConnections()
 {
+	connect(ui.dialogEventCollapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
+
 	connect(ui.dialogListView->selectionModel(), &QItemSelectionModel::selectionChanged, this, [&](const QItemSelection& selected, const QItemSelection& deselected)
 	{
 			if (selected.isEmpty()) {
@@ -65,14 +68,14 @@ void DialogEventProperties::createContextMenu()
 void DialogEventProperties::changeTextEdit(const QModelIndex& index)
 {
 	ui.dialogTextEdit->setEnabled(true);
-	ui.dialogTextEdit->setText(dialogue->sentences.at(index.row()).translation.text());
+	ui.dialogTextEdit->setText(dialogue->getSentence(index.row())->translation.text());
 	lastClickedModelIndex = index;
 }
 
 void DialogEventProperties::changeModelItem()
 {
-	if (dialogue->sentences.size() > lastClickedModelIndex.row()) {
-		dialogue->sentences.at(lastClickedModelIndex.row()).translation.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
+	if (dialogue->getSentences()->size() > lastClickedModelIndex.row()) {
+		dialogue->getSentence(lastClickedModelIndex.row())->translation.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
 	}
 	else
 	{

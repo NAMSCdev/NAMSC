@@ -192,6 +192,6 @@ void AssetTreeView::createContextMenu()
 
 void AssetTreeView::mousePressEvent(QMouseEvent* event)
 {
-    //clearSelection(); todo implement deselection for preview
+    clearSelection(); //todo implement deselection for preview
 	QTreeView::mousePressEvent(event);
 }

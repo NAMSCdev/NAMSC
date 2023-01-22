@@ -19,6 +19,8 @@ private:
 
 	Ui::SceneryObjectTreePropertiesClass ui;
 
+	inline static bool expanded = false;
+
 private slots:
 	void updateScaleX(double x);
 	void updateScaleY(double y);

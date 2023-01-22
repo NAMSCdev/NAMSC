@@ -19,10 +19,7 @@ void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTy
 	
 
 	if (type == TreeWidgetItemTypes::ImageObject) {
-		SceneryObject tempSceneryObject;
-		tempSceneryObject.name = name;
-		tempSceneryObject.setAssetImage(path);
-		Novel::getInstance().setDefaultSceneryObject(tempSceneryObject); // todo check if setting scenery objects like that is ok
+		Novel::getInstance().setDefaultSceneryObject(std::move(SceneryObject(name, relativePath)));
 
 		tempTreeItem = new ObjectTreeWidgetItem(this, static_cast<int>(type));
 		tempTreeItem->sceneryObject = Novel::getInstance().getDefaultSceneryObject(name);
@@ -43,8 +40,13 @@ void ObjectsTree::addAssetToObjects(QString path, QString name, TreeWidgetItemTy
 
 void ObjectsTree::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-	//emit selectedObjectChanged(static_cast<ObjectTreeWidgetItem>(selectedItems().first()).sceneryObject); // todo check if correct
-	emit selectedObjectChanged(selectedItems().first()->text(0));
+	if (selectedItems().isEmpty())
+	{
+		emit selectedObjectChanged("");
+	}
+	else {
+		emit selectedObjectChanged(selectedItems().first()->text(0));
+	}
 	QTreeWidget::selectionChanged(selected, deselected);
 }
 
@@ -62,7 +64,7 @@ void ObjectsTree::contextMenuEvent(QContextMenuEvent* context_menu_event)
 
 void ObjectsTree::mousePressEvent(QMouseEvent* event)
 {
-	// clearSelection(); todo deselection in preview
+	clearSelection();
 	QTreeWidget::mousePressEvent(event);
 }
 

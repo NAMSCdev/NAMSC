@@ -132,6 +132,7 @@ Character* Novel::setDefaultCharacter(const Character& character) noexcept
 
 Character* Novel::setDefaultCharacter(Character&& character) noexcept
 {
+
 	return NovelLib::Helpers::mapSet(characterDefaults_, std::move(character), "Character", NovelLib::ErrorType::CharacterInvalid);
 }
 
@@ -161,6 +162,7 @@ const SceneryObject* Novel::getDefaultSceneryObject(const QString& name) const
 }
 
 SceneryObject* Novel::getDefaultSceneryObject(const QString& name)
+
 {
 	return NovelLib::Helpers::mapGet(sceneryObjectDefaults_, name, "SceneryObject", NovelLib::ErrorType::SceneryObjectMissing);
 }

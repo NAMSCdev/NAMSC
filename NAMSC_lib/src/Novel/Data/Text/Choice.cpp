@@ -72,10 +72,10 @@ bool Choice::operator==(const Choice& obj) const noexcept
 {
 	if (this == &obj) return true;
 
-	return translation          == obj.translation         &&
-		   condition            == obj.condition           &&
-		   jumpToSceneName      == obj.jumpToSceneName     &&
-		   choiceDisplayOptions == obj.choiceDisplayOptions;
+	return translation          == obj.translation           &&
+		     condition            == obj.condition             &&
+		     jumpToSceneName      == obj.jumpToSceneName       &&
+		     choiceDisplayOptions == obj.choiceDisplayOptions;
 }
 
 //defaulted

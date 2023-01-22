@@ -30,6 +30,8 @@ private:
 
 	Ui::DialogEventPropertiesClass ui;
 
+	inline static bool expanded = false;
+
 	void prepareConnections();
 	void prepareDataInUi();
 	void createContextMenu();

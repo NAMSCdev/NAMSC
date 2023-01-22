@@ -31,6 +31,7 @@ private:
 
 	Ui::BasicNodePropertiesClass ui;
 
+	inline static bool expanded = false;
 
 private slots:
 	void updateLabelInNode();

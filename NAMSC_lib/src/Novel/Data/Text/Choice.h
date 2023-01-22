@@ -91,7 +91,6 @@ public:
 	EventChoice* const parentEvent;
 
 	Translation translation;
-
 	QString jumpToSceneName = "";
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes

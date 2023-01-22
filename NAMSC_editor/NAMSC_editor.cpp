@@ -1,4 +1,4 @@
-﻿#include "NAMSC_editor.h"
+#include "NAMSC_editor.h"
 #include <qinputdialog.h>
 #include <QMessageBox>
 #include <QMimeData>
@@ -14,6 +14,7 @@
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
+#include "SceneryObjectOnSceneProperties.h"
 #include "Novel\Data\Asset\AssetManager.h"
 #include "Novel/Event/EventDialogue.h"
 
@@ -103,6 +104,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
+    delete ui.sceneView;
+    ui.sceneView = Novel::getInstance().createSceneWidget();
+    sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
+    ui.middlePanelEditorStackPage2->layout()->addWidget(sceneWidget);
+    sceneWidget->switchToPreview();
+
     scene = new QGraphicsScene(this);
     scene->setSceneRect(ui.graphView->rect());
 
@@ -120,6 +127,12 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
+    connect(ui.graphView, &GraphView::nodeDoubleClicked, this, [&](GraphNode* node)
+        {
+            sceneWidget->clearSceneryObjectWidgets();
+            Novel::getInstance().getScene(node->getLabel())->scenery.render(sceneWidget);
+            ui.middlePanelEditorStack->setCurrentIndex(1);
+        });
 
  //   Novel& novel = Novel::getInstance();
  //   novel.newState(0);
@@ -213,11 +226,11 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         {
         case PropertyTypes::Node:
         {
-                GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(static_cast<GraphNode*>(object));
-                ui.propertiesLayout->addWidget(properties);
-                static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
-                connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
-                break;
+            GraphNodePropertiesPack* properties = new GraphNodePropertiesPack(static_cast<GraphNode*>(object));
+            ui.propertiesLayout->addWidget(properties);
+            static_cast<EventTreeItemModel*>(ui.eventsTree->model())->nodeSelectionChanged(static_cast<GraphNode*>(object));
+            connect(properties->basicNodeProperties, &BasicNodeProperties::sceneUpdated, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneUpdated);
+            connect(ui.graphView, &GraphView::nodeDeleted, static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::sceneDeleted);
         }
         case PropertyTypes::ObjectTreeItem:
             // todo currently assuming it's always Image
@@ -241,6 +254,10 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
             break;
         case PropertyTypes::JumpEventItem:
             ui.propertiesLayout->addWidget(new JumpEventProperties(static_cast<EventJump*>(object)));
+            break;
+        case PropertyTypes::ObjectOnScene:
+            ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
+            ui.propertiesLayout->addWidget(new SceneryObjectOnSceneProperties(static_cast<SceneryObject*>(object)));
             break;
         }
 
@@ -271,8 +288,8 @@ void NAMSC_editor::debugConstructorActions()
         scene2, 
         "Choice Event",
         choicetext);
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 1", Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} }))));
-    eventChoice->choices.push_back(Choice(eventChoice, "Choice 2", Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
+    eventChoice->addChoice(Choice(eventChoice, Translation(std::unordered_map<QString, QString>({ {"En", "Yes"} })), "", "Scene 1"));
+    eventChoice->addChoice(Choice(eventChoice, Translation(std::unordered_map<QString, QString>({ {"En", "No"} }))));
 
     scene2->insertEvent(0, eventChoice);
     scene2->insertEvent(0, new EventDialogue(scene2, "Dialogue3", {}));
@@ -303,6 +320,20 @@ void NAMSC_editor::debugConstructorActions()
     //ui.propertiesLayout->addWidget(props);
 
     ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+
+
+    connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
+        {
+            if (item->type() == TreeWidgetItemTypes::ImageObject)
+            {
+                item->sceneryObject->ensureResourcesAreLoaded();
+                sceneWidget->addSceneryObjectWidget(*item->sceneryObject);
+            }
+            else
+            {
+                qDebug() << "Tried to add different asset type than an image";
+            }
+        });
 }
 
 void NAMSC_editor::supportedFormats()

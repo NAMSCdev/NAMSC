@@ -98,6 +98,13 @@ void Preview::setSupportedImageFormats(QList<QMimeType> imageFormats)
 
 void Preview::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
+	if (selected.indexes().isEmpty())
+	{
+		player.stop();
+		audioFrame->hide();
+		imagePreviewProxy->hide();
+		return;
+	}
 	const QAbstractItemModel* model = selected.indexes()[0].model();
 	QModelIndexList::Type index = selected.indexes()[0];
 	qDebug() << index;

@@ -11,17 +11,17 @@ BasicNodeProperties::BasicNodeProperties(GraphNode* node, QWidget *parent)
 	ui.setupUi(this);
 	ui.collapseButton->setContent(ui.content);
 	ui.collapseButton->setText("Basic node properties");
+	if (expanded) ui.collapseButton->toggle();
 	//connect(scene, &QGraphicsScene::selectionChanged, this, &BasicNodeProperties::selectedNodeChanged);
 	selectedNodeChanged();
+
+	connect(ui.collapseButton, &CollapseButton::clicked, this, [] { expanded = !expanded; });
 }
 
 BasicNodeProperties::~BasicNodeProperties()
-{}
-
-//void BasicNodeProperties::setScene(QGraphicsScene* scene)
-//{
-//	this->scene = scene;
-//}
+{
+	//emit sceneUpdated(nullptr);
+}
 
 void BasicNodeProperties::updateConnections(bool b)
 {

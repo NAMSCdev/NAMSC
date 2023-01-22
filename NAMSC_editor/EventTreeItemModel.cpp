@@ -83,6 +83,11 @@ void EventTreeItemModel::sceneUpdated(Scene* scene)
     setupModelData(Novel::getInstance().getScene(scene->getComponentName()));
 }
 
+void EventTreeItemModel::sceneDeleted()
+{
+    sceneUpdated(nullptr);
+}
+
 void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
     if(selected.size() > 0)
