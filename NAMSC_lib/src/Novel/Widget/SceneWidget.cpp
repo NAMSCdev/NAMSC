@@ -65,12 +65,14 @@ bool SceneWidget::insertSceneryObjectWidget(size_t index, const SceneryObject& s
 		return false;
 	}
 	SceneryObjectWidget* sceneryObjectWidget = new SceneryObjectWidget(sceneryObject, preview_);
-
+	
+	sceneryObjectWidgets_.insert(sceneryObjectWidgets_.begin() + index, sceneryObjectWidget);
 	scene()->addItem(sceneryObjectWidget);
-	sceneryObjectWidgets_.insert(sceneryObjectWidgets_.begin() + index, std::move(sceneryObjectWidget));
 	//Correct Z-Values after inserting a new element
 	for (int i = 0; i != sceneryObjectWidgets_.size(); ++i)
 		(*(sceneryObjectWidgets_.begin() + i))->setZValue(i);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectPositionChanged, this, &SceneWidget::sceneryObjectPositionChangedPass);
+	connect(sceneryObjectWidget, &SceneryObjectWidget::sceneryObjectSelectionChanged, this, &SceneWidget::sceneryObjectSelectionChangedPass);
 	return true;
 }
 
@@ -81,6 +83,7 @@ bool SceneWidget::removeSceneryObjectWidget(size_t index)
 		qCritical() << NovelLib::ErrorType::General << "Tried to remove past \"sceneryObjectWidgets_\" size";
 		return false;
 	}
+	scene()->removeItem(sceneryObjectWidgets_.at(index));
 	sceneryObjectWidgets_.erase(sceneryObjectWidgets_.begin() + index);
 	//Removing an item doesn't need to correct Z-Values
 	return true;
