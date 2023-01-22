@@ -151,8 +151,9 @@ signals:
 	void pendSceneryObjectsDisplay(const std::vector<SceneryObject>& sceneryObjects);
 	void pendCharactersDisplay(const std::vector<Character>& characters);
 	void pendEventDialogueDisplay(const std::vector<Sentence>& sentences, uint sentenceReadIndex);
-  void pendEventChoiceDisplay(const QString& menuText, const std::vector<Choice>& choices);
-  
+	void pendEventChoiceDisplay(const QString& menuText, const std::vector<Choice>& choices);
+	void pendSceneClear();
+
 private:
 	//Nothing can create the Novel, but its methods
 	Novel() = default;

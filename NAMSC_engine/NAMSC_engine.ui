@@ -56,6 +56,12 @@
     </property>
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
+      <property name="minimumSize">
+       <size>
+        <width>1600</width>
+        <height>900</height>
+       </size>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -255,7 +261,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="mainWindow.qrc"/>
+  <include location="NAMSC_engine.qrc"/>
  </resources>
  <connections/>
 </ui>

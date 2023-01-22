@@ -61,7 +61,7 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
     AssetManager &assetManager = AssetManager::getInstance();
     novel.loadNovel(0, true);
 
-#ifdef DEBUG
+//#ifdef DEBUG
     assetManager.addAssetImageSceneryBackground("testBackground",    0, 0, "C:\\Users\\Murloc\\Downloads\\pies.png");
     assetManager.addAssetImageSceneryBackground("testBackground2",   0, 0, "C:\\Users\\Murloc\\Downloads\\pies.jpg");
     assetManager.addAssetImageSceneryBackground("testBackgroundRed", 0, 0, "C:\\Users\\Murloc\\Downloads\\piesRed.png");
@@ -193,13 +193,13 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
     scenery5.clearDisplayedCharacters();
     event11->scenery = scenery5;
 
-    scene1->removeEvent(event1->label);
-    scene1->removeEvent(event2->label);
-    scene1->removeEvent(event3->label);
+    //scene1->removeEvent(event1->label);
+    //scene1->removeEvent(event2->label);
+    //scene1->removeEvent(event3->label);
     //scene1->removeEvent(eventJump1->label);
 
-    scene2->removeEvent(event4->label);
-    scene2->removeEvent(event5->label);
+    //scene2->removeEvent(event4->label);
+    //scene2->removeEvent(event5->label);
     //scene2->removeEvent(event6->label);
 
     //scene3->removeEvent(event7->label);
@@ -209,7 +209,7 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
     //scene4->removeEvent(eventJump2->label);
     //scene5->removeEvent(event11->label);
 
-#endif
+//#endif
     ui.gameLayout->addWidget(novel.createSceneWidget());
     novel.run();
 }

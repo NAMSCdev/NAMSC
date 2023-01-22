@@ -32,6 +32,7 @@ public slots:
 	void displayEventDialogue(const std::vector<Sentence>& sentences, uint sentenceReadIndex = 0u);
 	void displaySceneryObjects(const std::vector<SceneryObject>& sceneryObjects);
 	void displayCharacters(const std::vector<Character>& characters);
+	void clearScene();
 
 signals:
 	void pendNovelEnd();

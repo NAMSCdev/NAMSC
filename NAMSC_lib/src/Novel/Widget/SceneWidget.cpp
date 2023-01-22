@@ -188,6 +188,12 @@ void SceneWidget::displayCharacters(const std::vector<Character>& characters)
 	update();
 }
 
+void SceneWidget::clearScene()
+{
+	scene()->clear();
+	clearSceneryObjectWidgets();
+}
+
 void SceneWidget::displayBackground(const QImage* img)
 {
 	//No resize needed, since it is cached

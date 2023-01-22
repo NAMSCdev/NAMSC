@@ -5,14 +5,10 @@ void Event::run()
 {
 	Novel&          novel       = Novel::getInstance();
 	SceneWidget*    sceneWidget = novel.getSceneWidget();
-	QGraphicsScene* scene       = nullptr;
-
-	if (sceneWidget)
-		scene = sceneWidget->scene();
-	if (!scene)
+	if (!sceneWidget)
 		return;
 
-	scene->clear();
+	emit pendSceneClear();
 	ensureResourcesAreLoaded();
 
 	scenery.render(sceneWidget);
