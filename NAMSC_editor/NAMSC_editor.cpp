@@ -344,7 +344,7 @@ void NAMSC_editor::debugConstructorActions()
             if (item->type() == TreeWidgetItemTypes::ImageObject)
             {
                 item->sceneryObject->ensureResourcesAreLoaded();
-                sceneWidget->addSceneryObjectWidget(*item->sceneryObject);
+                sceneWidget->addSceneryObjectWidget(*item->sceneryObject, 0);
             }
             else
             {
