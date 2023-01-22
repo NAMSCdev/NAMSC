@@ -30,12 +30,12 @@ void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 
     QString message = '[' + category + "] [" + context.function + " {" + context.file + ':' + std::to_string(context.line).c_str() + "}]" + msg;
-    switch (type) 
+    switch (type)
     {
     case QtDebugMsg:
-    #ifdef DEBUG
+#ifdef DEBUG
         QMessageBox::information(nullptr, category, message);
-    #endif
+#endif
         break;
 
     default:
@@ -52,83 +52,92 @@ void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-NAMSC_engine::NAMSC_engine(QWidget *parent)
+NAMSC_engine::NAMSC_engine(QWidget* parent)
     : QMainWindow(parent)
 {
     qInstallMessageHandler(errorMessageHandler);
     ui.setupUi(this);
-    Novel        &novel        = Novel::getInstance();
-    AssetManager &assetManager = AssetManager::getInstance();
+    Novel& novel = Novel::getInstance();
+    AssetManager& assetManager = AssetManager::getInstance();
     novel.loadNovel(0, true);
 
 #ifdef DEBUG
-    assetManager.addAssetImageSceneryBackground("testBackground",    0, 0, "C:\\Users\\Murloc\\Downloads\\pies.png");
-    assetManager.addAssetImageSceneryBackground("testBackground2",   0, 0, "C:\\Users\\Murloc\\Downloads\\pies.jpg");
+    assetManager.addAssetImageSceneryBackground("testBackground", 0, 0, "C:\\Users\\Murloc\\Downloads\\pies.png");
+    assetManager.addAssetImageSceneryBackground("testBackground2", 0, 0, "C:\\Users\\Murloc\\Downloads\\pies.jpg");
     assetManager.addAssetImageSceneryBackground("testBackgroundRed", 0, 0, "C:\\Users\\Murloc\\Downloads\\piesRed.png");
-    assetManager.addAssetImageSceneryObject("kotImage",              0, 0, "C:\\Users\\Murloc\\Downloads\\kot.png");
-    assetManager.addAssetImageSceneryObject("flamigno",              0, 0, "C:\\Users\\Murloc\\Downloads\\potwor.png");
-    assetManager.addAssetImageSceneryObject("flamignoAngry",         0, 0, "C:\\Users\\Murloc\\Downloads\\potworNegative.png");
-    assetManager.addAssetImageSceneryObject("felicja",               0, 0, "C:\\Users\\Murloc\\Downloads\\felicja.png");
+    assetManager.addAssetImageSceneryObject("kotImage", 0, 0, "C:\\Users\\Murloc\\Downloads\\kot.png");
+    assetManager.addAssetImageSceneryObject("flamigno", 0, 0, "C:\\Users\\Murloc\\Downloads\\potwor.png");
+    assetManager.addAssetImageSceneryObject("flamignoAngry", 0, 0, "C:\\Users\\Murloc\\Downloads\\potworNegative.png");
+    assetManager.addAssetImageSceneryObject("felicja", 0, 0, "C:\\Users\\Murloc\\Downloads\\felicja.png");
 
-    Scene*  scene1 = novel.addScene(Scene("start", ""));
+    Scene* scene1 = novel.addScene(Scene("start", ""));
     Scenery scenery1(scene1);
-    Scene*  scene2 = novel.addScene(Scene("Monster Encounter", ""));
+    Scene* scene2 = novel.addScene(Scene("Monster Encounter", ""));
     Scenery scenery2(scene2);
-    Scene*  scene3 = novel.addScene(Scene("Lose", ""));
+    Scene* scene3 = novel.addScene(Scene("Lose", ""));
     Scenery scenery3(scene3);
-    Scene*  scene4 = novel.addScene(Scene("Win", ""));
+    Scene* scene4 = novel.addScene(Scene("Win", ""));
     Scenery scenery4(scene4);
-    Scene*  scene5 = novel.addScene(Scene("Credits", ""));
+    Scene* scene5 = novel.addScene(Scene("Credits", ""));
     Scenery scenery5(scene5);
 
-    Character wikingCharacter(QString("Nieznajomy"),      QString("kotImage"), false, QPoint(600, 40),  QSizeF(1.0, 1.0), 0.0);
+    Character wikingCharacter(QString("Nieznajomy"), QString("kotImage"), false, QPoint(600, 40), QSizeF(1.0, 1.0), 0.0);
     Character falmeCharacter(QString("Straszna istota!"), QString("flamigno"), false, QPoint(500, 680), QSizeF(1.0, 1.0), 0.0);
+    Character felicjaCharacter(QString("Felicja"), QString("felicja"), false, QPoint(280, 0), QSizeF(1.0, 1.0), 0.0);
 
-    Scenery scenery(&scene);
-    scenery.setBackgroundAssetImage("testBackground");
-    scenery.addDisplayedCharacter(wikingCharacter);
+    scenery1.setBackgroundAssetImage("testBackground");
+    scenery1.addDisplayedCharacter(wikingCharacter);
 
-    EventDialogue* event = new EventDialogue(&scene);
-    event->scenery = scenery;
-    event->addSentence(std::move(Sentence(event, Translation(Translate{ { "En", "Witaj!"} }), "Nieznajomy")));
-    event->addSentence(std::move(Sentence(event, Translation(Translate { { "En", "Jestem Edggar. W pobliżu grasuje niebezpieczny stwór. "} }), "Nieznajomy")));
-    event->addSentence(std::move(Sentence(event, Translation(Translate { { "En", "Uważaj na siebie!"} }), "Edggar")));
+    EventDialogue* event1 = static_cast<EventDialogue*>(scene1->addEvent(new EventDialogue(scene1)).get());
+    event1->addSentence(Sentence(event1, Translation(Translate{ { "En", "Witaj!"} }), "Nieznajomy"));
+    event1->addSentence(Sentence(event1, Translation(Translate{ { "En", "Jestem Edggar. W pobliżu grasuje niebezpieczny stwór. "} }), "Nieznajomy", "", "", ""));
+    event1->addSentence(Sentence(event1, Translation(Translate{ { "En", "Uważaj na siebie!"} }), "Edggar"));
 
-    scenery.clearDisplayedCharacters();
+    event1->scenery = scenery1;
+
+    EventDialogue* event2 = static_cast<EventDialogue*>(scene1->addEvent(new EventDialogue(scene1)).get());
+    event2->addSentence(Sentence(event2, Translation(Translate{ { "En", "Żegnam!"} }), "Edggar"));
+
+    scenery1.clearDisplayedCharacters();
     wikingCharacter.bMirrored = true;
-    scenery.addDisplayedCharacter(wikingCharacter);
-    EventDialogue* event2 = new EventDialogue(&scene);
-    event2->addSentence(std::move(Sentence(event2, Translation(Translate { { "En", "Żegnam!"} }), "Edggar")));
-    event2->scenery = scenery;
+    scenery1.addDisplayedCharacter(wikingCharacter);
+    event2->scenery = scenery1;
 
-    EventDialogue* event3 = new EventDialogue(&scene);
-    event3->addSentence(std::move(Sentence(event2, Translation(Translate{ { "En", "Podziwiasz otoczenie. Lorem ipsum, komu by się chciało pisać opisy przyrody... Masz czas, w końcu żaden potwór nie jest Tobie straszny!"} }), "")));
+    EventDialogue* event3 = static_cast<EventDialogue*>(scene1->addEvent(new EventDialogue(scene1)).get());
+    event3->addSentence(Sentence(event2, Translation(Translate{ { "En", "Podziwiasz otoczenie. Lorem ipsum, komu by się chciało pisać opisy przyrody... Masz czas, w końcu żaden potwór nie jest Tobie straszny!"} }), ""));
 
-    scenery.clearDisplayedCharacters();
-    event3->scenery = scenery;
+    scenery1.clearDisplayedCharacters();
+    event3->scenery = scenery1;
 
-    EventDialogue* event4 = new EventDialogue(&scene);
-    event4->addSentence(std::move(Sentence(event4, Translation(Translate{ { "En", "..."} }), "")));
+    EventJump* eventJump1 = static_cast<EventJump*>(scene1->addEvent(new EventJump(scene1, "", "Monster Encounter")).get());
 
-    scenery.clearDisplayedCharacters();
-    scenery.addDisplayedCharacter(falmeCharacter);
-    event4->scenery = scenery;
+    scenery2 = scenery1;
 
-    EventDialogue* event5 = new EventDialogue(&scene);
-    event5->addSentence(std::move(Sentence(event5, Translation(Translate{ { "En", "No chyba, że ten!"} }), "")));
-    event5->addSentence(std::move(Sentence(event5, Translation(Translate{ { "En", "J...j...j..."} }), "Straszna istotna")));
-    event5->addSentence(std::move(Sentence(event5, Translation(Translate{ { "En", "J-JEŚĆ!"} }), "Straszna istotna")));
-    scenery.clearDisplayedCharacters();
-    falmeCharacter.pos   = QPointF(80, 0);
+    EventDialogue* event4 = static_cast<EventDialogue*>(scene2->addEvent(new EventDialogue(scene2)).get());
+    event4->addSentence(Sentence(event4, Translation(Translate{ { "En", "..."} }), ""));
+
+    scenery2.clearDisplayedCharacters();
+    scenery2.addDisplayedCharacter(falmeCharacter);
+    event4->scenery = scenery2;
+
+    EventDialogue* event5 = static_cast<EventDialogue*>(scene2->addEvent(new EventDialogue(scene2)).get());
+    event5->addSentence(Sentence(event5, Translation(Translate{ { "En", "No chyba, że ten!"} }), ""));
+    event5->addSentence(Sentence(event5, Translation(Translate{ { "En", "J...j...j..."} }), "Straszna istotna", "", "", "", 1.0, 6));
+    event5->addSentence(Sentence(event5, Translation(Translate{ { "En", "J-JEŚĆ!"} }), "Straszna istotna", "", "", "", 1.0, 3));
+
+    scenery2.clearDisplayedCharacters();
+    falmeCharacter.pos = QPointF(80.0, 0.0);
     falmeCharacter.scale = QSizeF(2.5, 2.5);
-    scenery.addDisplayedCharacter(falmeCharacter);
-    event5->scenery = scenery;
+    scenery2.addDisplayedCharacter(falmeCharacter);
+    event5->scenery = scenery2;
 
-    EventChoice* event6 = new EventChoice(&scene);
-    //event6->choices.emplace_back(event6, Translation(Translate{ { "En", "Sięgasz do kieszeni. "} }), "");
-    //event6->sentences.emplace_back(event6, Translation(Translate{ { "En", "J...j...j..."} }), "Straszna istotna");
-    //event6->sentences.emplace_back(event6, Translation(Translate{ { "En", "J-JEŚĆ!"} }), "Straszna istotna");
-    scenery.clearDisplayedCharacters();
+    EventChoice* event6 = static_cast<EventChoice*>(scene2->addEvent(new EventChoice(scene2)).get());
+    event6->setMenuText(Translate{ { "En", "Co zamierasz dać tej strasznej istocie?"} });
+    event6->addChoice(std::move(Choice(event6, Translation(Translate{ { "En", "Garść ziaren słonecznika"} }), "Win")));
+    event6->addChoice(std::move(Choice(event6, Translation(Translate{ { "En", "Dwa kilo mięsa wołowego zapakowanego szczelnie w pojemniku próżniowym, ale nieco po terminie, bo ciężko pamiętać, że takie rzeczy nosi się w kieszeni"} }), "Lose")));
+    event6->addChoice(std::move(Choice(event6, Translation(Translate{ { "En", "W twarz"} }), "Lose")));
+
+    scenery2.clearDisplayedCharacters();
     falmeCharacter.rotationDegree = 20.0;
     scenery2.addDisplayedCharacter(falmeCharacter);
     event6->scenery = scenery2;
@@ -159,7 +168,7 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
 
     EventDialogue* event9 = static_cast<EventDialogue*>(scene3->addEvent(new EventDialogue(scene3)).get());
     event9->addSentence(Sentence(event9, Translation(Translate{ { "En", "Kończysz marnie."} }), ""));
-  
+
     scenery3.clearDisplayedCharacters();
     scenery3.setBackgroundAssetImage("testBackground2");
     falmeCharacter.setAssetImage("flamignoAngry");
@@ -176,30 +185,29 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
     scenery4.clearDisplayedCharacters();
     scenery4.addDisplayedCharacter(felicjaCharacter);
     event10->scenery = scenery4;
-    
+
     scenery5 = scenery4;
-    EventJump*     eventJump2 = static_cast<EventJump*>(scene4->addEvent(new EventJump(scene4, "", "Credits")).get());
-    EventDialogue* event11    = static_cast<EventDialogue*>(scene5->addEvent(new EventDialogue(scene5)).get());
+    EventJump* eventJump2 = static_cast<EventJump*>(scene4->addEvent(new EventJump(scene4, "", "Credits")).get());
+    EventDialogue* event11 = static_cast<EventDialogue*>(scene5->addEvent(new EventDialogue(scene5)).get());
     event11->addSentence(Sentence(event11, Translation(Translate{ { "En", "The End."} }), ""));
     scenery5.clearDisplayedCharacters();
     event11->scenery = scenery5;
 
-    scene1->removeEvent(event1->label);
-    scene1->removeEvent(event2->label);
-    scene1->removeEvent(event3->label);
+    //scene1->removeEvent(event1->label);
+    //scene1->removeEvent(event2->label);
+    //scene1->removeEvent(event3->label);
     //scene1->removeEvent(eventJump1->label);
 
-    scene2->removeEvent(event4->label);
-    scene2->removeEvent(event5->label);
+    //scene2->removeEvent(event4->label);
+    //scene2->removeEvent(event5->label);
     //scene2->removeEvent(event6->label);
 
-    //scene.addEvent(std::move(event));
-    //scene.addEvent(std::move(event2));
-    //scene.addEvent(std::move(event3));
-    //scene.addEvent(std::move(event4));
-    scene.addEvent(std::move(event5));
-    scene.addEvent(std::move(event6));
-    novel.addScene(std::move(scene));
+    //scene3->removeEvent(event7->label);
+    //scene3->removeEvent(event8->label);
+    //scene3->removeEvent(event9->label);
+    //scene4->removeEvent(event10->label);
+    //scene4->removeEvent(eventJump2->label);
+    //scene5->removeEvent(event11->label);
 
 #endif
     ui.gameLayout->addWidget(novel.createSceneWidget());

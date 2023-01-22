@@ -34,6 +34,7 @@ QString Novel::nextFreeSceneName() const noexcept
 SceneWidget* Novel::createSceneWidget()
 {
 	sceneWidget_ = new SceneWidget(nullptr);
+	connect(this,         &Novel::pendSceneClear,            sceneWidget_, &SceneWidget::clearScene,            Qt::DirectConnection);
 	connect(this,         &Novel::pendBackgroundDisplay,     sceneWidget_, &SceneWidget::displayBackground);
 	connect(this,         &Novel::pendSceneryObjectsDisplay, sceneWidget_, &SceneWidget::displaySceneryObjects);
 	connect(this,         &Novel::pendCharactersDisplay,     sceneWidget_, &SceneWidget::displayCharacters);
