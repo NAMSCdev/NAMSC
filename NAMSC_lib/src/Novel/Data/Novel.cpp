@@ -34,12 +34,13 @@ QString Novel::nextFreeSceneName() const noexcept
 SceneWidget* Novel::createSceneWidget()
 {
 	sceneWidget_ = new SceneWidget(nullptr);
-	//connect(this,         &Novel::pendBackgroundDisplay,     sceneWidget_, &SceneWidget::displayBackground);
-	//connect(this,         &Novel::pendSceneryObjectsDisplay, sceneWidget_, &SceneWidget::displaySceneryObjects);
-	//connect(this,         &Novel::pendCharactersDisplay,     sceneWidget_, &SceneWidget::displayCharacters);
-	//connect(this,         &Novel::pendEventChoiceDisplay,    sceneWidget_, &SceneWidget::displayEventChoice);
-	//connect(this,         &Novel::pendEventDialogueDisplay,  sceneWidget_, &SceneWidget::displayEventDialogue);
-	//connect(sceneWidget_, &SceneWidget::pendNovelEnd,        this,         &Novel::end);
+	connect(this,         &Novel::pendBackgroundDisplay,     sceneWidget_, &SceneWidget::displayBackground);
+	connect(this,         &Novel::pendSceneryObjectsDisplay, sceneWidget_, &SceneWidget::displaySceneryObjects);
+	connect(this,         &Novel::pendCharactersDisplay,     sceneWidget_, &SceneWidget::displayCharacters);
+	connect(this,         &Novel::pendEventChoiceDisplay,    sceneWidget_, &SceneWidget::displayEventChoice);
+	connect(this,         &Novel::pendEventDialogueDisplay,  sceneWidget_, &SceneWidget::displayEventDialogue);
+	connect(sceneWidget_, &SceneWidget::pendNovelEnd,        this,         &Novel::end);
+	connect(sceneWidget_, &SceneWidget::pendChoiceRun,       this,         &Novel::choiceRun);
 
 	return sceneWidget_;
 }
@@ -217,6 +218,11 @@ Scene* Novel::getScene(const QString& name)
 const std::unordered_map<QString, Scene>* Novel::setScenes(std::unordered_map<QString, Scene>&& scenes) noexcept
 {
 	return &(scenes_ = std::move(scenes));
+}
+
+Scene* Novel::addScene(const Scene& scene) noexcept
+{
+	return NovelLib::Helpers::mapSet(scenes_, scene, "Scene", NovelLib::ErrorType::SceneInvalid);
 }
 
 Scene* Novel::addScene(Scene&& scene) noexcept

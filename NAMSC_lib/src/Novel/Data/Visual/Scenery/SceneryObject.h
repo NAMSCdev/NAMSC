@@ -16,7 +16,7 @@ public:
 	SceneryObject()                                    noexcept = default;
 	/// \param assetImage Copies the AssetImage pointer. It's okay to leave it as nullptr, as it will be loaded later. This is a very minor optimization
 	/// \exception Error Couldn't find/read the AssetImage named `assetImageName`
-	SceneryObject(const QString& name, const QString& assetImageName, bool bMirrored = false, const QPoint pos = { 0, 0 }, const QSizeF scale = { 1.0, 1.0 }, double rotationDegree = 0.0, const QVarLengthArray<double, 4>& colorMultiplier = { 1.0, 1.0, 1.0, 1.0 }, double alphaMultiplier = 1.0, bool bVisible = true, AssetImage* assetImage = nullptr);
+	SceneryObject(const QString& name, const QString& assetImageName, bool bMirrored = false, const QPointF pos = { 0, 0 }, const QSizeF scale = { 1.0, 1.0 }, double rotationDegree = 0.0, const QVarLengthArray<double, 4>& colorMultiplier = { 1.0, 1.0, 1.0, 1.0 }, double alphaMultiplier = 1.0, bool bVisible = true, AssetImage* assetImage = nullptr);
 	SceneryObject(const SceneryObject& obj)            noexcept = default;
 	SceneryObject(SceneryObject&& obj)                 noexcept = default;
 	SceneryObject& operator=(const SceneryObject& obj) noexcept = default;
@@ -52,7 +52,7 @@ public:
 	QString name                = "";
 
 	/// \todo [optional] allow for setting position in Z-dimension and do proper maths about it
-	QPoint pos                  = { 0.0, 0.0/*, 0.0*/ };
+	QPointF pos                 = { 0.0, 0.0/*, 0.0*/ };
 
 	QSizeF scale                = { 1.0, 1.0 };
 	

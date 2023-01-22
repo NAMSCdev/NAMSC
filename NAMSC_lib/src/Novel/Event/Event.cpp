@@ -157,7 +157,7 @@ Event::Event(Event&& obj) noexcept
 uint Event::getIndex() const
 {
 	const std::vector<std::shared_ptr<Event>>* events = parentScene->getEvents();
-	return std::find_if(events->cbegin(), events->cend(), [this](const std::shared_ptr<Event>& obj) { return this == obj.get(); }) - events->cbegin();
+	return std::find_if(events->cbegin(), events->cend(), [this](const std::shared_ptr<Event>& obj) { return (obj && (this == obj.get())); }) - events->cbegin();
 }
 
 const std::vector<std::shared_ptr<Action>>* Event::getActions() const noexcept

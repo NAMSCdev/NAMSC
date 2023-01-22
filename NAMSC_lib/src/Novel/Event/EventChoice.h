@@ -31,7 +31,7 @@ public:
 	void run() override;
 
 	/// Sets a function pointer that is called (if not nullptr) after the EventChoice's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
-	void setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const Translation* const text, const std::vector<Choice>* const choices)> onRun) noexcept;
+	void setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const Translation* const translation, const std::vector<Choice>* const choices)> onRun) noexcept;
 
 	const Translation* getMenuText() const        noexcept;
 	Translation*       getMenuText()              noexcept;
@@ -70,7 +70,7 @@ private:
 	NovelLib::SerializationID getType() const noexcept override;
 
 	/// A function pointer that is called (if not nullptr) after the EventChoice's `void run()` allowing for data read. Consts are safe to be casted to non-consts, they are there to indicate you should not do that, unless you have a very reason for it
-	std::function<void(const Scene* const parentScene, const QString& label, const Translation* const text, const std::vector<Choice>* const choices)> onRun_ = nullptr;
+	std::function<void(const Scene* const parentScene, const QString& label, const Translation* const translation, const std::vector<Choice>* const choices)> onRun_ = nullptr;
 
 	//[Meta] Remember to copy the description to the constructor (and all delegating) parameter description as well, if it changes
 	/// A text to be displayed during Choice selection screen

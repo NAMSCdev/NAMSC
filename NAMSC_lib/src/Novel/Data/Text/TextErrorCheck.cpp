@@ -50,7 +50,7 @@ bool Sentence::errorCheck(bool bComprehensive) const
 		//		qCritical() << NovelLib::ErrorType::AssetImageMissing << "Sprite AssetImage \"" + assetImageName_ + "\" does not exist. Definition file might be corrupted";
 		//}
 		//Check Character
-		if (parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
+		if (!characterName_.isEmpty() && parentEvent->parentScene->scenery.getDisplayedCharacter(characterName_) == nullptr)
 		{
 			qCritical() << NovelLib::ErrorType::CharacterInvalid << "No valid Character assigned. Was it deleted and not replaced?";
 			if (!characterName_.isEmpty())

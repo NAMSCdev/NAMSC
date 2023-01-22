@@ -15,8 +15,6 @@ void swap(EventDialogue& first, EventDialogue& second) noexcept
 {
 	using std::swap;
 	swap(static_cast<Event&>(first), static_cast<Event&>(second));
-	swap(first.sentences_, second.sentences_);
-	swap(first.onRun_,     second.onRun_);
 }
 
 EventDialogue::EventDialogue(Scene* const parentScene, const QString& label, const std::vector<Sentence>& sentences)

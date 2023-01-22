@@ -12,9 +12,9 @@ bool Event::errorCheck(bool bComprehensive) const
 	{
 		if (bComprehensive)
 			for (auto it = parentScene->events_.cbegin(); it != parentScene->events_.cend(); ++it)
-				if (((*it)->label == label) && ((*it).get() != this))
+				if (!(*it)->label.isEmpty() && ((*it)->label == label) && ((*it).get() != this))
 				{
-					qCritical() << NovelLib::ErrorType::NameDuplicate << "Duplicate labels \"" + label + "\" for Scene" << getIndex() << "and Scene" << (*it)->getIndex();
+					qCritical() << NovelLib::ErrorType::NameDuplicate << "Duplicate labels \"" + label + "\" for Event" << getIndex() << "and Event" << (*it)->getIndex() << "in Scene \"" + parentScene->name + "\"";
 					break;
 				}
 	};

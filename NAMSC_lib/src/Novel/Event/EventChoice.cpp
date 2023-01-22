@@ -67,7 +67,7 @@ bool EventChoice::operator==(const EventChoice& obj) const noexcept
 		   choices_  == obj.choices_;
 }
 
-void EventChoice::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const Translation* const text, const std::vector<Choice>* const choices)> onRun) noexcept
+void EventChoice::setOnRunListener(std::function<void(const Scene* const parentScene, const QString& label, const Translation* const translation, const std::vector<Choice>* const choices)> onRun) noexcept
 {
 	onRun_ = onRun;
 }
