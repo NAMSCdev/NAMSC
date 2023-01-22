@@ -26,3 +26,45 @@ SceneComponentType DummySceneComponent::getComponentType() const noexcept
 { 
 	return NOT_COMPONENT;
 }
+
+
+QString CharactersRootSceneComponent::getComponentTypeName() const noexcept
+{ 
+	return QString("");
+}
+
+QString CharactersRootSceneComponent::getComponentSubTypeName() const noexcept 
+{
+	return QString("");
+}
+
+QString CharactersRootSceneComponent::getComponentName() const noexcept 
+{
+	return QString("Characters");
+}
+
+SceneComponentType CharactersRootSceneComponent::getComponentType() const noexcept 
+{ 
+	return CHARACTERS_ROOT;
+}
+
+
+QString SceneryObjectsRootSceneComponent::getComponentTypeName() const noexcept
+{ 
+	return QString("");
+}
+
+QString SceneryObjectsRootSceneComponent::getComponentSubTypeName() const noexcept 
+{
+	return QString("");
+}
+
+QString SceneryObjectsRootSceneComponent::getComponentName() const noexcept 
+{
+	return QString("Objects");
+}
+
+SceneComponentType SceneryObjectsRootSceneComponent::getComponentType() const noexcept 
+{ 
+	return OBJECTS_ROOT;
+}

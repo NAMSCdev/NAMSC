@@ -91,7 +91,7 @@ void EventTreeItemModel::sceneDeleted()
 
 void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
 {
-    if(selected.size() > 0)
+    if(selected.size() > 0 && selected.indexes().size() > 0)
     {
         QModelIndex index = selected.indexes().at(0);
         qDebug() << data(index, Qt::DisplayRole);
@@ -149,7 +149,7 @@ Qt::ItemFlags EventTreeItemModel::flags(const QModelIndex& index) const
         return Qt::NoItemFlags;
     }
 
-    return QAbstractItemModel::flags(index);
+    return static_cast<EventTreeItem*>(index.internalPointer())->getFlags();
 }
 
 QVariant EventTreeItemModel::headerData(int section, Qt::Orientation orientation,
@@ -165,15 +165,32 @@ QVariant EventTreeItemModel::headerData(int section, Qt::Orientation orientation
 void EventTreeItemModel::appendEvent(Event* event, EventTreeItem* parentScene)
 {
     EventTreeItem* eventItem = new EventTreeItem(event, parentScene);
-    parentScene->appendChild(eventItem);
+    
 
-
-    /* where are objects held?
-    for (int i = 0; i < event->getObjects()->size(); i++)
+    if (event->getComponentEventType() != EventSubType::EVENT_JUMP)
     {
-        appendObject(event->getObjects()->at(i).get(), eventItem);
+	    EventTreeItem* objectsRoot = new EventTreeItem(new SceneryObjectsRootSceneComponent(), eventItem);
+        objectsRoot->setFlags( Qt::ItemIsEnabled);
+	    eventItem->appendChild(objectsRoot);
+
+	    for ( int i = 0 ; i < event->scenery.getDisplayedSceneryObjects()->size(); i++)
+	    {
+			EventTreeItem* objectItem = new EventTreeItem( event->scenery.getDisplayedSceneryObject(i), objectsRoot);
+			objectsRoot->appendChild(objectItem);
+	    }
+
+	    EventTreeItem* charactersRoot = new EventTreeItem(new CharactersRootSceneComponent(), eventItem);
+        charactersRoot->setFlags( Qt::ItemIsEnabled);
+	    eventItem->appendChild(charactersRoot);
+
+	    for ( int i = 0 ; i < event->scenery.getDisplayedCharacters()->size(); i++)
+	    {
+			EventTreeItem* characterItem = new EventTreeItem( event->scenery.getDisplayedCharacter(i), charactersRoot);
+			charactersRoot->appendChild(characterItem);
+	    }
     }
-    */
+
+    parentScene->appendChild(eventItem);
 }
 
 void EventTreeItemModel::setupModelData(Scene* scene)
@@ -191,6 +208,5 @@ void EventTreeItemModel::setupModelData(Scene* scene)
             appendEvent(scene->getEvents()->at(i).get(), sceneItem);
         }
     }
-    
     endResetModel();
 }
