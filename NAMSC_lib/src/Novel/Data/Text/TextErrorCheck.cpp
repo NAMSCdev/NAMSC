@@ -16,7 +16,8 @@ bool Choice::errorCheck(bool bComprehensive) const
 	};
 
 	bError |= choiceDisplayOptions.errorCheck(bComprehensive) || NovelLib::catchExceptions(errorChecker, bComprehensive);
-	qDebug() << "Error occurred in Choice::errorCheck";
+	if (bError)
+		qDebug() << "Error occurred in Choice::errorCheck";
 
 	return bError;
 }
