@@ -83,65 +83,65 @@ Event::Event(Scene* const parentScene, const QString& label, const std::vector<s
 
 void Event::serializableLoad(QDataStream& dataStream)
 {
-	dataStream >> label;
+	dataStream >> label >> scenery;
 
-	size_t actionsSize;
-	dataStream >> actionsSize;
-	for (size_t i = 0u; i != actionsSize; ++i)
-	{
-		NovelLib::SerializationID type;
-		dataStream >> type;
+	//size_t actionsSize;
+	//dataStream >> actionsSize;
+	//for (size_t i = 0u; i != actionsSize; ++i)
+	//{
+	//	NovelLib::SerializationID type;
+	//	dataStream >> type;
 
-		//TODO: create abstract factory for this
-		Action* action = nullptr;
-		switch (type)
-		{
-		case NovelLib::SerializationID::ActionAudioSetMusic:
-			action = new ActionAudioSetMusic(this);
-			break;
-		case NovelLib::SerializationID::ActionAudioSetSounds:
-			action = new ActionAudioSetSounds(this);
-			break;
-		case NovelLib::SerializationID::ActionStatSetValue:
-			action = new ActionStatSetValue(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectAnimColor:
-			action = new ActionSceneryObjectAnimColor(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectAnimMove:
-			action = new ActionSceneryObjectAnimMove(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectAnimRotate:
-			action = new ActionSceneryObjectAnimRotate(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectAnimScale:
-			action = new ActionSceneryObjectAnimScale(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectAnimFade:
-			action = new ActionSceneryObjectAnimFade(this);
-			break;
-		case NovelLib::SerializationID::ActionCharacterSetVoice:
-			action = new ActionCharacterSetVoice(this);
-			break;
-		case NovelLib::SerializationID::ActionSceneryObjectSetImage:
-			action = new ActionSceneryObjectSetImage(this);
-			break;
-		case NovelLib::SerializationID::ActionSetBackground:
-			action = new ActionSetBackground(this);
-			break;
-		default:
-			qCritical() << NovelLib::ErrorType::General << "Invalid Action's type" << static_cast<int>(type);
-			continue;
-			break;
-		}
-		dataStream >> *action;
-		actions_.emplace_back(action);
-	}
+	//	//TODO: create abstract factory for this
+	//	Action* action = nullptr;
+	//	switch (type)
+	//	{
+	//	case NovelLib::SerializationID::ActionAudioSetMusic:
+	//		action = new ActionAudioSetMusic(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionAudioSetSounds:
+	//		action = new ActionAudioSetSounds(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionStatSetValue:
+	//		action = new ActionStatSetValue(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectAnimColor:
+	//		action = new ActionSceneryObjectAnimColor(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectAnimMove:
+	//		action = new ActionSceneryObjectAnimMove(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectAnimRotate:
+	//		action = new ActionSceneryObjectAnimRotate(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectAnimScale:
+	//		action = new ActionSceneryObjectAnimScale(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectAnimFade:
+	//		action = new ActionSceneryObjectAnimFade(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionCharacterSetVoice:
+	//		action = new ActionCharacterSetVoice(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSceneryObjectSetImage:
+	//		action = new ActionSceneryObjectSetImage(this);
+	//		break;
+	//	case NovelLib::SerializationID::ActionSetBackground:
+	//		action = new ActionSetBackground(this);
+	//		break;
+	//	default:
+	//		qCritical() << NovelLib::ErrorType::General << "Invalid Action's type" << static_cast<int>(type);
+	//		continue;
+	//		break;
+	//	}
+	//	dataStream >> *action;
+	//	actions_.emplace_back(action);
+	//}
 }
 
 void Event::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << getType() << label;
+	dataStream << getType() << label << scenery/* << static_cast<uint>(actions_.size()) */ ;
 	for (const std::shared_ptr<Action>& action : actions_)
 		dataStream << *action;
 }

@@ -76,7 +76,7 @@ void EventChoice::serializableLoad(QDataStream& dataStream)
 {
 	Event::serializableLoad(dataStream);
 	uint choicesSize;
-	dataStream >> choicesSize;
+	dataStream >> menuText_ >> choicesSize;
 	for (size_t i = 0u; i != choicesSize; ++i)
 	{
 		Choice choice(this);
@@ -91,7 +91,7 @@ void EventChoice::serializableSave(QDataStream& dataStream) const
 {
 	Event::serializableSave(dataStream);
 
-	dataStream << static_cast<uint>(choices_.size());
+	dataStream << menuText_ << static_cast<uint>(choices_.size());
 	for (const Choice& choice : choices_)
 		dataStream << choice;
 }

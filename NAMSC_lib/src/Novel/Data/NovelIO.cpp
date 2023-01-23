@@ -48,7 +48,7 @@ void Novel::ensureResourcesAreLoaded()
 
 void Novel::loadAssetsDefinitions()
 {
-	QDirIterator it("game\\Assets", QStringList() << "*.png" << "*.jpg" << "*.jpeg", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it("game/Assets", QStringList() << "*.png" << "*.jpg" << "*.jpeg", QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		auto relPath = it.next();
 		AssetManager::getInstance().addAssetImageSceneryBackground(relPath, 0, 0, relPath);

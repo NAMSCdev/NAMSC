@@ -109,24 +109,14 @@ namespace NovelLib::Helpers
 	template<typename T>
 	bool checkMapExistence(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (!map.contains(key))
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeMissing << "Tried to get a non-existent " + type + "\"" + key + '\"' + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return false;
-		}
+
 		return true;
 	}
 
 	template<typename T>
 	bool checkMapDuplicate(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
-		if (map.contains(key))
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeInvalid << type + " \"" + key + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return false;
-		}
+
 		return true;
 	}
 
@@ -170,11 +160,7 @@ namespace NovelLib::Helpers
 	typename std::vector<T>::iterator checkListDuplicate(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&name](T& listEntity) { return getIdentifier(listEntity) == name; });
-		if (ret != list.end())
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeInvalid << type + " \"" + name + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
-		}
+
 		return ret;
 	}
 
@@ -184,11 +170,7 @@ namespace NovelLib::Helpers
 		if (label.isEmpty())
 			return list.end();
 		typename std::vector<T>::iterator ret = std::find_if(list.begin(), list.end(), [&label](T& listEntity) { return getIdentifier(listEntity) == label; });
-		if (ret != list.end())
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeInvalid << type + " \"" + label + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
-		}
+
 		return ret;
 	}
 
@@ -372,8 +354,8 @@ namespace NovelLib::Helpers
 	typename std::vector<T>::iterator listAdd(std::vector<T>& list, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	{
 		typename std::vector<T>::iterator ret = checkListDuplicate(list, getIdentifier(entity), type, errorTypeInvalid, parentType, parentName, parentParentType, parentParentName, bThrowErrors);
-		if (ret != list.end())
-			return list.end();
+		//if (ret != list.end())
+			//return list.end();
 
 		list.push_back(entity);
 

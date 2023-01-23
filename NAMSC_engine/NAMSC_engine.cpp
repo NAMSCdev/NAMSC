@@ -61,14 +61,14 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     AssetManager& assetManager = AssetManager::getInstance();
     novel.loadNovel(0, true);
 
-#ifdef DEBUG
-    assetManager.addAssetImageSceneryBackground("testBackground",    0, 0, "resources\\Background\\pies.png");
-    assetManager.addAssetImageSceneryBackground("testBackground2",   0, 0, "resources\\Background\\pies.jpg");
-    assetManager.addAssetImageSceneryBackground("testBackgroundRed", 0, 0, "resources\\Background\\piesRed.png");
-    assetManager.addAssetImageSceneryObject("kotImage",              0, 0, "resources\\Sprite\\kot.png");
-    assetManager.addAssetImageSceneryObject("flamigno",              0, 0, "resources\\Sprite\\potwor.png");
-    assetManager.addAssetImageSceneryObject("flamignoAngry",         0, 0, "resources\\Sprite\\potworNegative.png");
-    assetManager.addAssetImageSceneryObject("felicja",               0, 0, "resources\\Sprite\\felicja.png");
+#ifndef DEBUG
+    //assetManager.addAssetImageSceneryBackground("game/Assets/Background/pies.png",       0, 0, "game/Assets/Background/pies.png");
+    //assetManager.addAssetImageSceneryBackground("game/Assets/Background/pies.jpg",       0, 0, "game/Assets/Background/pies.jpg");
+    //assetManager.addAssetImageSceneryBackground("game/Assets/Background/piesRed.png",    0, 0, "game/Assets/Background/piesRed.png");
+    //assetManager.addAssetImageSceneryObject(    "game/Assets/Sprite/kot.png",            0, 0, "game/Assets/Sprite/kot.png");
+    //assetManager.addAssetImageSceneryObject(    "game/Assets/Sprite/potwor.png",         0, 0, "game/Assets/Sprite/potwor.png");
+    //assetManager.addAssetImageSceneryObject(    "game/Assets/Sprite/potworNegative.png", 0, 0, "game/Assets/Sprite/potworNegative.png");
+    //assetManager.addAssetImageSceneryObject(    "game/Assets/Sprite/felicja.png",        0, 0, "game/Assets/Sprite/felicja.png");
 
     Scene* scene1 = novel.addScene(Scene("start", ""));
     Scenery scenery1(scene1);
@@ -81,11 +81,11 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     Scene* scene5 = novel.addScene(Scene("Credits", ""));
     Scenery scenery5(scene5);
 
-    Character wikingCharacter(QString("Nieznajomy"), QString("kotImage"), false, QPoint(600, 40), QSizeF(1.0, 1.0), 0.0);
-    Character falmeCharacter(QString("Straszna istota!"), QString("flamigno"), false, QPoint(500, 680), QSizeF(1.0, 1.0), 0.0);
-    Character felicjaCharacter(QString("Felicja"), QString("felicja"), false, QPoint(280, 0), QSizeF(1.0, 1.0), 0.0);
+    Character wikingCharacter(QString("Nieznajomy"), QString("game/Assets/Sprite/kot.png"), false, QPoint(600, 40), QSizeF(1.0, 1.0), 0.0);
+    Character falmeCharacter(QString("Straszna istota!"), QString("game/Assets/Sprite/potwor.png"), false, QPoint(500, 680), QSizeF(1.0, 1.0), 0.0);
+    Character felicjaCharacter(QString("Felicja"), QString("game/Assets/Sprite/felicja.png"), false, QPoint(280, 0), QSizeF(1.0, 1.0), 0.0);
 
-    scenery1.setBackgroundAssetImage("testBackground");
+    scenery1.setBackgroundAssetImage("game/Assets/Background/pies.png");
     scenery1.addDisplayedCharacter(wikingCharacter);
 
     EventDialogue* event1 = static_cast<EventDialogue*>(scene1->addEvent(new EventDialogue(scene1)).get());
@@ -159,7 +159,7 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     event8->addSentence(Sentence(event8, Translation(Translate{ { "En", "...SMACZNY!"} }), "Straszna istotna", "", "", "", 1.0, 3));
 
     scenery3.clearDisplayedCharacters();
-    scenery3.setBackgroundAssetImage("testBackgroundRed");
+    scenery3.setBackgroundAssetImage("game/Assets/Background/piesRed.png");
     falmeCharacter.pos = QPointF(445.0, -495.0);
     falmeCharacter.scale = QSizeF(3.5, 3.5);
     falmeCharacter.rotationDegree = -23.3;
@@ -170,8 +170,8 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     event9->addSentence(Sentence(event9, Translation(Translate{ { "En", "Kończysz marnie."} }), ""));
 
     scenery3.clearDisplayedCharacters();
-    scenery3.setBackgroundAssetImage("testBackground2");
-    falmeCharacter.setAssetImage("flamignoAngry");
+    scenery3.setBackgroundAssetImage("game/Assets/Background/pies.jpg");
+    falmeCharacter.setAssetImage("game/Assets/Sprite/potworNegative.png");
     scenery3.addDisplayedCharacter(falmeCharacter);
     event9->scenery = scenery3;
 
@@ -179,7 +179,7 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
 
     EventDialogue* event10 = static_cast<EventDialogue*>(scene4->addEvent(new EventDialogue(scene4)).get());
     event10->addSentence(Sentence(event10, Translation(Translate{ { "En", "Dziękuję. Ziarna są naprawdę smaczne. "} }), "???"));
-    event10->addSentence(Sentence(event10, Translation(Translate{ { "En", "Jestem Felicja. Gdybyś potrzebował kiedyś desantu powietrznego, to moi poddani zareagują, gdy zadzwonisz pod numer +84 91 241 22 15, będąc w zasięgu sieci 5G."} }), "Felicja"));
+    event10->addSentence(Sentence(event10, Translation(Translate{ { "En", "Jestem Felicja. Gdybyś potrzebował kiedyś desantu powietrznego, to moi poddani zareagują, gdy zadzwonisz pod numer +84 91 241 22 15, będąc w zasięgu sieci 5G."} }), "???"));
     event10->addSentence(Sentence(event10, Translation(Translate{ { "En", "Nie będę już więcej przeszkadzać, dziękuję za smaczne ziarna."} }), "Felicja"));
 
     scenery4.clearDisplayedCharacters();
@@ -208,7 +208,7 @@ NAMSC_engine::NAMSC_engine(QWidget* parent)
     //scene4->removeEvent(event10->label);
     //scene4->removeEvent(eventJump2->label);
     //scene5->removeEvent(event11->label);
-
+    novel.saveNovel(0);
 #endif
     ui.gameLayout->addWidget(novel.createSceneWidget());
     novel.run();
