@@ -53,7 +53,6 @@ void Novel::loadAssetsDefinitions()
 		auto relPath = it.next();
 		AssetManager::getInstance().addAssetImageSceneryBackground(relPath, 0, 0, relPath);
 		AssetManager::getInstance().addAssetImageSceneryObject(relPath, 0, 0, relPath);
-		//qDebug() << it.next();
 	}
 }
 

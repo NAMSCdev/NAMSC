@@ -273,6 +273,7 @@ void GraphView::removeNode()
 
     Novel::getInstance().removeScene(selectedNode->getLabel());
     scene()->removeItem(selectedNode);
+    delete selectedNode;
 }
 
 void GraphView::serializableLoad(QDataStream& dataStream)

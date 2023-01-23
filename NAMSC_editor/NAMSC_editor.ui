@@ -46,7 +46,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>3</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="statisticsTab">
         <property name="sizePolicy">
@@ -365,7 +365,7 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="middlePanelEditorStackPage1" native="true">
+        <widget class="QWidget" name="middlePanelEditorStackPage1">
          <attribute name="title">
           <string>Graph editor</string>
          </attribute>
@@ -397,7 +397,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="middlePanelEditorStackPage2" native="true">
+        <widget class="QWidget" name="middlePanelEditorStackPage2">
          <attribute name="title">
           <string>Scene editor</string>
          </attribute>
@@ -507,7 +507,7 @@
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="propertiesWidget">
            <property name="sizePolicy">

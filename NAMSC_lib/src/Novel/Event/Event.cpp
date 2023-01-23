@@ -83,7 +83,7 @@ Event::Event(Scene* const parentScene, const QString& label, const std::vector<s
 
 void Event::serializableLoad(QDataStream& dataStream)
 {
-	dataStream >> label;
+	dataStream >> label >> scenery;
 
 	size_t actionsSize;
 	dataStream >> actionsSize;
@@ -141,7 +141,7 @@ void Event::serializableLoad(QDataStream& dataStream)
 
 void Event::serializableSave(QDataStream& dataStream) const
 {
-	dataStream << getType() << label;
+	dataStream << getType() << label << scenery;
 	for (const std::shared_ptr<Action>& action : actions_)
 		dataStream << *action;
 }

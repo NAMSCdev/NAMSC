@@ -100,7 +100,9 @@ bool SceneWidget::removeSceneryObjectWidget(size_t index)
 		qCritical() << NovelLib::ErrorType::General << "Tried to remove past \"sceneryObjectWidgets_\" size";
 		return false;
 	}
+
 	scene()->removeItem(sceneryObjectWidgets_.at(index));
+	delete sceneryObjectWidgets_.at(index);
 	sceneryObjectWidgets_.erase(sceneryObjectWidgets_.begin() + index);
 	//Removing an item doesn't need to correct Z-Values
 	return true;

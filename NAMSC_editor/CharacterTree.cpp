@@ -17,6 +17,9 @@ void CharacterTree::addAssetToCharacters(QString path, QString name, TreeWidgetI
 
 	if (type == TreeWidgetItemTypes::ImageObject)
 	{
+		//AssetManager::getInstance().addAssetImageSceneryBackground(path, 0, 0, path);
+		AssetManager::getInstance().addAssetImageSceneryObject(path, 0, 0, path);
+
 		Character tempCharacter;
 		tempCharacter.name = name;
 		tempCharacter.setAssetImage(path);

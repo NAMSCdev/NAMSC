@@ -105,16 +105,18 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
+    ui.leftPanel->setTabEnabled(0, false); // Statistics tab
+    ui.leftPanel->setTabVisible(0, false); // Statistics tab
+
     delete ui.sceneView;
     ui.sceneView = Novel::getInstance().createSceneWidget();
 
     sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
 
-	sceneWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    sceneWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    sceneWidget->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    sceneWidget->scene()->setSceneRect(sceneWidget->rect());
-    //sceneWidget->fitInView(sceneWidget->scene()->sceneRect(), Qt::IgnoreAspectRatio);
+	//sceneWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+ //   sceneWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+ //   sceneWidget->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+ //   sceneWidget->scene()->setSceneRect(sceneWidget->rect());
 
     ui.middlePanelEditorStackPage2->layout()->addWidget(sceneWidget);
     sceneWidget->switchToPreview();
@@ -139,11 +141,6 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     connect(ui.actionNew_project, &QAction::triggered, ProjectConfiguration::getInstance(), &ProjectConfiguration::createNewProject);
     connect(ui.assetsTree, &AssetTreeView::addAssetToObjects, ui.objectsTree, &ObjectsTree::addAssetToObjects);
     connect(ui.assetsTree, &AssetTreeView::addAssetToCharacters, ui.charactersTree, &CharacterTree::addAssetToCharacters);
-
-    //connect(ui.middlePanel, &QSplitter::splitterMoved, this, [&]
-    //    {
-    //        sceneWidget->fitInView(sceneWidget->sceneRect(), Qt::IgnoreAspectRatio);
-    //    });
 
 	//Novel::getInstance().saveNovel(0);
  //   saveEditor();
@@ -270,8 +267,8 @@ void NAMSC_editor::prepareSceneEditor()
     // Event selection from eventTree
     connect(static_cast<EventTreeItemModel*>(ui.eventsTree->model()), &EventTreeItemModel::propertyTabChangeRequested, this, [&](void* object, PropertyTypes type)
         {
-            if (ui.middlePanelEditorStack->currentIndex() == 1) // index of the scene editor
-            {
+            //if (ui.middlePanelEditorStack->currentIndex() == 1) // index of the scene editor
+            //{
                 if (type == PropertyTypes::DialogEventItem || type == PropertyTypes::ChoiceEventItem) // todo jumps are not visualised
                 { 
                     
@@ -289,21 +286,17 @@ void NAMSC_editor::prepareSceneEditor()
 
                     static_cast<Event*>(object)->run();
                 }
-            }
+            //}
         });
 
     // Position update
     connect(sceneWidget, &SceneWidget::sceneryObjectPositionChanged, this, [&](const QString& name, const QPointF& pos)
         {
-            /*if (auto ev = currentlySelectedEvent.lock())
-            {
-                if (auto elem = ev->scenery.getDisplayedCharacter(name)) elem->pos = pos.toPoint();
-                else if (auto elem = ev->scenery.getDisplayedSceneryObject(name)) elem->pos = pos.toPoint();
+            if (auto ev = currentlySelectedEvent.lock()) {
+                if (isInCharacters(name)) ev->scenery.getDisplayedCharacter(name)->pos = pos.toPoint();
+                if (isInSceneryObjects(name)) ev->scenery.getDisplayedSceneryObject(name)->pos = pos.toPoint();
                 else qDebug() << "No sceneryObject or character to change position";
-            }*/
-            if (isInCharacters(name)) currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name)->pos = pos.toPoint();
-            if (isInSceneryObjects(name)) currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name)->pos = pos.toPoint();
-            else qDebug() << "No sceneryObject or character to change position";
+            }
     });
 
 }
@@ -332,21 +325,19 @@ void NAMSC_editor::prepareSwitchboard()
     // Connect selection from scene editor to switchboard
     connect(sceneWidget, &SceneWidget::sceneryObjectSelectionChanged, &switchboard, [&](const QString& name, bool selected)
         {
-            /*if (auto elem = currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name))
-            {
-                switchboard.objectOnSceneSelectionChanged(elem, selected);
+            if (auto ev = currentlySelectedEvent.lock()) {
+                if (isInCharacters(name))
+                {
+                    switchboard.objectOnSceneSelectionChanged(ev->scenery.getDisplayedCharacter(name), selected);
+                }
+                else if (isInSceneryObjects(name))
+                {
+                    switchboard.objectOnSceneSelectionChanged(ev->scenery.getDisplayedSceneryObject(name), selected);
+                }
             }
-            else if (auto elem = currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name))
+            else
             {
-                switchboard.objectOnSceneSelectionChanged(elem, selected);
-            }*/
-            if (isInCharacters(name))
-            {
-                switchboard.objectOnSceneSelectionChanged(currentlySelectedEvent.lock()->scenery.getDisplayedCharacter(name), selected);
-            }
-            else if (isInSceneryObjects(name))
-            {
-                switchboard.objectOnSceneSelectionChanged(currentlySelectedEvent.lock()->scenery.getDisplayedSceneryObject(name), selected);
+                qDebug() << "Tried to select an object on event scene, when currentlySelectedEvent is null";
             }
         });
 
@@ -423,13 +414,14 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
                     uint index = std::ranges::find_if(sceneWidget->getSceneryObjectWidgets()->begin(), sceneWidget->getSceneryObjectWidgets()->end(), [&](SceneryObjectWidget* elem) { return elem->getName() == static_cast<SceneryObject*>(object)->name; }) - sceneWidget->getSceneryObjectWidgets()->cbegin();
 					sceneWidget->removeSceneryObjectWidget(index);
 					sceneWidget->insertSceneryObjectWidget(index, *static_cast<SceneryObject*>(object));
+					//currentlySelectedEvent.lock()->run();
                 });
             connect(sceneryObjectOnSceneProperties, &SceneryObjectOnSceneProperties::parametersChanged, this, [=]
                 {
                     uint index = std::ranges::find_if(sceneWidget->getSceneryObjectWidgets()->begin(), sceneWidget->getSceneryObjectWidgets()->end(), [=](SceneryObjectWidget* elem) { return elem->getName() == static_cast<SceneryObject*>(object)->name; }) - sceneWidget->getSceneryObjectWidgets()->cbegin();
-            sceneWidget->removeSceneryObjectWidget(index);
-            sceneWidget->insertSceneryObjectWidget(index, *static_cast<SceneryObject*>(object));
-                }); // todo OBJECT DOES NOT EXIST IN THE CONNECT CONTEXT
+					sceneWidget->removeSceneryObjectWidget(index);
+					sceneWidget->insertSceneryObjectWidget(index, *static_cast<SceneryObject*>(object));
+                });
             break;
         }
 
