@@ -21,6 +21,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation,
         int role = Qt::DisplayRole) const override;
     void appendEvent(Event* event, EventTreeItem* parentScene);
+    void refresh();
     void appendObject(SceneryObject* object, EventTreeItem* parentEvent);
     QModelIndex index(int row, int column,
                       const QModelIndex& parent = QModelIndex()) const override;

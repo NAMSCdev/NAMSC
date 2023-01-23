@@ -8,7 +8,9 @@ enum SceneComponentType
 	SCENE,
 	EVENT,
 	OBJECT,
-	CHARACTER
+	CHARACTER,
+	OBJECTS_ROOT,
+	CHARACTERS_ROOT
 };
 
 enum class EventSubType
@@ -42,6 +44,28 @@ class DummySceneComponent final : public SceneComponent
 {
 public:
 	DummySceneComponent() = default;
+
+	QString getComponentTypeName()         const noexcept override;
+	QString getComponentSubTypeName()      const noexcept override;
+	SceneComponentType getComponentType()  const noexcept override;
+	QString getComponentName()             const noexcept override;
+};
+
+class CharactersRootSceneComponent final : public SceneComponent
+{
+public:
+	CharactersRootSceneComponent() = default;
+
+	QString getComponentTypeName()         const noexcept override;
+	QString getComponentSubTypeName()      const noexcept override;
+	SceneComponentType getComponentType()  const noexcept override;
+	QString getComponentName()             const noexcept override;
+};
+
+class SceneryObjectsRootSceneComponent final : public SceneComponent
+{
+public:
+	SceneryObjectsRootSceneComponent() = default;
 
 	QString getComponentTypeName()         const noexcept override;
 	QString getComponentSubTypeName()      const noexcept override;
