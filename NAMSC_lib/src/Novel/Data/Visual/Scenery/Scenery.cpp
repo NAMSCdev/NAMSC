@@ -83,6 +83,8 @@ bool Scenery::operator==(const Scenery& obj) const noexcept
 void Scenery::serializableLoad(QDataStream& dataStream)
 {
 	dataStream >> backgroundAssetImageName_ >> musicPlaylist;
+	if (!backgroundAssetImageName_.isEmpty())
+		setBackgroundAssetImage(backgroundAssetImageName_);
 	uint displayedCharactersSize, displayedSceneryObjectsSize, soundsSize;
 	dataStream >> displayedCharactersSize >> displayedSceneryObjectsSize >> soundsSize;
 	for (uint i = 0; i != displayedCharactersSize; ++i)
