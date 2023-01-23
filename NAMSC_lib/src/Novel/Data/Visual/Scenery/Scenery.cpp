@@ -107,7 +107,7 @@ void Scenery::serializableLoad(QDataStream& dataStream)
 		dataStream >> sound;
 		addSound(std::move(sound));
 	}
-
+	
 	errorCheck();
 }
 

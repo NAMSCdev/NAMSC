@@ -288,7 +288,7 @@ void GraphView::serializableLoad(QDataStream& dataStream)
         scene()->addItem(node);
     }
 
-    // Cannot do both at the same time, because a node may be not constructed before, so there's no possible connection
+    // Cannot do both at the same time, because a node may not be constructed before, so there's no possible connection
     for (const auto& scenePair : *Novel::getInstance().getScenes())
     {
         // If can get a node

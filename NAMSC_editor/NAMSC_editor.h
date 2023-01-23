@@ -86,4 +86,8 @@ private:
         return false;
     }
 
+    void createMenubarActions();
+
+private slots:
+    void openProject();
 };

@@ -1,4 +1,6 @@
 ﻿#include "NAMSC_editor.h"
+
+#include <QFileDialog>
 #include <qinputdialog.h>
 #include <QMessageBox>
 #include <QMimeData>
@@ -128,7 +130,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.graphView->setScene(scene);
     scene->setSceneRect(this->rect());
 
-    debugConstructorActions();
+    //debugConstructorActions();
     prepareAssetsTree();
     prepareEventsTree();
     prepareSceneEditor();
@@ -145,8 +147,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 	//Novel::getInstance().saveNovel(0);
  //   saveEditor();
 
-    //Novel::getInstance().loadNovel(0, false);
-    //loadEditor();
+    Novel::getInstance().loadNovel(0, false);
+    loadEditor();
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -172,6 +174,19 @@ void NAMSC_editor::prepareEventsTree()
 
 void NAMSC_editor::prepareSceneEditor()
 {
+    //connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
+    //    {
+    //        if (item->type() == TreeWidgetItemTypes::ImageObject)
+    //        {
+    //            item->sceneryObject->ensureResourcesAreLoaded();
+    //            sceneWidget->addSceneryObjectWidget(*item->sceneryObject, 0);
+    //        }
+    //        else
+    //        {
+    //            qDebug() << "Tried to add different asset type than an image";
+    //        }
+    //    });
+
     // Item addition from objectsTree
     connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
         {
@@ -509,18 +524,18 @@ void NAMSC_editor::debugConstructorActions()
 
    //Novel::getInstance().loadNovel(0, false);
 
-    connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
-        {
-            if (item->type() == TreeWidgetItemTypes::ImageObject)
-            {
-                item->sceneryObject->ensureResourcesAreLoaded();
-                sceneWidget->addSceneryObjectWidget(*item->sceneryObject, 0);
-            }
-            else
-            {
-                qDebug() << "Tried to add different asset type than an image";
-            }
-        });
+    //connect(ui.objectsTree, &ObjectsTree::addObjectToScene, sceneWidget, [&](ObjectTreeWidgetItem* item)
+    //    {
+    //        if (item->type() == TreeWidgetItemTypes::ImageObject)
+    //        {
+    //            item->sceneryObject->ensureResourcesAreLoaded();
+    //            sceneWidget->addSceneryObjectWidget(*item->sceneryObject, 0);
+    //        }
+    //        else
+    //        {
+    //            qDebug() << "Tried to add different asset type than an image";
+    //        }
+    //    });
 }
 
 void NAMSC_editor::createDanglingContextMenuActions()
@@ -603,6 +618,43 @@ void NAMSC_editor::invokeSceneEditorContextMenu(const QPoint& pos)
 void NAMSC_editor::loadGraph(GraphView* graph)
 {
     QDirIterator it("game\\Graph", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+
+    // If graph file does not exist
+	if (!it.hasNext())
+    {
+        // Create nodes
+	    for (auto& scenePair : *Novel::getInstance().getScenes())
+	    {
+            GraphNode* node = new GraphNode({ 0,0 });
+            node->setLabel(scenePair.second.name);
+            ui.graphView->scene()->addItem(node);
+	    }
+
+        // Add connections
+        // Cannot do both at the same time, because a node may not be constructed before, so there's no possible connection
+        // todo extract function in GraphView
+        for (const auto& scenePair : *Novel::getInstance().getScenes())
+        {
+            // If can get a node
+            GraphNode* node = ui.graphView->getNodeByName(scenePair.first);
+            if (node != nullptr)
+            {
+                // Look through all events and connect nodes wherever applicable
+                for (const auto& ev : *scenePair.second.getEvents())
+                {
+                    if (auto evj = dynamic_cast<EventJump*>(ev.get())) node->connectToNode(evj->jumpToSceneName);
+
+
+                    else if (auto evc = dynamic_cast<EventChoice*>(ev.get()))
+                    {
+                        for (const auto& choice : *evc->getChoices()) node->connectToNode(choice.jumpToSceneName);
+                    }
+                    // todo check if names of the nodes exist, though it should work anyway
+                }
+            }
+        }
+    }
+
     while (it.hasNext())
     {
         QFile serializedFile(it.next());
@@ -629,6 +681,31 @@ void NAMSC_editor::saveGraph(GraphView* graph)
 
         dataStream << *graph;
     }
+}
+
+void NAMSC_editor::createMenubarActions()
+{ }
+
+void NAMSC_editor::openProject()
+{
+    QDir dir;
+    QFileDialog fileDialog = QFileDialog(nullptr, tr("Choose project location"), ProjectConfiguration::getInstance()->getProjectPath().path());
+    fileDialog.setFileMode(QFileDialog::Directory);
+    fileDialog.setViewMode(QFileDialog::Detail);
+
+    // todo check if filename, project path is correct
+    if (fileDialog.exec())
+    {
+        dir = fileDialog.directory();
+        ProjectConfiguration::getInstance()->setProjectPath(dir);
+
+    }
+    else
+    {
+        // TODO error	
+    }
+    //ProjectConfiguration::getInstance()->setProjectPath();
+    //NovelSettings::getInstance().
 }
 
 void NAMSC_editor::supportedFormats()
