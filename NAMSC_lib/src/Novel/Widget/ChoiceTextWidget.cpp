@@ -6,9 +6,9 @@
 #define RESOLUTION_X 1600.0
 #define RESOLUTION_Y 900.0
 
-ChoiceTextWidget::ChoiceTextWidget(uint index, const QString& text, double width)
-	: index_(index),
-	text(text)
+ChoiceTextWidget::ChoiceTextWidget(uint index, const QString& text, double width, bool bPreview)
+	: text(text), index_(index),
+	bPreview_(bPreview)
 {
 	setAcceptHoverEvents(true);
 	font_.setStyleHint(QFont::Helvetica, QFont::PreferAntialias);
@@ -45,6 +45,6 @@ void ChoiceTextWidget::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 
 void ChoiceTextWidget::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	if (event->button() == Qt::MouseButton::LeftButton)
+	if (!bPreview_ && event->button() == Qt::MouseButton::LeftButton)
 		emit chosen(index_);
 }

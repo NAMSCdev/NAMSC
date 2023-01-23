@@ -183,10 +183,16 @@ void Novel::loadScenes()
 
 		QDataStream dataStream(&serializedFile);
 
-		Scene scene;
-		dataStream >> scene;
-		QString sceneName = scene.name;
-		addScene(std::move(scene));
+		qint64 dataPos = serializedFile.pos();
+
+		QString sceneName;
+		dataStream >> sceneName;
+
+		qDebug() << "Hello: " << serializedFile.seek(dataPos);
+
+		dataStream >> *addScene(std::move(Scene(sceneName)));
+		//QString sceneName = scene.name;
+		//addScene(std::move(scene));
 	}
 }
 

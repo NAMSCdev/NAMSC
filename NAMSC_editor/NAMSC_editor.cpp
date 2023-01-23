@@ -111,7 +111,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.leftPanel->setTabVisible(0, false); // Statistics tab
 
     delete ui.sceneView;
-    ui.sceneView = Novel::getInstance().createSceneWidget();
+    ui.sceneView = Novel::getInstance().createSceneWidget(true);
 
     sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
 
@@ -130,7 +130,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.graphView->setScene(scene);
     scene->setSceneRect(this->rect());
 
-    //debugConstructorActions();
+    debugConstructorActions();
     prepareAssetsTree();
     prepareEventsTree();
     prepareSceneEditor();
@@ -147,8 +147,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 	//Novel::getInstance().saveNovel(0);
  //   saveEditor();
 
-    Novel::getInstance().loadNovel(0, false);
-    loadEditor();
+    //Novel::getInstance().loadNovel(0, false);
+    //loadEditor();
 }
 
 void NAMSC_editor::prepareAssetsTree()

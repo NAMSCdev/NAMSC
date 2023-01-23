@@ -129,7 +129,7 @@ public:
 
 	/// Needs to be created after QApplication 
 	/// It should be deleted by the QWidget it will be assigned to, instead of manually
-	SceneWidget* createSceneWidget();
+	SceneWidget* createSceneWidget(bool bPreview = false);
 	SceneWidget* getSceneWidget();
 
 	const NovelState* getStateAtSceneBeginning() noexcept;

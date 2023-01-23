@@ -41,7 +41,7 @@ ChoiceWidget::ChoiceWidget(QGraphicsScene* scene, const QString& menuText, const
 	uint index = 0;
 	for (const Choice& choice : choices)
 	{
-		ChoiceTextWidget* choiceTextWidget = new ChoiceTextWidget(index++, choice.translation.text(), textRect.width());
+		ChoiceTextWidget* choiceTextWidget = new ChoiceTextWidget(index++, choice.translation.text(), textRect.width(), bPreview_);
 		choices_.push_back(choiceTextWidget);
 		layout_->addItem(choiceTextWidget);
 		connect(choiceTextWidget, &ChoiceTextWidget::chosen, this, &ChoiceWidget::chosen);

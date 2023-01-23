@@ -31,9 +31,11 @@ QString Novel::nextFreeSceneName() const noexcept
 	return "Scene " + QString::number(scenes_.size() + 1);
 }
 
-SceneWidget* Novel::createSceneWidget()
+SceneWidget* Novel::createSceneWidget(bool bPreview)
 {
 	sceneWidget_ = new SceneWidget(nullptr);
+	if (bPreview) sceneWidget_->switchToPreview();
+
 	connect(this,         &Novel::pendSceneClear,            sceneWidget_, &SceneWidget::clearScene,            Qt::DirectConnection);
 	connect(this,         &Novel::pendBackgroundDisplay,     sceneWidget_, &SceneWidget::displayBackground);
 	connect(this,         &Novel::pendSceneryObjectsDisplay, sceneWidget_, &SceneWidget::displaySceneryObjects);

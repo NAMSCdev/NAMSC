@@ -84,7 +84,10 @@ void TextWidget::mouseClicked()
 
 	if ((sentenceReadIndex_ + 1) == text_.size())
 	{
-		emit pendNovelEnd();
+		if (!bPreview_)
+		{
+			emit pendNovelEnd();
+		}
 	}
 	else
 	{

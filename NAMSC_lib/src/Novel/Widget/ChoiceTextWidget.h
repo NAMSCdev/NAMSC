@@ -6,7 +6,7 @@ class ChoiceTextWidget : public QGraphicsWidget
 {
 	Q_OBJECT
 public:
-	ChoiceTextWidget(uint index, const QString& text, double width);
+	ChoiceTextWidget(uint index, const QString& text, double width, bool bPreview = false);
 	ChoiceTextWidget(const ChoiceTextWidget&)            noexcept = delete;
 	ChoiceTextWidget& operator=(const ChoiceTextWidget&) noexcept = delete;
 
@@ -24,6 +24,7 @@ private:
 
 	uint index_  = 0;
 
+	bool bPreview_ = false;
 	bool bHover_ = false;
 
 	QFont font_  = QFont("Fantasque Sans Mono", 24);

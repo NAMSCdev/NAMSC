@@ -170,7 +170,7 @@ void SceneWidget::displayEventChoice(const QString& menuText, const std::vector<
 
 void SceneWidget::displayEventDialogue(const std::vector<Sentence>& sentences, uint sentenceReadIndex)
 {
-	TextWidget* textWidget = new TextWidget(scene(), sentences, sentenceReadIndex, bPreview_);
+	TextWidget* textWidget = new TextWidget(scene(), sentences, sentenceReadIndex, 0, bPreview_);
 	connect(textWidget, &TextWidget::pendNovelEnd,this,       &SceneWidget::pendNovelEnd);
 	connect(this,       &SceneWidget::LPMClicked, textWidget, &TextWidget::mouseClicked);
 	//Takes ownership and will delete it later
