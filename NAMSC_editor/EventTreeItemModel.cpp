@@ -116,12 +116,12 @@ void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const 
                 break;
             }
             break;
-        case OBJECT:
-            emit propertyTabChangeRequested(item->component, PropertyTypes::CharacterTreeItem);
-            break;
-        case CHARACTER:
-            emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectTreeItem);
-            break;
+        //case OBJECT:
+        //    emit propertyTabChangeRequested(item->component, PropertyTypes::CharacterTreeItem);
+        //    break;
+        //case CHARACTER:
+        //    emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectTreeItem);
+        //    break;
         }
     }
 }

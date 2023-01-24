@@ -166,8 +166,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
         QFile::remove(ProjectConfiguration::getInstance()->getLoadingLockFilename());
     }
 
-    Novel::getInstance().loadNovel(0, false);
-    loadEditor();
+    //Novel::getInstance().loadNovel(0, false);
+    //loadEditor();
 
     connect(ui.actionOpen_project, &QAction::triggered, this, &NAMSC_editor::openProject);
     connect(ui.actionSave_project, &QAction::triggered, this, &NAMSC_editor::saveProject);
