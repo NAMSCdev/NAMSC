@@ -27,6 +27,9 @@ void DialogEventProperties::contextMenuEvent(QContextMenuEvent* event)
 {
 	QMenu menu(this);
 	menu.addAction(addSentenceAction);
+	menu.addAction(removeSentenceAction);
+	if (ui.dialogListView->selectionModel()->hasSelection()) removeSentenceAction->setEnabled(true);
+	else removeSentenceAction->setDisabled(true);
 	menu.exec(event->globalPos());
 }
 
@@ -72,10 +75,19 @@ void DialogEventProperties::prepareDataInUi()
 void DialogEventProperties::createContextMenu()
 {
 	addSentenceAction = new QAction(tr("Add new sentence"));
+	removeSentenceAction = new QAction(tr("Remove sentence"));
 
 	connect(addSentenceAction, &QAction::triggered, this, [&]
 		{
 			static_cast<DialogItemModel*>(ui.dialogListView->model())->insertRows(ui.dialogListView->model()->rowCount(), 1);
+		});
+
+	connect(removeSentenceAction, &QAction::triggered, this, [&]
+		{
+			for (auto elem : ui.dialogListView->selectionModel()->selectedIndexes())
+			{
+				ui.dialogListView->model()->removeRows(elem.row(), 1);
+			}
 		});
 }
 
@@ -90,6 +102,7 @@ void DialogEventProperties::changeModelItem()
 {
 	if (dialogue->getSentences()->size() > lastClickedModelIndex.row()) {
 		dialogue->getSentence(lastClickedModelIndex.row())->translation.setTranslation(NovelSettings::getInstance().language, ui.dialogTextEdit->toPlainText());
+		dialogue->run();
 	}
 	else
 	{

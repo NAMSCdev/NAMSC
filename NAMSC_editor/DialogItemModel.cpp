@@ -69,9 +69,25 @@ bool DialogItemModel::insertRows(int row, int count, const QModelIndex& parent)
 
 	for (int rowNum = 0; rowNum < count; ++rowNum)
 	{
-		sentences->emplace(sentences->cbegin() + row + rowNum, Sentence(parentEvent));
+		sentences->emplace(sentences->cbegin() + row + rowNum, Sentence(parentEvent, std::move(Translation()), "New sentence " + QString::number(row)));
+		parentEvent->run();
 	}
 
 	endInsertRows();
+	return true;
+}
+
+bool DialogItemModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+	beginRemoveRows(parent, row, row + count - 1);
+
+	//std::vector<Sentence> sentences;
+	//std::copy(parentEvent->getSentences()->begin(), parentEvent->getSentences()->begin() + row, std::back_inserter(sentences));
+	//std::copy(parentEvent->getSentences()->begin() + row + 1, parentEvent->getSentences()->end() + row, std::back_inserter(sentences));
+	//parentEvent->setSentences(std::move(sentences));
+	parentEvent->removeSentence(row);
+	parentEvent->run();
+
+	endRemoveRows();
 	return true;
 }

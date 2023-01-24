@@ -210,7 +210,7 @@ QString Scene::nextFreeEventName()
     for (uint i = 0; i != events_.size(); ++i)
     {
         QString checked = "Event " + QString::number(i + 1);
-        if (std::find_if(events_.cbegin(), events_.cend(), [&checked] (const std::shared_ptr<Event>& obj) { return obj->label == checked; }) != events_.cend())
+        if (std::find_if(events_.cbegin(), events_.cend(), [&checked] (const std::shared_ptr<Event>& obj) { return obj->label == checked; }) == events_.cend())
             return checked;
     }
     return "Event " + QString::number(events_.size() + 1);

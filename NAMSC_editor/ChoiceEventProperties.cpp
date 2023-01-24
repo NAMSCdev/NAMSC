@@ -32,6 +32,9 @@ void ChoiceEventProperties::contextMenuEvent(QContextMenuEvent* event)
 {
 	QMenu menu(this);
 	menu.addAction(addChoiceAction);
+	menu.addAction(removeChoiceAction);
+	if (ui.choiceEventTableView->selectionModel()->hasSelection()) removeChoiceAction->setEnabled(true);
+	else removeChoiceAction->setDisabled(true);
 	menu.exec(event->globalPos());
 }
 
@@ -50,6 +53,9 @@ void ChoiceEventProperties::prepareDataInUi()
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::JumpToScene, &lineEditDelegate);
 	//ui.choiceEventTableView->setItemDelegateForColumn(ChoiceItemModel::ColumnElementEnum::Text, &lineEditDelegate);
 	ui.choiceEventTableView->setItemDelegate(&lineEditDelegate);
+
+	ui.choicePlainTextEdit->setPlainText(choices->getMenuText()->text());
+	connect(ui.choicePlainTextEdit, &QPlainTextEdit::textChanged, this, &ChoiceEventProperties::updateChoiceLabel);
 }
 
 void ChoiceEventProperties::createContextMenu()
@@ -58,36 +64,18 @@ void ChoiceEventProperties::createContextMenu()
 
 	connect(addChoiceAction, &QAction::triggered, this, [&]
 		{
-		//	QString name;
-		//	bool pressedOk = false;
-		//	bool isNameOk = false;
-		//	do {
-		//		name = QInputDialog::getText(this, tr("Add new choice"), tr("Provide unique choice name:"), QLineEdit::Normal, "", &pressedOk);
-
-		//		if (!pressedOk) break;
-		//		else if (name.isNull() || name.isEmpty())
-		//		{
-		//			continue;
-		//		}
-		//		else if (std::find_if(choices->choices.begin(), choices->choices.end(), [&](Choice elem)
-		//			{
-		//				return elem.name == name;
-		//			}) != choices->choices.end())
-		//		{
-		//			QMessageBox(QMessageBox::Critical, tr("Invalid choice name"), tr("Choice with this name already exists, please provide another name."), QMessageBox::Ok).exec();
-		//			continue;
-		//		}
-		//		else isNameOk = true;
-		//	} while (!isNameOk);
-
-		//if (pressedOk)
-		//{
-		//	// push_back, potentially want to insert
-		//	//choices->choices.emplace_back(name, Translation(), "", "", Choice::ChoiceDisplayOptions());
 			static_cast<ChoiceItemModel*>(ui.choiceEventTableView->model())->insertRows(ui.choiceEventTableView->model()->rowCount(), 1);
-		//}
-
 		});
+
+	removeChoiceAction = new QAction(tr("Remove choice"), this);
+
+	connect(removeChoiceAction, &QAction::triggered, this, [&]
+	{
+			for (auto elem : ui.choiceEventTableView->selectionModel()->selectedIndexes())
+			{
+				ui.choiceEventTableView->model()->removeRows(elem.row(), 1);
+			}
+	});
 }
 
 void ChoiceEventProperties::updateName(Choice* c, QString name)
@@ -109,4 +97,12 @@ void ChoiceEventProperties::updateText(Choice* c, QString text)
 {
 	// todo eventually remove
 }
-// todo HIDE COLUMN WITH CHOICE NAME
+
+void ChoiceEventProperties::updateChoiceLabel()
+{
+	Translation translation = *choices->getMenuText();
+	translation.setTranslation(NovelSettings::getInstance().language, ui.choicePlainTextEdit->toPlainText());
+	choices->setMenuText(translation);
+
+	choices->run();
+}

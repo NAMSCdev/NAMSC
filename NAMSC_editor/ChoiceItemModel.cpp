@@ -69,6 +69,7 @@ bool ChoiceItemModel::setData(const QModelIndex& index, const QVariant& value, i
 			break;
 		case Text:
 			affectedRow.translation.setTranslation(NovelSettings::getInstance().language, value.toString());
+			parentEvent->run();
 			break;
 		case JumpToScene:
 			if (affectedRow.jumpToSceneName != value.toString()) {
@@ -116,7 +117,7 @@ QVariant ChoiceItemModel::headerData(int section, Qt::Orientation orientation, i
 
 bool ChoiceItemModel::insertRows(int row, int count, const QModelIndex& parent)
 {
-	Q_UNUSED(parent);
+	Q_UNUSED(parent)
 
 	beginInsertRows(QModelIndex(), row, row + count - 1);
 
@@ -126,6 +127,16 @@ bool ChoiceItemModel::insertRows(int row, int count, const QModelIndex& parent)
 	}
 
 	endInsertRows();
+	return true;
+}
+
+bool ChoiceItemModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+	beginRemoveRows(parent, row, row + count - 1);
+
+	parentEvent->removeChoice(row);
+	
+	endRemoveRows();
 	return true;
 }
 

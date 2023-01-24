@@ -122,6 +122,9 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="scaleYDoubleSpinBox">
+            <property name="minimum">
+             <double>-99.989999999999995</double>
+            </property>
             <property name="singleStep">
              <double>0.100000000000000</double>
             </property>
@@ -140,6 +143,9 @@
           </item>
           <item>
            <widget class="QDoubleSpinBox" name="scaleXDoubleSpinBox">
+            <property name="minimum">
+             <double>-99.989999999999995</double>
+            </property>
             <property name="singleStep">
              <double>0.100000000000000</double>
             </property>

@@ -48,9 +48,9 @@ void Novel::ensureResourcesAreLoaded()
 
 void Novel::loadAssetsDefinitions()
 {
-	QDirIterator it("game/Assets", QStringList() << "*.png" << "*.jpg" << "*.jpeg", QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Assets", QStringList() << "*.png" << "*.jpg" << "*.jpeg", QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
-		auto relPath = it.next();
+		auto relPath = NovelSettings::getInstance().novelDir.relativeFilePath(it.next());
 		AssetManager::getInstance().addAssetImageSceneryBackground(relPath, 0, 0, relPath);
 		AssetManager::getInstance().addAssetImageSceneryObject(relPath, 0, 0, relPath);
 	}
@@ -66,7 +66,7 @@ void Novel::saveAssetsDefinitions()
 
 void Novel::loadChapters()
 {
-	QDirIterator it("game\\Chapters", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Chapters", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		QFile serializedFile(it.next());
 		serializedFile.open(QIODeviceBase::ReadOnly);
@@ -81,13 +81,13 @@ void Novel::loadChapters()
 
 void Novel::saveChapters()
 {
-	QDir chaptersDir = QDir::currentPath();
-	chaptersDir.mkpath("game\\Chapters");
+	QDir chaptersDir = NovelSettings::getInstance().novelDir;
+	chaptersDir.mkpath(NovelSettings::getInstance().novelDir.path() + "/game/Chapters");
 
 	for (const std::pair<const QString, Chapter>& defaultChapterPair : chapters_)
 	{
 		const Chapter& defaultChapter = defaultChapterPair.second;
-		QFile serializedFile(chaptersDir.path() + "\\game\\Chapters\\" + defaultChapter.name);
+		QFile serializedFile(chaptersDir.path() + "/game/Chapters" + defaultChapter.name);
 		serializedFile.open(QIODeviceBase::WriteOnly);
 
 		QDataStream dataStream(&serializedFile);
@@ -97,7 +97,7 @@ void Novel::saveChapters()
 
 void Novel::loadDefaultCharacterDefinitions()
 {
-	QDirIterator it("game\\Characters", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Characters", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		QFile serializedFile(it.next());
 		serializedFile.open(QIODeviceBase::ReadOnly);
@@ -112,13 +112,13 @@ void Novel::loadDefaultCharacterDefinitions()
 
 void Novel::saveDefaultCharacterDefinitions()
 {
-	QDir charactersDir = QDir::currentPath();
-	charactersDir.mkpath("game\\Characters");
+	QDir charactersDir = NovelSettings::getInstance().novelDir;
+	charactersDir.mkpath("game/Characters");
 
 	for (const std::pair<QString, Character>& defaultCharacterPair : characterDefaults_)
 	{
 		const SceneryObject& defaultCharacter = defaultCharacterPair.second;
-		QFile serializedFile(charactersDir.path() + "\\game\\Characters\\" + defaultCharacter.name);
+		QFile serializedFile(charactersDir.path() + "/game/Characters/" + defaultCharacter.name);
 		serializedFile.open(QIODeviceBase::WriteOnly);
 
 		QDataStream dataStream(&serializedFile);
@@ -128,7 +128,7 @@ void Novel::saveDefaultCharacterDefinitions()
 
 void Novel::loadDefaultSceneryObjectsDefinitions()
 {
-	QDirIterator it("game\\Objects", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Objects", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		QFile serializedFile(it.next());
 		serializedFile.open(QIODeviceBase::ReadOnly);
@@ -143,13 +143,13 @@ void Novel::loadDefaultSceneryObjectsDefinitions()
 
 void Novel::saveDefaultSceneryObjectsDefinitions()
 {
-	QDir objectDir = QDir::currentPath();
-	objectDir.mkpath("game\\Objects");
+	QDir objectDir = NovelSettings::getInstance().novelDir;
+	objectDir.mkpath("game/Objects");
 
 	for (const std::pair<QString, SceneryObject>& defaultSceneryObjectPair : sceneryObjectDefaults_)
 	{
 		const SceneryObject& defaultSceneryObject = defaultSceneryObjectPair.second;
-		QFile serializedFile(objectDir.path() +  "\\game\\Objects\\" + defaultSceneryObject.name);
+		QFile serializedFile(objectDir.path() +  "/game/Objects/" + defaultSceneryObject.name);
 		serializedFile.open(QIODeviceBase::WriteOnly);
 
 		QDataStream dataStream(&serializedFile);
@@ -175,7 +175,7 @@ void Novel::saveNovelEssentials()
 
 void Novel::loadScenes()
 {
-	QDirIterator it("game\\Scenes", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Scenes", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		auto val = it.next();
 		QFile serializedFile(val);
@@ -198,13 +198,13 @@ void Novel::loadScenes()
 
 void Novel::saveScenes()
 {
-	QDir scenesDir = QDir::currentPath();
-	scenesDir.mkpath("game\\Scenes");
+	QDir scenesDir = NovelSettings::getInstance().novelDir;
+	scenesDir.mkpath("game/Scenes");
 
 	for (const std::pair<const QString, Scene>& scenePair : scenes_)
 	{
 		const Scene& scene = scenePair.second;
-		QFile serializedFile(scenesDir.path() + "\\game\\Scenes\\" + scene.name);
+		QFile serializedFile(scenesDir.path() + "/game/Scenes/" + scene.name);
 		serializedFile.open(QIODeviceBase::WriteOnly);
 
 		QDataStream dataStream(&serializedFile);
@@ -214,7 +214,7 @@ void Novel::saveScenes()
 
 void Novel::loadVoices()
 {
-	QDirIterator it("game\\Voices", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+	QDirIterator it(NovelSettings::getInstance().novelDir.path() + "/game/Voices", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
 		QFile serializedFile(it.next());
 		serializedFile.open(QIODeviceBase::ReadOnly);
@@ -229,8 +229,8 @@ void Novel::loadVoices()
 
 void Novel::saveVoices()
 {
-	QDir voicesDir = QDir::currentPath();
-	voicesDir.mkpath("game\\Voices");
+	QDir voicesDir = NovelSettings::getInstance().novelDir;
+	voicesDir.mkpath("game/Voices");
 
 	for (const std::pair<const QString, Voice>& voicePair : voices_)
 	{

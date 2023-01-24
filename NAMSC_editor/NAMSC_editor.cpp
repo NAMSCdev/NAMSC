@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
+#include <qprocess.h>
 
 #include "BasicNodeProperties.h"
 #include "ChoiceEventProperties.h"
@@ -13,6 +14,7 @@
 #include "EventTreeItem.h"
 #include "GraphNodePropertiesPack.h"
 #include "JumpEventProperties.h"
+#include "NewProjectDialog.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
 #include "ObjectPropertyPack.h"
@@ -96,6 +98,14 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     : QMainWindow(parent)
 {
     supportedFormats();
+    //ProjectConfiguration::getInstance()->setProjectPath(QDir::currentPath());
+    if (QFileInfo::exists(ProjectConfiguration::getInstance()->getLoadingLockFilename()))
+    {
+        QFile loadingLockFile(ProjectConfiguration::getInstance()->getLoadingLockFilename());
+        loadingLockFile.open(QIODeviceBase::ReadOnly);
+        ProjectConfiguration::getInstance()->setProjectPath(loadingLockFile.readAll());
+        loadingLockFile.close();
+    }
 
     // Prepare ui
     ui.setupUi(this);
@@ -130,7 +140,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     ui.graphView->setScene(scene);
     scene->setSceneRect(this->rect());
 
-    debugConstructorActions();
+    //debugConstructorActions();
     prepareAssetsTree();
     prepareEventsTree();
     prepareSceneEditor();
@@ -147,8 +157,23 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 	//Novel::getInstance().saveNovel(0);
  //   saveEditor();
 
-    //Novel::getInstance().loadNovel(0, false);
-    //loadEditor();
+    if (QFileInfo::exists(ProjectConfiguration::getInstance()->getLoadingLockFilename())) {
+        Novel::getInstance().loadNovel(0, false);
+        loadEditor();
+
+        //QFile loadingLockFile(ProjectConfiguration::getInstance()->getLoadingLockFilename());
+        //loadingLockFile.remove();
+        QFile::remove(ProjectConfiguration::getInstance()->getLoadingLockFilename());
+    }
+
+    Novel::getInstance().loadNovel(0, false);
+    loadEditor();
+
+    connect(ui.actionOpen_project, &QAction::triggered, this, &NAMSC_editor::openProject);
+    connect(ui.actionSave_project, &QAction::triggered, this, &NAMSC_editor::saveProject);
+    //connect(ui.actionExit, &QAction::triggered, this, &NAMSC_editor::);
+    //connect(ui.actionNew_project, &QAction::triggered, this, &NAMSC_editor::newProject);
+
 }
 
 void NAMSC_editor::prepareAssetsTree()
@@ -216,24 +241,6 @@ void NAMSC_editor::prepareSceneEditor()
             }
         });
 
-    // Setting background from objectsTree
-    connect(ui.objectsTree, &ObjectsTree::setObjectAsSceneBackground, sceneWidget, [&](ObjectTreeWidgetItem* item)
-        {
-            if (item->type() == TreeWidgetItemTypes::ImageObject)
-            {
-                if (auto ev = currentlySelectedEvent.lock())
-                {
-                    ev->scenery.setBackgroundAssetImage(item->sceneryObject->getAssetImageName());
-                    ev->run();
-					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
-                }
-            }
-            else
-            {
-                qDebug() << "Tried to set as background different asset type than an image";
-            }
-        });
-
     // Item addition from characterTree
     connect(ui.charactersTree, &CharacterTree::addCharacterToScene, sceneWidget, [&](CharacterTreeWidgetItem* item)
         {
@@ -254,12 +261,30 @@ void NAMSC_editor::prepareSceneEditor()
                     }
                     ev->scenery.addDisplayedCharacter(tempCharacter); // should make a copy
                     ev->run();
-					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
+                    static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
                 }
             }
             else
             {
                 qDebug() << "Tried to add different asset type than an image";
+            }
+        });
+
+    // Setting background from objectsTree
+    connect(ui.objectsTree, &ObjectsTree::setObjectAsSceneBackground, sceneWidget, [&](ObjectTreeWidgetItem* item)
+        {
+            if (item->type() == TreeWidgetItemTypes::ImageObject)
+            {
+                if (auto ev = currentlySelectedEvent.lock())
+                {
+                    ev->scenery.setBackgroundAssetImage(item->sceneryObject->getAssetImageName());
+                    ev->run();
+					static_cast<EventTreeItemModel*>(ui.eventsTree->model())->refresh();
+                }
+            }
+            else
+            {
+                qDebug() << "Tried to set as background different asset type than an image";
             }
         });
 
@@ -269,14 +294,14 @@ void NAMSC_editor::prepareSceneEditor()
             Novel& novel = Novel::getInstance();
 
             sceneWidget->clearSceneryObjectWidgets();
-            if (!novel.getScenes()->empty()) {
+            if (!novel.getScenes()->empty() && !novel.getScene(node->getLabel())->getEvents()->empty()) {
                 currentlySelectedEvent = novel.getScene(node->getLabel())->getEvents()->front(); // should it be the first?
                 currentlySelectedEvent.lock()->run(); // should be removed after this line
             	ui.middlePanelEditorStack->setCurrentIndex(1);
             }
             else
             {
-                qDebug() << "Scene does not contain events. Add one or sth";
+                QMessageBox(QMessageBox::Information, tr("Empty scene"), tr("An event need to be added to scene to be able to edit the scene."), QMessageBox::Ok).exec();
             }
     //static_cast<EventTreeItemModel*>(ui.eventsTree->model())->
     //Novel::getInstance().getScene(node->getLabel())->scenery.render(sceneWidget);
@@ -369,6 +394,17 @@ void NAMSC_editor::prepareSwitchboard()
 void NAMSC_editor::loadEditor()
 {
     loadGraph(ui.graphView);
+
+    for (auto& elem : *Novel::getInstance().getDefaultCharacters())
+    {
+        CharacterTreeWidgetItem* tempTreeItem;
+        tempTreeItem = new CharacterTreeWidgetItem(ui.charactersTree, static_cast<int>(TreeWidgetItemTypes::ImageObject));
+        tempTreeItem->character = Novel::getInstance().getDefaultCharacter(elem.second.name);
+        tempTreeItem->setIcon(0, QIcon(":/NAMSC_editor/imageIcon"));
+        tempTreeItem->setText(0, elem.second.name);
+
+        ui.charactersTree->addTopLevelItem(tempTreeItem);
+    }
 }
 
 void NAMSC_editor::saveEditor()
@@ -554,8 +590,7 @@ void NAMSC_editor::createDanglingContextMenuActions()
         {
             if (ui.graphView->scene()->selectedItems().size()) {
                 Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventDialogue(scene, "New dialog", {}));
-                
+                scene->addEvent(new EventDialogue(scene, scene->nextFreeEventName(), {}));
             }
         });
 
@@ -563,7 +598,7 @@ void NAMSC_editor::createDanglingContextMenuActions()
         {
             if (ui.graphView->scene()->selectedItems().size()) {
                 Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventChoice(scene, "New choice", {}));
+                scene->addEvent(new EventChoice(scene, scene->nextFreeEventName(), {}));
             }
         });
 
@@ -571,7 +606,7 @@ void NAMSC_editor::createDanglingContextMenuActions()
         {
             if (ui.graphView->scene()->selectedItems().size()) {
                 Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
-                scene->addEvent(new EventJump(scene, "New jump", {}));
+                scene->addEvent(new EventJump(scene, scene->nextFreeEventName(), {}));
             }
         });
 
@@ -606,6 +641,18 @@ void NAMSC_editor::invokeEventsContextMenu(const QPoint& pos)
     menu.addAction(addDialogueEventAction);
     menu.addAction(addChoiceEventAction);
     menu.addAction(addJumpEventAction);
+    if (!ui.graphView->scene()->selectedItems().empty()) 
+    {
+        Scene* scene = Novel::getInstance().getScene(dynamic_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])->getLabel());
+        if (scene->getEvents()->empty())
+        {
+            addJumpEventAction->setDisabled(true);
+        }
+        else
+        {
+            addJumpEventAction->setEnabled(true);
+        }
+    }
     menu.exec(ui.eventsTree->mapToGlobal(pos));
 }
 
@@ -620,7 +667,7 @@ void NAMSC_editor::invokeSceneEditorContextMenu(const QPoint& pos)
 
 void NAMSC_editor::loadGraph(GraphView* graph)
 {
-    QDirIterator it("game\\Graph", QStringList(), QDir::Files, QDirIterator::Subdirectories);
+    QDirIterator it(ProjectConfiguration::getInstance()->getProjectPath().path() + "/game/Graph", QStringList(), QDir::Files, QDirIterator::Subdirectories);
 
     // If graph file does not exist
 	if (!it.hasNext())
@@ -671,13 +718,13 @@ void NAMSC_editor::loadGraph(GraphView* graph)
 
 void NAMSC_editor::saveGraph(GraphView* graph)
 {
-    QDir graphDir = QDir::currentPath();
-    graphDir.mkpath("game\\Graph");
-    graphDir.cd("game\\Graph"); // todo check; eventually apply to NovelIO.cpp
+    QDir graphDir = ProjectConfiguration::getInstance()->getProjectPath();
+    graphDir.mkpath("game/Graph");
+    graphDir.cd("game/Graph"); // todo check; eventually apply to NovelIO.cpp
 
     if (ui.graphView != nullptr)
     {
-        QFile serializedFile(graphDir.path() + "\\graph");
+        QFile serializedFile(graphDir.path() + "/graph");
         serializedFile.open(QIODeviceBase::WriteOnly);
 
         QDataStream dataStream(&serializedFile);
@@ -696,19 +743,71 @@ void NAMSC_editor::openProject()
     fileDialog.setFileMode(QFileDialog::Directory);
     fileDialog.setViewMode(QFileDialog::Detail);
 
-    // todo check if filename, project path is correct
     if (fileDialog.exec())
     {
         dir = fileDialog.directory();
+        
         ProjectConfiguration::getInstance()->setProjectPath(dir);
+
+        Novel::getInstance().clearNovel();
+
+        //ui.sceneView = Novel::getInstance().createSceneWidget();
+        QFile openingProjectFile(ProjectConfiguration::getInstance()->getLoadingLockFilename());
+        openingProjectFile.open(QIODeviceBase::WriteOnly);
+        openingProjectFile.write(NovelSettings::getInstance().novelDir.path().toStdString().data());
+        openingProjectFile.close();
+
+        qApp->quit();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+
+        //Novel::getInstance().loadNovel(0, false);
+        //loadEditor();
+
+        //QMessageBox(QMessageBox::Information, tr("Project loaded"), tr("Project has been loaded."), QMessageBox::Ok).exec();
+        return;
 
     }
     else
     {
-        // TODO error	
+        QMessageBox(QMessageBox::Critical, tr("Something failed"), tr("Cannot open a project."), QMessageBox::Ok).exec();
+        return;
     }
     //ProjectConfiguration::getInstance()->setProjectPath();
     //NovelSettings::getInstance().
+}
+
+void NAMSC_editor::newProject()
+{
+}
+
+void NAMSC_editor::saveProject()
+{
+    QDir dir;
+    QFileDialog fileDialog = QFileDialog(nullptr, tr("Choose save project location"), ProjectConfiguration::getInstance()->getProjectPath().path());
+    fileDialog.setFileMode(QFileDialog::Directory);
+    fileDialog.setViewMode(QFileDialog::Detail);
+
+    if (fileDialog.exec())
+    {
+        dir = fileDialog.directory();
+        QDir projectPath = ProjectConfiguration::getInstance()->getProjectPath();
+
+        ProjectConfiguration::getInstance()->setProjectPath(dir);
+
+        Novel::getInstance().saveNovel(0);
+        saveEditor();
+
+        ProjectConfiguration::getInstance()->setProjectPath(projectPath);
+
+        QMessageBox(QMessageBox::Information, tr("Project saved"), tr("Project has been saved."), QMessageBox::Ok).exec();
+        return;
+
+    }
+    else
+    {
+        QMessageBox(QMessageBox::Critical, tr("Something failed"), tr("Cannot save this project."), QMessageBox::Ok).exec();
+        return;
+    }
 }
 
 void NAMSC_editor::supportedFormats()

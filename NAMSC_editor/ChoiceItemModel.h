@@ -21,6 +21,7 @@ public:
 	bool setData(const QModelIndex& index, const QVariant& value, int role) override;
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool insertRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
+	bool removeRows(int row, int count, const QModelIndex& parent) override;
 
 private:
 	enum ColumnElementEnum

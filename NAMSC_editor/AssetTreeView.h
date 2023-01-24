@@ -2,9 +2,11 @@
 #include <QFileSystemModel>
 #include <QMimeDatabase>
 #include <qtreeview.h>
+#include <QUrl>
 
 #include "CustomSortFilterProxyModel.h"
 #include "TreeWidgetItemTypes.h"
+#include "ProjectConfiguration.h"
 
 class AssetTreeView :
     public QTreeView
@@ -12,7 +14,7 @@ class AssetTreeView :
     Q_OBJECT
 
 public:
-    AssetTreeView(QWidget* parent);
+    AssetTreeView(QWidget* parent, QUrl projectPath = QUrl::fromLocalFile(ProjectConfiguration::getInstance()->getProjectPath().path()));
     ~AssetTreeView();
     void setSupportedAudioFormats(QList<QMimeType> supportedAudioFormats);
     void setSupportedImageFormats(QList<QMimeType> supportedImageFormats);
@@ -27,6 +29,8 @@ private:
     QList<QMimeType> supportedAudioFormats;
     QFileSystemModel* fileModel;
     CustomSortFilterProxyModel* proxyFileFilter;
+
+    QUrl projectPath;
 
     QAction* addAssetToObjectsAction;
     QAction* addAssetToCharactersAction;

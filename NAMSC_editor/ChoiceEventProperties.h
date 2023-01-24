@@ -40,4 +40,5 @@ private slots:
 	void updateJumpToSceneName(Choice* c, QString name);
 	void updateCondition(Choice* c, QString cond);
 	void updateText(Choice* c, QString text);
+	void updateChoiceLabel();
 };

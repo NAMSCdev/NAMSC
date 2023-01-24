@@ -90,4 +90,6 @@ private:
 
 private slots:
     void openProject();
+    void newProject();
+    void saveProject();
 };

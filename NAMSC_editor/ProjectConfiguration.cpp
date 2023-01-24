@@ -47,16 +47,23 @@ ProjectConfiguration* ProjectConfiguration::getInstance()
 void ProjectConfiguration::setProjectPath(const QString& path)
 {
 	projectPath = QDir(path);
+	NovelSettings::getInstance().novelDir = path;
 }
 
 void ProjectConfiguration::setProjectPath(const QDir& path)
 {
 	projectPath = path;
+	NovelSettings::getInstance().novelDir = path;
 }
 
 QDir ProjectConfiguration::getProjectPath()
 {
 	return projectPath;
+}
+
+const QString& ProjectConfiguration::getLoadingLockFilename()
+{
+	return loadingLockFilename;
 }
 
 ProjectConfiguration::~ProjectConfiguration()

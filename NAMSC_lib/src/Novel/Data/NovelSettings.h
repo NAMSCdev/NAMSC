@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <QDir>
 #include <QString>
 #include "Serialization.h"
 
@@ -53,6 +54,9 @@ public:
     /// Whether the Files will not be compressed but managed in temporary files
     /// It's an useful option in Editor to make Data edit a lot faster
     bool bLazyFileLoad            = true;
+
+    /// Current novel location
+    QDir novelDir = QDir::current();
 
 	//[optional] Menu custom graphics
 	//MainMenuTheme theme;

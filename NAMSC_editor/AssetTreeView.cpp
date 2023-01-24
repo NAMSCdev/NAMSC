@@ -15,9 +15,9 @@
 #include "Novel/Data/Novel.h"
 
 
-AssetTreeView::AssetTreeView(QWidget* parent) : QTreeView(parent)
+AssetTreeView::AssetTreeView(QWidget* parent, QUrl projectPath) : QTreeView(parent), projectPath(projectPath)
 {
-    QUrl projectPath = QUrl::fromLocalFile(ProjectConfiguration::getInstance()->getProjectPath().path());
+    //QUrl projectPath = QUrl::fromLocalFile(ProjectConfiguration::getInstance()->getProjectPath().path());
     fileModel = new QFileSystemModel;
     QModelIndex rootPath = fileModel->setRootPath(projectPath.toLocalFile());
     proxyFileFilter = new CustomSortFilterProxyModel(this);
@@ -137,7 +137,7 @@ void AssetTreeView::createContextMenu()
 
             if (!pressedOk) return;
 			
-			emit addAssetToObjects(QDir(QDir::currentPath()).relativeFilePath(selectedItem.toLocalFile()), objectName, type);
+			emit addAssetToObjects(QDir(ProjectConfiguration::getInstance()->getProjectPath()).relativeFilePath(selectedItem.toLocalFile()), objectName, type);
         });
 
         connect(addAssetToCharactersAction, &QAction::triggered, this, [&]
