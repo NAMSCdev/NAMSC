@@ -37,8 +37,8 @@ AssetTreeView::AssetTreeView(QWidget* parent, QUrl projectPath) : QTreeView(pare
 	        QMimeType fileMime = db.mimeTypeForUrl(fileUrl);
 	        if (supportedAudioFormats.contains(fileMime) || supportedImageFormats.contains(fileMime) || fileMime.name() == "inode/directory")
 	        {
-                AssetManager::getInstance().addAssetImageSceneryObject(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
-                AssetManager::getInstance().addAssetImageSceneryBackground(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
+                //AssetManager::getInstance().addAssetImageSceneryObject(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
+                //AssetManager::getInstance().addAssetImageSceneryBackground(ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()), 0, 0, ProjectConfiguration::getInstance()->getProjectPath().relativeFilePath(fileUrl.path()));
 	            return true;
 	        }
 	    }

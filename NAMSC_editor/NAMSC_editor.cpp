@@ -171,6 +171,7 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
 
     connect(ui.actionOpen_project, &QAction::triggered, this, &NAMSC_editor::openProject);
     connect(ui.actionSave_project, &QAction::triggered, this, &NAMSC_editor::saveProject);
+    connect(ui.actionExit, &QAction::triggered, this, &QMainWindow::close);
     //connect(ui.actionExit, &QAction::triggered, this, &NAMSC_editor::);
     //connect(ui.actionNew_project, &QAction::triggered, this, &NAMSC_editor::newProject);
 
