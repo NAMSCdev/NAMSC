@@ -8,8 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_lib", "NAMSC_lib\NAMS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_editor", "NAMSC_editor\NAMSC_editor.vcxproj", "{FEA5FE46-9654-43D3-9649-D1CA26065F51}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NAMSC_engine_test", "NAMSC_engine_test\NAMSC_engine_test.vcxproj", "{9B002071-3608-43B2-BD97-A23BF93312D1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -42,14 +40,6 @@ Global
 		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.Release|x64.Build.0 = Release|x64
 		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.RelWithDebInfo|x64.ActiveCfg = Release|x64
 		{FEA5FE46-9654-43D3-9649-D1CA26065F51}.RelWithDebInfo|x64.Build.0 = Release|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.Debug|x64.ActiveCfg = Debug|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.Debug|x64.Build.0 = Debug|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.MinSizeRel|x64.ActiveCfg = Debug|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.MinSizeRel|x64.Build.0 = Debug|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.Release|x64.ActiveCfg = Release|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.Release|x64.Build.0 = Release|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.RelWithDebInfo|x64.ActiveCfg = Release|x64
-		{9B002071-3608-43B2-BD97-A23BF93312D1}.RelWithDebInfo|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
