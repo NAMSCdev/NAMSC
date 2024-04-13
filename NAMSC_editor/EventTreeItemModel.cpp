@@ -116,12 +116,12 @@ void EventTreeItemModel::selectionChanged(const QItemSelection& selected, const 
                 break;
             }
             break;
-        //case OBJECT:
-        //    emit propertyTabChangeRequested(item->component, PropertyTypes::CharacterTreeItem);
-        //    break;
-        //case CHARACTER:
-        //    emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectTreeItem);
-        //    break;
+        case OBJECT:
+            emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectOnScene);
+        	break;
+        case CHARACTER:
+            emit propertyTabChangeRequested(item->component, PropertyTypes::ObjectOnScene);
+            break;
         }
     }
 }
@@ -167,28 +167,28 @@ void EventTreeItemModel::appendEvent(Event* event, EventTreeItem* parentScene)
     EventTreeItem* eventItem = new EventTreeItem(event, parentScene);
     
 
-   // if (event->getComponentEventType() != EventSubType::EVENT_JUMP)
-   // {
-	  //  EventTreeItem* objectsRoot = new EventTreeItem(new SceneryObjectsRootSceneComponent(), eventItem);
-   //     objectsRoot->setFlags( Qt::ItemIsEnabled);
-	  //  eventItem->appendChild(objectsRoot);
+    if (event->getComponentEventType() != EventSubType::EVENT_JUMP)
+    {
+	    EventTreeItem* objectsRoot = new EventTreeItem(new SceneryObjectsRootSceneComponent(), eventItem);
+        objectsRoot->setFlags( Qt::ItemIsEnabled);
+	    eventItem->appendChild(objectsRoot);
 
-	  //  for ( int i = 0 ; i < event->scenery.getDisplayedSceneryObjects()->size(); i++)
-	  //  {
-			//EventTreeItem* objectItem = new EventTreeItem( event->scenery.getDisplayedSceneryObject(i), objectsRoot);
-			//objectsRoot->appendChild(objectItem);
-	  //  }
+	    for ( int i = 0 ; i < event->scenery.getDisplayedSceneryObjects()->size(); i++)
+	    {
+			EventTreeItem* objectItem = new EventTreeItem( event->scenery.getDisplayedSceneryObject(i), objectsRoot);
+			objectsRoot->appendChild(objectItem);
+	    }
 
-	  //  EventTreeItem* charactersRoot = new EventTreeItem(new CharactersRootSceneComponent(), eventItem);
-   //     charactersRoot->setFlags( Qt::ItemIsEnabled);
-	  //  eventItem->appendChild(charactersRoot);
+	    EventTreeItem* charactersRoot = new EventTreeItem(new CharactersRootSceneComponent(), eventItem);
+        charactersRoot->setFlags( Qt::ItemIsEnabled);
+	    eventItem->appendChild(charactersRoot);
 
-	  //  for ( int i = 0 ; i < event->scenery.getDisplayedCharacters()->size(); i++)
-	  //  {
-			//EventTreeItem* characterItem = new EventTreeItem( event->scenery.getDisplayedCharacter(i), charactersRoot);
-			//charactersRoot->appendChild(characterItem);
-	  //  }
-   // }
+	    for ( int i = 0 ; i < event->scenery.getDisplayedCharacters()->size(); i++)
+	    {
+			EventTreeItem* characterItem = new EventTreeItem( event->scenery.getDisplayedCharacter(i), charactersRoot);
+			charactersRoot->appendChild(characterItem);
+	    }
+    }
 
     parentScene->appendChild(eventItem);
 }
