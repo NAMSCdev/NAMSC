@@ -1,0 +1,88 @@
+name: Windows
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_run:
+    workflows: 
+      - AutoTag
+    types:
+      - completed
+
+env:
+  BUILD_TYPE: Release
+  CMAKE_BUILD_TYPE: Release
+
+jobs:
+  build_and_deploy:
+    runs-on: windows-latest
+    if: "${{ github.event.workflow_run.conclusion == 'success' }} && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      - name: Extract repository name
+        id: repoName
+        run: |
+          $REPO_NAME = "${{ github.repository }}"
+          $REPO_NAME = $REPO_NAME.Split("/")[-1]
+          echo "name=$REPO_NAME" >> $env:GITHUB_OUTPUT
+
+      - name: Checkout 
+        uses: actions/checkout@v3
+
+      - name: Get tags
+        run: git fetch --tags origin
+
+      - name: Get version tag
+        id: versionTag
+        run: |
+          $LAST_TAGGED_COMMIT = git rev-list --tags --max-count=1
+          $TAG = git describe --tags $LAST_TAGGED_COMMIT
+          echo "tag=$TAG" >> $env:GITHUB_OUTPUT
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Conan 
+        run: |
+          conan profile detect
+          conan install conan/ --build=missing
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.5.*'
+          cache: 'true'
+          cache-key-prefix: 'install-qt-action'
+
+      - name: Configure
+        run: cmake -Bbuild -DCMAKE_TOOLCHAIN_FILE="conan/conan_toolchain.cmake"
+        
+      - name: Build
+        run: cmake --build build --config Release --target install -j4
+
+      - name: Zip artifacts
+        run: |
+          cd build/
+          Rename-Item install ${{ steps.repoName.outputs.name }}
+          7z a -r ${{ steps.repoName.outputs.name }}_Win_${{ steps.versionTag.outputs.tag }}.zip ${{ steps.repoName.outputs.name }}/*
+
+      - name: Run tests
+        run: |
+          cd build/
+          ctest -C release -VV
+
+      - name: Create release artifact
+        if: "${{ github.event_name != 'pull_request' }}"
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/${{ steps.repoName.outputs.name }}_Win_${{ steps.versionTag.outputs.tag }}.zip 
+          prerelease: true
+          draft: false
+          tag_name: ${{ steps.versionTag.outputs.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}

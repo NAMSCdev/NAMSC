@@ -1,0 +1,1576 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The system is: Windows - 10.0.22631 - AMD64
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: /MP12
+      Id flags:  
+      
+      The output was:
+      0
+      MSBuild version 17.12.12+1cce77968 for .NET Framework
+      Build started 17/12/2024 18:46:13.
+      
+      Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\3.29.0-rc3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
+      PrepareForBuild:
+        Creating directory "Debug\\".
+        Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+        Creating directory "Debug\\CompilerIdCXX.tlog\\".
+      InitializeBuildStatus:
+        Creating "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+        Touching "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+      ClCompile:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\3.29.0-rc3\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        Deleting file "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
+        Touching "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
+      Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\3.29.0-rc3\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (default targets).
+      
+      Build succeeded.
+          0 Warning(s)
+          0 Error(s)
+      
+      Time Elapsed 00:00:01.15
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/3.29.0-rc3/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-b1nwp0"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-b1nwp0"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-b1nwp0'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_2f936.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:16.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\cmTC_2f936.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_2f936.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\Debug\\".
+          Creating directory "cmTC_2f936.dir\\Debug\\cmTC_2f936.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_2f936.dir\\Debug\\cmTC_2f936.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_2f936.dir\\Debug\\cmTC_2f936.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\cmTC_2f936.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_2f936.dir\\Debug\\cmTC_2f936_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_2f936.dir\\Debug\\\\" /Fd"cmTC_2f936.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_2f936.dir\\Debug\\\\" /Fd"cmTC_2f936.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "D:\\CMake\\share\\cmake-3.29\\Modules\\CMakeCXXCompilerABI.cpp"
+          CMakeCXXCompilerABI.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\Debug\\cmTC_2f936.exe" /INCREMENTAL /ILK:"cmTC_2f936.dir\\Debug\\cmTC_2f936.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-b1nwp0/Debug/cmTC_2f936.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-b1nwp0/Debug/cmTC_2f936.lib" /MACHINE:X64  /machine:x64 cmTC_2f936.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_2f936.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\Debug\\cmTC_2f936.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_2f936.dir\\Debug\\cmTC_2f936.tlog\\unsuccessfulbuild".
+          Touching "cmTC_2f936.dir\\Debug\\cmTC_2f936.tlog\\cmTC_2f936.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-b1nwp0\\cmTC_2f936.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.93
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.42.34435.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:99 (CHECK_CXX_SOURCE_COMPILES)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-z33w6d"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-z33w6d"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-z33w6d'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_98c76.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:20.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_98c76.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\Debug\\".
+          Creating directory "cmTC_98c76.dir\\Debug\\cmTC_98c76.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_98c76.dir\\Debug\\cmTC_98c76.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_98c76.dir\\Debug\\cmTC_98c76.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_98c76.dir\\Debug\\cmTC_98c76_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_98c76.dir\\Debug\\\\" /Fd"cmTC_98c76.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\src.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_98c76.dir\\Debug\\\\" /Fd"cmTC_98c76.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\src.cxx"
+          src.cxx
+        B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\src.cxx(1,10): error C1083: Cannot open include file: 'pthread.h': No such file or directory [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\src.cxx(1,10): error C1083: Cannot open include file: 'pthread.h': No such file or directory [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-z33w6d\\cmTC_98c76.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.39
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-yisrzm"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-yisrzm"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-yisrzm'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_993a1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:20.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_993a1.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\Debug\\".
+          Creating directory "cmTC_993a1.dir\\Debug\\cmTC_993a1.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_993a1.dir\\Debug\\cmTC_993a1.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_993a1.dir\\Debug\\cmTC_993a1.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_993a1.dir\\Debug\\cmTC_993a1_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_993a1.dir\\Debug\\\\" /Fd"cmTC_993a1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\CheckFunctionExists.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_993a1.dir\\Debug\\\\" /Fd"cmTC_993a1.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\Debug\\cmTC_993a1.exe" /INCREMENTAL /ILK:"cmTC_993a1.dir\\Debug\\cmTC_993a1.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-yisrzm/Debug/cmTC_993a1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-yisrzm/Debug/cmTC_993a1.lib" /MACHINE:X64  /machine:x64 cmTC_993a1.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yisrzm\\cmTC_993a1.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.45
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-lnsw5y"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-lnsw5y"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-lnsw5y'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e64cc.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:21.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e64cc.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\Debug\\".
+          Creating directory "cmTC_e64cc.dir\\Debug\\cmTC_e64cc.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e64cc.dir\\Debug\\cmTC_e64cc.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e64cc.dir\\Debug\\cmTC_e64cc.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_e64cc.dir\\Debug\\cmTC_e64cc_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_e64cc.dir\\Debug\\\\" /Fd"cmTC_e64cc.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\CheckFunctionExists.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_e64cc.dir\\Debug\\\\" /Fd"cmTC_e64cc.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\Debug\\cmTC_e64cc.exe" /INCREMENTAL /ILK:"cmTC_e64cc.dir\\Debug\\cmTC_e64cc.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-lnsw5y/Debug/cmTC_e64cc.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-lnsw5y/Debug/cmTC_e64cc.lib" /MACHINE:X64  /machine:x64 cmTC_e64cc.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: cannot open file 'pthread.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : fatal error LNK1104: cannot open file 'pthread.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-lnsw5y\\cmTC_e64cc.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.48
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/FindWrapAtomic.cmake:36 (check_cxx_source_compiles)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake:30 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6Core/Qt6CoreConfig.cmake:41 (include)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:164 (find_package)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Performing Test HAVE_STDATOMIC"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-olt9hu"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-olt9hu"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "HAVE_STDATOMIC"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-olt9hu'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_4c7d8.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:22.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\cmTC_4c7d8.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_4c7d8.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\Debug\\".
+          Creating directory "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\cmTC_4c7d8.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_STDATOMIC /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_4c7d8.dir\\Debug\\\\" /Fd"cmTC_4c7d8.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\src.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_STDATOMIC /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_4c7d8.dir\\Debug\\\\" /Fd"cmTC_4c7d8.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\src.cxx"
+          src.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\Debug\\cmTC_4c7d8.exe" /INCREMENTAL /ILK:"cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-olt9hu/Debug/cmTC_4c7d8.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-olt9hu/Debug/cmTC_4c7d8.lib" /MACHINE:X64  /machine:x64 cmTC_4c7d8.dir\\Debug\\src.obj
+          cmTC_4c7d8.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\Debug\\cmTC_4c7d8.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.tlog\\unsuccessfulbuild".
+          Touching "cmTC_4c7d8.dir\\Debug\\cmTC_4c7d8.tlog\\cmTC_4c7d8.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-olt9hu\\cmTC_4c7d8.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.80
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:138 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:266 (_ipo_run_language_check)"
+      - "cmake/StandardSettings.cmake:30 (check_ipo_supported)"
+      - "CMakeLists.txt:38 (include)"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin"
+    buildResult:
+      variable: "_IPO_LANGUAGE_CHECK_RESULT"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 18:46:27.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ZERO_CHECK\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (4) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "foo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\".
+          Creating directory "foo.dir\\Debug\\foo.tlog\\".
+        InitializeBuildStatus:
+          Creating "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "foo.dir\\Debug\\foo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        Lib:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\Lib.exe /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib" /NOLOGO /MACHINE:X64 /LTCG  /machine:x64 foo.dir\\Debug\\foo.obj
+          foo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib
+        FinalizeBuildStatus:
+          Deleting file "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+          Touching "foo.dir\\Debug\\foo.tlog\\foo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "boo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "boo.dir\\Debug\\boo.tlog\\".
+        InitializeBuildStatus:
+          Creating "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "boo.dir\\Debug\\boo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe" /NOLOGO Debug\\foo.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.pdb" /SUBSYSTEM:CONSOLE /LTCG:incremental /LTCGOUT:"boo.dir\\Debug\\boo.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.lib" /MACHINE:X64  /machine:x64 boo.dir\\Debug\\main.obj
+          Generating code
+          Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+          Finished generating code
+          boo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe
+        FinalizeBuildStatus:
+          Deleting file "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+          Touching "boo.dir\\Debug\\boo.tlog\\boo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ALL_BUILD\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:02.35
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:99 (CHECK_CXX_SOURCE_COMPILES)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-9tqso5"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-9tqso5"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-9tqso5'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_96866.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:05:27.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_96866.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\Debug\\".
+          Creating directory "cmTC_96866.dir\\Debug\\cmTC_96866.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_96866.dir\\Debug\\cmTC_96866.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_96866.dir\\Debug\\cmTC_96866.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_96866.dir\\Debug\\cmTC_96866_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_96866.dir\\Debug\\\\" /Fd"cmTC_96866.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\src.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_96866.dir\\Debug\\\\" /Fd"cmTC_96866.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\src.cxx"
+          src.cxx
+        B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\src.cxx(1,10): error C1083: Cannot open include file: 'pthread.h': No such file or directory [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.vcxproj" (default target) (1) ->
+        (ClCompile target) -> 
+          B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\src.cxx(1,10): error C1083: Cannot open include file: 'pthread.h': No such file or directory [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-9tqso5\\cmTC_96866.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.38
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-fr94oi"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-fr94oi"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-fr94oi'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_46e17.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:05:27.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_46e17.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\Debug\\".
+          Creating directory "cmTC_46e17.dir\\Debug\\cmTC_46e17.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_46e17.dir\\Debug\\cmTC_46e17.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_46e17.dir\\Debug\\cmTC_46e17.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_46e17.dir\\Debug\\cmTC_46e17_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_46e17.dir\\Debug\\\\" /Fd"cmTC_46e17.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\CheckFunctionExists.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_46e17.dir\\Debug\\\\" /Fd"cmTC_46e17.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\Debug\\cmTC_46e17.exe" /INCREMENTAL /ILK:"cmTC_46e17.dir\\Debug\\cmTC_46e17.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-fr94oi/Debug/cmTC_46e17.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-fr94oi/Debug/cmTC_46e17.lib" /MACHINE:X64  /machine:x64 cmTC_46e17.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : fatal error LNK1104: cannot open file 'pthreads.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fr94oi\\cmTC_46e17.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.48
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "D:/CMake/share/cmake-3.29/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Dependencies.cmake:24 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:119 (include)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-vgzkm3"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-vgzkm3"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-vgzkm3'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e4475.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:05:28.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_e4475.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\Debug\\".
+          Creating directory "cmTC_e4475.dir\\Debug\\cmTC_e4475.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_e4475.dir\\Debug\\cmTC_e4475.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_e4475.dir\\Debug\\cmTC_e4475.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_e4475.dir\\Debug\\cmTC_e4475_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_e4475.dir\\Debug\\\\" /Fd"cmTC_e4475.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\CheckFunctionExists.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_e4475.dir\\Debug\\\\" /Fd"cmTC_e4475.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\Debug\\cmTC_e4475.exe" /INCREMENTAL /ILK:"cmTC_e4475.dir\\Debug\\cmTC_e4475.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-vgzkm3/Debug/cmTC_e4475.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-vgzkm3/Debug/cmTC_e4475.lib" /MACHINE:X64  /machine:x64 cmTC_e4475.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: cannot open file 'pthread.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.vcxproj]
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.vcxproj" (default targets) -- FAILED.
+        
+        Build FAILED.
+        
+        "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.vcxproj" (default target) (1) ->
+        (Link target) -> 
+          LINK : fatal error LNK1104: cannot open file 'pthread.lib' [B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-vgzkm3\\cmTC_e4475.vcxproj]
+        
+            0 Warning(s)
+            1 Error(s)
+        
+        Time Elapsed 00:00:00.41
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/FindWrapAtomic.cmake:36 (check_cxx_source_compiles)"
+      - "D:/CMake/share/cmake-3.29/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake:36 (find_dependency)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake:30 (_qt_internal_find_third_party_dependencies)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6Core/Qt6CoreConfig.cmake:41 (include)"
+      - "B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/Qt6Config.cmake:164 (find_package)"
+      - "CMakeLists.txt:13 (find_package)"
+    checks:
+      - "Performing Test HAVE_STDATOMIC"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-82mbyu"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-82mbyu"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/MP12 /DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/conan;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/extra-cmake-modules/find-modules;B:/Qt/6.6.2/msvc2019_64/lib/cmake/Qt6/3rdparty/kwin"
+      CMAKE_MSVC_RUNTIME_LIBRARY: "$<$<CONFIG:Debug>:MultiThreadedDebugDLL>$<$<CONFIG:Release>:MultiThreadedDLL>"
+    buildResult:
+      variable: "HAVE_STDATOMIC"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-82mbyu'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_0331e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:05:29.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\cmTC_0331e.vcxproj" on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "cmTC_0331e.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\Debug\\".
+          Creating directory "cmTC_0331e.dir\\Debug\\cmTC_0331e.tlog\\".
+        InitializeBuildStatus:
+          Creating "cmTC_0331e.dir\\Debug\\cmTC_0331e.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "cmTC_0331e.dir\\Debug\\cmTC_0331e.tlog\\unsuccessfulbuild".
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\cmTC_0331e.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "cmTC_0331e.dir\\Debug\\cmTC_0331e_MD.tlog\\".
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_STDATOMIC /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_0331e.dir\\Debug\\\\" /Fd"cmTC_0331e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\src.cxx"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D HAVE_STDATOMIC /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /Fo"cmTC_0331e.dir\\Debug\\\\" /Fd"cmTC_0331e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\src.cxx"
+          src.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\Debug\\cmTC_0331e.exe" /INCREMENTAL /ILK:"cmTC_0331e.dir\\Debug\\cmTC_0331e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-82mbyu/Debug/cmTC_0331e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/CMakeScratch/TryCompile-82mbyu/Debug/cmTC_0331e.lib" /MACHINE:X64  /machine:x64 cmTC_0331e.dir\\Debug\\src.obj
+          cmTC_0331e.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\Debug\\cmTC_0331e.exe
+        FinalizeBuildStatus:
+          Deleting file "cmTC_0331e.dir\\Debug\\cmTC_0331e.tlog\\unsuccessfulbuild".
+          Touching "cmTC_0331e.dir\\Debug\\cmTC_0331e.tlog\\cmTC_0331e.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\CMakeScratch\\TryCompile-82mbyu\\cmTC_0331e.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:00.72
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:138 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:266 (_ipo_run_language_check)"
+      - "cmake/StandardSettings.cmake:30 (check_ipo_supported)"
+      - "CMakeLists.txt:38 (include)"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin"
+    buildResult:
+      variable: "_IPO_LANGUAGE_CHECK_RESULT"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:05:32.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ZERO_CHECK\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (4) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "foo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\".
+          Creating directory "foo.dir\\Debug\\foo.tlog\\".
+        InitializeBuildStatus:
+          Creating "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "foo.dir\\Debug\\foo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        Lib:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\Lib.exe /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib" /NOLOGO /MACHINE:X64 /LTCG  /machine:x64 foo.dir\\Debug\\foo.obj
+          foo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib
+        FinalizeBuildStatus:
+          Deleting file "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+          Touching "foo.dir\\Debug\\foo.tlog\\foo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "boo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "boo.dir\\Debug\\boo.tlog\\".
+        InitializeBuildStatus:
+          Creating "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "boo.dir\\Debug\\boo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe" /NOLOGO Debug\\foo.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.pdb" /SUBSYSTEM:CONSOLE /LTCG:incremental /LTCGOUT:"boo.dir\\Debug\\boo.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.lib" /MACHINE:X64  /machine:x64 boo.dir\\Debug\\main.obj
+          Generating code
+          Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+          Finished generating code
+          boo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe
+        FinalizeBuildStatus:
+          Deleting file "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+          Touching "boo.dir\\Debug\\boo.tlog\\boo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ALL_BUILD\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.68
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:138 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:266 (_ipo_run_language_check)"
+      - "cmake/StandardSettings.cmake:30 (check_ipo_supported)"
+      - "CMakeLists.txt:38 (include)"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin"
+    buildResult:
+      variable: "_IPO_LANGUAGE_CHECK_RESULT"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:06:12.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ZERO_CHECK\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (4) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "foo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\".
+          Creating directory "foo.dir\\Debug\\foo.tlog\\".
+        InitializeBuildStatus:
+          Creating "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "foo.dir\\Debug\\foo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        Lib:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\Lib.exe /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib" /NOLOGO /MACHINE:X64 /LTCG  /machine:x64 foo.dir\\Debug\\foo.obj
+          foo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib
+        FinalizeBuildStatus:
+          Deleting file "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+          Touching "foo.dir\\Debug\\foo.tlog\\foo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "boo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "boo.dir\\Debug\\boo.tlog\\".
+        InitializeBuildStatus:
+          Creating "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "boo.dir\\Debug\\boo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe" /NOLOGO Debug\\foo.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.pdb" /SUBSYSTEM:CONSOLE /LTCG:incremental /LTCGOUT:"boo.dir\\Debug\\boo.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.lib" /MACHINE:X64  /machine:x64 boo.dir\\Debug\\main.obj
+          Generating code
+          Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+          Finished generating code
+          boo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe
+        FinalizeBuildStatus:
+          Deleting file "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+          Touching "boo.dir\\Debug\\boo.tlog\\boo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ALL_BUILD\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.61
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:138 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:266 (_ipo_run_language_check)"
+      - "cmake/StandardSettings.cmake:30 (check_ipo_supported)"
+      - "CMakeLists.txt:38 (include)"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin"
+    buildResult:
+      variable: "_IPO_LANGUAGE_CHECK_RESULT"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:13:20.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ZERO_CHECK\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (4) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "foo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\".
+          Creating directory "foo.dir\\Debug\\foo.tlog\\".
+        InitializeBuildStatus:
+          Creating "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "foo.dir\\Debug\\foo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        Lib:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\Lib.exe /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib" /NOLOGO /MACHINE:X64 /LTCG  /machine:x64 foo.dir\\Debug\\foo.obj
+          foo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib
+        FinalizeBuildStatus:
+          Deleting file "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+          Touching "foo.dir\\Debug\\foo.tlog\\foo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "boo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "boo.dir\\Debug\\boo.tlog\\".
+        InitializeBuildStatus:
+          Creating "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "boo.dir\\Debug\\boo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe" /NOLOGO Debug\\foo.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.pdb" /SUBSYSTEM:CONSOLE /LTCG:incremental /LTCGOUT:"boo.dir\\Debug\\boo.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.lib" /MACHINE:X64  /machine:x64 boo.dir\\Debug\\main.obj
+          Generating code
+          Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+          Finished generating code
+          boo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe
+        FinalizeBuildStatus:
+          Deleting file "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+          Touching "boo.dir\\Debug\\boo.tlog\\boo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ALL_BUILD\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.65
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:138 (try_compile)"
+      - "D:/CMake/share/cmake-3.29/Modules/CheckIPOSupported.cmake:266 (_ipo_run_language_check)"
+      - "cmake/StandardSettings.cmake:30 (check_ipo_supported)"
+      - "CMakeLists.txt:38 (include)"
+    directories:
+      source: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src"
+      binary: "B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin"
+    buildResult:
+      variable: "_IPO_LANGUAGE_CHECK_RESULT"
+      cached: true
+      stdout: |
+        Change Dir: 'B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" ALL_BUILD.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        MSBuild version 17.12.12+1cce77968 for .NET Framework
+        Build started 17/12/2024 19:18:10.
+        
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (2) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ZERO_CHECK\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          1>Checking Build System
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ZERO_CHECK\\ZERO_CHECK.tlog\\ZERO_CHECK.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ZERO_CHECK.vcxproj" (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (1) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) on node 1 (default targets).
+        Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (3) is building "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (4) on node 1 (default targets).
+        PrepareForBuild:
+          Creating directory "foo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\".
+          Creating directory "foo.dir\\Debug\\foo.tlog\\".
+        InitializeBuildStatus:
+          Creating "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "foo.dir\\Debug\\foo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /scanDependencies "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "foo.dir\\Debug\\\\" /Fo"foo.dir\\Debug\\\\" /Fd"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.pdb" /sourceDependencies "foo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\foo.cpp"
+          foo.cpp
+        Lib:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\Lib.exe /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib" /NOLOGO /MACHINE:X64 /LTCG  /machine:x64 foo.dir\\Debug\\foo.obj
+          foo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\foo.lib
+        FinalizeBuildStatus:
+          Deleting file "foo.dir\\Debug\\foo.tlog\\unsuccessfulbuild".
+          Touching "foo.dir\\Debug\\foo.tlog\\foo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\foo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "boo.dir\\Debug\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "boo.dir\\Debug\\boo.tlog\\".
+        InitializeBuildStatus:
+          Creating "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        ComputeStdModulesCompileInputs:
+          Reading library manifest file 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\modules.json' which provides data for library 'microsoft/STL'.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.ixx' from library 'microsoft/STL' to be built with this project.
+          Adding module source 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\modules\\std.compat.ixx' from library 'microsoft/STL' to be built with this project.
+        MakeDirsForCl:
+          Creating directory "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.dir\\Debug\\microsoft\\STL".
+        SetModuleDependencies:
+          Creating directory "boo.dir\\Debug\\boo_MD.tlog\\".
+          Scanning sources for module dependencies...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /scanDependencies "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        ClCompile:
+          Compiling...
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          Microsoft (R) C/C++ Optimizing Compiler Version 19.42.34435 for x64
+          Copyright (C) Microsoft Corporation.  All rights reserved.
+          /std:c++latest is provided as a preview of language features from the latest C++
+          working draft, and we're eager to hear about bugs and suggestions for improvements.
+          However, note that these features are provided as-is without support, and subject
+          to changes or removal as the working draft evolves. See
+          https://go.microsoft.com/fwlink/?linkid=2045807 for details.
+          cl /c /Zi /W1 /WX- /diagnostics:column /MP12 /FS /Od /Ob0 /GL /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++latest /ifcOutput "boo.dir\\Debug\\\\" /Fo"boo.dir\\Debug\\\\" /Fd"boo.dir\\Debug\\vc143.pdb" /sourceDependencies "boo.dir\\Debug\\.d.json" /external:W1 /Gd /TP /errorReport:queue "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\src\\main.cpp"
+          main.cpp
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.42.34433\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe" /NOLOGO Debug\\foo.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.pdb" /SUBSYSTEM:CONSOLE /LTCG:incremental /LTCGOUT:"boo.dir\\Debug\\boo.iobj" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/bin/Debug/boo.lib" /MACHINE:X64  /machine:x64 boo.dir\\Debug\\main.obj
+          Generating code
+          Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+          Finished generating code
+          boo.vcxproj -> B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\Debug\\boo.exe
+        FinalizeBuildStatus:
+          Deleting file "boo.dir\\Debug\\boo.tlog\\unsuccessfulbuild".
+          Touching "boo.dir\\Debug\\boo.tlog\\boo.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\boo.vcxproj" (default targets).
+        PrepareForBuild:
+          Creating directory "x64\\Debug\\ALL_BUILD\\".
+          Structured output is enabled. The formatting of compiler diagnostics will reflect the error hierarchy. See https://aka.ms/cpp/structured-output for more details.
+          Creating directory "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\".
+        InitializeBuildStatus:
+          Creating "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+        CustomBuild:
+          Building Custom Rule B:/Dysk/Studia - private/Edge Computing/PNAMSC/build/CMakeFiles/_CMakeLTOTest-CXX/src/CMakeLists.txt
+        FinalizeBuildStatus:
+          Deleting file "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\unsuccessfulbuild".
+          Touching "x64\\Debug\\ALL_BUILD\\ALL_BUILD.tlog\\ALL_BUILD.lastbuildstate".
+        Done Building Project "B:\\Dysk\\Studia - private\\Edge Computing\\PNAMSC\\build\\CMakeFiles\\_CMakeLTOTest-CXX\\bin\\ALL_BUILD.vcxproj" (default targets).
+        
+        Build succeeded.
+            0 Warning(s)
+            0 Error(s)
+        
+        Time Elapsed 00:00:01.53
+        
+      exitCode: 0
+...
