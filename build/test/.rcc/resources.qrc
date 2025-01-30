@@ -1,7 +1,0 @@
-<RCC>
-  <qresource prefix="/resource">
-    <file alias="../icon/icon_32x32.png">B:/Dysk/Studia - private/Edge Computing/PNAMSC/test/../icon/icon_32x32.png</file>
-    <file alias="../icon/icon_64x64.png">B:/Dysk/Studia - private/Edge Computing/PNAMSC/test/../icon/icon_64x64.png</file>
-  </qresource>
-</RCC>
-
