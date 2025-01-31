@@ -6,8 +6,13 @@
 
 #include "pvnLib/Exceptions.h"
 
+/// Using C++ concepts to provide helper functions that will throw errors with more details, if they contain *duplicates* and the *error throwing is enabled* (it is a parameter)
+/// Also *bound checking* and lack of *reflection* workaround (parent messages)
 namespace NovelLib::Helpers
 {
+	// Unfortunately template code needs to be defined inside a header, so it's quite a mess...
+
+	// Notice that there are usually 2 or 4 functions defined per operation. It is for *unnamed object handling*, *named object handling* and there might be variations for *const* and *non-const* types
 	template<typename T>
 	concept NotQObject = !std::derived_from<T, QObject>;
 
@@ -106,32 +111,8 @@ namespace NovelLib::Helpers
 
 	QString parentMsg(const QString& parentType, const QString& parentName, const QString& parentParentType, const QString& parentParentName);
 
-	template<typename T>
-	bool checkMapExistence(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
-	{
-		if (!map.contains(key))
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeMissing << "Tried to get a non-existent " + type + "\"" + key + '\"' + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return false;
-		}
-		return true;
-	}
-
-	template<typename T>
-	bool checkMapDuplicate(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
-	{
-		if (map.contains(key))
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeInvalid << type + " \"" + key + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return false;
-		}
-		return true;
-	}
-
 	//template<IdentifiedEntity T>
-	//bool checkName(const QString& name, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	//bool isNameEqual(const QString& name, const T& entity, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
 	//{
 	//	if (getIdentifier(entity) != name)
 	//	{
@@ -141,18 +122,6 @@ namespace NovelLib::Helpers
 	//	}
 	//	return true;
 	//}
-
-	template<typename T>
-	bool checkListIndex(const std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
-	{
-		if (index >= list.size())
-		{
-			if (bThrowErrors)
-				qCritical() << errorTypeMissing << "Index " + QString::number(index) + " exceeds container's size " + QString::number(list.size()) + parentMsg(parentType, parentName, parentParentType, parentParentName);
-			return false;
-		}
-		return true;
-	}
 
 	template<IdentifiedEntity T>
 	typename std::vector<T>::iterator checkListExistence(std::vector<T>& list, const QString& name, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
@@ -192,7 +161,31 @@ namespace NovelLib::Helpers
 		return ret;
 	}
 
-	////Maps
+	// Maps
+
+	template<typename T>
+	bool checkMapExistence(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	{
+		if (!map.contains(key))
+		{
+			if (bThrowErrors)
+				qCritical() << errorTypeMissing << "Tried to get a non-existent " + type + "\"" + key + '\"' + parentMsg(parentType, parentName, parentParentType, parentParentName);
+			return false;
+		}
+		return true;
+	}
+
+	template<typename T>
+	bool checkMapDuplicate(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeInvalid = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	{
+		if (map.contains(key))
+		{
+			if (bThrowErrors)
+				qCritical() << errorTypeInvalid << type + " \"" + key + "\" already exists" + parentMsg(parentType, parentName, parentParentType, parentParentName);
+			return false;
+		}
+		return true;
+	}
 
 	template<typename T>
 	const T* mapGet(const std::unordered_map<QString, T>& map, const QString& key, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true) noexcept
@@ -259,7 +252,19 @@ namespace NovelLib::Helpers
 		return true;
 	}
 
-	//Lists
+	// Lists
+
+	template<typename T>
+	bool checkListIndex(const std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)
+	{
+		if (index >= list.size())
+		{
+			if (bThrowErrors)
+				qCritical() << errorTypeMissing << "Index " + QString::number(index) + " exceeds container's size " + QString::number(list.size()) + parentMsg(parentType, parentName, parentParentType, parentParentName);
+			return false;
+		}
+		return true;
+	}
 
 	template<typename T>
 	typename std::vector<T>::const_iterator listGet(const std::vector<T>& list, uint index, const QString& type, NovelLib::ErrorType errorTypeMissing = NovelLib::ErrorType::General, const QString& parentType = "", const QString& parentName = "", const QString& parentParentType = "", const QString& parentParentName = "", bool bThrowErrors = true)

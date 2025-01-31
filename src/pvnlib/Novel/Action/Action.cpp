@@ -4,7 +4,7 @@
 
 Action::~Action() = default;
 
-//If you add/remove a member field, remember to update these
+// If you add/remove a member field to this class, remember to update these
 //  MEMBER_FIELD_SECTION_CHANGE BEGIN
 
 void swap(Action& first, Action& second) noexcept
@@ -19,7 +19,6 @@ Action::Action(Event* const parentEvent) noexcept
 
 void Action::serializableLoad(QDataStream& dataStream)
 {
-	//dataStream;
 }
 
 void Action::serializableSave(QDataStream& dataStream) const

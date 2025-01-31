@@ -6,6 +6,7 @@
 
 namespace NovelLib
 {
+	/// More sophisitacted Exceptions with ErrorType for easier debugging
 	class NovelException : public QException
 	{
 	public:
@@ -70,6 +71,7 @@ namespace NovelLib
 		"[Critical]",
 		"[SaveCritical]",
 		"[NameDuplicate]",
+
 		"[ActionMissing]",
 		"[ActionInvalid]",
 		"[AudioMissing]",

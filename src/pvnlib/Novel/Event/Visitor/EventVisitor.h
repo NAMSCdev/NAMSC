@@ -12,7 +12,7 @@ class EventWait;
 //class EventRenPyScript;
 
 /// Base class of a Visitor for Events
-/// It is not the abstract class, like it should be, but default to doing nothing and allow for the overload
+/// It is not the abstract class, like it should be, but is defaulting to doing nothing and allowing for the overload
 class EventVisitor
 {
 public:	

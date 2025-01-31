@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-//[polish personal note; optional todo] Teoretycznie moglibysmy w Serializacji na samym poczatku zliczyc rozmiar calej struktury, tak ze jak wystapi blad przy wczytywaniu jednej klasy ze skompresowanego pliku, to dalo sie wczytac reszte (przeskoczyc znacznikiem do miejsca, gdzie jest nastepny obiekt)
+//[polish personal note; optional todo] Teoretycznie moglibysmy w Serializacji na samym poczatku zliczyc rozmiar calej struktury, tak ze jak wystapi blad przy wczytywaniu jednego obiektu z pliku, to dalo sie wczytac reszte (przeskoczyc znacznikiem do miejsca, gdzie jest nastepny obiekt). Mozna dodac kompresje zapisow
 
 namespace NovelLib
 {
