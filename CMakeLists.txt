@@ -366,21 +366,14 @@ else()
     set(EXECUTABLE_PATH2 "$<TARGET_FILE:${PROJECT_NAME}_Engine>")
 endif()
 
-qt_generate_deploy_script(TARGET ${PROJECT_NAME}_Editor
-                          OUTPUT_SCRIPT DEPLOY_SCRIPT
-                          CONTENT "
-                          qt_deploy_runtime_dependencies(EXECUTABLE \"${EXECUTABLE_PATH}\"
-                          BIN_DIR .
-                          VERBOSE)")
+qt_generate_deploy_app_script(TARGET ${PROJECT_NAME}_Editor
+                          OUTPUT_SCRIPT DEPLOY_SCRIPT)
 
-qt_generate_deploy_script(TARGET ${PROJECT_NAME}_Engine
-                          OUTPUT_SCRIPT DEPLOY_SCRIPT
-                          CONTENT "
-                          qt_deploy_runtime_dependencies(EXECUTABLE \"${EXECUTABLE_PATH2}\"
-                          BIN_DIR .
-                          VERBOSE)")
+qt_generate_deploy_app_script(TARGET ${PROJECT_NAME}_Engine
+                          OUTPUT_SCRIPT DEPLOY_SCRIPT2)
 
 install(SCRIPT ${DEPLOY_SCRIPT})
+install(SCRIPT ${DEPLOY_SCRIPT2})
 
 # Testing setup
 enable_testing(true)
