@@ -1,4 +1,5 @@
 #include "NAMSC_editor.h"
+
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])

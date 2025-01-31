@@ -1,5 +1,7 @@
 ﻿#include "NAMSC_editor.h"
-#include <qinputdialog.h>
+
+#include <QDirIterator>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
@@ -14,35 +16,10 @@
 #include "EventTreeItem.h"
 #include "GraphNodePropertiesPack.h"
 #include "JumpEventProperties.h"
+#include "ObjectPropertyPack.h"
 #include "Preview.h"
 #include "ProjectConfiguration.h"
-#include "ObjectPropertyPack.h"
 #include "SceneryObjectOnSceneProperties.h"
-
-
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
-    QByteArray localMsg = msg.toLocal8Bit();
-    const char *file = context.file ? context.file : "";
-    const char *function = context.function ? context.function : "";
-    switch (type) {
-    case QtDebugMsg:
-        fprintf(stderr, "Debug: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-        break;
-    case QtInfoMsg:
-        fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-        break;
-    case QtWarningMsg:
-        fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-        break;
-    case QtCriticalMsg:
-        fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-        break;
-    case QtFatalMsg:
-        fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), file, context.line, function);
-        break;
-    }
-}
 
 void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
@@ -90,38 +67,38 @@ void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-
-NAMSC_editor::NAMSC_editor(QWidget *parent)
-    : QMainWindow(parent)
+NAMSC_editor::NAMSC_editor(QWidget *parent) : QMainWindow(parent)
 {
-    supportedFormats();
-
-    // Prepare ui
+    qInstallMessageHandler(errorMessageHandler);
     ui.setupUi(this);
-    //qInstallMessageHandler(errorMessageHandler); // Causes editor to crash -> Retrieving non existing element from a map returns null and is used to check if a key is already used. Also there seems to be an issue with quick dialog boxes, which also return some warning from qt but work anyway.
+    setupSupportedFormats();
 
+    // todo: save settings like those in .ini in APPDATA using QSettings
     ui.mainSplitter->setSizes({ 20, 60, 20 });
     ui.middlePanel->setStretchFactor(0, 70);
     ui.middlePanel->setStretchFactor(1, 30);
 
     ui.graphView->setSceneRect(ui.graphView->contentsRect());
 
-    delete ui.sceneView;
-    ui.sceneView = Novel::getInstance().createSceneWidget();
+    //delete ui.sceneView; -- whats going on there?
+    ui.sceneView = Novel::getInstance().createSceneWidget(); //todo: singletons are bad, I should remove this interaction at all, but its too much effort to fix everything after that
+    
+    //todo: This should be done in ui via class promotiong
     sceneWidget = static_cast<SceneWidget*>(ui.sceneView);
     ui.middlePanelEditorStackPage2->layout()->addWidget(sceneWidget);
     sceneWidget->switchToPreview();
 
+    //todo: does it need to be a pointer?
     scene = new QGraphicsScene(this);
     scene->setSceneRect(ui.graphView->rect());
 
-    //view->setViewport(new QOpenGLWidget);
+    //todo: Move to custom class and do this in the constructor
     ui.graphView->setScene(scene);
     scene->setSceneRect(this->rect());
 
-    debugConstructorActions();
-    prepareAssetsTree();
-    prepareEventsTree();
+    //debugConstructorActions(); -- todo: find out what they wanted to do with this
+    setupAssetTree();
+    setupEventTree();
 
     //needs to be after preparing other widgets
     prepareSwitchboard();
@@ -173,7 +150,8 @@ NAMSC_editor::NAMSC_editor(QWidget *parent)
     //loadEditor();
 }
 
-void NAMSC_editor::prepareAssetsTree()
+//todo: check how much of this can be done in a new class and its constructor
+void NAMSC_editor::setupAssetTree()
 {
     ui.assetsPreview->setSupportedAudioFormats(supportedAudioFormats);
     ui.assetsPreview->setSupportedImageFormats(supportedImageFormats);
@@ -183,7 +161,8 @@ void NAMSC_editor::prepareAssetsTree()
     ui.assetsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-void NAMSC_editor::prepareEventsTree()
+//todo: check how much of this can be done in a new class and its constructor
+void NAMSC_editor::setupEventTree()
 {
     EventTreeItemModel* newModel = new EventTreeItemModel("test", nullptr);
     ui.eventsTree->setModel(newModel);
@@ -197,6 +176,7 @@ void NAMSC_editor::prepareEventsTree()
 
 void NAMSC_editor::prepareSwitchboard()
 {
+    // todo: this is blatant AI generation, 
     // Connect to switchboard 
     // Connect selection of a node to switchboard
     connect(ui.graphView->scene(), &QGraphicsScene::selectionChanged, &switchboard, [&]
@@ -206,7 +186,7 @@ void NAMSC_editor::prepareSwitchboard()
                 switchboard.nodeSelectionChanged(nullptr);
             }
             else {
-                switchboard.nodeSelectionChanged(qgraphicsitem_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0]));
+                switchboard.nodeSelectionChanged(qgraphicsitem_cast<GraphNode*>(ui.graphView->scene()->selectedItems()[0])); //todo: research this cast, never seen it before. Might come handy
             }
         });
     
@@ -232,6 +212,7 @@ void NAMSC_editor::saveEditor()
     saveGraph(ui.graphView);
 }
 
+//todo: void*...? What's going on there
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
 {
     while (ui.propertiesLayout->count() != 0)
@@ -256,7 +237,7 @@ void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataTy
         }
         break;
         case PropertyTypes::ObjectTreeItem:
-            // todo currently assuming it's always Image
+            // todo: currently assuming it's always Image
         	ui.propertiesLayout->addWidget(new ObjectPropertyPack(static_cast<SceneryObject*>(object)));
             break;
         case PropertyTypes::CharacterTreeItem:
@@ -431,7 +412,7 @@ void NAMSC_editor::saveGraph(GraphView* graph)
     }
 }
 
-void NAMSC_editor::supportedFormats()
+void NAMSC_editor::setupSupportedFormats()
 {
     supportedImageFormats.append(db.mimeTypeForName("image/png"));
     supportedImageFormats.append(db.mimeTypeForName("image/bmp"));

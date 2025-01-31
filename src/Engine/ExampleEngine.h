@@ -1,16 +1,16 @@
 #pragma once
 #include <QtWidgets/QMainWindow>
-#include "ui_NAMSC_engine.h"
+#include "ui_PVN_engine.h"
 
 #include "pvnlib/Novel/Data/Novel.h"
 
-class NAMSC_engine : public QMainWindow
+class ExampleEngine : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    NAMSC_engine(QWidget *parent = nullptr);
-    ~NAMSC_engine();
+    ExampleEngine(QWidget *parent = nullptr);
+    ~ExampleEngine();
 
 private:
     Ui::mainWindow ui;

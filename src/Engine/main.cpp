@@ -1,10 +1,10 @@
-#include "NAMSC_engine.h"
+#include "ExampleEngine.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    NAMSC_engine w;
+    ExampleEngine w;
     w.show();
     return a.exec();
 }

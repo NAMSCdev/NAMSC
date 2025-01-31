@@ -10,6 +10,7 @@
 #include "PropertyConnectionSwitchboard.h"
 #include "PropertyTypes.h"
 
+/// Main window of the Editor
 class NAMSC_editor : public QMainWindow
 {
     Q_OBJECT
@@ -27,7 +28,18 @@ public slots:
     void propertyTabChangeRequested(void* object, PropertyTypes dataType);
 
 private:
-    Ui::NAMSC_editorClass ui;
+    void setupSupportedFormats();
+
+    void setupAssetTree();
+    void setupEventTree();
+
+    void createDanglingContextMenuActions();
+    void invokeEventsContextMenu(const QPoint& pos);
+
+    void loadGraph(GraphView* graph);
+    void saveGraph(GraphView* graph);
+
+    void debugConstructorActions();
 
     PropertyConnectionSwitchboard switchboard;
     QGraphicsScene* scene; // todo remove?
@@ -36,22 +48,17 @@ private:
     QMimeDatabase db;
     QList<QMimeType> supportedImageFormats;
     QList<QMimeType> supportedAudioFormats;
-    void prepareAssetsTree();
-    void prepareEventsTree();
-    void supportedFormats();
+
     QFileSystemModel* model;
     CustomSortFilterProxyModel* proxyFileFilter;
     SceneWidget* sceneWidget;
 
-    void debugConstructorActions();
 
     QAction* addDialogueEventAction;
     QAction* addChoiceEventAction;
     QAction* addJumpEventAction;
 
-    void createDanglingContextMenuActions();
-    void invokeEventsContextMenu(const QPoint& pos);
 
-    void loadGraph(GraphView* graph);
-    void saveGraph(GraphView* graph);
+    Ui::NAMSC_editorClass ui;
+
 };

@@ -1,7 +1,7 @@
-﻿#include "NAMSC_engine.h"
+﻿#include "ExampleEngine.h"
 
-#include <QMessageBox>
 #include <QFile>
+#include <QMessageBox>
 
 #include "pvnlib/Novel/Event/EventDialogue.h"
 #include "pvnlib/Novel/Event/EventChoice.h"
@@ -52,7 +52,7 @@ void errorMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-NAMSC_engine::NAMSC_engine(QWidget *parent)
+ExampleEngine::ExampleEngine(QWidget *parent)
     : QMainWindow(parent)
 {
     qInstallMessageHandler(errorMessageHandler);
@@ -214,7 +214,7 @@ NAMSC_engine::NAMSC_engine(QWidget *parent)
     novel.run();
 }
 
-NAMSC_engine::~NAMSC_engine()
+ExampleEngine::~ExampleEngine()
 {
     /// In case we want to Novel to delete it instead of the Layout
     /// Novel::getInstance().getSceneWidget()->setParent(nullptr);
