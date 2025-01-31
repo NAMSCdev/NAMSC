@@ -17,10 +17,11 @@ public:
 	QString getProjectName();
 
 private:
-	QDir projectCatalog = QDir::currentPath();
-	QString projectName = "New_project";
-
 	void projectCatalogSelection();
 
-	Ui::NewProjectDialogClass ui;
+	QDir projectCatalog_ = QDir::currentPath();
+	QString projectName_ = "New Project";
+
+
+	Ui::NewProjectDialogClass ui_;
 };

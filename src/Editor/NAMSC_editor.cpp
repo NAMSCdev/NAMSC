@@ -212,7 +212,7 @@ void NAMSC_editor::saveEditor()
     saveGraph(ui.graphView);
 }
 
-//todo: void*...? What's going on there
+//todo: void* ...? What's going on there
 void NAMSC_editor::propertyTabChangeRequested(void* object, PropertyTypes dataType)
 {
     while (ui.propertiesLayout->count() != 0)

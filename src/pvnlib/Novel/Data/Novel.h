@@ -155,16 +155,16 @@ signals:
 	void pendSceneClear();
 
 private:
-	//Nothing can create the Novel, but its methods
+	// Nothing can create the Novel, but its methods
 	Novel() = default;
 
-	//It is supposed to be empty
+	// It is supposed to be empty
 	void ensureResourcesAreLoaded() override;
 
 	/// \todo implement this
 	void loadAssetsDefinitions();
 	void saveAssetsDefinitions();
-	//Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
+	// Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
 	/// \todo implement this
 	void loadChapters();
 	void saveChapters();
@@ -182,7 +182,7 @@ private:
 	void loadScenes();
 	void saveScenes();
 
-	//Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
+	// Doesn't hold any Resources, so there is no distinguishment between Definition and Resource
 	/// \todo implement this
 	void loadVoices();
 	void saveVoices();

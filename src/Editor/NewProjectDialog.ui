@@ -42,7 +42,7 @@
     <number>0</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
    </property>
    <property name="leftMargin">
     <number>6</number>
@@ -59,7 +59,7 @@
    <item>
     <layout class="QHBoxLayout" name="titleHLayout">
      <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
+      <enum>QLayout::SizeConstraint::SetFixedSize</enum>
      </property>
      <item>
       <widget class="QLabel" name="titleLabel">
@@ -71,11 +71,16 @@
        </property>
        <property name="font">
         <font>
-         <pointsize>22</pointsize>
+         <family>Fantasque Sans Mono</family>
+         <pointsize>36</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="text">
-        <string>Create new project</string>
+        <string>Create a new project</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -84,10 +89,16 @@
    <item>
     <layout class="QHBoxLayout" name="projectNameHLayout" stretch="20,80">
      <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
+      <enum>QLayout::SizeConstraint::SetMaximumSize</enum>
      </property>
      <item>
       <widget class="QLabel" name="projectNameLabel">
+       <property name="font">
+        <font>
+         <family>Fantasque Sans Mono</family>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>Project name:</string>
        </property>
@@ -101,10 +112,17 @@
    <item>
     <layout class="QHBoxLayout" name="projectLocationPathHLayout" stretch="20,75,15">
      <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
+      <enum>QLayout::SizeConstraint::SetMaximumSize</enum>
      </property>
      <item>
       <widget class="QLabel" name="projectPathLabel">
+       <property name="font">
+        <font>
+         <family>Fantasque Sans Mono</family>
+         <pointsize>11</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <property name="text">
         <string>Project path:</string>
        </property>
@@ -113,7 +131,7 @@
      <item>
       <widget class="QLineEdit" name="projectPathLineEdit">
        <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
+        <enum>Qt::LayoutDirection::RightToLeft</enum>
        </property>
       </widget>
      </item>
@@ -129,10 +147,10 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+      <enum>QSizePolicy::Policy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -145,12 +163,12 @@
    <item>
     <layout class="QHBoxLayout" name="dialogButtonBoxHLayout">
      <property name="sizeConstraint">
-      <enum>QLayout::SetMinimumSize</enum>
+      <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
      </property>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="standardButtons">
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+        <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
        </property>
        <property name="centerButtons">
         <bool>false</bool>
